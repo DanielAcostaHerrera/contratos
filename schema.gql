@@ -1,0 +1,46 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Monedas {
+  idMoneda: Float!
+  moneda: String!
+  abrev: String
+  msreplTranVersion: String!
+}
+
+type Embalajes {
+  id: Int!
+  codigo: String
+  descripcion: String
+  abreviatura: String
+  msreplTranVersion: String!
+}
+
+type Query {
+  findAllMoneda: [Monedas!]!
+  findOneMoneda(id: Int!): Monedas!
+  findAllEmbalajes: [Embalajes!]!
+  findOneEmbalajes(id: Int!): Embalajes!
+}
+
+type Mutation {
+  createMoneda(createMonedaInput: CreateMonedaInput!): Monedas!
+  updateMoneda(updateMonedaInput: CreateMonedaInput!): Monedas!
+  removeMoneda(id: Int!): Monedas!
+  createEmbalajes(createEmbalajeInput: CreateEmbalajeInput!): Embalajes!
+  removeEmbalajes(id: Int!): Embalajes!
+}
+
+input CreateMonedaInput {
+  idMoneda: Float!
+  moneda: String!
+  abrev: String
+}
+
+input CreateEmbalajeInput {
+  id: Float!
+  codigo: String
+  descripcion: String
+  abreviatura: String
+}
