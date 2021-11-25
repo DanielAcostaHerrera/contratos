@@ -14,7 +14,7 @@ import { Cargos } from "./Cargos.entity";
 @Entity("Ejecutivos", { schema: "dbo" })
 export class Ejecutivos {
   @Field(() => Int)
-  @PrimaryGeneratedColumn({ type: "smallint", name: "Id" })
+  @PrimaryGeneratedColumn({ type: "smallint", name: "Id"})
   id: number;
 
   @Field()
@@ -44,7 +44,7 @@ export class Ejecutivos {
   @Column("nvarchar", { name: "E_mail", nullable: true, length: 50 })
   eMail: string | null;
 
-  @Field()
+  @Field(() => Cargos, {nullable: true})
   @ManyToOne(() => Cargos, (cargos) => cargos.ejecutivos)
   @JoinColumn([{ name: "Cargo", referencedColumnName: "idCargo" }])
   cargo: Cargos;

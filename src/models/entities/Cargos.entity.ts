@@ -12,7 +12,7 @@ import { Ejecutivos } from "./Ejecutivos.entity";
 @Index("PK_Cargos", ["idCargo"], { unique: true })
 @Entity("Cargos", { schema: "dbo" })
 export class Cargos {
-  @PrimaryGeneratedColumn({ type: "tinyint", name: "IdCargo"})
+  @PrimaryGeneratedColumn({ type: "tinyint", name: "IDCargo"})
   @Field(() => Int)
   idCargo: number;
 
@@ -27,7 +27,7 @@ export class Cargos {
   })
   msreplTranVersion: string;
 
-  @Field()
+  @Field(() => [Ejecutivos])
   @OneToMany(() => Ejecutivos, (ejecutivos) => ejecutivos.cargo)
   ejecutivos: Ejecutivos[];
 }

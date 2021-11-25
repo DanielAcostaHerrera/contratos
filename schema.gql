@@ -17,11 +17,33 @@ type Embalajes {
   msreplTranVersion: String!
 }
 
+type Ejecutivos {
+  id: Int!
+  nombre: String!
+  correo: String
+  msreplTranVersion: String!
+  usuarioSlq: String
+  activo: Boolean!
+  eMail: String
+  cargo: Cargos
+}
+
+type Cargos {
+  idCargo: Int!
+  cargo: String!
+  msreplTranVersion: String!
+  ejecutivos: [Ejecutivos!]!
+}
+
 type Query {
   findAllMoneda: [Monedas!]!
   findOneMoneda(id: Int!): Monedas!
   findAllEmbalajes: [Embalajes!]!
   findOneEmbalajes(id: Int!): Embalajes!
+  findAllCargos: [Cargos!]!
+  findOneCargo(id: Int!): Cargos!
+  findAllEjecutivos: [Ejecutivos!]!
+  findOneEjecutivo(id: Int!): Ejecutivos!
 }
 
 type Mutation {
@@ -30,6 +52,10 @@ type Mutation {
   removeMoneda(id: Int!): Monedas!
   createEmbalajes(createEmbalajeInput: CreateEmbalajeInput!): Embalajes!
   removeEmbalajes(id: Int!): Embalajes!
+  createCargo(createCargoInput: CreateCargoInput!): Cargos!
+  removeCargo(id: Int!): Cargos!
+  createEjecutivo(createEjecutivoInput: CreateEjecutivoInput!): Ejecutivos!
+  removeEjecutivo(id: Int!): Ejecutivos!
 }
 
 input CreateMonedaInput {
@@ -43,4 +69,20 @@ input CreateEmbalajeInput {
   codigo: String
   descripcion: String
   abreviatura: String
+}
+
+input CreateCargoInput {
+  idCargo: Int!
+  cargo: String!
+  msreplTranVersion: String!
+}
+
+input CreateEjecutivoInput {
+  id: Int!
+  nombre: String!
+  correo: String
+  msreplTranVersion: String!
+  usuarioSlq: String
+  activo: Boolean!
+  eMail: String
 }
