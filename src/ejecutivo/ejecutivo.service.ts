@@ -14,11 +14,11 @@ export class EjecutivoService {
   }
 
   async findAll(): Promise<Ejecutivos[]> {
-    return await this.ejecutivosRepository.find({ relations: ['cargo']});
+    return await this.ejecutivosRepository.find({ relations: ['cargo' , 'grupo']});
   }
 
   async findOne(id: number) : Promise<Ejecutivos> {
-    return await this.ejecutivosRepository.findOne(id, { relations: ['cargo']});
+    return await this.ejecutivosRepository.findOne(id, { relations: ['cargo', 'grupo']});
   }
 
   async remove(id: number) : Promise<any> {

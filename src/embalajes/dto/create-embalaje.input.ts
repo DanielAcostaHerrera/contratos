@@ -2,8 +2,8 @@ import { InputType, Int, Field } from '@nestjs/graphql';
 
 @InputType()
 export class CreateEmbalajeInput {
-  @Field()
-  id: number;
+  @Field(() => Int, { nullable: true})
+  idEmbalaje?: number;
 
   @Field({nullable: true})
   codigo: string | null;

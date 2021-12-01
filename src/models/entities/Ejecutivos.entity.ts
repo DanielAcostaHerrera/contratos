@@ -8,44 +8,50 @@ import {
   PrimaryGeneratedColumn,
 } from "typeorm";
 import { Cargos } from "./Cargos.entity";
+import { GruposDeCompras } from "./GruposDeCompras.entity";
 
 @ObjectType()
-@Index("PK_Ejecutivos", ["id"], { unique: true })
+@Index("IX_CTO_Ejecutivos", ["nombre"], { unique: true })
+@Index("IX_CTO_Ejecutivos_Grupo", ["idGrupo"], {})
+@Index("PK_CTO_Ejecutivos", ["idEjecutivo"], { unique: true })
 @Entity("Ejecutivos", { schema: "dbo" })
 export class Ejecutivos {
+  @PrimaryGeneratedColumn({ type: "int", name: "IdEjecutivo" })
   @Field(() => Int)
-  @PrimaryGeneratedColumn({ type: "smallint", name: "Id"})
-  id: number;
+  idEjecutivo: number;
 
-  @Field()
+  @Column("int", { name: "IdGrupo"})
+  @Field(() => Int)
+  idGrupo: number;
+
   @Column("nvarchar", { name: "Nombre", length: 50 })
+  @Field()
   nombre: string;
 
-  @Field({nullable: true})
+  @Column("int", { name: "Cargo" })
+  @Field(() => Int)
+  idCargo: number;
+
   @Column("nvarchar", { name: "Correo", nullable: true, length: 50 })
+  @Field()
   correo: string | null;
 
+  @Column("nvarchar", { name: "usuarioSLQ", nullable: true, length: 150 })
   @Field()
-  @Column("uniqueidentifier", {
-    name: "msrepl_tran_version",
-    default: () => "newid()",
-  })
-  msreplTranVersion: string;
-
-  @Field({nullable: true})
-  @Column("char", { name: "usuarioSLQ", nullable: true, length: 150 })
   usuarioSlq: string | null;
 
+  @Column("bit", { name: "Activo" })
   @Field()
-  @Column("bit", { name: "Activo", default: () => "1" })
   activo: boolean;
-
-  @Field({nullable: true})
-  @Column("nvarchar", { name: "E_mail", nullable: true, length: 50 })
-  eMail: string | null;
 
   @Field(() => Cargos, {nullable: true})
   @ManyToOne(() => Cargos, (cargos) => cargos.ejecutivos)
   @JoinColumn([{ name: "Cargo", referencedColumnName: "idCargo" }])
   cargo: Cargos;
+
+  @Field(() => GruposDeCompras, {nullable: true})
+  @ManyToOne(() => GruposDeCompras, (grupos) => grupos.ejecutivos)
+  @JoinColumn([{ name: "IdGrupo", referencedColumnName: "idGrupo" }])
+  grupo: GruposDeCompras;
+
 }

@@ -8,6 +8,9 @@ import { join } from 'path';
 import { EmbalajesModule } from './embalajes/embalajes.module';
 import { CargoModule } from './cargo/cargo.module';
 import { EjecutivoModule } from './ejecutivo/ejecutivo.module';
+import { GruposDeComprasModule } from './grupos-de-compras/grupos-de-compras.module';
+import { BasesCmarcoModule } from './bases-cmarco/bases-cmarco.module';
+import { BasesCmarcoClausulasModule } from './bases-cmarco-clausulas/bases-cmarco-clausulas.module';
 
 @Module({
   imports: [
@@ -20,7 +23,7 @@ import { EjecutivoModule } from './ejecutivo/ejecutivo.module';
       port: 1433,
       username: 'sa',
       password: 'sa',
-      database: 'Contratos',
+      database: 'CONTRATO',
       entities: [join(__dirname, '**', '*.entity.{ts,js}')],
       synchronize: false,  
       options: { encrypt: false },
@@ -29,6 +32,9 @@ import { EjecutivoModule } from './ejecutivo/ejecutivo.module';
     EmbalajesModule,
     CargoModule,
     EjecutivoModule,
+    GruposDeComprasModule,
+    BasesCmarcoModule,
+    BasesCmarcoClausulasModule,
   ],
   controllers: [AppController],
   providers: [AppService],

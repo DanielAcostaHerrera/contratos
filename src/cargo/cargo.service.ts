@@ -14,11 +14,11 @@ export class CargoService {
   }
 
   async findAll(): Promise<Cargos[]> {
-    return await this.cargoRepository.find();
+    return await this.cargoRepository.find({ relations: ['ejecutivos']});
   }
 
   async findOne(id: number) : Promise<Cargos> {
-    return await this.cargoRepository.findOne(id);
+    return await this.cargoRepository.findOne(id, { relations: ['ejecutivos']});
   }
 
   async remove(id: number) : Promise<any> {

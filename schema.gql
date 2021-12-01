@@ -3,36 +3,139 @@
 # ------------------------------------------------------
 
 type Monedas {
-  idMoneda: Float!
+  idMoneda: Int!
   moneda: String!
-  abrev: String
-  msreplTranVersion: String!
+  abreviatura: String!
 }
 
 type Embalajes {
-  id: Int!
-  codigo: String
-  descripcion: String
-  abreviatura: String
-  msreplTranVersion: String!
+  idEmbalaje: Int!
+  descripcion: String!
+  abreviatura: String!
+}
+
+type GruposDeCompras {
+  idGrupo: Int!
+  grupos: String!
+  ejecutivos: [Ejecutivos!]
 }
 
 type Ejecutivos {
-  id: Int!
+  idEjecutivo: Int!
+  idGrupo: Int!
   nombre: String!
-  correo: String
-  msreplTranVersion: String!
-  usuarioSlq: String
+  idCargo: Int!
+  correo: String!
+  usuarioSlq: String!
   activo: Boolean!
-  eMail: String
   cargo: Cargos
+  grupo: GruposDeCompras
 }
 
 type Cargos {
   idCargo: Int!
   cargo: String!
-  msreplTranVersion: String!
-  ejecutivos: [Ejecutivos!]!
+  ejecutivos: [Ejecutivos!]
+}
+
+type TiposDeClausulas {
+  idTipoClausula: Int!
+  nombre: String!
+  orden: Int!
+  basesG: Boolean!
+  compras: Boolean!
+  cMarco: Boolean!
+  excepcional: Boolean!
+}
+
+type Proformas {
+  idProforma: Int!
+  idTipoContrato: Int!
+  idIncoterm: Int!
+  nombreProfoma: String!
+  activa: Boolean!
+  cMarcoF: Boolean!
+  basesCMarco: [BasesCMarco!]
+  proformaClausulas: [ProformaClausulas!]
+}
+
+type ProformaClausulas {
+  idProformaClausula: Int!
+  idProforma: Int!
+  idTipoClausula: Int!
+  orden: Int!
+  clausula: String!
+}
+
+type BasesCMarcoClausulas {
+  idBasesCMarcoClausulas: Int!
+  idBaseCMarco: Int!
+  idProformaClausula: Int!
+  idTipoClausula: Int!
+  orden: Int!
+  clausula: String!
+  modificado: DateTime!
+  proformaClausulas: ProformaClausulas
+  basesCMarco: BasesCMarco
+  tiposDeClausulas: TiposDeClausulas
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type BasesCMarcoEspecificos {
+  idBaseCMarco: Int!
+  idEspecifico: Int!
+  pDisponible: Float!
+  pReservado: Float!
+  pEjecutado: Float!
+  pPendiente: Float!
+  idPadre: Int!
+  baseCMarco: BasesCMarco!
+}
+
+type Puertos {
+  idPuerto: Int!
+  nombre: String!
+  pais: Int!
+  deposito: String!
+  basesCMarco: [BasesCMarco!]
+}
+
+type BasesCMarco {
+  idBaseCMarco: Int!
+  idBaseGenerales: Int!
+  idProveedor: Int!
+  consecutivo: Int!
+  directivaTrd: String!
+  directivaGae: String!
+  fecha: DateTime!
+  idProforma: Int!
+  especificos: String!
+  periodoInic: DateTime!
+  periodoFin: DateTime!
+  importeTotal: Float!
+  importeFinanciamiento: Float!
+  importeConFinanciamiento: Float!
+  idPuerto: Int!
+  aprobado: Boolean!
+  cancelado: Boolean!
+  activo: Boolean!
+  actualizado: DateTime!
+  importeTotalLetras: String!
+  importeFinanciamientoLetras: String!
+  importeTotalFinanciamientoLetras: String!
+  periodoInicV: DateTime!
+  periodoFinV: DateTime!
+  idComprador: Int!
+  noCMarco: String!
+  nProveedor: String!
+  basesCMarcoClausulas: [BasesCMarcoClausulas!]
+  basesCMarcoEspecificos: [BasesCMarcoEspecificos!]
+  puerto: Puertos
+  proforma: Proformas
 }
 
 type Query {
@@ -44,6 +147,12 @@ type Query {
   findOneCargo(id: Int!): Cargos!
   findAllEjecutivos: [Ejecutivos!]!
   findOneEjecutivo(id: Int!): Ejecutivos!
+  findAllGrupos: [GruposDeCompras!]!
+  findOneGrupo(id: Int!): GruposDeCompras!
+  findAllBaseCMarco: [BasesCMarco!]!
+  findOneBaseCMarco(id: Int!): BasesCMarco!
+  findAllBasesCMarcoClausula: [BasesCMarcoClausulas!]!
+  findOneBasesCMarcoClausula(id: Int!): BasesCMarcoClausulas!
 }
 
 type Mutation {
@@ -56,33 +165,83 @@ type Mutation {
   removeCargo(id: Int!): Cargos!
   createEjecutivo(createEjecutivoInput: CreateEjecutivoInput!): Ejecutivos!
   removeEjecutivo(id: Int!): Ejecutivos!
+  createGruposDeCompra(createGruposDeCompraInput: CreateGruposDeCompraInput!): GruposDeCompras!
+  removeGruposDeCompra(id: Int!): GruposDeCompras!
+  createBasesCmarco(createBasesCmarcoInput: CreateBasesCmarcoInput!): BasesCMarco!
+  removeBasesCmarco(id: Int!): BasesCMarco!
+  createBasesCmarcoClausula(createBasesCmarcoClausulaInput: CreateBasesCmarcoClausulaInput!): BasesCMarcoClausulas!
+  removeBasesCmarcoClausula(id: Int!): BasesCMarcoClausulas!
 }
 
 input CreateMonedaInput {
-  idMoneda: Float!
+  idMoneda: Int
   moneda: String!
-  abrev: String
+  abreviatura: String
 }
 
 input CreateEmbalajeInput {
-  id: Float!
+  idEmbalaje: Int
   codigo: String
   descripcion: String
   abreviatura: String
 }
 
 input CreateCargoInput {
-  idCargo: Int!
+  idCargo: Int
   cargo: String!
-  msreplTranVersion: String!
 }
 
 input CreateEjecutivoInput {
-  id: Int!
+  id: Int
   nombre: String!
   correo: String
   msreplTranVersion: String!
   usuarioSlq: String
   activo: Boolean!
   eMail: String
+}
+
+input CreateGruposDeCompraInput {
+  idGrupo: Int
+  grupos: String!
+}
+
+input CreateBasesCmarcoInput {
+  idBaseCMarco: Int
+  idBaseGenerales: Int!
+  idProveedor: Int!
+  consecutivo: Int!
+  directivaTrd: String!
+  directivaGae: String!
+  fecha: DateTime!
+  idProforma: Int!
+  especificos: String!
+  periodoInic: DateTime!
+  periodoFin: DateTime!
+  importeTotal: Float!
+  importeFinanciamiento: Float!
+  importeConFinanciamiento: Float!
+  idPuerto: Int!
+  aprobado: Boolean!
+  cancelado: Boolean!
+  activo: Boolean!
+  actualizado: DateTime!
+  importeTotalLetras: String!
+  importeFinanciamientoLetras: String!
+  importeTotalFinanciamientoLetras: String!
+  periodoInicV: DateTime!
+  periodoFinV: DateTime!
+  idComprador: Int!
+  noCMarco: String!
+  nProveedor: String!
+}
+
+input CreateBasesCmarcoClausulaInput {
+  idBasesCMarcoClausulas: Int
+  idBaseCMarco: Int!
+  idProformaClausula: Int!
+  idTipoClausula: Int!
+  orden: Int!
+  clausula: String!
+  modificado: DateTime!
 }

@@ -2,8 +2,8 @@ import { InputType, Int, Field } from '@nestjs/graphql';
 
 @InputType()
 export class CreateEjecutivoInput {
-  @Field(() => Int)
-  id: number;
+  @Field(() => Int, { nullable: true})
+  id?: number;
 
   @Field()
   nombre: string;

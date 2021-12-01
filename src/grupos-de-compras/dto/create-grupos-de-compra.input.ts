@@ -1,10 +1,10 @@
 import { InputType, Int, Field } from '@nestjs/graphql';
 
 @InputType()
-export class CreateCargoInput {
+export class CreateGruposDeCompraInput {
   @Field(() => Int, { nullable: true})
-  idCargo?: number;
+  idGrupo?: number;
 
   @Field()
-  cargo: string;
+  grupos: string;
 }
