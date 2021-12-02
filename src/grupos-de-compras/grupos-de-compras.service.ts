@@ -8,7 +8,6 @@ import { CreateGruposDeCompraInput } from './dto/create-grupos-de-compra.input';
 export class GruposDeComprasService {
   constructor(@InjectRepository(GruposDeCompras) public readonly grupoRepository: Repository<GruposDeCompras>) {}
 
-
   async save(CreateGruposDeCompraInput: CreateGruposDeCompraInput) : Promise<GruposDeCompras> {
     return await this.grupoRepository.save(CreateGruposDeCompraInput);
   }

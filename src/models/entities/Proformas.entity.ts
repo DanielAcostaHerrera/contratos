@@ -54,7 +54,7 @@ export class Proformas {
   basesCMarco: BasesCMarco[];
 
   @Field(() => [ProformaClausulas], { nullable: true })
-  @OneToMany(() => ProformaClausulas,(proformaClausulas) => proformaClausulas.idProforma2)
+  @OneToMany(() => ProformaClausulas,(proformaClausulas) => proformaClausulas.proformas)
   proformaClausulas: ProformaClausulas[];
 
   @Field(() => [BasesGenerales], { nullable: true })

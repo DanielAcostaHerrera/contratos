@@ -141,6 +141,10 @@ type ProformaClausulas {
   idTipoClausula: Int!
   orden: Int!
   clausula: String!
+  basesCMarcoClausulas: [BasesCMarcoClausulas!]
+  basesGeneralesClausulas: [BasesGeneralesClausulas!]
+  tiposDeClausulas: TiposDeClausulas
+  proformas: Proformas
 }
 
 type BasesCMarcoClausulas {
@@ -229,6 +233,22 @@ type Query {
   findOneBasesCmarcoEspecificos(id: Int!): BasesCMarcoEspecificos!
   findAllBasesGenerales: [BasesGenerales!]!
   findOneBasesGenerales(id: Int!): BasesGenerales!
+  findAllBasesGeneralesClausulas: [BasesGeneralesClausulas!]!
+  findOneBasesGeneralesClausulas(id: Int!): BasesGeneralesClausulas!
+  findAllClasificaciones: [Clasificaciones!]!
+  findOneClasificaciones(id: Int!): Clasificaciones!
+  findAllIncoterm: [Incoterm!]!
+  findOneIncoterm(id: Int!): Incoterm!
+  findAllProforma: [Proformas!]!
+  findOneProforma(id: Int!): Proformas!
+  findAllProformaClausulas: [ProformaClausulas!]!
+  findOneProformaClausulas(id: Int!): ProformaClausulas!
+  findAllPuertos: [Puertos!]!
+  findOnePuertos(id: Int!): Puertos!
+  findAllTipoContrato: [TipoContrato!]!
+  findOneTipoContrato(id: Int!): TipoContrato!
+  findAllTiposDeClausulas: [TiposDeClausulas!]!
+  findOneTiposDeClausulas(id: Int!): TiposDeClausulas!
 }
 
 type Mutation {
@@ -251,6 +271,22 @@ type Mutation {
   removeBasesCmarcoEspecifico(id: Int!): BasesCMarcoEspecificos!
   createBasesGenerales(createBasesGeneraleInput: CreateBasesGeneralesInput!): BasesGenerales!
   removeBasesGenerales(id: Int!): BasesGenerales!
+  createBasesGeneralesClausula(createBasesGeneralesClausulaInput: CreateBasesGeneralesClausulaInput!): BasesGeneralesClausulas!
+  removeBasesGeneralesClausula(id: Int!): BasesGeneralesClausulas!
+  createClasificaciones(createClasificacioneInput: CreateClasificacioneInput!): Clasificaciones!
+  removeClasificacione(id: Int!): Clasificaciones!
+  createIncoterm(createIncotermInput: CreateIncotermInput!): Incoterm!
+  removeIncoterm(id: Int!): Incoterm!
+  createProforma(createProformaInput: CreateProformaInput!): Proformas!
+  removeProforma(id: Int!): Proformas!
+  createProformaClausula(createProformaClausulaInput: CreateProformaClausulaInput!): ProformaClausulas!
+  removeProformaClausula(id: Int!): ProformaClausulas!
+  createPuerto(createPuertoInput: CreatePuertoInput!): Puertos!
+  removePuerto(id: Int!): Puertos!
+  createTipoContrato(createTipoContratoInput: CreateTipoContratoInput!): TipoContrato!
+  removeTipoContrato(id: Int!): TipoContrato!
+  createTiposDeClausulas(createTiposDeClausulaInput: CreateTiposDeClausulaInput!): TiposDeClausulas!
+  removeTiposDeClausulas(id: Int!): TiposDeClausulas!
 }
 
 input CreateMonedaInput {
@@ -359,4 +395,70 @@ input CreateBasesGeneralesInput {
   activo: Boolean!
   actualizado: DateTime!
   noContrato: String!
+}
+
+input CreateBasesGeneralesClausulaInput {
+  idBasesGeneralesClausulas: Int
+  idBaseGenerales: Int!
+  idProformaClausula: Int!
+  idTipoClausula: Int!
+  orden: Int!
+  clausula: String!
+  excepcional: Boolean!
+  modificado: DateTime!
+}
+
+input CreateClasificacioneInput {
+  idClasificacion: Int
+  clasificacion: String!
+}
+
+input CreateIncotermInput {
+  idIncoterm: Int
+  nombre: String!
+  abreviatura: String!
+  nota: String!
+  activo: Boolean!
+}
+
+input CreateProformaInput {
+  idProforma: Int
+  idTipoContrato: Int!
+  idIncoterm: Int!
+  nombreProfoma: String!
+  activa: Boolean!
+  cMarcoF: Boolean!
+}
+
+input CreateProformaClausulaInput {
+  idProformaClausula: Int
+  idProforma: Int!
+  idTipoClausula: Int!
+  orden: Int!
+  clausula: String!
+}
+
+input CreatePuertoInput {
+  idPuerto: Int
+  nombre: String!
+  pais: Int!
+  deposito: String!
+}
+
+input CreateTipoContratoInput {
+  idTipoContrato: Int
+  tipoContrato: String!
+  encabezado: String!
+  ambasPartes: String!
+  visible: Boolean!
+}
+
+input CreateTiposDeClausulaInput {
+  idTipoClausula: Int
+  nombre: String!
+  orden: Int!
+  basesG: Boolean!
+  compras: Boolean!
+  cMarco: Boolean!
+  excepcional: Boolean!
 }

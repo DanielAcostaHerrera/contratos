@@ -13,6 +13,14 @@ import { BasesCmarcoModule } from './bases-cmarco/bases-cmarco.module';
 import { BasesCmarcoClausulasModule } from './bases-cmarco-clausulas/bases-cmarco-clausulas.module';
 import { BasesCmarcoEspecificosModule } from './bases-cmarco-especificos/bases-cmarco-especificos.module';
 import { BasesGeneralesModule } from './bases-generales/bases-generales.module';
+import { BasesGeneralesClausulasModule } from './bases-generales-clausulas/bases-generales-clausulas.module';
+import { ClasificacionesModule } from './clasificaciones/clasificaciones.module';
+import { IncotermModule } from './incoterm/incoterm.module';
+import { ProformasModule } from './proformas/proformas.module';
+import { ProformaClausulasModule } from './proforma-clausulas/proforma-clausulas.module';
+import { PuertosModule } from './puertos/puertos.module';
+import { TipoContratoModule } from './tipo-contrato/tipo-contrato.module';
+import { TiposDeClausulasModule } from './tipos-de-clausulas/tipos-de-clausulas.module';
 
 @Module({
   imports: [
@@ -39,6 +47,14 @@ import { BasesGeneralesModule } from './bases-generales/bases-generales.module';
     BasesCmarcoClausulasModule,
     BasesCmarcoEspecificosModule,
     BasesGeneralesModule,
+    BasesGeneralesClausulasModule,
+    ClasificacionesModule,
+    IncotermModule,
+    ProformasModule,
+    ProformaClausulasModule,
+    PuertosModule,
+    TipoContratoModule,
+    TiposDeClausulasModule,
   ],
   controllers: [AppController],
   providers: [AppService],

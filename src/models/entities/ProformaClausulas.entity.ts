@@ -43,31 +43,21 @@ export class ProformaClausulas {
   @Field()
   clausula: string;
 
-  @OneToMany(
-    () => BasesCMarcoClausulas,
-    (basesCMarcoClausulas) => basesCMarcoClausulas.proformaClausulas
-  )
+  @Field(() => [BasesCMarcoClausulas] , {nullable: true})
+  @OneToMany(() => BasesCMarcoClausulas,(basesCMarcoClausulas) => basesCMarcoClausulas.proformaClausulas)
   basesCMarcoClausulas: BasesCMarcoClausulas[];
 
-  @OneToMany(
-    () => BasesGeneralesClausulas,
-    (basesGeneralesClausulas) => basesGeneralesClausulas.proformaClausula
-  )
+  @Field(() => [BasesGeneralesClausulas] , {nullable: true})
+  @OneToMany(() => BasesGeneralesClausulas,(basesGeneralesClausulas) => basesGeneralesClausulas.proformaClausula)
   basesGeneralesClausulas: BasesGeneralesClausulas[];
 
-  @ManyToOne(
-    () => TiposDeClausulas,
-    (tiposDeClausulas) => tiposDeClausulas.proformaClausulas
-  )
-  @JoinColumn([
-    { name: "IdTipoClausula", referencedColumnName: "idTipoClausula" },
-  ])
+  @Field(() => TiposDeClausulas , {nullable: true})
+  @ManyToOne(() => TiposDeClausulas,(tiposDeClausulas) => tiposDeClausulas.proformaClausulas)
+  @JoinColumn([{ name: "IdTipoClausula", referencedColumnName: "idTipoClausula" }])
   tiposDeClausulas: TiposDeClausulas;
 
-  @ManyToOne(() => Proformas, (proformas) => proformas.proformaClausulas, {
-    onDelete: "CASCADE",
-    onUpdate: "CASCADE",
-  })
+  @Field(() => Proformas , {nullable: true})
+  @ManyToOne(() => Proformas, (proformas) => proformas.proformaClausulas, {onDelete: "CASCADE",onUpdate: "CASCADE"})
   @JoinColumn([{ name: "IdProforma", referencedColumnName: "idProforma" }])
-  idProforma2: Proformas;
+  proformas: Proformas;
 }
