@@ -1,20 +1,30 @@
 import { Field, Float, Int, ObjectType } from "@nestjs/graphql";
-import { Column, Entity, Index, JoinColumn, ManyToOne } from "typeorm";
+import { Column, Entity, Index, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { BasesCMarco } from "./BasesCMarco.entity";
 
 @ObjectType()
 @Index(
   "PK_CTO_BasesCMarcoEspecificos",
+  ["idBaseCMarcoEspecificos"],
+  { unique: true }
+)
+
+@Index(
+  "IX_BasesCMarcoEspecificos",
   ["idBaseCMarco", "idEspecifico", "idPadre"],
   { unique: true }
 )
 @Entity("BasesCMarcoEspecificos", { schema: "dbo" })
 export class BasesCMarcoEspecificos {
-  @Column("int", { primary: true, name: "IdBaseCMarco" })
+  @PrimaryGeneratedColumn({ type: "int", name: "IdBaseCMarcoEspecificos" })
+  @Field(() => Int)
+  idBaseCMarcoEspecificos: number;
+
+  @Column("int", { name: "IdBaseCMarco" })
   @Field(() => Int)
   idBaseCMarco: number;
 
-  @Column("int", { primary: true, name: "IdEspecifico" })
+  @Column("int", { name: "IdEspecifico" })
   @Field(() => Int)
   idEspecifico: number;
 
@@ -34,16 +44,12 @@ export class BasesCMarcoEspecificos {
   @Field(() => Float)
   pPendiente: number | null;
 
-  @Column("int", { primary: true, name: "idPadre" })
+  @Column("int", { name: "idPadre" })
   @Field(() => Int)
   idPadre: number;
 
-  @Field(() => BasesCMarco)
-  @ManyToOne(
-    () => BasesCMarco,
-    (basesCMarco) => basesCMarco.basesCMarcoEspecificos,
-    { onDelete: "CASCADE", onUpdate: "CASCADE" }
-  )
+  @Field(() => BasesCMarco , {nullable: true})
+  @ManyToOne(() => BasesCMarco,(basesCMarco) => basesCMarco.basesCMarcoEspecificos,{ onDelete: "CASCADE", onUpdate: "CASCADE" })
   @JoinColumn([{ name: "IdBaseCMarco", referencedColumnName: "idBaseCMarco" }])
   baseCMarco: BasesCMarco;
 }

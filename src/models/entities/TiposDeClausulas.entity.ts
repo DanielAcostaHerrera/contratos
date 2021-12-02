@@ -44,21 +44,15 @@ export class TiposDeClausulas {
   @Field()
   excepcional: boolean;
 
-  @OneToMany(
-    () => BasesCMarcoClausulas,
-    (basesCMarcoClausulas) => basesCMarcoClausulas.tiposDeClausulas
-  )
+  @Field(() => [BasesCMarcoClausulas], { nullable: true })
+  @OneToMany(() => BasesCMarcoClausulas,(basesCMarcoClausulas) => basesCMarcoClausulas.tiposDeClausulas)
   basesCMarcoClausulas: BasesCMarcoClausulas[];
 
-  @OneToMany(
-    () => BasesGeneralesClausulas,
-    (basesGeneralesClausulas) => basesGeneralesClausulas.idTipoClausula2
-  )
+  @Field(() => [BasesGeneralesClausulas], { nullable: true })
+  @OneToMany(() => BasesGeneralesClausulas,(basesGeneralesClausulas) => basesGeneralesClausulas.tiposDeClausulas)
   basesGeneralesClausulas: BasesGeneralesClausulas[];
 
-  @OneToMany(
-    () => ProformaClausulas,
-    (proformaClausulas) => proformaClausulas.tiposDeClausulas
-  )
+  @Field(() => [ProformaClausulas], { nullable: true })
+  @OneToMany(() => ProformaClausulas,(proformaClausulas) => proformaClausulas.tiposDeClausulas)
   proformaClausulas: ProformaClausulas[];
 }

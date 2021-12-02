@@ -5,7 +5,12 @@ import { TiposDeClausulas } from "./TiposDeClausulas.entity";
 import { Field, Int, ObjectType } from "@nestjs/graphql";
 
 @ObjectType()
-@Index("PK_CTO_CTO_BasesCMarcoClausulas", ["idBasesCMarcoClausulas"], { unique: true })
+@Index("PK_CTO_BasesCMarcoClausulas", ["idBasesCMarcoClausulas"], { unique: true })
+@Index(
+  "IX_BasesCMarcoClausulas",
+  ["idBaseCMarco", "idProformaClausula", "idTipoClausula"],
+  { unique: true }
+)
 @Entity("BasesCMarcoClausulas", { schema: "dbo" })
 export class BasesCMarcoClausulas {
 

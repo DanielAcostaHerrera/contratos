@@ -11,6 +11,8 @@ import { EjecutivoModule } from './ejecutivo/ejecutivo.module';
 import { GruposDeComprasModule } from './grupos-de-compras/grupos-de-compras.module';
 import { BasesCmarcoModule } from './bases-cmarco/bases-cmarco.module';
 import { BasesCmarcoClausulasModule } from './bases-cmarco-clausulas/bases-cmarco-clausulas.module';
+import { BasesCmarcoEspecificosModule } from './bases-cmarco-especificos/bases-cmarco-especificos.module';
+import { BasesGeneralesModule } from './bases-generales/bases-generales.module';
 
 @Module({
   imports: [
@@ -35,6 +37,8 @@ import { BasesCmarcoClausulasModule } from './bases-cmarco-clausulas/bases-cmarc
     GruposDeComprasModule,
     BasesCmarcoModule,
     BasesCmarcoClausulasModule,
+    BasesCmarcoEspecificosModule,
+    BasesGeneralesModule,
   ],
   controllers: [AppController],
   providers: [AppService],

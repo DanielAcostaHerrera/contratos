@@ -138,17 +138,11 @@ export class BasesCMarco {
   nProveedor: string | null;
 
   @Field(() => [BasesCMarcoClausulas], { nullable: true })
-  @OneToMany(
-    () => BasesCMarcoClausulas,
-    (basesCMarcoClausulas) => basesCMarcoClausulas.basesCMarco
-  )
+  @OneToMany(() => BasesCMarcoClausulas,(basesCMarcoClausulas) => basesCMarcoClausulas.basesCMarco)
   basesCMarcoClausulas: BasesCMarcoClausulas[];
 
   @Field(() => [BasesCMarcoEspecificos], { nullable: true })
-  @OneToMany(
-    () => BasesCMarcoEspecificos,
-    (basesCMarcoEspecificos) => basesCMarcoEspecificos.baseCMarco
-  )
+  @OneToMany(() => BasesCMarcoEspecificos,(basesCMarcoEspecificos) => basesCMarcoEspecificos.baseCMarco)
   basesCMarcoEspecificos: BasesCMarcoEspecificos[];
 
   @Field(() => Puertos, {nullable: true})

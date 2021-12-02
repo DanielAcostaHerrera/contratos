@@ -7,6 +7,7 @@ import {
   PrimaryGeneratedColumn,
 } from "typeorm";
 import { BasesCMarco } from "./BasesCMarco.entity";
+import { BasesGenerales } from "./BasesGenerales.entity";
 import { ProformaClausulas } from "./ProformaClausulas.entity";
 
 @ObjectType()
@@ -53,9 +54,10 @@ export class Proformas {
   basesCMarco: BasesCMarco[];
 
   @Field(() => [ProformaClausulas], { nullable: true })
-  @OneToMany(
-    () => ProformaClausulas,
-    (proformaClausulas) => proformaClausulas.idProforma2
-  )
+  @OneToMany(() => ProformaClausulas,(proformaClausulas) => proformaClausulas.idProforma2)
   proformaClausulas: ProformaClausulas[];
+
+  @Field(() => [BasesGenerales], { nullable: true })
+  @OneToMany(() => BasesGenerales, (basesGenerales) => basesGenerales.proforma)
+  basesGenerales: BasesGenerales[];
 }

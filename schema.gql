@@ -46,6 +46,33 @@ type TiposDeClausulas {
   compras: Boolean!
   cMarco: Boolean!
   excepcional: Boolean!
+  basesCMarcoClausulas: [BasesCMarcoClausulas!]
+  basesGeneralesClausulas: [BasesGeneralesClausulas!]
+  proformaClausulas: [ProformaClausulas!]
+}
+
+type Clasificaciones {
+  idClasificacion: Int!
+  clasificacion: String!
+  basesGenerales: [BasesGenerales!]
+}
+
+type TipoContrato {
+  idTipoContrato: Int!
+  tipoContrato: String!
+  encabezado: String!
+  ambasPartes: String!
+  visible: Boolean!
+  basesGenerales: [BasesGenerales!]
+}
+
+type Incoterm {
+  idIncoterm: Int!
+  nombre: String!
+  abreviatura: String!
+  nota: String!
+  activo: Boolean!
+  basesGenerales: [BasesGenerales!]
 }
 
 type Proformas {
@@ -57,6 +84,55 @@ type Proformas {
   cMarcoF: Boolean!
   basesCMarco: [BasesCMarco!]
   proformaClausulas: [ProformaClausulas!]
+  basesGenerales: [BasesGenerales!]
+}
+
+type BasesGenerales {
+  idBaseGenerales: Int!
+  consecutivo: Int!
+  fecha: DateTime!
+  idTipoContrato: Int!
+  idIncoterm: Int!
+  idProforma: Int!
+  lugardeFirma: String!
+  pais: Int!
+  idProveedor: Int!
+  nProveedor: String!
+  nombreRepresentante: String!
+  cargoRepresentante: String!
+  direccionProveedor: String!
+  idComprador: Int!
+  vigencia: Int!
+  fechaVencimiento: DateTime!
+  aprobado: Boolean!
+  cancelado: Boolean!
+  activo: Boolean!
+  actualizado: DateTime!
+  noContrato: String!
+  clasificaciones: Clasificaciones
+  tipoDeContrato: TipoContrato
+  incoterm: Incoterm
+  proforma: Proformas
+  basesGeneralesClausulas: [BasesGeneralesClausulas!]
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type BasesGeneralesClausulas {
+  idBasesGeneralesClausulas: Int!
+  idBaseGenerales: Int!
+  idProformaClausula: Int!
+  idTipoClausula: Int!
+  orden: Int!
+  clausula: String!
+  excepcional: Boolean!
+  modificado: DateTime!
+  tiposDeClausulas: TiposDeClausulas
+  basesGenerales: BasesGenerales
+  proformaClausula: ProformaClausulas
 }
 
 type ProformaClausulas {
@@ -80,12 +156,8 @@ type BasesCMarcoClausulas {
   tiposDeClausulas: TiposDeClausulas
 }
 
-"""
-A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
-"""
-scalar DateTime
-
 type BasesCMarcoEspecificos {
+  idBaseCMarcoEspecificos: Int!
   idBaseCMarco: Int!
   idEspecifico: Int!
   pDisponible: Float!
@@ -93,7 +165,7 @@ type BasesCMarcoEspecificos {
   pEjecutado: Float!
   pPendiente: Float!
   idPadre: Int!
-  baseCMarco: BasesCMarco!
+  baseCMarco: BasesCMarco
 }
 
 type Puertos {
@@ -153,6 +225,10 @@ type Query {
   findOneBaseCMarco(id: Int!): BasesCMarco!
   findAllBasesCMarcoClausula: [BasesCMarcoClausulas!]!
   findOneBasesCMarcoClausula(id: Int!): BasesCMarcoClausulas!
+  findAllBasesCmarcoEspecificos: [BasesCMarcoEspecificos!]!
+  findOneBasesCmarcoEspecificos(id: Int!): BasesCMarcoEspecificos!
+  findAllBasesGenerales: [BasesGenerales!]!
+  findOneBasesGenerales(id: Int!): BasesGenerales!
 }
 
 type Mutation {
@@ -171,6 +247,10 @@ type Mutation {
   removeBasesCmarco(id: Int!): BasesCMarco!
   createBasesCmarcoClausula(createBasesCmarcoClausulaInput: CreateBasesCmarcoClausulaInput!): BasesCMarcoClausulas!
   removeBasesCmarcoClausula(id: Int!): BasesCMarcoClausulas!
+  createBasesCmarcoEspecifico(createBasesCmarcoEspecificoInput: CreateBasesCmarcoEspecificoInput!): BasesCMarcoEspecificos!
+  removeBasesCmarcoEspecifico(id: Int!): BasesCMarcoEspecificos!
+  createBasesGenerales(createBasesGeneraleInput: CreateBasesGeneralesInput!): BasesGenerales!
+  removeBasesGenerales(id: Int!): BasesGenerales!
 }
 
 input CreateMonedaInput {
@@ -244,4 +324,39 @@ input CreateBasesCmarcoClausulaInput {
   orden: Int!
   clausula: String!
   modificado: DateTime!
+}
+
+input CreateBasesCmarcoEspecificoInput {
+  idBaseCMarcoEspecificos: Int
+  idBaseCMarco: Int!
+  idEspecifico: Int!
+  pDisponible: Float!
+  pReservado: Float!
+  pEjecutado: Float!
+  pPendiente: Float!
+  idPadre: Int!
+}
+
+input CreateBasesGeneralesInput {
+  idBaseGenerales: Int
+  consecutivo: Int!
+  fecha: DateTime!
+  idTipoContrato: Int!
+  idIncoterm: Int!
+  idProforma: Int!
+  lugardeFirma: String!
+  pais: Int!
+  idProveedor: Int!
+  nProveedor: String!
+  nombreRepresentante: String!
+  cargoRepresentante: String!
+  direccionProveedor: String!
+  idComprador: Int!
+  vigencia: Int!
+  fechaVencimiento: DateTime!
+  aprobado: Boolean!
+  cancelado: Boolean!
+  activo: Boolean!
+  actualizado: DateTime!
+  noContrato: String!
 }
