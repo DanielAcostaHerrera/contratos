@@ -1,0 +1,29 @@
+import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { TiposDocumento } from 'src/models/entities/TiposDocumento.entity';
+import { Repository } from 'typeorm';
+import { CreateTiposDocumentoInput } from './dto/create-tipos-documento.input';
+
+
+@Injectable()
+export class TiposDocumentoService {
+  constructor(@InjectRepository(TiposDocumento) public readonly tiposDocumentoRepository: Repository<TiposDocumento>) {}
+
+
+  async save(createTiposDocumentoInput: CreateTiposDocumentoInput) : Promise<TiposDocumento> {
+    return await this.tiposDocumentoRepository.save(createTiposDocumentoInput);
+  }
+
+  async findAll(): Promise<TiposDocumento[]> {
+    return await this.tiposDocumentoRepository.find({ relations: ['documentaciones']});
+  }
+
+  async findOne(id: number) : Promise<TiposDocumento> {
+    return await this.tiposDocumentoRepository.findOne(id,{ relations: ['documentaciones']});
+  }
+
+  async remove(id: number) : Promise<any> {
+    return await this.tiposDocumentoRepository.delete(id);
+  }
+}
+  

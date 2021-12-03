@@ -342,6 +342,11 @@ type BasesCMarco {
   proforma: Proformas
 }
 
+type TiposContenedor {
+  idTipoContenedor: Int!
+  tipoContenedor: String!
+}
+
 type Query {
   findAllMoneda: [Monedas!]!
   findOneMoneda(id: Int!): Monedas!
@@ -392,6 +397,12 @@ type Query {
   findOneNegociacionProveedores(id: Int!): NegociacionProveedores!
   findAllNegociacionResumen: [NegociacionResumen!]!
   findOneNegociacionResumen(id: Int!): NegociacionResumen!
+  findAllTiposContenedor: [TiposContenedor!]!
+  findOneTiposContenedor(id: Int!): TiposContenedor!
+  findAllTiposDeCompras: [TiposDeCompras!]!
+  findOneTiposDeCompras(id: Int!): TiposDeCompras!
+  findAllTiposDocumento: [TiposDocumento!]!
+  findOneTiposDocumento(id: Int!): TiposDocumento!
 }
 
 type Mutation {
@@ -446,6 +457,12 @@ type Mutation {
   removeNegociacionProveedores(id: Int!): NegociacionProveedores!
   createNegociacionResumen(createNegociacionResumenInput: CreateNegociacionResumenInput!): NegociacionResumen!
   removeNegociacionResumen(id: Int!): NegociacionResumen!
+  createTiposContenedor(createTiposContenedorInput: CreateTiposContenedorInput!): TiposContenedor!
+  removeTiposContenedor(id: Int!): TiposContenedor!
+  createTiposDeCompras(createTiposDeCompraInput: CreateTiposDeCompraInput!): TiposDeCompras!
+  removeTiposDeCompras(id: Int!): TiposDeCompras!
+  createTiposDocumento(createTiposDocumentoInput: CreateTiposDocumentoInput!): TiposDocumento!
+  removeTiposDocumento(id: Int!): TiposDocumento!
 }
 
 input CreateMonedaInput {
@@ -714,4 +731,19 @@ input CreateNegociacionResumenInput {
   tasa: Float!
   terminado: Boolean!
   idNegociacionUnico: String!
+}
+
+input CreateTiposContenedorInput {
+  idTipoContenedor: Int
+  tipoContenedor: String!
+}
+
+input CreateTiposDeCompraInput {
+  idTipoCompras: Int
+  compras: String!
+}
+
+input CreateTiposDocumentoInput {
+  idTipoDoc: Int
+  nombreDoc: String!
 }

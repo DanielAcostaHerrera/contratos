@@ -29,6 +29,9 @@ import { NegociacionDetalleModule } from './negociacion-detalle/negociacion-deta
 import { NegociacionDetallesModule } from './negociacion-detalles/negociacion-detalles.module';
 import { NegociacionProveedoresModule } from './negociacion-proveedores/negociacion-proveedores.module';
 import { NegociacionResumenModule } from './negociacion-resumen/negociacion-resumen.module';
+import { TiposContenedorModule } from './tipos-contenedor/tipos-contenedor.module';
+import { TiposDeComprasModule } from './tipos-de-compras/tipos-de-compras.module';
+import { TiposDocumentoModule } from './tipos-documento/tipos-documento.module';
 
 @Module({
   imports: [
@@ -71,6 +74,9 @@ import { NegociacionResumenModule } from './negociacion-resumen/negociacion-resu
     NegociacionDetallesModule,
     NegociacionProveedoresModule,
     NegociacionResumenModule,
+    TiposContenedorModule,
+    TiposDeComprasModule,
+    TiposDocumentoModule,
   ],
   controllers: [AppController],
   providers: [AppService],
