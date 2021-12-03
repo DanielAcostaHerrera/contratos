@@ -13,6 +13,7 @@ import { Incoterm } from "./Incoterm.entity";
 import { BasesGeneralesClausulas } from "./BasesGeneralesClausulas.entity";
 import { Field, Int, ObjectType } from "@nestjs/graphql";
 import { Proformas } from "./Proformas.entity";
+import { Contratos } from "./Contratos.entity";
 
 @ObjectType()
 @Index("IX_CTO_BasesGeneralesComprador", ["idComprador"], {})
@@ -132,4 +133,8 @@ export class BasesGenerales {
   @Field(() => [BasesGeneralesClausulas] , {nullable: true})
   @OneToMany(() => BasesGeneralesClausulas,(basesGeneralesClausulas) => basesGeneralesClausulas.basesGenerales)
   basesGeneralesClausulas: BasesGeneralesClausulas[];
+
+  @Field(() => [Contratos] , {nullable: true})
+  @OneToMany(() => Contratos, (contratos) => contratos.basesGenerales)
+  contratos: Contratos[];
 }

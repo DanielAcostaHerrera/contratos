@@ -8,6 +8,7 @@ import {
 } from "typeorm";
 import { BasesCMarco } from "./BasesCMarco.entity";
 import { BasesGenerales } from "./BasesGenerales.entity";
+import { Contratos } from "./Contratos.entity";
 import { ProformaClausulas } from "./ProformaClausulas.entity";
 
 @ObjectType()
@@ -60,4 +61,8 @@ export class Proformas {
   @Field(() => [BasesGenerales], { nullable: true })
   @OneToMany(() => BasesGenerales, (basesGenerales) => basesGenerales.proforma)
   basesGenerales: BasesGenerales[];
+
+  @Field(() => [Contratos], { nullable: true })
+  @OneToMany(() => Contratos, (contratos) => contratos.proformas)
+  contratos: Contratos[];
 }

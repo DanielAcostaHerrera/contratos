@@ -32,10 +32,6 @@ export class Documentacion {
   @Field()
   descripcion: string;
 
-  @Column("varbinary", { name: "Documento" })
-  @Field()
-  documento: Buffer;
-
   @Column("nvarchar", { name: "TipoFichero", length: 10 })
   @Field()
   tipoFichero: string;
@@ -45,7 +41,7 @@ export class Documentacion {
   iDoc: string;
 
   @Field(() => TiposDocumento, {nullable: true})
-  @ManyToOne(() => TiposDocumento,(tiposDocumento) => tiposDocumento.documentacions)
+  @ManyToOne(() => TiposDocumento,(tiposDocumento) => tiposDocumento.documentaciones)
   @JoinColumn([{ name: "IdTipoDoc", referencedColumnName: "idTipoDoc" }])
   tiposDocumento: TiposDocumento;
 

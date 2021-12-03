@@ -1,6 +1,7 @@
 import { Field, Int, ObjectType } from "@nestjs/graphql";
 import { Column, Entity, Index, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { Ejecutivos } from "./Ejecutivos.entity";
+import { NegociacionResumen } from "./NegociacionResumen.entity";
 
 @ObjectType()
 @Index("IX_GruposDeCompras", ["grupos"], { unique: true })
@@ -18,4 +19,7 @@ export class GruposDeCompras {
   @Field(() => [Ejecutivos], { nullable: true })
   @OneToMany(() => Ejecutivos, (ejecutivos) => ejecutivos.grupo)
   ejecutivos: Ejecutivos[];
+
+  @OneToMany(() => NegociacionResumen,(negociacionResumen) => negociacionResumen.grupos)
+  negociacionResumen: NegociacionResumen[];
 }

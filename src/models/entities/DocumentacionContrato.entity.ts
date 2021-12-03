@@ -1,5 +1,6 @@
 import { Field, Int, ObjectType } from "@nestjs/graphql";
 import { Column, Entity, Index, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Contratos } from "./Contratos.entity";
 import { Documentacion } from "./Documentacion.entity";
 
 @ObjectType()
@@ -33,8 +34,13 @@ export class DocumentacionContrato {
   @Field(() => Int)
   idAsociacion: number;
 
-  @Field(() => Documentacion)
-  @ManyToOne(() => Documentacion,(documentacion) => documentacion.documentacionContratos,{ onDelete: "CASCADE", onUpdate: "CASCADE" })
+  @Field(() => Documentacion , {nullable: true})
+  @ManyToOne(() => Documentacion,(documentacion) => documentacion.documentacionContratos)
   @JoinColumn([{ name: "IdDocumento", referencedColumnName: "idDocumento" }])
   documentacion: Documentacion;
+
+  @Field(() => Contratos , {nullable: true})
+  @ManyToOne(() => Contratos, (contratos) => contratos.documentacionContratos)
+  @JoinColumn([{ name: "IdContrato", referencedColumnName: "idContrato" }])
+  contratos: Contratos;
 }

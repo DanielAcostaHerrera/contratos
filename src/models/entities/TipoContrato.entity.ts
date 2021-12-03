@@ -1,6 +1,7 @@
 import { Field, Int, ObjectType } from "@nestjs/graphql";
 import { Column, Entity, Index, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { BasesGenerales } from "./BasesGenerales.entity";
+import { Contratos } from "./Contratos.entity";
 
 @ObjectType()
 @Index("IX_CTO_TipoContrato", ["tipoContrato"], { unique: true })
@@ -30,4 +31,8 @@ export class TipoContrato {
   @Field(() => [BasesGenerales] , {nullable: true})
   @OneToMany(() => BasesGenerales,(basesGenerales) => basesGenerales.tipoDeContrato)
   basesGenerales: BasesGenerales[];
+
+  @Field(() => [Contratos] , {nullable: true})
+  @OneToMany(() => Contratos, (contratos) => contratos.tipoContrato)
+  contratos: Contratos[];
 }

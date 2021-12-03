@@ -8,6 +8,8 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
 } from "typeorm";
+import { GruposDeCompras } from "./GruposDeCompras.entity";
+import { Monedas } from "./Monedas.entity";
 import { NegociacionDetalle } from "./NegociacionDetalle.entity";
 import { NegociacionDetalles } from "./NegociacionDetalles.entity";
 import { NegociacionProveedores } from "./NegociacionProveedores.entity";
@@ -37,6 +39,10 @@ export class NegociacionResumen {
   @Column("int", { name: "Comite", default: () => "(0)" })
   @Field(() => Int)
   comite: number;
+
+  @Column("int", { name: "IdTipoCompras", default: () => "(0)" })
+  @Field(() => Int)
+  idTipoCompras: number;
 
   @Column("int", { name: "IdGrupo", default: () => "(0)" })
   @Field(() => Int)
@@ -101,10 +107,6 @@ export class NegociacionResumen {
   @Field()
   comentarios: string | null;
 
-  @Column("nvarchar", { name: "Moneda", nullable: true, length: 300 })
-  @Field()
-  moneda: string | null;
-
   @Column("bit", { name: "Operacion", nullable: true })
   @Field()
   operacion: boolean | null;
@@ -140,5 +142,15 @@ export class NegociacionResumen {
   @Field(() => TiposDeCompras)
   @ManyToOne(() => TiposDeCompras,(tiposDeCompras) => tiposDeCompras.negociacionResumen)
   @JoinColumn([{ name: "IdTipoCompras", referencedColumnName: "idTipoCompras" },])
-  idTipoCompras: TiposDeCompras;
+  tiposDeCompras: TiposDeCompras;
+
+  @Field(() => Monedas)
+  @ManyToOne(() => Monedas,(monedas) => monedas.negociacionResumen)
+  @JoinColumn([{ name: "IdMoneda", referencedColumnName: "idMoneda" },])
+  monedas: Monedas;
+
+  @Field(() => GruposDeCompras)
+  @ManyToOne(() => GruposDeCompras,(grupos) => grupos.negociacionResumen)
+  @JoinColumn([{ name: "IdGrupo", referencedColumnName: "idGrupo" },])
+  grupos: GruposDeCompras;
 }
