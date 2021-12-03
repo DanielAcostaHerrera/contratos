@@ -14,11 +14,11 @@ export class MonedaService {
   }
 
   async findAll(): Promise<Monedas[]> {
-    return await this.monedaRepository.find();
+    return await this.monedaRepository.find({ relations: ['negociacionResumen']});
   }
 
   async findOne(id: number) : Promise<Monedas> {
-    return await this.monedaRepository.findOne({idMoneda:id});
+    return await this.monedaRepository.findOne(id, { relations: ['negociacionResumen']});
   }
 
   async remove(id: number) : Promise<any> {

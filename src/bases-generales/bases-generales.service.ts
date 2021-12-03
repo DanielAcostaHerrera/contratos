@@ -14,11 +14,11 @@ export class BasesGeneralesService {
   }
 
   async findAll(): Promise<BasesGenerales[]> { 
-    return await this.basesGeneralesRepository.find({ relations: ['clasificaciones','tipoDeContrato','incoterm','proforma','basesGeneralesClausulas']});
+    return await this.basesGeneralesRepository.find({ relations: ['clasificaciones','tipoDeContrato','incoterm','proforma','basesGeneralesClausulas','contratos']});
   }
 
   async findOne(id: number) : Promise<BasesGenerales> {
-    return await this.basesGeneralesRepository.findOne(id, { relations: ['clasificaciones','tipoDeContrato','incoterm','proforma','basesGeneralesClausulas']});
+    return await this.basesGeneralesRepository.findOne(id, { relations: ['clasificaciones','tipoDeContrato','incoterm','proforma','basesGeneralesClausulas','contratos']});
   }
 
   async remove(id: number) : Promise<any> {

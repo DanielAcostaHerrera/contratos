@@ -2,21 +2,9 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type Monedas {
-  idMoneda: Int!
-  moneda: String!
-  abreviatura: String!
-}
-
-type Embalajes {
-  idEmbalaje: Int!
-  descripcion: String!
-  abreviatura: String!
-}
-
-type GruposDeCompras {
-  idGrupo: Int!
-  grupos: String!
+type Cargos {
+  idCargo: Int!
+  cargo: String!
   ejecutivos: [Ejecutivos!]
 }
 
@@ -32,10 +20,97 @@ type Ejecutivos {
   grupo: GruposDeCompras
 }
 
-type Cargos {
-  idCargo: Int!
-  cargo: String!
+type GruposDeCompras {
+  idGrupo: Int!
+  grupos: String!
   ejecutivos: [Ejecutivos!]
+}
+
+type NegociacionDetalle {
+  idNegociacionDetalle: Int!
+  idNegociacion: Int!
+  idProveedor: Int!
+  importeTrd: Float!
+  importeGae: Float!
+  importeCuc: Float!
+  fecha: DateTime!
+  tasa: Float!
+  idAcuerdo: Int!
+  detalles: String!
+  negociacionResumen: NegociacionResumen!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type NegociacionDetalles {
+  idNegociacionDetalles: Int!
+  idNegociacion: Int!
+  consecutivo: Int!
+  fecha: DateTime!
+  acuerdo: Int!
+  detalles: String!
+  negociacionResumen: NegociacionResumen!
+}
+
+type NegociacionProveedores {
+  idNegociacionProveedores: Int!
+  idNegociacion: Int!
+  proveedor: Int!
+  importe: Float!
+  ladi: Boolean!
+  negociacionResumen: NegociacionResumen!
+}
+
+type TiposDeCompras {
+  idTipoCompras: Int!
+  compras: String!
+  negociacionResumen: [NegociacionResumen!]!
+}
+
+type NegociacionResumen {
+  idNegociacion: Int!
+  consecutivo: Int!
+  noNegociacion: String!
+  fecha: DateTime!
+  comite: Int!
+  idTipoCompras: Int!
+  idGrupo: Int!
+  idMoneda: Int!
+  mercancias: String!
+  aprobada: Boolean!
+  cancelada: Boolean!
+  nota: String!
+  noNeg: String!
+  proveedor: Int!
+  importeTrd: Float!
+  importeGae: Float!
+  importeCuc: Float!
+  comentarios: String!
+  operacion: Boolean!
+  tasa: Float!
+  terminado: Boolean!
+  idNegociacionUnico: String!
+  negociacionDetalle: [NegociacionDetalle!]!
+  negociacionDetalles: [NegociacionDetalles!]!
+  negociacionProveedores: [NegociacionProveedores!]!
+  tiposDeCompras: TiposDeCompras!
+  monedas: Monedas!
+  grupos: GruposDeCompras!
+}
+
+type Monedas {
+  idMoneda: Int!
+  moneda: String!
+  abreviatura: String!
+}
+
+type Embalajes {
+  idEmbalaje: Int!
+  descripcion: String!
+  abreviatura: String!
 }
 
 type TiposDeClausulas {
@@ -57,22 +132,12 @@ type Clasificaciones {
   basesGenerales: [BasesGenerales!]
 }
 
-type TipoContrato {
-  idTipoContrato: Int!
-  tipoContrato: String!
-  encabezado: String!
-  ambasPartes: String!
-  visible: Boolean!
-  basesGenerales: [BasesGenerales!]
-}
-
-type Incoterm {
-  idIncoterm: Int!
-  nombre: String!
-  abreviatura: String!
-  nota: String!
-  activo: Boolean!
-  basesGenerales: [BasesGenerales!]
+type ContratoDesglose {
+  idContratoDesglose: Int!
+  idContrato: Int!
+  noClausula: Int!
+  contenido: String!
+  contratos: Contratos
 }
 
 type Proformas {
@@ -84,6 +149,73 @@ type Proformas {
   cMarcoF: Boolean!
   basesCMarco: [BasesCMarco!]
   proformaClausulas: [ProformaClausulas!]
+  basesGenerales: [BasesGenerales!]
+  contratos: [Contratos!]
+}
+
+type TiposDocumento {
+  idTipoDoc: Int!
+  nombreDoc: String!
+  documentaciones: [Documentacion!]!
+}
+
+type Documentacion {
+  idDocumento: Int!
+  idTipoDoc: Int!
+  nombreFichero: String!
+  descripcion: String!
+  tipoFichero: String!
+  iDoc: String!
+  tiposDocumento: TiposDocumento
+  documentacionContratos: [DocumentacionContrato!]
+}
+
+type DocumentacionContrato {
+  idDocumentacionContrato: Int!
+  idDocumento: Int!
+  idContrato: Int!
+  idAsociacion: Int!
+  documentacion: Documentacion
+  contratos: Contratos
+}
+
+type Contratos {
+  idContrato: Int!
+  idBasesGenerales: Int!
+  idTipoContrato: Int!
+  idProforma: Int!
+  consecutivo: Int!
+  condicionCompra: Int!
+  lugar: String!
+  fecha: DateTime!
+  paS: Int!
+  cancelado: Boolean!
+  terminado: Boolean!
+  noContrato: String!
+  proveedor: Int!
+  basesGenerales: BasesGenerales!
+  tipoContrato: TipoContrato!
+  proformas: Proformas!
+  contratoDesgloses: [ContratoDesglose!]!
+  documentacionContratos: [DocumentacionContrato!]!
+}
+
+type TipoContrato {
+  idTipoContrato: Int!
+  tipoContrato: String!
+  encabezado: String!
+  ambasPartes: String!
+  visible: Boolean!
+  basesGenerales: [BasesGenerales!]
+  contratos: [Contratos!]
+}
+
+type Incoterm {
+  idIncoterm: Int!
+  nombre: String!
+  abreviatura: String!
+  nota: String!
+  activo: Boolean!
   basesGenerales: [BasesGenerales!]
 }
 
@@ -114,12 +246,8 @@ type BasesGenerales {
   incoterm: Incoterm
   proforma: Proformas
   basesGeneralesClausulas: [BasesGeneralesClausulas!]
+  contratos: [Contratos!]
 }
-
-"""
-A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
-"""
-scalar DateTime
 
 type BasesGeneralesClausulas {
   idBasesGeneralesClausulas: Int!
@@ -249,6 +377,21 @@ type Query {
   findOneTipoContrato(id: Int!): TipoContrato!
   findAllTiposDeClausulas: [TiposDeClausulas!]!
   findOneTiposDeClausulas(id: Int!): TiposDeClausulas!
+  documentacion(id: Int!): Documentacion!
+  findAllDocumentacionContrato: [DocumentacionContrato!]!
+  findOneDocumentacionContrato(id: Int!): DocumentacionContrato!
+  findAllContratos: [Contratos!]!
+  findOneContratos(id: Int!): Contratos!
+  findAllContratoDesglose: [ContratoDesglose!]!
+  findOneContratoDesglose(id: Int!): ContratoDesglose!
+  findAllNegociacionDetalle: [NegociacionDetalle!]!
+  findOneNegociacionDetalle(id: Int!): NegociacionDetalle!
+  findAllNegociacionDetalles: [NegociacionDetalles!]!
+  findOneNegociacionDetalles(id: Int!): NegociacionDetalles!
+  findAllNegociacionProveedores: [NegociacionProveedores!]!
+  findOneNegociacionProveedores(id: Int!): NegociacionProveedores!
+  findAllNegociacionResumen: [NegociacionResumen!]!
+  findOneNegociacionResumen(id: Int!): NegociacionResumen!
 }
 
 type Mutation {
@@ -287,6 +430,22 @@ type Mutation {
   removeTipoContrato(id: Int!): TipoContrato!
   createTiposDeClausulas(createTiposDeClausulaInput: CreateTiposDeClausulaInput!): TiposDeClausulas!
   removeTiposDeClausulas(id: Int!): TiposDeClausulas!
+  createDocumentacion(createDocumentacionInput: CreateDocumentacionInput!): Documentacion!
+  removeDocumentacion(id: Int!): Documentacion!
+  createDocumentacionContrato(createDocumentacionContratoInput: CreateDocumentacionContratoInput!): DocumentacionContrato!
+  removeDocumentacionContrato(id: Int!): DocumentacionContrato!
+  createContrato(createContratoInput: CreateContratoInput!): Contratos!
+  removeContrato(id: Int!): Contratos!
+  createContratoDesglose(createContratoDesgloseInput: CreateContratoDesgloseInput!): ContratoDesglose!
+  removeContratoDesglose(id: Int!): ContratoDesglose!
+  createNegociacionDetalle(createNegociacionDetalleInput: CreateNegociacionDetalleInput!): NegociacionDetalle!
+  removeNegociacionDetalle(id: Int!): NegociacionDetalle!
+  createNegociacionDetalles(createNegociacionDetallesInput: CreateNegociacionDetallesInput!): NegociacionDetalles!
+  removeNegociacionDetalles(id: Int!): NegociacionDetalles!
+  createNegociacionProveedores(createNegociacionProveedoresInput: CreateNegociacionProveedoresInput!): NegociacionProveedores!
+  removeNegociacionProveedores(id: Int!): NegociacionProveedores!
+  createNegociacionResumen(createNegociacionResumenInput: CreateNegociacionResumenInput!): NegociacionResumen!
+  removeNegociacionResumen(id: Int!): NegociacionResumen!
 }
 
 input CreateMonedaInput {
@@ -461,4 +620,98 @@ input CreateTiposDeClausulaInput {
   compras: Boolean!
   cMarco: Boolean!
   excepcional: Boolean!
+}
+
+input CreateDocumentacionInput {
+  idDocumento: Int!
+  idTipoDoc: Int!
+  nombreFichero: String!
+  descripcion: String!
+  tipoFichero: String!
+  iDoc: String!
+}
+
+input CreateDocumentacionContratoInput {
+  idDocumentacionContrato: Int
+  idDocumento: Int!
+  idContrato: Int!
+  idAsociacion: Int!
+}
+
+input CreateContratoInput {
+  idContrato: Int
+  idBasesGenerales: Int!
+  idTipoContrato: Int!
+  idProforma: Int!
+  consecutivo: Int!
+  condicionCompra: Int!
+  lugar: String!
+  fecha: DateTime!
+  paS: Int!
+  cancelado: Boolean!
+  terminado: Boolean!
+  noContrato: String!
+  proveedor: Int!
+}
+
+input CreateContratoDesgloseInput {
+  idContratoDesglose: Int
+  idContrato: Int!
+  noClausula: Int!
+  contenido: String!
+}
+
+input CreateNegociacionDetalleInput {
+  idNegociacionDetalle: Int
+  idNegociacion: Int!
+  idProveedor: Int!
+  importeTrd: Float!
+  importeGae: Float!
+  importeCuc: Float!
+  fecha: DateTime!
+  tasa: Float!
+  idAcuerdo: Int!
+  detalles: String!
+}
+
+input CreateNegociacionDetallesInput {
+  idNegociacionDetalles: Int
+  idNegociacion: Int!
+  consecutivo: Int!
+  fecha: DateTime!
+  acuerdo: Int!
+  detalles: String!
+}
+
+input CreateNegociacionProveedoresInput {
+  idNegociacionProveedores: Int
+  idNegociacion: Int!
+  proveedor: Int!
+  importe: Float!
+  ladi: Boolean!
+}
+
+input CreateNegociacionResumenInput {
+  idNegociacion: Int
+  consecutivo: Int!
+  noNegociacion: String!
+  fecha: DateTime!
+  comite: Int!
+  idTipoCompras: Int!
+  idGrupo: Int!
+  idMoneda: Int!
+  mercancias: String!
+  aprobada: Boolean!
+  cancelada: Boolean!
+  nota: String!
+  noNeg: String!
+  proveedor: Int!
+  importeTrd: Float!
+  importeGae: Float!
+  importeCuc: Float!
+  comentarios: String!
+  operacion: Boolean!
+  tasa: Float!
+  terminado: Boolean!
+  idNegociacionUnico: String!
 }

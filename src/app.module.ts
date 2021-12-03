@@ -21,6 +21,14 @@ import { ProformaClausulasModule } from './proforma-clausulas/proforma-clausulas
 import { PuertosModule } from './puertos/puertos.module';
 import { TipoContratoModule } from './tipo-contrato/tipo-contrato.module';
 import { TiposDeClausulasModule } from './tipos-de-clausulas/tipos-de-clausulas.module';
+import { DocumentacionModule } from './documentacion/documentacion.module';
+import { DocumentacionContratoModule } from './documentacion-contrato/documentacion-contrato.module';
+import { ContratosModule } from './contratos/contratos.module';
+import { ContratoDesgloseModule } from './contrato-desglose/contrato-desglose.module';
+import { NegociacionDetalleModule } from './negociacion-detalle/negociacion-detalle.module';
+import { NegociacionDetallesModule } from './negociacion-detalles/negociacion-detalles.module';
+import { NegociacionProveedoresModule } from './negociacion-proveedores/negociacion-proveedores.module';
+import { NegociacionResumenModule } from './negociacion-resumen/negociacion-resumen.module';
 
 @Module({
   imports: [
@@ -55,6 +63,14 @@ import { TiposDeClausulasModule } from './tipos-de-clausulas/tipos-de-clausulas.
     PuertosModule,
     TipoContratoModule,
     TiposDeClausulasModule,
+    DocumentacionModule,
+    DocumentacionContratoModule,
+    ContratosModule,
+    ContratoDesgloseModule,
+    NegociacionDetalleModule,
+    NegociacionDetallesModule,
+    NegociacionProveedoresModule,
+    NegociacionResumenModule,
   ],
   controllers: [AppController],
   providers: [AppService],
