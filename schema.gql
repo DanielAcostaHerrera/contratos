@@ -219,6 +219,18 @@ type Incoterm {
   basesGenerales: [BasesGenerales!]
 }
 
+type Compradores {
+  idComprador: Int!
+  nombre: String!
+  representante: String!
+  domicilio: String!
+  cargo: String!
+  doble: Boolean!
+  activo: Boolean!
+  basesCMarcos: [BasesCMarco!]!
+  basesGenerales: [BasesGenerales!]!
+}
+
 type BasesGenerales {
   idBaseGenerales: Int!
   consecutivo: Int!
@@ -247,6 +259,7 @@ type BasesGenerales {
   proforma: Proformas
   basesGeneralesClausulas: [BasesGeneralesClausulas!]
   contratos: [Contratos!]
+  compradores: [Compradores!]
 }
 
 type BasesGeneralesClausulas {
@@ -340,6 +353,7 @@ type BasesCMarco {
   basesCMarcoEspecificos: [BasesCMarcoEspecificos!]
   puerto: Puertos
   proforma: Proformas
+  compradores: Compradores
 }
 
 type TiposContenedor {
@@ -403,6 +417,8 @@ type Query {
   findOneTiposDeCompras(id: Int!): TiposDeCompras!
   findAllTiposDocumento: [TiposDocumento!]!
   findOneTiposDocumento(id: Int!): TiposDocumento!
+  findAllCompradores: [Compradores!]!
+  findOneCompradores(id: Int!): Compradores!
 }
 
 type Mutation {
@@ -463,6 +479,8 @@ type Mutation {
   removeTiposDeCompras(id: Int!): TiposDeCompras!
   createTiposDocumento(createTiposDocumentoInput: CreateTiposDocumentoInput!): TiposDocumento!
   removeTiposDocumento(id: Int!): TiposDocumento!
+  createCompradore(createCompradoreInput: CreateCompradoresInput!): Compradores!
+  removeCompradore(id: Int!): Compradores!
 }
 
 input CreateMonedaInput {
@@ -746,4 +764,14 @@ input CreateTiposDeCompraInput {
 input CreateTiposDocumentoInput {
   idTipoDoc: Int
   nombreDoc: String!
+}
+
+input CreateCompradoresInput {
+  idComprador: Int
+  nombre: String!
+  representante: String!
+  domicilio: String!
+  cargo: String!
+  doble: Boolean!
+  activo: Boolean!
 }

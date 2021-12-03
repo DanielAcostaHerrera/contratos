@@ -14,11 +14,11 @@ export class BasesCmarcoService {
   }
 
   async findAll(): Promise<BasesCMarco[]> {
-    return await this.basesCMarcoRepository.find({ relations: ['basesCMarcoClausulas','basesCMarcoEspecificos', 'puerto', 'proforma']});
+    return await this.basesCMarcoRepository.find({ relations: ['basesCMarcoClausulas','basesCMarcoEspecificos', 'puerto', 'proforma', 'compradores']});
   }
 
   async findOne(id: number) : Promise<BasesCMarco> {
-    return await this.basesCMarcoRepository.findOne(id, { relations: ['basesCMarcoClausulas','basesCMarcoEspecificos','puerto', 'proforma']});
+    return await this.basesCMarcoRepository.findOne(id, { relations: ['basesCMarcoClausulas','basesCMarcoEspecificos','puerto', 'proforma', 'compradores']});
   }
 
   async remove(id: number) : Promise<any> {

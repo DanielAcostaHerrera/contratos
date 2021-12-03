@@ -12,6 +12,7 @@ import { BasesCMarcoEspecificos } from "./BasesCMarcoEspecificos.entity";
 import { Field, Int, Float, ObjectType } from "@nestjs/graphql";
 import { Puertos } from "./Puertos.entity";
 import { Proformas } from "./Proformas.entity";
+import { Compradores } from "./Compradores.entity";
 
 @ObjectType()
 @Index("PK_CTO_BasesCMarco", ["idBaseCMarco"], { unique: true })
@@ -155,4 +156,8 @@ export class BasesCMarco {
   @JoinColumn([{ name: "IdProforma", referencedColumnName: "idProforma" }])
   proforma: Proformas;
 
+  @Field(() => Compradores, {nullable: true})
+  @ManyToOne(() => Compradores, (compradores) => compradores.basesCMarcos)
+  @JoinColumn([{ name: "IdComprador", referencedColumnName: "idComprador" }])
+  compradores: Compradores;
 }

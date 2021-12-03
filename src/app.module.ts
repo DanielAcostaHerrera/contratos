@@ -32,6 +32,7 @@ import { NegociacionResumenModule } from './negociacion-resumen/negociacion-resu
 import { TiposContenedorModule } from './tipos-contenedor/tipos-contenedor.module';
 import { TiposDeComprasModule } from './tipos-de-compras/tipos-de-compras.module';
 import { TiposDocumentoModule } from './tipos-documento/tipos-documento.module';
+import { CompradoresModule } from './compradores/compradores.module';
 
 @Module({
   imports: [
@@ -77,6 +78,7 @@ import { TiposDocumentoModule } from './tipos-documento/tipos-documento.module';
     TiposContenedorModule,
     TiposDeComprasModule,
     TiposDocumentoModule,
+    CompradoresModule,
   ],
   controllers: [AppController],
   providers: [AppService],

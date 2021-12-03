@@ -14,6 +14,7 @@ import { BasesGeneralesClausulas } from "./BasesGeneralesClausulas.entity";
 import { Field, Int, ObjectType } from "@nestjs/graphql";
 import { Proformas } from "./Proformas.entity";
 import { Contratos } from "./Contratos.entity";
+import { Compradores } from "./Compradores.entity";
 
 @ObjectType()
 @Index("IX_CTO_BasesGeneralesComprador", ["idComprador"], {})
@@ -137,4 +138,9 @@ export class BasesGenerales {
   @Field(() => [Contratos] , {nullable: true})
   @OneToMany(() => Contratos, (contratos) => contratos.basesGenerales)
   contratos: Contratos[];
+
+  @Field(() => [Compradores] , {nullable: true})
+  @ManyToOne(() => Compradores, (compradores) => compradores.basesGenerales)
+  @JoinColumn([{ name: "IdComprador", referencedColumnName: "idComprador" }])
+  compradores: Compradores;
 }
