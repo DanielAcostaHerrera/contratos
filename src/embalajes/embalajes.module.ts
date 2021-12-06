@@ -9,5 +9,6 @@ import { EmbalajesService } from './Embalajes.service';
     Embalajes
   ])],
   providers: [EmbalajesResolver, EmbalajesService],
+  exports: [EmbalajesService]
 })
 export class EmbalajesModule {}

@@ -8,6 +8,7 @@ import { Puertos } from 'src/models/entities/Puertos.entity';
   imports: [TypeOrmModule.forFeature([
     Puertos
   ])],
-  providers: [PuertosResolver, PuertosService]
+  providers: [PuertosResolver, PuertosService],
+  exports: [PuertosService]
 })
 export class PuertosModule {}

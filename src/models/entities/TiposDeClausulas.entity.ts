@@ -45,7 +45,7 @@ export class TiposDeClausulas {
   excepcional: boolean;
 
   @Field(() => [BasesCMarcoClausulas], { nullable: true })
-  @OneToMany(() => BasesCMarcoClausulas,(basesCMarcoClausulas) => basesCMarcoClausulas.tiposDeClausulas)
+  @OneToMany(() => BasesCMarcoClausulas,(basesCMarcoClausulas) => basesCMarcoClausulas.tipoDeClausula)
   basesCMarcoClausulas: BasesCMarcoClausulas[];
 
   @Field(() => [BasesGeneralesClausulas], { nullable: true })

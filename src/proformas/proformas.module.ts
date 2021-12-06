@@ -8,6 +8,7 @@ import { Proformas } from 'src/models/entities/Proformas.entity';
   imports: [TypeOrmModule.forFeature([
     Proformas
   ])],
-  providers: [ProformasResolver, ProformasService]
+  providers: [ProformasResolver, ProformasService],
+  exports: [ProformasService]
 })
 export class ProformasModule {}

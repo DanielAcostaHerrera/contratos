@@ -1,12 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Documentacion } from 'src/models/entities/Documentacion.entity';
+import { TiposDocumento } from 'src/models/entities/TiposDocumento.entity';
+import { TiposDocumentoService } from 'src/tipos-documento/tipos-documento.service';
 import { Repository } from 'typeorm';
 import { CreateDocumentacionInput } from './dto/create-documentacion.input';
 
 @Injectable()
 export class DocumentacionService {
-  constructor(@InjectRepository(Documentacion) public readonly documentacionRepository: Repository<Documentacion>) {}
+  constructor(@InjectRepository(Documentacion) public readonly documentacionRepository: Repository<Documentacion>,private tiposDocumentoService: TiposDocumentoService) {}
 
 
   async save(createDocumentacionInput: CreateDocumentacionInput) : Promise<Documentacion> {
@@ -14,14 +16,18 @@ export class DocumentacionService {
   }
 
   async findAll(): Promise<Documentacion[]> {
-    return await this.documentacionRepository.find({ relations: ['tiposDocumento','documentacionContratos']});
+    return await this.documentacionRepository.find({ relations: ['documentacionContratos']});
   }
 
   async findOne(id: number) : Promise<Documentacion> {
-    return await this.documentacionRepository.findOne(id, { relations: ['tiposDocumento','documentacionContratos']});
+    return await this.documentacionRepository.findOne(id, { relations: ['documentacionContratos']});
   }
 
   async remove(id: number) : Promise<any> {
     return await this.documentacionRepository.delete(id);
+  }
+
+  async getTipoDocumento (tipoDocumentoId: number) : Promise<TiposDocumento>{
+    return this.tiposDocumentoService.findOne(tipoDocumentoId);
   }
 }

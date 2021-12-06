@@ -8,6 +8,7 @@ import { TipoContrato } from 'src/models/entities/TipoContrato.entity';
   imports: [TypeOrmModule.forFeature([
     TipoContrato
   ])],
-  providers: [TipoContratoResolver, TipoContratoService]
+  providers: [TipoContratoResolver, TipoContratoService],
+  exports: [TipoContratoService]
 })
 export class TipoContratoModule {}

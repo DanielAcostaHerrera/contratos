@@ -8,6 +8,7 @@ import { TiposDocumento } from 'src/models/entities/TiposDocumento.entity';
   imports: [TypeOrmModule.forFeature([
     TiposDocumento
   ])],
-  providers: [TiposDocumentoResolver, TiposDocumentoService]
+  providers: [TiposDocumentoResolver, TiposDocumentoService],
+  exports: [TiposDocumentoService]
 })
 export class TiposDocumentoModule {}

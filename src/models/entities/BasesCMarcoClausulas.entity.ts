@@ -55,5 +55,5 @@ export class BasesCMarcoClausulas {
   @Field(() => TiposDeClausulas, {nullable: true})
   @ManyToOne(() => TiposDeClausulas,(tiposDeClausulas) => tiposDeClausulas.basesCMarcoClausulas)
   @JoinColumn([{ name: "IdTipoClausula", referencedColumnName: "idTipoClausula" }])
-  tiposDeClausulas: TiposDeClausulas;
+  tipoDeClausula: TiposDeClausulas;
 }

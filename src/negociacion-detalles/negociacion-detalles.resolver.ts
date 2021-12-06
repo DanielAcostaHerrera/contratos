@@ -1,7 +1,8 @@
-import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
+import { Resolver, Query, Mutation, Args, Int, ResolveField, Parent } from '@nestjs/graphql';
 import { NegociacionDetallesService } from './negociacion-detalles.service';
 import { CreateNegociacionDetallesInput } from './dto/create-negociacion-detalles.input';
 import { NegociacionDetalles } from 'src/models/entities/NegociacionDetalles.entity';
+import { NegociacionResumen } from 'src/models/entities/NegociacionResumen.entity';
 
 @Resolver(() => NegociacionDetalles)
 export class NegociacionDetallesResolver {
@@ -25,5 +26,10 @@ export class NegociacionDetallesResolver {
   @Mutation(() => NegociacionDetalles)
   removeNegociacionDetalles(@Args('id', { type: () => Int }) id: number) {
     return this.negociacionDetallesService.remove(id);
+  }
+
+  @ResolveField(() => NegociacionResumen, {nullable: true})
+  negociacionResumen(@Parent() negociacionResumen: NegociacionResumen) {
+    return this.negociacionDetallesService.getNegociacionResumen(negociacionResumen.idNegociacion);
   }
 }

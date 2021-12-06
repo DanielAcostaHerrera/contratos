@@ -20,6 +20,7 @@ export class GruposDeCompras {
   @OneToMany(() => Ejecutivos, (ejecutivos) => ejecutivos.grupo)
   ejecutivos: Ejecutivos[];
 
+  @Field(() => [NegociacionResumen], { nullable: true })
   @OneToMany(() => NegociacionResumen,(negociacionResumen) => negociacionResumen.grupos)
   negociacionResumen: NegociacionResumen[];
 }

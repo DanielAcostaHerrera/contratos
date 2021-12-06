@@ -8,6 +8,7 @@ import { Compradores } from 'src/models/entities/Compradores.entity';
   imports: [TypeOrmModule.forFeature(
     [Compradores]
   )],
-  providers: [CompradoresResolver, CompradoresService]
+  providers: [CompradoresResolver, CompradoresService],
+  exports: [CompradoresService]
 })
 export class CompradoresModule {}

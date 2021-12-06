@@ -1,12 +1,15 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { NegociacionProveedores } from 'src/models/entities/NegociacionProveedores.entity';
+import { NegociacionResumen } from 'src/models/entities/NegociacionResumen.entity';
+import { NegociacionResumenService } from 'src/negociacion-resumen/negociacion-resumen.service';
 import { Repository } from 'typeorm';
 import { CreateNegociacionProveedoresInput } from './dto/create-negociacion-proveedores.input';
 
 @Injectable()
 export class NegociacionProveedoresService {
-  constructor(@InjectRepository(NegociacionProveedores) public readonly negociacionProveedoresRepository: Repository<NegociacionProveedores>) {}
+  constructor(@InjectRepository(NegociacionProveedores) public readonly negociacionProveedoresRepository: Repository<NegociacionProveedores>,
+  private negociacionResumenService: NegociacionResumenService) {}
 
 
   async save(createNegociacionProveedoresInput: CreateNegociacionProveedoresInput) : Promise<NegociacionProveedores> {
@@ -14,14 +17,18 @@ export class NegociacionProveedoresService {
   }
 
   async findAll(): Promise<NegociacionProveedores[]> {
-    return await this.negociacionProveedoresRepository.find({ relations: ['negociacionResumen']});
+    return await this.negociacionProveedoresRepository.find();
   }
 
   async findOne(id: number) : Promise<NegociacionProveedores> {
-    return await this.negociacionProveedoresRepository.findOne(id,{ relations: ['negociacionResumen']});
+    return await this.negociacionProveedoresRepository.findOne(id);
   }
 
   async remove(id: number) : Promise<any> {
     return await this.negociacionProveedoresRepository.delete(id);
+  }
+
+  async getNegociacionResumen (negociacionResumenId: number) : Promise<NegociacionResumen>{
+    return this.negociacionResumenService.findOne(negociacionResumenId);
   }
 }

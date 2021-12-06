@@ -24,6 +24,7 @@ type GruposDeCompras {
   idGrupo: Int!
   grupos: String!
   ejecutivos: [Ejecutivos!]
+  negociacionResumen: [NegociacionResumen!]
 }
 
 type NegociacionDetalle {
@@ -257,9 +258,9 @@ type BasesGenerales {
   tipoDeContrato: TipoContrato
   incoterm: Incoterm
   proforma: Proformas
+  compradores: Compradores
   basesGeneralesClausulas: [BasesGeneralesClausulas!]
   contratos: [Contratos!]
-  compradores: [Compradores!]
 }
 
 type BasesGeneralesClausulas {
@@ -298,7 +299,7 @@ type BasesCMarcoClausulas {
   modificado: DateTime!
   proformaClausulas: ProformaClausulas
   basesCMarco: BasesCMarco
-  tiposDeClausulas: TiposDeClausulas
+  tipoDeClausula: TiposDeClausulas
 }
 
 type BasesCMarcoEspecificos {
@@ -354,6 +355,7 @@ type BasesCMarco {
   puerto: Puertos
   proforma: Proformas
   compradores: Compradores
+  comprador: Compradores
 }
 
 type TiposContenedor {
@@ -374,29 +376,33 @@ type Query {
   findOneGrupo(id: Int!): GruposDeCompras!
   findAllBaseCMarco: [BasesCMarco!]!
   findOneBaseCMarco(id: Int!): BasesCMarco!
+  findAllPuertos: [Puertos!]!
+  findOnePuertos(id: Int!): Puertos!
+  findAllProforma: [Proformas!]!
+  findOneProforma(id: Int!): Proformas!
+  findAllCompradores: [Compradores!]!
+  findOneCompradores(id: Int!): Compradores!
   findAllBasesCMarcoClausula: [BasesCMarcoClausulas!]!
   findOneBasesCMarcoClausula(id: Int!): BasesCMarcoClausulas!
+  findAllTiposDeClausulas: [TiposDeClausulas!]!
+  findOneTiposDeClausulas(id: Int!): TiposDeClausulas!
+  findAllProformaClausulas: [ProformaClausulas!]!
+  findOneProformaClausulas(id: Int!): ProformaClausulas!
   findAllBasesCmarcoEspecificos: [BasesCMarcoEspecificos!]!
   findOneBasesCmarcoEspecificos(id: Int!): BasesCMarcoEspecificos!
   findAllBasesGenerales: [BasesGenerales!]!
   findOneBasesGenerales(id: Int!): BasesGenerales!
-  findAllBasesGeneralesClausulas: [BasesGeneralesClausulas!]!
-  findOneBasesGeneralesClausulas(id: Int!): BasesGeneralesClausulas!
   findAllClasificaciones: [Clasificaciones!]!
   findOneClasificaciones(id: Int!): Clasificaciones!
-  findAllIncoterm: [Incoterm!]!
-  findOneIncoterm(id: Int!): Incoterm!
-  findAllProforma: [Proformas!]!
-  findOneProforma(id: Int!): Proformas!
-  findAllProformaClausulas: [ProformaClausulas!]!
-  findOneProformaClausulas(id: Int!): ProformaClausulas!
-  findAllPuertos: [Puertos!]!
-  findOnePuertos(id: Int!): Puertos!
   findAllTipoContrato: [TipoContrato!]!
   findOneTipoContrato(id: Int!): TipoContrato!
-  findAllTiposDeClausulas: [TiposDeClausulas!]!
-  findOneTiposDeClausulas(id: Int!): TiposDeClausulas!
+  findAllIncoterm: [Incoterm!]!
+  findOneIncoterm(id: Int!): Incoterm!
+  findAllBasesGeneralesClausulas: [BasesGeneralesClausulas!]!
+  findOneBasesGeneralesClausulas(id: Int!): BasesGeneralesClausulas!
   documentacion(id: Int!): Documentacion!
+  findAllTiposDocumento: [TiposDocumento!]!
+  findOneTiposDocumento(id: Int!): TiposDocumento!
   findAllDocumentacionContrato: [DocumentacionContrato!]!
   findOneDocumentacionContrato(id: Int!): DocumentacionContrato!
   findAllContratos: [Contratos!]!
@@ -405,20 +411,16 @@ type Query {
   findOneContratoDesglose(id: Int!): ContratoDesglose!
   findAllNegociacionDetalle: [NegociacionDetalle!]!
   findOneNegociacionDetalle(id: Int!): NegociacionDetalle!
+  findAllNegociacionResumen: [NegociacionResumen!]!
+  findOneNegociacionResumen(id: Int!): NegociacionResumen!
+  findAllTiposDeCompras: [TiposDeCompras!]!
+  findOneTiposDeCompras(id: Int!): TiposDeCompras!
   findAllNegociacionDetalles: [NegociacionDetalles!]!
   findOneNegociacionDetalles(id: Int!): NegociacionDetalles!
   findAllNegociacionProveedores: [NegociacionProveedores!]!
   findOneNegociacionProveedores(id: Int!): NegociacionProveedores!
-  findAllNegociacionResumen: [NegociacionResumen!]!
-  findOneNegociacionResumen(id: Int!): NegociacionResumen!
   findAllTiposContenedor: [TiposContenedor!]!
   findOneTiposContenedor(id: Int!): TiposContenedor!
-  findAllTiposDeCompras: [TiposDeCompras!]!
-  findOneTiposDeCompras(id: Int!): TiposDeCompras!
-  findAllTiposDocumento: [TiposDocumento!]!
-  findOneTiposDocumento(id: Int!): TiposDocumento!
-  findAllCompradores: [Compradores!]!
-  findOneCompradores(id: Int!): Compradores!
 }
 
 type Mutation {
@@ -435,30 +437,34 @@ type Mutation {
   removeGruposDeCompra(id: Int!): GruposDeCompras!
   createBasesCmarco(createBasesCmarcoInput: CreateBasesCmarcoInput!): BasesCMarco!
   removeBasesCmarco(id: Int!): BasesCMarco!
+  createPuerto(createPuertoInput: CreatePuertoInput!): Puertos!
+  removePuerto(id: Int!): Puertos!
+  createProforma(createProformaInput: CreateProformaInput!): Proformas!
+  removeProforma(id: Int!): Proformas!
+  createCompradore(createCompradoreInput: CreateCompradoresInput!): Compradores!
+  removeCompradore(id: Int!): Compradores!
   createBasesCmarcoClausula(createBasesCmarcoClausulaInput: CreateBasesCmarcoClausulaInput!): BasesCMarcoClausulas!
   removeBasesCmarcoClausula(id: Int!): BasesCMarcoClausulas!
+  createTiposDeClausulas(createTiposDeClausulaInput: CreateTiposDeClausulaInput!): TiposDeClausulas!
+  removeTiposDeClausulas(id: Int!): TiposDeClausulas!
+  createProformaClausula(createProformaClausulaInput: CreateProformaClausulaInput!): ProformaClausulas!
+  removeProformaClausula(id: Int!): ProformaClausulas!
   createBasesCmarcoEspecifico(createBasesCmarcoEspecificoInput: CreateBasesCmarcoEspecificoInput!): BasesCMarcoEspecificos!
   removeBasesCmarcoEspecifico(id: Int!): BasesCMarcoEspecificos!
   createBasesGenerales(createBasesGeneraleInput: CreateBasesGeneralesInput!): BasesGenerales!
   removeBasesGenerales(id: Int!): BasesGenerales!
-  createBasesGeneralesClausula(createBasesGeneralesClausulaInput: CreateBasesGeneralesClausulaInput!): BasesGeneralesClausulas!
-  removeBasesGeneralesClausula(id: Int!): BasesGeneralesClausulas!
   createClasificaciones(createClasificacioneInput: CreateClasificacioneInput!): Clasificaciones!
   removeClasificacione(id: Int!): Clasificaciones!
-  createIncoterm(createIncotermInput: CreateIncotermInput!): Incoterm!
-  removeIncoterm(id: Int!): Incoterm!
-  createProforma(createProformaInput: CreateProformaInput!): Proformas!
-  removeProforma(id: Int!): Proformas!
-  createProformaClausula(createProformaClausulaInput: CreateProformaClausulaInput!): ProformaClausulas!
-  removeProformaClausula(id: Int!): ProformaClausulas!
-  createPuerto(createPuertoInput: CreatePuertoInput!): Puertos!
-  removePuerto(id: Int!): Puertos!
   createTipoContrato(createTipoContratoInput: CreateTipoContratoInput!): TipoContrato!
   removeTipoContrato(id: Int!): TipoContrato!
-  createTiposDeClausulas(createTiposDeClausulaInput: CreateTiposDeClausulaInput!): TiposDeClausulas!
-  removeTiposDeClausulas(id: Int!): TiposDeClausulas!
+  createIncoterm(createIncotermInput: CreateIncotermInput!): Incoterm!
+  removeIncoterm(id: Int!): Incoterm!
+  createBasesGeneralesClausula(createBasesGeneralesClausulaInput: CreateBasesGeneralesClausulaInput!): BasesGeneralesClausulas!
+  removeBasesGeneralesClausula(id: Int!): BasesGeneralesClausulas!
   createDocumentacion(createDocumentacionInput: CreateDocumentacionInput!): Documentacion!
   removeDocumentacion(id: Int!): Documentacion!
+  createTiposDocumento(createTiposDocumentoInput: CreateTiposDocumentoInput!): TiposDocumento!
+  removeTiposDocumento(id: Int!): TiposDocumento!
   createDocumentacionContrato(createDocumentacionContratoInput: CreateDocumentacionContratoInput!): DocumentacionContrato!
   removeDocumentacionContrato(id: Int!): DocumentacionContrato!
   createContrato(createContratoInput: CreateContratoInput!): Contratos!
@@ -467,20 +473,16 @@ type Mutation {
   removeContratoDesglose(id: Int!): ContratoDesglose!
   createNegociacionDetalle(createNegociacionDetalleInput: CreateNegociacionDetalleInput!): NegociacionDetalle!
   removeNegociacionDetalle(id: Int!): NegociacionDetalle!
+  createNegociacionResumen(createNegociacionResumenInput: CreateNegociacionResumenInput!): NegociacionResumen!
+  removeNegociacionResumen(id: Int!): NegociacionResumen!
+  createTiposDeCompras(createTiposDeCompraInput: CreateTiposDeCompraInput!): TiposDeCompras!
+  removeTiposDeCompras(id: Int!): TiposDeCompras!
   createNegociacionDetalles(createNegociacionDetallesInput: CreateNegociacionDetallesInput!): NegociacionDetalles!
   removeNegociacionDetalles(id: Int!): NegociacionDetalles!
   createNegociacionProveedores(createNegociacionProveedoresInput: CreateNegociacionProveedoresInput!): NegociacionProveedores!
   removeNegociacionProveedores(id: Int!): NegociacionProveedores!
-  createNegociacionResumen(createNegociacionResumenInput: CreateNegociacionResumenInput!): NegociacionResumen!
-  removeNegociacionResumen(id: Int!): NegociacionResumen!
   createTiposContenedor(createTiposContenedorInput: CreateTiposContenedorInput!): TiposContenedor!
   removeTiposContenedor(id: Int!): TiposContenedor!
-  createTiposDeCompras(createTiposDeCompraInput: CreateTiposDeCompraInput!): TiposDeCompras!
-  removeTiposDeCompras(id: Int!): TiposDeCompras!
-  createTiposDocumento(createTiposDocumentoInput: CreateTiposDocumentoInput!): TiposDocumento!
-  removeTiposDocumento(id: Int!): TiposDocumento!
-  createCompradore(createCompradoreInput: CreateCompradoresInput!): Compradores!
-  removeCompradore(id: Int!): Compradores!
 }
 
 input CreateMonedaInput {
@@ -546,6 +548,32 @@ input CreateBasesCmarcoInput {
   nProveedor: String!
 }
 
+input CreatePuertoInput {
+  idPuerto: Int
+  nombre: String!
+  pais: Int!
+  deposito: String!
+}
+
+input CreateProformaInput {
+  idProforma: Int
+  idTipoContrato: Int!
+  idIncoterm: Int!
+  nombreProfoma: String!
+  activa: Boolean!
+  cMarcoF: Boolean!
+}
+
+input CreateCompradoresInput {
+  idComprador: Int
+  nombre: String!
+  representante: String!
+  domicilio: String!
+  cargo: String!
+  doble: Boolean!
+  activo: Boolean!
+}
+
 input CreateBasesCmarcoClausulaInput {
   idBasesCMarcoClausulas: Int
   idBaseCMarco: Int!
@@ -554,6 +582,24 @@ input CreateBasesCmarcoClausulaInput {
   orden: Int!
   clausula: String!
   modificado: DateTime!
+}
+
+input CreateTiposDeClausulaInput {
+  idTipoClausula: Int
+  nombre: String!
+  orden: Int!
+  basesG: Boolean!
+  compras: Boolean!
+  cMarco: Boolean!
+  excepcional: Boolean!
+}
+
+input CreateProformaClausulaInput {
+  idProformaClausula: Int
+  idProforma: Int!
+  idTipoClausula: Int!
+  orden: Int!
+  clausula: String!
 }
 
 input CreateBasesCmarcoEspecificoInput {
@@ -591,6 +637,27 @@ input CreateBasesGeneralesInput {
   noContrato: String!
 }
 
+input CreateClasificacioneInput {
+  idClasificacion: Int
+  clasificacion: String!
+}
+
+input CreateTipoContratoInput {
+  idTipoContrato: Int
+  tipoContrato: String!
+  encabezado: String!
+  ambasPartes: String!
+  visible: Boolean!
+}
+
+input CreateIncotermInput {
+  idIncoterm: Int
+  nombre: String!
+  abreviatura: String!
+  nota: String!
+  activo: Boolean!
+}
+
 input CreateBasesGeneralesClausulaInput {
   idBasesGeneralesClausulas: Int
   idBaseGenerales: Int!
@@ -602,61 +669,6 @@ input CreateBasesGeneralesClausulaInput {
   modificado: DateTime!
 }
 
-input CreateClasificacioneInput {
-  idClasificacion: Int
-  clasificacion: String!
-}
-
-input CreateIncotermInput {
-  idIncoterm: Int
-  nombre: String!
-  abreviatura: String!
-  nota: String!
-  activo: Boolean!
-}
-
-input CreateProformaInput {
-  idProforma: Int
-  idTipoContrato: Int!
-  idIncoterm: Int!
-  nombreProfoma: String!
-  activa: Boolean!
-  cMarcoF: Boolean!
-}
-
-input CreateProformaClausulaInput {
-  idProformaClausula: Int
-  idProforma: Int!
-  idTipoClausula: Int!
-  orden: Int!
-  clausula: String!
-}
-
-input CreatePuertoInput {
-  idPuerto: Int
-  nombre: String!
-  pais: Int!
-  deposito: String!
-}
-
-input CreateTipoContratoInput {
-  idTipoContrato: Int
-  tipoContrato: String!
-  encabezado: String!
-  ambasPartes: String!
-  visible: Boolean!
-}
-
-input CreateTiposDeClausulaInput {
-  idTipoClausula: Int
-  nombre: String!
-  orden: Int!
-  basesG: Boolean!
-  compras: Boolean!
-  cMarco: Boolean!
-  excepcional: Boolean!
-}
-
 input CreateDocumentacionInput {
   idDocumento: Int!
   idTipoDoc: Int!
@@ -664,6 +676,11 @@ input CreateDocumentacionInput {
   descripcion: String!
   tipoFichero: String!
   iDoc: String!
+}
+
+input CreateTiposDocumentoInput {
+  idTipoDoc: Int
+  nombreDoc: String!
 }
 
 input CreateDocumentacionContratoInput {
@@ -709,23 +726,6 @@ input CreateNegociacionDetalleInput {
   detalles: String!
 }
 
-input CreateNegociacionDetallesInput {
-  idNegociacionDetalles: Int
-  idNegociacion: Int!
-  consecutivo: Int!
-  fecha: DateTime!
-  acuerdo: Int!
-  detalles: String!
-}
-
-input CreateNegociacionProveedoresInput {
-  idNegociacionProveedores: Int
-  idNegociacion: Int!
-  proveedor: Int!
-  importe: Float!
-  ladi: Boolean!
-}
-
 input CreateNegociacionResumenInput {
   idNegociacion: Int
   consecutivo: Int!
@@ -751,27 +751,29 @@ input CreateNegociacionResumenInput {
   idNegociacionUnico: String!
 }
 
-input CreateTiposContenedorInput {
-  idTipoContenedor: Int
-  tipoContenedor: String!
-}
-
 input CreateTiposDeCompraInput {
   idTipoCompras: Int
   compras: String!
 }
 
-input CreateTiposDocumentoInput {
-  idTipoDoc: Int
-  nombreDoc: String!
+input CreateNegociacionDetallesInput {
+  idNegociacionDetalles: Int
+  idNegociacion: Int!
+  consecutivo: Int!
+  fecha: DateTime!
+  acuerdo: Int!
+  detalles: String!
 }
 
-input CreateCompradoresInput {
-  idComprador: Int
-  nombre: String!
-  representante: String!
-  domicilio: String!
-  cargo: String!
-  doble: Boolean!
-  activo: Boolean!
+input CreateNegociacionProveedoresInput {
+  idNegociacionProveedores: Int
+  idNegociacion: Int!
+  proveedor: Int!
+  importe: Float!
+  ladi: Boolean!
+}
+
+input CreateTiposContenedorInput {
+  idTipoContenedor: Int
+  tipoContenedor: String!
 }

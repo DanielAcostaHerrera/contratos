@@ -131,6 +131,11 @@ export class BasesGenerales {
   @JoinColumn([{ name: "IdProforma", referencedColumnName: "idProforma" }])
   proforma: Proformas;
 
+  @Field(() => Compradores , {nullable: true})
+  @ManyToOne(() => Compradores, (compradores) => compradores.basesGenerales)
+  @JoinColumn([{ name: "IdComprador", referencedColumnName: "idComprador" }])
+  compradores: Compradores;
+
   @Field(() => [BasesGeneralesClausulas] , {nullable: true})
   @OneToMany(() => BasesGeneralesClausulas,(basesGeneralesClausulas) => basesGeneralesClausulas.basesGenerales)
   basesGeneralesClausulas: BasesGeneralesClausulas[];
@@ -138,9 +143,4 @@ export class BasesGenerales {
   @Field(() => [Contratos] , {nullable: true})
   @OneToMany(() => Contratos, (contratos) => contratos.basesGenerales)
   contratos: Contratos[];
-
-  @Field(() => [Compradores] , {nullable: true})
-  @ManyToOne(() => Compradores, (compradores) => compradores.basesGenerales)
-  @JoinColumn([{ name: "IdComprador", referencedColumnName: "idComprador" }])
-  compradores: Compradores;
 }

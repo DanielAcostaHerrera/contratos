@@ -8,6 +8,7 @@ import { Incoterm } from 'src/models/entities/Incoterm.entity';
   imports: [TypeOrmModule.forFeature(
     [Incoterm]
   )],
-  providers: [IncotermResolver, IncotermService]
+  providers: [IncotermResolver, IncotermService],
+  exports: [IncotermService]
 })
 export class IncotermModule {}

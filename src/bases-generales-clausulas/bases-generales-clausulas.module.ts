@@ -3,11 +3,15 @@ import { BasesGeneralesClausulasService } from './bases-generales-clausulas.serv
 import { BasesGeneralesClausulasResolver } from './bases-generales-clausulas.resolver';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { BasesGeneralesClausulas } from 'src/models/entities/BasesGeneralesClausulas.entity';
+import { TiposDeClausulasModule } from 'src/tipos-de-clausulas/tipos-de-clausulas.module';
+import { BasesGeneralesModule } from 'src/bases-generales/bases-generales.module';
+import { ProformaClausulasModule } from 'src/proforma-clausulas/proforma-clausulas.module';
 
 @Module({
   imports:[TypeOrmModule.forFeature([
     BasesGeneralesClausulas
-  ])],
-  providers: [BasesGeneralesClausulasResolver, BasesGeneralesClausulasService]
+  ]),TiposDeClausulasModule,BasesGeneralesModule,ProformaClausulasModule],
+  providers: [BasesGeneralesClausulasResolver, BasesGeneralesClausulasService],
+  exports: [BasesGeneralesClausulasService]
 })
 export class BasesGeneralesClausulasModule {}

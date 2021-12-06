@@ -8,6 +8,7 @@ import { TiposDeCompras } from 'src/models/entities/TiposDeCompras.entity';
   imports: [TypeOrmModule.forFeature([
     TiposDeCompras
   ])],
-  providers: [TiposDeComprasResolver, TiposDeComprasService]
+  providers: [TiposDeComprasResolver, TiposDeComprasService],
+  exports: [TiposDeComprasService]
 })
 export class TiposDeComprasModule {}

@@ -8,6 +8,7 @@ import { TiposDeClausulas } from 'src/models/entities/TiposDeClausulas.entity';
   imports: [TypeOrmModule.forFeature([
     TiposDeClausulas
   ])],
-  providers: [TiposDeClausulasResolver, TiposDeClausulasService]
+  providers: [TiposDeClausulasResolver, TiposDeClausulasService],
+  exports: [TiposDeClausulasService]
 })
 export class TiposDeClausulasModule {}

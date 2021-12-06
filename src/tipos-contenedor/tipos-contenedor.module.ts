@@ -8,6 +8,7 @@ import { TiposContenedor } from 'src/models/entities/TiposContenedor.entity';
   imports: [TypeOrmModule.forFeature([
     TiposContenedor
   ])],
-  providers: [TiposContenedorResolver, TiposContenedorService]
+  providers: [TiposContenedorResolver, TiposContenedorService],
+  exports: [TiposContenedorService]
 })
 export class TiposContenedorModule {}

@@ -1,5 +1,8 @@
-import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
+import { Resolver, Query, Mutation, Args, Int, ResolveField, Parent } from '@nestjs/graphql';
+import { BasesGenerales } from 'src/models/entities/BasesGenerales.entity';
 import { Contratos } from 'src/models/entities/Contratos.entity';
+import { Proformas } from 'src/models/entities/Proformas.entity';
+import { TipoContrato } from 'src/models/entities/TipoContrato.entity';
 import { ContratosService } from './contratos.service';
 import { CreateContratoInput } from './dto/create-contrato.input';
 
@@ -25,5 +28,20 @@ export class ContratosResolver {
   @Mutation(() => Contratos)
   removeContrato(@Args('id', { type: () => Int }) id: number) {
     return this.contratosService.remove(id);
+  }
+
+  @ResolveField(() => BasesGenerales, {nullable: true})
+  basesGenerales(@Parent() basesGenerales: BasesGenerales) {
+    return this.contratosService.getBasesGenerales(basesGenerales.idBaseGenerales);
+  }
+  
+  @ResolveField(() => TipoContrato, {nullable: true})
+  tipoContrato(@Parent() tipoContrato: TipoContrato) {
+    return this.contratosService.getTipoContrato(tipoContrato.idTipoContrato);
+  }
+
+  @ResolveField(() => Proformas, {nullable: true})
+  proformas(@Parent() proformas: Proformas) {
+    return this.contratosService.getProforma(proformas.idProforma);
   }
 }

@@ -1,12 +1,19 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { BasesGeneralesService } from 'src/bases-generales/bases-generales.service';
+import { BasesGenerales } from 'src/models/entities/BasesGenerales.entity';
 import { BasesGeneralesClausulas } from 'src/models/entities/BasesGeneralesClausulas.entity';
+import { ProformaClausulas } from 'src/models/entities/ProformaClausulas.entity';
+import { TiposDeClausulas } from 'src/models/entities/TiposDeClausulas.entity';
+import { ProformaClausulasService } from 'src/proforma-clausulas/proforma-clausulas.service';
+import { TiposDeClausulasService } from 'src/tipos-de-clausulas/tipos-de-clausulas.service';
 import { Repository } from 'typeorm';
 import { CreateBasesGeneralesClausulaInput } from './dto/create-bases-generales-clausula.input';
 
 @Injectable()
 export class BasesGeneralesClausulasService {
-  constructor(@InjectRepository(BasesGeneralesClausulas) public readonly basesGeneralesClausulasRepository: Repository<BasesGeneralesClausulas>) {}
+  constructor(@InjectRepository(BasesGeneralesClausulas) public readonly basesGeneralesClausulasRepository: Repository<BasesGeneralesClausulas>,
+  private tiposDeClausulasService: TiposDeClausulasService, private basesGeneralesService: BasesGeneralesService, private proformaClausulasService: ProformaClausulasService) {}
 
 
   async save(createBasesGeneralesClausulaInput: CreateBasesGeneralesClausulaInput) : Promise<BasesGeneralesClausulas> {
@@ -14,14 +21,26 @@ export class BasesGeneralesClausulasService {
   }
 
   async findAll(): Promise<BasesGeneralesClausulas[]> { 
-    return await this.basesGeneralesClausulasRepository.find({ relations: ['tiposDeClausulas','basesGenerales','proformaClausula']});
+    return await this.basesGeneralesClausulasRepository.find();
   }
 
   async findOne(id: number) : Promise<BasesGeneralesClausulas> {
-    return await this.basesGeneralesClausulasRepository.findOne(id, { relations: ['tiposDeClausulas','basesGenerales','proformaClausula']});
+    return await this.basesGeneralesClausulasRepository.findOne(id);
   }
 
   async remove(id: number) : Promise<any> {
     return await this.basesGeneralesClausulasRepository.delete(id);
+  }
+
+  async getTipoClausula (tipoClausulaId: number) : Promise<TiposDeClausulas>{
+    return this.tiposDeClausulasService.findOne(tipoClausulaId);
+  }
+
+  async getBasesGenerales (basesGeneralesId: number) : Promise<BasesGenerales>{
+    return this.basesGeneralesService.findOne(basesGeneralesId);
+  }
+
+  async getProformaClausulas (proformaClausulasId: number) : Promise<ProformaClausulas>{
+    return this.proformaClausulasService.findOne(proformaClausulasId);
   }
 }

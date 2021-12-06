@@ -1,5 +1,6 @@
-import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
+import { Resolver, Query, Mutation, Args, Int, ResolveField, Parent } from '@nestjs/graphql';
 import { Documentacion } from 'src/models/entities/Documentacion.entity';
+import { TiposDocumento } from 'src/models/entities/TiposDocumento.entity';
 import { DocumentacionService } from './documentacion.service';
 import { CreateDocumentacionInput } from './dto/create-documentacion.input';
 
@@ -25,5 +26,10 @@ export class DocumentacionResolver {
   @Mutation(() => Documentacion)
   removeDocumentacion(@Args('id', { type: () => Int }) id: number) {
     return this.documentacionService.remove(id);
+  }
+
+  @ResolveField(() => TiposDocumento, {nullable: true})
+  tiposDocumento(@Parent() tiposDocumento: TiposDocumento) {
+    return this.documentacionService.getTipoDocumento(tiposDocumento.idTipoDoc);
   }
 }

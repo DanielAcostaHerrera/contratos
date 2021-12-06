@@ -1,7 +1,9 @@
-import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
+import { Resolver, Query, Mutation, Args, Int, ResolveField, Parent } from '@nestjs/graphql';
 import { EjecutivoService } from './ejecutivo.service';
 import { CreateEjecutivoInput } from './dto/create-ejecutivo.input';
 import { Ejecutivos } from 'src/models/entities/Ejecutivos.entity';
+import { Cargos } from 'src/models/entities/Cargos.entity';
+import { GruposDeCompras } from 'src/models/entities/GruposDeCompras.entity';
 
 @Resolver(() => Ejecutivos)
 export class EjecutivoResolver {
@@ -25,5 +27,15 @@ export class EjecutivoResolver {
   @Mutation(() => Ejecutivos)
   removeEjecutivo(@Args('id', { type: () => Int }) id: number) {
     return this.ejecutivoService.remove(id);
+  }
+
+  @ResolveField(() => Cargos, {nullable: true})
+  cargo(@Parent() cargos: Cargos) {
+    return this.ejecutivoService.getCargo(cargos.idCargo);
+  }
+
+  @ResolveField(() => GruposDeCompras, {nullable: true})
+  grupo(@Parent() gruposDeCompras: GruposDeCompras) {
+    return this.ejecutivoService.getGrupo(gruposDeCompras.idGrupo);
   }
 }

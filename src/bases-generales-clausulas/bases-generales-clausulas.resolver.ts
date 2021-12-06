@@ -1,7 +1,10 @@
-import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
+import { Resolver, Query, Mutation, Args, Int, ResolveField, Parent } from '@nestjs/graphql';
 import { BasesGeneralesClausulasService } from './bases-generales-clausulas.service';
 import { CreateBasesGeneralesClausulaInput } from './dto/create-bases-generales-clausula.input';
 import { BasesGeneralesClausulas } from 'src/models/entities/BasesGeneralesClausulas.entity';
+import { TiposDeClausulas } from 'src/models/entities/TiposDeClausulas.entity';
+import { BasesGenerales } from 'src/models/entities/BasesGenerales.entity';
+import { ProformaClausulas } from 'src/models/entities/ProformaClausulas.entity';
 
 @Resolver(() => BasesGeneralesClausulas)
 export class BasesGeneralesClausulasResolver {
@@ -25,5 +28,20 @@ export class BasesGeneralesClausulasResolver {
   @Mutation(() => BasesGeneralesClausulas)
   removeBasesGeneralesClausula(@Args('id', { type: () => Int }) id: number) {
     return this.basesGeneralesClausulasService.remove(id);
+  }
+
+  @ResolveField(() => TiposDeClausulas, {nullable: true})
+  tiposDeClausulas(@Parent() tiposDeClausulas: TiposDeClausulas) {
+    return this.basesGeneralesClausulasService.getTipoClausula(tiposDeClausulas.idTipoClausula);
+  }
+
+  @ResolveField(() => BasesGenerales, {nullable: true})
+  basesGenerales(@Parent() basesGenerales: BasesGenerales) {
+    return this.basesGeneralesClausulasService.getBasesGenerales(basesGenerales.idBaseGenerales);
+  }
+
+  @ResolveField(() => ProformaClausulas, {nullable: true})
+  proformaClausula(@Parent() proformaClausulas: ProformaClausulas) {
+    return this.basesGeneralesClausulasService.getProformaClausulas(proformaClausulas.idProformaClausula);
   }
 }

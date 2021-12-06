@@ -8,6 +8,7 @@ import { GruposDeComprasResolver } from './grupos-de-compras.resolver';
   imports: [TypeOrmModule.forFeature(
     [GruposDeCompras]
   )],
-  providers: [GruposDeComprasResolver, GruposDeComprasService]
+  providers: [GruposDeComprasResolver, GruposDeComprasService],
+  exports: [GruposDeComprasService]
 })
 export class GruposDeComprasModule {}

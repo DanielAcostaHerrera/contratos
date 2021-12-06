@@ -1,7 +1,10 @@
-import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
+import { Resolver, Query, Mutation, Args, Int, ResolveField, Parent } from '@nestjs/graphql';
 import { NegociacionResumenService } from './negociacion-resumen.service';
 import { CreateNegociacionResumenInput } from './dto/create-negociacion-resumen.input';
 import { NegociacionResumen } from 'src/models/entities/NegociacionResumen.entity';
+import { GruposDeCompras } from 'src/models/entities/GruposDeCompras.entity';
+import { Monedas } from 'src/models/entities/Monedas.entity';
+import { TiposDeCompras } from 'src/models/entities/TiposDeCompras.entity';
 
 @Resolver(() => NegociacionResumen)
 export class NegociacionResumenResolver {
@@ -25,5 +28,20 @@ export class NegociacionResumenResolver {
   @Mutation(() => NegociacionResumen)
   removeNegociacionResumen(@Args('id', { type: () => Int }) id: number) {
     return this.negociacionResumenService.remove(id);
+  }
+
+  @ResolveField(() => GruposDeCompras, {nullable: true})
+  grupos(@Parent() gruposDeCompras: GruposDeCompras) {
+    return this.negociacionResumenService.getGrupo(gruposDeCompras.idGrupo);
+  }
+
+  @ResolveField(() => Monedas, {nullable: true})
+  monedas(@Parent() monedas: Monedas) {
+    return this.negociacionResumenService.getMoneda(monedas.idMoneda);
+  }
+
+  @ResolveField(() => TiposDeCompras, {nullable: true})
+  tiposDeCompras(@Parent() tiposDeCompras: TiposDeCompras) {
+    return this.negociacionResumenService.getTipoCompra(tiposDeCompras.idTipoCompras);
   }
 }

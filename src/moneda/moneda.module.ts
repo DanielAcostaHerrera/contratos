@@ -8,6 +8,7 @@ import { Monedas } from '../models/entities/Monedas.entity';
   imports: [TypeOrmModule.forFeature([
     Monedas
   ])],
-  providers: [MonedaService, MonedaResolver]
+  providers: [MonedaResolver, MonedaService],
+  exports: [MonedaService]
 })
 export class MonedaModule {}

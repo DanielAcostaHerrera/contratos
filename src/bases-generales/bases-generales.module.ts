@@ -3,11 +3,17 @@ import { BasesGeneralesService } from './bases-generales.service';
 import { BasesGeneralesResolver } from './bases-generales.resolver';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { BasesGenerales } from 'src/models/entities/BasesGenerales.entity';
+import { ClasificacionesModule } from 'src/clasificaciones/clasificaciones.module';
+import { TipoContratoModule } from 'src/tipo-contrato/tipo-contrato.module';
+import { IncotermModule } from 'src/incoterm/incoterm.module';
+import { ProformasModule } from 'src/proformas/proformas.module';
+import { CompradoresModule } from 'src/compradores/compradores.module';
 
 @Module({
   imports:[TypeOrmModule.forFeature([
     BasesGenerales
-  ])],
-  providers: [BasesGeneralesResolver, BasesGeneralesService]
+  ]),ClasificacionesModule,TipoContratoModule,IncotermModule,ProformasModule,CompradoresModule],
+  providers: [BasesGeneralesResolver, BasesGeneralesService],
+  exports: [BasesGeneralesService]
 })
 export class BasesGeneralesModule {}

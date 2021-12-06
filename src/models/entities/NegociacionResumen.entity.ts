@@ -68,7 +68,7 @@ export class NegociacionResumen {
   @Field()
   nota: string | null;
 
-  @Column("nvarchar", { name: "NoNeg", nullable: true, length: 4000 })
+  @Column("nvarchar", { name: "NoNegociacion", nullable: true, length: 4000 })
   @Field()
   noNeg: string | null;
 

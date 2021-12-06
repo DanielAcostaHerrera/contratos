@@ -8,6 +8,7 @@ import { CargoService } from './cargo.service';
   imports: [TypeOrmModule.forFeature(
     [Cargos]
   )],
-  providers: [CargoResolver, CargoService]
+  providers: [CargoResolver, CargoService],
+  exports: [CargoService]
 })
 export class CargoModule {}

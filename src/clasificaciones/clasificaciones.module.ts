@@ -8,6 +8,7 @@ import { Clasificaciones } from 'src/models/entities/Clasificaciones.entity';
   imports: [TypeOrmModule.forFeature(
     [Clasificaciones]
   )],
-  providers: [ClasificacionesResolver, ClasificacionesService]
+  providers: [ClasificacionesResolver, ClasificacionesService],
+  exports: [ClasificacionesService]
 })
 export class ClasificacionesModule {}
