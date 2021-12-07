@@ -33,6 +33,11 @@ import { TiposContenedorModule } from './tipos-contenedor/tipos-contenedor.modul
 import { TiposDeComprasModule } from './tipos-de-compras/tipos-de-compras.module';
 import { TiposDocumentoModule } from './tipos-documento/tipos-documento.module';
 import { CompradoresModule } from './compradores/compradores.module';
+import { ConfiguracionModule } from './configuracion/configuracion.module';
+import { CampanaEtapasContratacionModule } from './campana-etapas-contratacion/campana-etapas-contratacion.module';
+import { CampanasModule } from './campanas/campanas.module';
+import { EtapasContratacionModule } from './etapas-contratacion/etapas-contratacion.module';
+import { TiemposTravesiaModule } from './tiempos-travesia/tiempos-travesia.module';
 
 @Module({
   imports: [
@@ -79,6 +84,11 @@ import { CompradoresModule } from './compradores/compradores.module';
     TiposDeComprasModule,
     TiposDocumentoModule,
     CompradoresModule,
+    ConfiguracionModule,
+    CampanaEtapasContratacionModule,
+    CampanasModule,
+    EtapasContratacionModule,
+    TiemposTravesiaModule,
   ],
   controllers: [AppController],
   providers: [AppService],

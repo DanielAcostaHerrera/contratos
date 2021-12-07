@@ -363,6 +363,50 @@ type TiposContenedor {
   tipoContenedor: String!
 }
 
+type Configuracion {
+  idConfig: Int!
+  lugarFirma: String!
+  idEntidad: Int!
+  vigenciaContrato: Int!
+  travesiaXDefecto: Int!
+  pathContratosPdf: String!
+  alertaVencContratos: Int!
+}
+
+type TiemposTravesia {
+  idTiemposTravesia: Int!
+  idPais: Int!
+  idEtapa: Int!
+  tiempo: Int!
+  etapaContratacion: EtapasContratacion!
+}
+
+type EtapasContratacion {
+  idEtapa: Int!
+  etapa: String!
+  calculos: String!
+  tiempoMax: Int!
+  tiempoReal: Int!
+  campanaEtapasContratacion: [CampanaEtapasContratacion!]!
+  tiemposTravesias: [TiemposTravesia!]!
+}
+
+type CampanaEtapasContratacion {
+  idCampanaEtapas: Int!
+  idCampana: Int!
+  idEtapa: Int!
+  idPais: Int!
+  mesDia: Int!
+  campana: Campanas!
+  etapaContratacion: EtapasContratacion!
+}
+
+type Campanas {
+  idCampana: Int!
+  campana: String!
+  campanaEtapasContratacion: [CampanaEtapasContratacion!]!
+}
+
 type Query {
   findAllMoneda: [Monedas!]!
   findOneMoneda(id: Int!): Monedas!
@@ -421,6 +465,16 @@ type Query {
   findOneNegociacionProveedores(id: Int!): NegociacionProveedores!
   findAllTiposContenedor: [TiposContenedor!]!
   findOneTiposContenedor(id: Int!): TiposContenedor!
+  findAllConfiguracion: [Configuracion!]!
+  findOneConfiguracion(id: Int!): Configuracion!
+  findAllCampanaEtapasContratacion: [CampanaEtapasContratacion!]!
+  findOneCampanaEtapasContratacion(id: Int!): CampanaEtapasContratacion!
+  findAllCampana: [Campanas!]!
+  findOneCampana(id: Int!): Campanas!
+  findAllEtapasContratacion: [EtapasContratacion!]!
+  findOneEtapasContratacion(id: Int!): EtapasContratacion!
+  findAllTiemposTravesia: [TiemposTravesia!]!
+  findOneTiemposTravesia(id: Int!): TiemposTravesia!
 }
 
 type Mutation {
@@ -483,6 +537,16 @@ type Mutation {
   removeNegociacionProveedores(id: Int!): NegociacionProveedores!
   createTiposContenedor(createTiposContenedorInput: CreateTiposContenedorInput!): TiposContenedor!
   removeTiposContenedor(id: Int!): TiposContenedor!
+  createConfiguracion(createConfiguracionInput: CreateConfiguracionInput!): Configuracion!
+  removeConfiguracion(id: Int!): Configuracion!
+  createCampanaEtapasContratacion(createCampanaEtapasContratacionInput: CreateCampanaEtapasContratacionInput!): CampanaEtapasContratacion!
+  removeCampanaEtapasContratacion(id: Int!): CampanaEtapasContratacion!
+  createCampana(createCampanaInput: CreateCampanaInput!): Campanas!
+  removeCampana(id: Int!): Campanas!
+  createEtapasContratacion(createEtapasContratacionInput: CreateEtapasContratacionInput!): EtapasContratacion!
+  removeEtapasContratacion(id: Int!): EtapasContratacion!
+  createTiemposTravesia(createTiemposTravesiaInput: CreateTiemposTravesiaInput!): TiemposTravesia!
+  removeTiemposTravesia(id: Int!): TiemposTravesia!
 }
 
 input CreateMonedaInput {
@@ -776,4 +840,42 @@ input CreateNegociacionProveedoresInput {
 input CreateTiposContenedorInput {
   idTipoContenedor: Int
   tipoContenedor: String!
+}
+
+input CreateConfiguracionInput {
+  idConfig: Int
+  lugarFirma: String!
+  idEntidad: Int!
+  vigenciaContrato: Int!
+  travesiaXDefecto: Int!
+  pathContratosPdf: String!
+  alertaVencContratos: Int!
+}
+
+input CreateCampanaEtapasContratacionInput {
+  idCampanaEtapas: Int
+  idCampana: Int!
+  idEtapa: Int!
+  idPais: Int!
+  mesDia: Int!
+}
+
+input CreateCampanaInput {
+  idCampana: Int
+  campana: String!
+}
+
+input CreateEtapasContratacionInput {
+  idEtapa: Int
+  etapa: String!
+  calculos: String!
+  tiempoMax: Int!
+  tiempoReal: Int!
+}
+
+input CreateTiemposTravesiaInput {
+  idTiemposTravesia: Int!
+  idPais: Int!
+  idEtapa: Int!
+  tiempo: Int!
 }
