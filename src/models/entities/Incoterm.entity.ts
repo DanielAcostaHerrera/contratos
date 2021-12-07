@@ -7,6 +7,7 @@ import {
   PrimaryGeneratedColumn,
 } from "typeorm";
 import { BasesGenerales } from "./BasesGenerales.entity";
+import { FichaCompraResumen } from "./FichaCompraResumen.entity";
 
 @ObjectType()
 @Index("IX_Incoterm", ["abreviatura"], { unique: true })
@@ -36,4 +37,8 @@ export class Incoterm {
   @Field(() => [BasesGenerales] , {nullable: true})
   @OneToMany(() => BasesGenerales,(basesGenerales) => basesGenerales.incoterm)
   basesGenerales: BasesGenerales[];
+
+  @Field(() => [FichaCompraResumen] , {nullable: true})
+  @OneToMany(() => FichaCompraResumen,(fichaCompraResumen) => fichaCompraResumen.incoterm)
+  fichaCompraResumen: FichaCompraResumen[];
 }

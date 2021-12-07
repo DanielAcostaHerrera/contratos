@@ -1,5 +1,6 @@
 import { Field, Int, ObjectType } from "@nestjs/graphql";
 import { Column, Entity, Index, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { FichaCompraResumen } from "./FichaCompraResumen.entity";
 import { NegociacionResumen } from "./NegociacionResumen.entity";
 
 @ObjectType()
@@ -19,6 +20,11 @@ export class Monedas {
   @Field()
   abreviatura: string | null;
 
+  @Field(() => [NegociacionResumen])
   @OneToMany(() => NegociacionResumen,(negociacionResumen) => negociacionResumen.monedas)
   negociacionResumen: NegociacionResumen[];
+
+  @Field(() => [FichaCompraResumen])
+  @OneToMany(() => FichaCompraResumen,(fichaCompraResumen) => fichaCompraResumen.moneda)
+  fichaCompraResumen: FichaCompraResumen[];
 }

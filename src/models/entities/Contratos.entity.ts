@@ -13,6 +13,7 @@ import { TipoContrato } from "./TipoContrato.entity";
 import { Proformas } from "./Proformas.entity";
 import { DocumentacionContrato } from "./DocumentacionContrato.entity";
 import { Field, Int, ObjectType } from "@nestjs/graphql";
+import { FichaCompraResumen } from "./FichaCompraResumen.entity";
 
 @ObjectType()
 @Index("PK_Contratos", ["idContrato"], { unique: true })
@@ -92,4 +93,9 @@ export class Contratos {
   @Field(() => [DocumentacionContrato])
   @OneToMany(() => DocumentacionContrato,(documentacionContrato) => documentacionContrato.contratos)
   documentacionContratos: DocumentacionContrato[];
+
+  @Field(() => [FichaCompraResumen])
+  @OneToMany(() => FichaCompraResumen,(fichaCompraResumen) => fichaCompraResumen.contrato)
+  fichaCompraResumen: FichaCompraResumen[];
+
 }

@@ -8,6 +8,7 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
 } from "typeorm";
+import { FichaCompraResumen } from "./FichaCompraResumen.entity";
 import { GruposDeCompras } from "./GruposDeCompras.entity";
 import { Monedas } from "./Monedas.entity";
 import { NegociacionDetalle } from "./NegociacionDetalle.entity";
@@ -153,4 +154,8 @@ export class NegociacionResumen {
   @ManyToOne(() => GruposDeCompras,(grupos) => grupos.negociacionResumen)
   @JoinColumn([{ name: "IdGrupo", referencedColumnName: "idGrupo" },])
   grupos: GruposDeCompras;
+
+  @Field(() => [FichaCompraResumen])
+  @OneToMany(() => FichaCompraResumen,(fichaCompraResumen) => fichaCompraResumen.negociacionResumen)
+  fichaCompraResumen: FichaCompraResumen[];
 }

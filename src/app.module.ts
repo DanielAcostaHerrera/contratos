@@ -38,6 +38,10 @@ import { CampanaEtapasContratacionModule } from './campana-etapas-contratacion/c
 import { CampanasModule } from './campanas/campanas.module';
 import { EtapasContratacionModule } from './etapas-contratacion/etapas-contratacion.module';
 import { TiemposTravesiaModule } from './tiempos-travesia/tiempos-travesia.module';
+import { DatosEntidadModule } from './datos-entidad/datos-entidad.module';
+import { FichaCompraAtributosModule } from './ficha-compra-atributos/ficha-compra-atributos.module';
+import { FichaCompraDetalleModule } from './ficha-compra-detalle/ficha-compra-detalle.module';
+import { FichaCompraResumenModule } from './ficha-compra-resumen/ficha-compra-resumen.module';
 
 @Module({
   imports: [
@@ -89,6 +93,10 @@ import { TiemposTravesiaModule } from './tiempos-travesia/tiempos-travesia.modul
     CampanasModule,
     EtapasContratacionModule,
     TiemposTravesiaModule,
+    DatosEntidadModule,
+    FichaCompraAtributosModule,
+    FichaCompraDetalleModule,
+    FichaCompraResumenModule,
   ],
   controllers: [AppController],
   providers: [AppService],
