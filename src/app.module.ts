@@ -42,6 +42,17 @@ import { DatosEntidadModule } from './datos-entidad/datos-entidad.module';
 import { FichaCompraAtributosModule } from './ficha-compra-atributos/ficha-compra-atributos.module';
 import { FichaCompraDetalleModule } from './ficha-compra-detalle/ficha-compra-detalle.module';
 import { FichaCompraResumenModule } from './ficha-compra-resumen/ficha-compra-resumen.module';
+import { FichaCostoResumenModule } from './ficha-costo-resumen/ficha-costo-resumen.module';
+import { FormasEntregaModule } from './formas-entrega/formas-entrega.module';
+import { FormasPagoModule } from './formas-pago/formas-pago.module';
+import { PliegoConcurrenciaModule } from './pliego-concurrencia/pliego-concurrencia.module';
+import { PliegoConcurrenciaDetalleModule } from './pliego-concurrencia-detalle/pliego-concurrencia-detalle.module';
+import { PliegoConcurrenciaResumenModule } from './pliego-concurrencia-resumen/pliego-concurrencia-resumen.module';
+import { SolicitudCodificacionModule } from './solicitud-codificacion/solicitud-codificacion.module';
+import { SolicitudContratacionModule } from './solicitud-contratacion/solicitud-contratacion.module';
+import { SolicitudOfertasModule } from './solicitud-ofertas/solicitud-ofertas.module';
+import { SolicitudOfertasEntradasModule } from './solicitud-ofertas-entradas/solicitud-ofertas-entradas.module';
+import { SolicitudOfertasProveedorModule } from './solicitud-ofertas-proveedor/solicitud-ofertas-proveedor.module';
 
 @Module({
   imports: [
@@ -97,6 +108,17 @@ import { FichaCompraResumenModule } from './ficha-compra-resumen/ficha-compra-re
     FichaCompraAtributosModule,
     FichaCompraDetalleModule,
     FichaCompraResumenModule,
+    FichaCostoResumenModule,
+    FormasEntregaModule,
+    FormasPagoModule,
+    PliegoConcurrenciaModule,
+    PliegoConcurrenciaDetalleModule,
+    PliegoConcurrenciaResumenModule,
+    SolicitudCodificacionModule,
+    SolicitudContratacionModule,
+    SolicitudOfertasModule,
+    SolicitudOfertasEntradasModule,
+    SolicitudOfertasProveedorModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -3,7 +3,7 @@ import { InputType, Int, Field } from '@nestjs/graphql';
 @InputType()
 export class CreateBasesGeneralesInput {
   @Field(() => Int, { nullable: true})
-  idBaseGenerales?: number;
+  idBasesGenerales?: number;
 
   @Field(() => Int)
   consecutivo: number;
@@ -19,6 +19,9 @@ export class CreateBasesGeneralesInput {
 
   @Field(() => Int)
   idProforma: number;
+
+  @Field(() => Int)
+  idClasificacion: number;
 
   @Field()
   lugardeFirma: string;

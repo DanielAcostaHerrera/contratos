@@ -8,6 +8,7 @@ import {
 } from "typeorm";
 import { BasesCMarco } from "./BasesCMarco.entity";
 import { BasesGenerales } from "./BasesGenerales.entity";
+import { SolicitudContratacion } from "./SolicitudContratacion.entity";
 
 @ObjectType()
 @Index("PK_Compradores", ["idComprador"], { unique: true })
@@ -48,4 +49,8 @@ export class Compradores {
   @Field(() => [BasesGenerales])
   @OneToMany(() => BasesGenerales,(basesGenerales) => basesGenerales.compradores)
   basesGenerales: BasesGenerales[];
+
+  @Field(() => [SolicitudContratacion])
+  @OneToMany(() => SolicitudContratacion,(solicitudContratacion) => solicitudContratacion.comprador)
+  solicitudContratacion: SolicitudContratacion[];
 }

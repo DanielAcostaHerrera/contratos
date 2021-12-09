@@ -29,7 +29,7 @@ export class TiemposTravesiaResolver {
   }
 
   @ResolveField(() => EtapasContratacion, {nullable: true})
-  etapaContratacion(@Parent() etapasContratacion: EtapasContratacion) {
-    return this.tiemposTravesiaService.getEtapasContratacion(etapasContratacion.idEtapa);
+  etapaContratacion(@Parent() tiemposTravesia: TiemposTravesia): Promise<EtapasContratacion> {
+    return this.tiemposTravesiaService.getEtapasContratacion(tiemposTravesia.idEtapa);
   }
 }

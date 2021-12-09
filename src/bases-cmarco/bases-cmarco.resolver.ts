@@ -5,6 +5,7 @@ import { BasesCMarco } from 'src/models/entities/BasesCMarco.entity';
 import { Puertos } from 'src/models/entities/Puertos.entity';
 import { Proformas } from 'src/models/entities/Proformas.entity';
 import { Compradores } from 'src/models/entities/Compradores.entity';
+import { BasesGenerales } from 'src/models/entities/BasesGenerales.entity';
 
 @Resolver(() => BasesCMarco)
 export class BasesCmarcoResolver {
@@ -26,18 +27,23 @@ export class BasesCmarcoResolver {
   }
 
   @ResolveField(() => Puertos, {nullable: true})
-  puerto(@Parent() puerto: Puertos) {
-    return this.basesCmarcoService.getPuerto(puerto.idPuerto);
+  puerto(@Parent() basesCMarco: BasesCMarco): Promise<Puertos> {
+    return this.basesCmarcoService.getPuerto(basesCMarco.idPuerto);
   }
 
   @ResolveField(() => Proformas, {nullable: true})
-  proforma(@Parent() proformas: Proformas) {
-    return this.basesCmarcoService.getProforma(proformas.idProforma);
+  proforma(@Parent() basesCMarco: BasesCMarco): Promise<Proformas> {
+    return this.basesCmarcoService.getProforma(basesCMarco.idProforma);
   }
 
   @ResolveField(() => Compradores, {nullable: true})
-  comprador(@Parent() comprador: Compradores) {
-    return this.basesCmarcoService.getComprador(comprador.idComprador);
+  comprador(@Parent() basesCMarco: BasesCMarco): Promise<Compradores> {
+    return this.basesCmarcoService.getComprador(basesCMarco.idComprador);
+  }
+
+  @ResolveField(() => BasesGenerales, {nullable: true})
+  basesGenerales(@Parent() basesCMarco: BasesCMarco): Promise<BasesGenerales> {
+    return this.basesCmarcoService.getBasesGenerales(basesCMarco.idBasesGenerales);
   }
 
   @Mutation(() => BasesCMarco)

@@ -32,22 +32,22 @@ export class FichaCompraResumenResolver {
   }
 
   @ResolveField(() => Monedas, {nullable: true})
-  moneda(@Parent() monedas: Monedas) {
-    return this.fichaCompraResumenService.getMoneda(monedas.idMoneda);
+  moneda(@Parent() fichaCompraResumen: FichaCompraResumen): Promise<Monedas> {
+    return this.fichaCompraResumenService.getMoneda(fichaCompraResumen.idMoneda);
   }
 
   @ResolveField(() => Incoterm, {nullable: true})
-  incoterm(@Parent() incoterm: Incoterm) {
-    return this.fichaCompraResumenService.getIncoterm(incoterm.idIncoterm);
+  incoterm(@Parent() fichaCompraResumen: FichaCompraResumen): Promise<Incoterm> {
+    return this.fichaCompraResumenService.getIncoterm(fichaCompraResumen.idIncoterm);
   }
 
   @ResolveField(() => Contratos, {nullable: true})
-  contrato(@Parent() contratos: Contratos) {
-    return this.fichaCompraResumenService.getContrato(contratos.idContrato);
+  contrato(@Parent() fichaCompraResumen: FichaCompraResumen): Promise<Contratos> {
+    return this.fichaCompraResumenService.getContrato(fichaCompraResumen.idContrato);
   }
 
   @ResolveField(() => NegociacionResumen, {nullable: true})
-  negociacionResumen(@Parent() negociacionResumen: NegociacionResumen) {
-    return this.fichaCompraResumenService.getNegociacionResumen(negociacionResumen.idNegociacion);
+  negociacionResumen(@Parent() fichaCompraResumen: FichaCompraResumen): Promise<NegociacionResumen> {
+    return this.fichaCompraResumenService.getNegociacionResumen(fichaCompraResumen.idNegociacion);
   }
 }

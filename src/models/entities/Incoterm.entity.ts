@@ -8,6 +8,8 @@ import {
 } from "typeorm";
 import { BasesGenerales } from "./BasesGenerales.entity";
 import { FichaCompraResumen } from "./FichaCompraResumen.entity";
+import { FichaCostoResumen } from "./FichaCostoResumen.entity";
+import { PliegoConcurrenciaResumen } from "./PliegoConcurrenciaResumen.entity";
 
 @ObjectType()
 @Index("IX_Incoterm", ["abreviatura"], { unique: true })
@@ -41,4 +43,13 @@ export class Incoterm {
   @Field(() => [FichaCompraResumen] , {nullable: true})
   @OneToMany(() => FichaCompraResumen,(fichaCompraResumen) => fichaCompraResumen.incoterm)
   fichaCompraResumen: FichaCompraResumen[];
+
+  @Field(() => [FichaCostoResumen] , {nullable: true})
+  @OneToMany(() => FichaCostoResumen,(fichaCostoResumen) => fichaCostoResumen.incoterm)
+  fichaCostoResumen: FichaCostoResumen[];
+
+  @Field(() => [PliegoConcurrenciaResumen] , {nullable: true})
+  @OneToMany(() => PliegoConcurrenciaResumen,(pliegoConcurrenciaResumen) => pliegoConcurrenciaResumen.incoterm)
+  pliegoConcurrenciaResumen: PliegoConcurrenciaResumen[];
 }
+

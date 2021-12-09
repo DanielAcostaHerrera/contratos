@@ -9,7 +9,7 @@ import { Field, Int, ObjectType } from "@nestjs/graphql";
 
 @Index(
   "IX_BasesGeneralesClausulas",
-  ["idBaseGenerales", "idProformaClausula", "idTipoClausula"],
+  ["idBasesGenerales", "idProformaClausula", "idTipoClausula"],
   { unique: true }
 )
 @Entity("BasesGeneralesClausulas", { schema: "dbo" })
@@ -18,9 +18,9 @@ export class BasesGeneralesClausulas {
   @Field(() => Int)
   idBasesGeneralesClausulas: number;
 
-  @Column("int", { name: "IdBaseGenerales" })
+  @Column("int", { name: "IdBasesGenerales" })
   @Field(() => Int)
-  idBaseGenerales: number;
+  idBasesGenerales: number;
 
   @Column("int", { name: "IdProformaClausula" })
   @Field(() => Int)
@@ -53,7 +53,7 @@ export class BasesGeneralesClausulas {
 
   @Field(() => BasesGenerales , {nullable: true})
   @ManyToOne(() => BasesGenerales,(basesGenerales) => basesGenerales.basesGeneralesClausulas,{ onDelete: "CASCADE", onUpdate: "CASCADE" })
-  @JoinColumn([{ name: "IdBaseGenerales", referencedColumnName: "idBaseGenerales" }])
+  @JoinColumn([{ name: "IdBasesGenerales", referencedColumnName: "idBasesGenerales" }])
   basesGenerales: BasesGenerales;
 
   @Field(() => ProformaClausulas , {nullable: true})

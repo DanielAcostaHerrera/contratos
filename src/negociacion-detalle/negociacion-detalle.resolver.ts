@@ -29,7 +29,7 @@ export class NegociacionDetalleResolver {
   }
 
   @ResolveField(() => NegociacionResumen, {nullable: true})
-  negociacionResumen(@Parent() negociacionResumen: NegociacionResumen) {
-    return this.negociacionDetalleService.getNegociacionResumen(negociacionResumen.idNegociacion);
+  negociacionResumen(@Parent() negociacionDetalle: NegociacionDetalle): Promise<NegociacionResumen> {
+    return this.negociacionDetalleService.getNegociacionResumen(negociacionDetalle.idNegociacion);
   }
 }

@@ -13,6 +13,8 @@ import { Field, Int, Float, ObjectType } from "@nestjs/graphql";
 import { Puertos } from "./Puertos.entity";
 import { Proformas } from "./Proformas.entity";
 import { Compradores } from "./Compradores.entity";
+import { FichaCostoResumen } from "./FichaCostoResumen.entity";
+import { BasesGenerales } from "./BasesGenerales.entity";
 
 @ObjectType()
 @Index("PK_CTO_BasesCMarco", ["idBaseCMarco"], { unique: true })
@@ -22,9 +24,9 @@ export class BasesCMarco {
   @Field(() => Int)
   idBaseCMarco: number;
 
-  @Column("int", { name: "IdBaseGenerales", nullable: true })
+  @Column("int", { name: "IdBasesGenerales", nullable: true })
   @Field(() => Int)
-  idBaseGenerales: number | null;
+  idBasesGenerales: number | null;
 
   @Column("int", { name: "IdProveedor", default: () => "(0)" })
   @Field(() => Int)
@@ -146,6 +148,11 @@ export class BasesCMarco {
   @OneToMany(() => BasesCMarcoEspecificos,(basesCMarcoEspecificos) => basesCMarcoEspecificos.baseCMarco)
   basesCMarcoEspecificos: BasesCMarcoEspecificos[];
 
+  @Field(() => BasesGenerales, {nullable: true})
+  @ManyToOne(() => BasesGenerales, (basesGenerales) => basesGenerales.basesCMarco)
+  @JoinColumn([{ name: "IdBasesGenerales", referencedColumnName: "idBasesGenerales" }])
+  basesGenerales: BasesGenerales;
+  
   @Field(() => Puertos, {nullable: true})
   @ManyToOne(() => Puertos, (puertos) => puertos.basesCMarco)
   @JoinColumn([{ name: "IdPuerto", referencedColumnName: "idPuerto" }])
@@ -160,4 +167,8 @@ export class BasesCMarco {
   @ManyToOne(() => Compradores, (compradores) => compradores.basesCMarcos)
   @JoinColumn([{ name: "IdComprador", referencedColumnName: "idComprador" }])
   compradores: Compradores;
+
+  @Field(() => [FichaCostoResumen], {nullable: true})
+  @OneToMany(() => FichaCostoResumen,(fichaCostoResumen) => fichaCostoResumen.baseCMarco)
+  fichaCostoResumen: FichaCostoResumen[];
 }

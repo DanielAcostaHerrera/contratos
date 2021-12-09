@@ -6,7 +6,7 @@ export class CreateBasesGeneralesClausulaInput {
   idBasesGeneralesClausulas?: number;
 
   @Field(() => Int)
-  idBaseGenerales: number;
+  idBasesGenerales: number;
 
   @Field(() => Int)
   idProformaClausula: number;

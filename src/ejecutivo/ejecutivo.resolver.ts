@@ -30,12 +30,12 @@ export class EjecutivoResolver {
   }
 
   @ResolveField(() => Cargos, {nullable: true})
-  cargo(@Parent() cargos: Cargos) {
-    return this.ejecutivoService.getCargo(cargos.idCargo);
+  cargo(@Parent() ejecutivos: Ejecutivos): Promise<Cargos> {
+    return this.ejecutivoService.getCargo(ejecutivos.idCargo);
   }
 
   @ResolveField(() => GruposDeCompras, {nullable: true})
-  grupo(@Parent() gruposDeCompras: GruposDeCompras) {
-    return this.ejecutivoService.getGrupo(gruposDeCompras.idGrupo);
+  grupo(@Parent() ejecutivos: Ejecutivos): Promise<GruposDeCompras> {
+    return this.ejecutivoService.getGrupo(ejecutivos.idGrupo);
   }
 }

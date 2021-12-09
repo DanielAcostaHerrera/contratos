@@ -29,7 +29,7 @@ export class ContratoDesgloseResolver {
   }
 
   @ResolveField(() => Contratos, {nullable: true})
-  contratos(@Parent() contratos: Contratos) {
-    return this.contratoDesgloseService.getContrato(contratos.idContrato);
+  contratos(@Parent() contratoDesglose: ContratoDesglose): Promise<Contratos> {
+    return this.contratoDesgloseService.getContrato(contratoDesglose.idContrato);
   }
 }

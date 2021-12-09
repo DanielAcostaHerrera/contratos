@@ -26,18 +26,18 @@ export class BasesCmarcoClausulasResolver {
   }
 
   @ResolveField(() => BasesCMarco, {nullable: true})
-  basesCMarco(@Parent() basesCMarco: BasesCMarco) {
-    return this.basesCmarcoClausulasService.getBaseCMarco(basesCMarco.idBaseCMarco);
+  basesCMarco(@Parent() basesCMarcoClausulas: BasesCMarcoClausulas): Promise<BasesCMarco> {
+    return this.basesCmarcoClausulasService.getBaseCMarco(basesCMarcoClausulas.idBaseCMarco);
   }
 
   @ResolveField(() => TiposDeClausulas, {nullable: true})
-  tipoDeClausula(@Parent() tiposDeClausulas: TiposDeClausulas) {
-    return this.basesCmarcoClausulasService.getTipoDeClausula(tiposDeClausulas.idTipoClausula);
+  tipoDeClausula(@Parent() basesCMarcoClausulas: BasesCMarcoClausulas): Promise<TiposDeClausulas> {
+    return this.basesCmarcoClausulasService.getTipoDeClausula(basesCMarcoClausulas.idTipoClausula);
   }
 
   @ResolveField(() => ProformaClausulas, {nullable: true})
-  proformaClausulas(@Parent() proformaClausulas: ProformaClausulas) {
-    return this.basesCmarcoClausulasService.getProformaClausula(proformaClausulas.idProformaClausula);
+  proformaClausulas(@Parent() basesCMarcoClausulas: BasesCMarcoClausulas): Promise<ProformaClausulas> {
+    return this.basesCmarcoClausulasService.getProformaClausula(basesCMarcoClausulas.idProformaClausula);
   }
 
   @Mutation(() => BasesCMarcoClausulas)

@@ -14,6 +14,7 @@ import { Monedas } from "./Monedas.entity";
 import { NegociacionDetalle } from "./NegociacionDetalle.entity";
 import { NegociacionDetalles } from "./NegociacionDetalles.entity";
 import { NegociacionProveedores } from "./NegociacionProveedores.entity";
+import { SolicitudContratacion } from "./SolicitudContratacion.entity";
 import { TiposDeCompras } from "./TiposDeCompras.entity";
 
 @ObjectType()
@@ -158,4 +159,8 @@ export class NegociacionResumen {
   @Field(() => [FichaCompraResumen])
   @OneToMany(() => FichaCompraResumen,(fichaCompraResumen) => fichaCompraResumen.negociacionResumen)
   fichaCompraResumen: FichaCompraResumen[];
+
+  @Field(() => [SolicitudContratacion])
+  @OneToMany(() => SolicitudContratacion,(solicitudContratacion) => solicitudContratacion.negociacion)
+  solicitudContratacion: SolicitudContratacion[];
 }

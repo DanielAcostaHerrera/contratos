@@ -15,6 +15,7 @@ import { Field, Int, ObjectType } from "@nestjs/graphql";
 import { Proformas } from "./Proformas.entity";
 import { Contratos } from "./Contratos.entity";
 import { Compradores } from "./Compradores.entity";
+import { BasesCMarco } from "./BasesCMarco.entity";
 
 @ObjectType()
 @Index("IX_CTO_BasesGeneralesComprador", ["idComprador"], {})
@@ -24,12 +25,12 @@ import { Compradores } from "./Compradores.entity";
 @Index("IX_CTO_BasesGeneralesProforma", ["idProforma"], {})
 @Index("IX_CTO_BasesGeneralesProveedor", ["idProveedor"], {})
 @Index("IX_CTO_BasesGeneralesTipoContrato", ["idTipoContrato"], {})
-@Index("PK_CTO_BasesGenerales", ["idBaseGenerales"], { unique: true })
+@Index("PK_CTO_BasesGenerales", ["idBasesGenerales"], { unique: true })
 @Entity("BasesGenerales", { schema: "dbo" })
 export class BasesGenerales {
-  @PrimaryGeneratedColumn({ type: "int", name: "IdBaseGenerales" })
+  @PrimaryGeneratedColumn({ type: "int", name: "IdBasesGenerales" })
   @Field(() => Int)
-  idBaseGenerales: number;
+  idBasesGenerales: number;
 
   @Column("int", { name: "Consecutivo" })
   @Field(() => Int)
@@ -50,6 +51,10 @@ export class BasesGenerales {
   @Column("int", { name: "IdProforma" })
   @Field(() => Int)
   idProforma: number;
+
+  @Column("int", { name: "IdClasificacion" })
+  @Field(() => Int)
+  idClasificacion: number;
 
   @Column("nvarchar", { name: "LugardeFirma", length: 60 })
   @Field()
@@ -143,4 +148,8 @@ export class BasesGenerales {
   @Field(() => [Contratos] , {nullable: true})
   @OneToMany(() => Contratos, (contratos) => contratos.basesGenerales)
   contratos: Contratos[];
+
+  @Field(() => [BasesCMarco], { nullable: true })
+  @OneToMany(() => BasesCMarco,(basesCMarco) => basesCMarco.basesGenerales)
+  basesCMarco: BasesCMarco[];
 }

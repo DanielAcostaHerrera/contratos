@@ -31,17 +31,17 @@ export class NegociacionResumenResolver {
   }
 
   @ResolveField(() => GruposDeCompras, {nullable: true})
-  grupos(@Parent() gruposDeCompras: GruposDeCompras) {
-    return this.negociacionResumenService.getGrupo(gruposDeCompras.idGrupo);
+  grupos(@Parent() negociacionResumen: NegociacionResumen): Promise<GruposDeCompras> {
+    return this.negociacionResumenService.getGrupo(negociacionResumen.idGrupo);
   }
 
   @ResolveField(() => Monedas, {nullable: true})
-  monedas(@Parent() monedas: Monedas) {
-    return this.negociacionResumenService.getMoneda(monedas.idMoneda);
+  monedas(@Parent() negociacionResumen: NegociacionResumen): Promise<Monedas> {
+    return this.negociacionResumenService.getMoneda(negociacionResumen.idMoneda);
   }
 
   @ResolveField(() => TiposDeCompras, {nullable: true})
-  tiposDeCompras(@Parent() tiposDeCompras: TiposDeCompras) {
-    return this.negociacionResumenService.getTipoCompra(tiposDeCompras.idTipoCompras);
+  tiposDeCompras(@Parent() negociacionResumen: NegociacionResumen): Promise<TiposDeCompras> {
+    return this.negociacionResumenService.getTipoCompra(negociacionResumen.idTipoCompras);
   }
 }

@@ -30,12 +30,12 @@ export class ProformaClausulasResolver {
   }
 
   @ResolveField(() => TiposDeClausulas, {nullable: true})
-  tiposDeClausulas(@Parent() tiposDeClausulas: TiposDeClausulas) {
-    return this.proformaClausulasService.getTipoClausula(tiposDeClausulas.idTipoClausula);
+  tiposDeClausulas(@Parent() proformaClausulas: ProformaClausulas): Promise<TiposDeClausulas> {
+    return this.proformaClausulasService.getTipoClausula(proformaClausulas.idTipoClausula);
   }
 
   @ResolveField(() => Proformas, {nullable: true})
-  proformas(@Parent() proformas: Proformas) {
-    return this.proformaClausulasService.getProforma(proformas.idProforma);
+  proformas(@Parent() proformaClausulas: ProformaClausulas): Promise<Proformas> {
+    return this.proformaClausulasService.getProforma(proformaClausulas.idProforma);
   }
 }

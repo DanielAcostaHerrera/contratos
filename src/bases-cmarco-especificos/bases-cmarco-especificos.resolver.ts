@@ -24,8 +24,8 @@ export class BasesCmarcoEspecificosResolver {
   }
 
   @ResolveField(() => BasesCMarco, {nullable: true})
-  baseCMarco(@Parent() basesCMarco: BasesCMarco) {
-    return this.basesCmarcoEspecificosService.getBaseCMarco(basesCMarco.idBaseCMarco);
+  baseCMarco(@Parent() basesCMarcoEspecificos: BasesCMarcoEspecificos): Promise<BasesCMarco> {
+    return this.basesCmarcoEspecificosService.getBaseCMarco(basesCMarcoEspecificos.idBaseCMarco);
   }
 
   @Mutation(() => BasesCMarcoEspecificos)

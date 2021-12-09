@@ -31,17 +31,17 @@ export class ContratosResolver {
   }
 
   @ResolveField(() => BasesGenerales, {nullable: true})
-  basesGenerales(@Parent() basesGenerales: BasesGenerales) {
-    return this.contratosService.getBasesGenerales(basesGenerales.idBaseGenerales);
+  basesGenerales(@Parent() contratos: Contratos): Promise<BasesGenerales> {
+    return this.contratosService.getBasesGenerales(contratos.idBasesGenerales);
   }
   
   @ResolveField(() => TipoContrato, {nullable: true})
-  tipoContrato(@Parent() tipoContrato: TipoContrato) {
-    return this.contratosService.getTipoContrato(tipoContrato.idTipoContrato);
+  tipoContrato(@Parent() contratos: Contratos): Promise<TipoContrato> {
+    return this.contratosService.getTipoContrato(contratos.idTipoContrato);
   }
 
   @ResolveField(() => Proformas, {nullable: true})
-  proformas(@Parent() proformas: Proformas) {
-    return this.contratosService.getProforma(proformas.idProforma);
+  proformas(@Parent() contratos: Contratos): Promise<Proformas> {
+    return this.contratosService.getProforma(contratos.idProforma);
   }
 }

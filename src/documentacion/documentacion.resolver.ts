@@ -29,7 +29,7 @@ export class DocumentacionResolver {
   }
 
   @ResolveField(() => TiposDocumento, {nullable: true})
-  tiposDocumento(@Parent() tiposDocumento: TiposDocumento) {
-    return this.documentacionService.getTipoDocumento(tiposDocumento.idTipoDoc);
+  tiposDocumento(@Parent() documentacion: Documentacion): Promise<TiposDocumento> {
+    return this.documentacionService.getTipoDocumento(documentacion.idTipoDoc);
   }
 }

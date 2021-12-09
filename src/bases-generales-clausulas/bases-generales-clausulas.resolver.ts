@@ -31,17 +31,17 @@ export class BasesGeneralesClausulasResolver {
   }
 
   @ResolveField(() => TiposDeClausulas, {nullable: true})
-  tiposDeClausulas(@Parent() tiposDeClausulas: TiposDeClausulas) {
-    return this.basesGeneralesClausulasService.getTipoClausula(tiposDeClausulas.idTipoClausula);
+  tiposDeClausulas(@Parent() basesGeneralesClausulas: BasesGeneralesClausulas): Promise<TiposDeClausulas> {
+    return this.basesGeneralesClausulasService.getTipoClausula(basesGeneralesClausulas.idTipoClausula);
   }
 
   @ResolveField(() => BasesGenerales, {nullable: true})
-  basesGenerales(@Parent() basesGenerales: BasesGenerales) {
-    return this.basesGeneralesClausulasService.getBasesGenerales(basesGenerales.idBaseGenerales);
+  basesGenerales(@Parent() basesGeneralesClausulas: BasesGeneralesClausulas): Promise<BasesGenerales> {
+    return this.basesGeneralesClausulasService.getBasesGenerales(basesGeneralesClausulas.idBasesGenerales);
   }
 
   @ResolveField(() => ProformaClausulas, {nullable: true})
-  proformaClausula(@Parent() proformaClausulas: ProformaClausulas) {
-    return this.basesGeneralesClausulasService.getProformaClausulas(proformaClausulas.idProformaClausula);
+  proformaClausula(@Parent() basesGeneralesClausulas: BasesGeneralesClausulas): Promise<ProformaClausulas> {
+    return this.basesGeneralesClausulasService.getProformaClausulas(basesGeneralesClausulas.idProformaClausula);
   }
 }

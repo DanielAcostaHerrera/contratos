@@ -30,12 +30,12 @@ export class CampanaEtapasContratacionResolver {
   }
 
   @ResolveField(() => Campanas, {nullable: true})
-  campana(@Parent() campanas: Campanas) {
-    return this.campanaEtapasContratacionService.getCampana(campanas.idCampana);
+  campana(@Parent() campanaEtapasContratacion: CampanaEtapasContratacion): Promise<Campanas> {
+    return this.campanaEtapasContratacionService.getCampana(campanaEtapasContratacion.idCampana);
   }
 
   @ResolveField(() => EtapasContratacion, {nullable: true})
-  etapaContratacion(@Parent() etapasContratacion: EtapasContratacion) {
-    return this.campanaEtapasContratacionService.getEtapaContratacion(etapasContratacion.idEtapa);
+  etapaContratacion(@Parent() campanaEtapasContratacion: CampanaEtapasContratacion): Promise<EtapasContratacion> {
+    return this.campanaEtapasContratacionService.getEtapaContratacion(campanaEtapasContratacion.idEtapa);
   }
 }

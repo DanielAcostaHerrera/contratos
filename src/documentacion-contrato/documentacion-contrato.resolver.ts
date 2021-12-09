@@ -30,12 +30,12 @@ export class DocumentacionContratoResolver {
   }
 
   @ResolveField(() => Documentacion, {nullable: true})
-  documentacion(@Parent() documentacion: Documentacion) {
-    return this.documentacionContratoService.getDocumentacion(documentacion.idDocumento);
+  documentacion(@Parent() documentacionContrato: DocumentacionContrato): Promise<Documentacion> {
+    return this.documentacionContratoService.getDocumentacion(documentacionContrato.idDocumento);
   }
 
   @ResolveField(() => Contratos, {nullable: true})
-  contratos(@Parent() contratos: Contratos) {
-    return this.documentacionContratoService.getContrato(contratos.idContrato);
+  contratos(@Parent() documentacionContrato: DocumentacionContrato): Promise<Contratos> {
+    return this.documentacionContratoService.getContrato(documentacionContrato.idContrato);
   }
 }

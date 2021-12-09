@@ -98,7 +98,7 @@ type TiposDeClausulas {
 
 type BasesGeneralesClausulas {
   idBasesGeneralesClausulas: Int!
-  idBaseGenerales: Int!
+  idBasesGenerales: Int!
   idProformaClausula: Int!
   idTipoClausula: Int!
   orden: Int!
@@ -152,172 +152,27 @@ type BasesCMarcoEspecificos {
   baseCMarco: BasesCMarco
 }
 
-type Puertos {
-  idPuerto: Int!
-  nombre: String!
-  pais: Int!
-  deposito: String!
-  basesCMarco: [BasesCMarco!]
-}
-
-type Compradores {
-  idComprador: Int!
-  nombre: String!
-  representante: String!
-  domicilio: String!
-  cargo: String!
-  doble: Boolean!
-  activo: Boolean!
-  basesCMarcos: [BasesCMarco!]!
-  basesGenerales: [BasesGenerales!]!
-}
-
-type BasesCMarco {
-  idBaseCMarco: Int!
-  idBaseGenerales: Int!
-  idProveedor: Int!
-  consecutivo: Int!
-  directivaTrd: String!
-  directivaGae: String!
-  fecha: DateTime!
-  idProforma: Int!
-  especificos: String!
-  periodoInic: DateTime!
-  periodoFin: DateTime!
-  importeTotal: Float!
-  importeFinanciamiento: Float!
-  importeConFinanciamiento: Float!
-  idPuerto: Int!
-  aprobado: Boolean!
-  cancelado: Boolean!
-  activo: Boolean!
-  actualizado: DateTime!
-  importeTotalLetras: String!
-  importeFinanciamientoLetras: String!
-  importeTotalFinanciamientoLetras: String!
-  periodoInicV: DateTime!
-  periodoFinV: DateTime!
-  idComprador: Int!
-  noCMarco: String!
-  nProveedor: String!
-  basesCMarcoClausulas: [BasesCMarcoClausulas!]
-  basesCMarcoEspecificos: [BasesCMarcoEspecificos!]
-  puerto: Puertos
-  proforma: Proformas
-  compradores: Compradores
-  comprador: Compradores
-}
-
-type Proformas {
-  idProforma: Int!
-  idTipoContrato: Int!
-  idIncoterm: Int!
-  nombreProfoma: String!
-  activa: Boolean!
-  cMarcoF: Boolean!
-  basesCMarco: [BasesCMarco!]
-  proformaClausulas: [ProformaClausulas!]
-  basesGenerales: [BasesGenerales!]
-  contratos: [Contratos!]
-}
-
-type TiposDocumento {
-  idTipoDoc: Int!
-  nombreDoc: String!
-  documentaciones: [Documentacion!]!
-}
-
-type Documentacion {
-  idDocumento: Int!
-  idTipoDoc: Int!
-  nombreFichero: String!
+type Embalajes {
+  idEmbalaje: Int!
   descripcion: String!
-  tipoFichero: String!
-  iDoc: String!
-  tiposDocumento: TiposDocumento
-  documentacionContratos: [DocumentacionContrato!]
-}
-
-type DocumentacionContrato {
-  idDocumentacionContrato: Int!
-  idDocumento: Int!
-  idContrato: Int!
-  idAsociacion: Int!
-  documentacion: Documentacion
-  contratos: Contratos
-}
-
-type Contratos {
-  idContrato: Int!
-  idBasesGenerales: Int!
-  idTipoContrato: Int!
-  idProforma: Int!
-  consecutivo: Int!
-  condicionCompra: Int!
-  lugar: String!
-  fecha: DateTime!
-  paS: Int!
-  cancelado: Boolean!
-  terminado: Boolean!
-  noContrato: String!
-  proveedor: Int!
-  basesGenerales: BasesGenerales!
-  tipoContrato: TipoContrato!
-  proformas: Proformas!
-  contratoDesgloses: [ContratoDesglose!]!
-  documentacionContratos: [DocumentacionContrato!]!
-  fichaCompraResumen: [FichaCompraResumen!]!
-}
-
-type TipoContrato {
-  idTipoContrato: Int!
-  tipoContrato: String!
-  encabezado: String!
-  ambasPartes: String!
-  visible: Boolean!
-  basesGenerales: [BasesGenerales!]
-  contratos: [Contratos!]
-}
-
-type BasesGenerales {
-  idBaseGenerales: Int!
-  consecutivo: Int!
-  fecha: DateTime!
-  idTipoContrato: Int!
-  idIncoterm: Int!
-  idProforma: Int!
-  lugardeFirma: String!
-  pais: Int!
-  idProveedor: Int!
-  nProveedor: String!
-  nombreRepresentante: String!
-  cargoRepresentante: String!
-  direccionProveedor: String!
-  idComprador: Int!
-  vigencia: Int!
-  fechaVencimiento: DateTime!
-  aprobado: Boolean!
-  cancelado: Boolean!
-  activo: Boolean!
-  actualizado: DateTime!
-  noContrato: String!
-  clasificaciones: Clasificaciones
-  tipoDeContrato: TipoContrato
-  incoterm: Incoterm
-  proforma: Proformas
-  compradores: Compradores
-  basesGeneralesClausulas: [BasesGeneralesClausulas!]
-  contratos: [Contratos!]
-}
-
-type Incoterm {
-  idIncoterm: Int!
-  nombre: String!
   abreviatura: String!
-  nota: String!
-  activo: Boolean!
-  basesGenerales: [BasesGenerales!]
-  fichaCompraResumen: [FichaCompraResumen!]
+  fichaCostoResumen: [FichaCostoResumen!]!
+  pliegoConcurrenciaDetalles: [PliegoConcurrenciaDetalle!]!
+}
+
+type PliegoConcurrenciaDetalle {
+  idPliegoDetalle: Int!
+  idPliegoResumen: Int!
+  idEspecifico: Int!
+  idEmbalaje: Int!
+  cantidad: Float!
+  idUnidadMedida: Int!
+  pesoBruto: Float!
+  precioI: Float!
+  precioIi: Float!
+  precioIii: Float!
+  pliegoResumen: PliegoConcurrenciaResumen!
+  embalaje: Embalajes!
 }
 
 type Cargos {
@@ -414,6 +269,412 @@ type NegociacionResumen {
   monedas: Monedas!
   grupos: GruposDeCompras!
   fichaCompraResumen: [FichaCompraResumen!]!
+  solicitudContratacion: [SolicitudContratacion!]!
+}
+
+type Compradores {
+  idComprador: Int!
+  nombre: String!
+  representante: String!
+  domicilio: String!
+  cargo: String!
+  doble: Boolean!
+  activo: Boolean!
+  basesCMarcos: [BasesCMarco!]!
+  basesGenerales: [BasesGenerales!]!
+  solicitudContratacion: [SolicitudContratacion!]!
+}
+
+type SolicitudContratacion {
+  idSolicitudContrato: Int!
+  idNegociacion: Int!
+  consecutivo: Int!
+  idComprador: Int!
+  fecha: DateTime!
+  nota: String!
+  negociacion: NegociacionResumen!
+  comprador: Compradores!
+  solicitudOfertas: [SolicitudOfertas!]!
+}
+
+type SolicitudOfertasEntradas {
+  idOfertasEntradas: Int!
+  idOfertasProveedor: Int!
+  fechaRecepcionOferta: DateTime!
+  detalle: String!
+  referencia: String!
+  codigo: String!
+  decripcion: String!
+  um: String!
+  packing: Int!
+  cantidad: Float!
+  dimension: String!
+  cubicaje: String!
+  precioCosto: Float!
+  ofertasProveedor: SolicitudOfertasProveedor!
+}
+
+type SolicitudOfertasProveedor {
+  idOfertasProveedor: Int!
+  idOferta: Int!
+  idProveedor: Int!
+  representante: String!
+  cargo: String!
+  solicitudOfertasEntradas: [SolicitudOfertasEntradas!]!
+  solicitudOfertas: SolicitudOfertas!
+}
+
+type SolicitudOfertas {
+  idOferta: Int!
+  idSolicitudContrato: Int!
+  consecutivo: Int!
+  solicitud: String!
+  fechaSolicitudOferta: DateTime!
+  fechaEnviadaOferta: DateTime!
+  fechaFin: DateTime!
+  contraOferta: Boolean!
+  terminada: Boolean!
+  cancelada: Boolean!
+  elaboradoPor: Int!
+  aprobadoPor: Int!
+  pliegoConcurrencias: [PliegoConcurrencia!]!
+  solicitudContrato: SolicitudContratacion!
+  solicitudOfertasProveedores: [SolicitudOfertasProveedor!]!
+}
+
+type PliegoConcurrencia {
+  idPliego: Int!
+  idOferta: Int!
+  oferta: SolicitudOfertas!
+  pliegoConcurrenciaResumen: [PliegoConcurrenciaResumen!]!
+}
+
+type FormasEntrega {
+  idFormaEntrega: Int!
+  formaEntrega: String!
+  dias: Int!
+  pliegoConcurrenciaResumen: [PliegoConcurrenciaResumen!]!
+}
+
+type TiposContenedor {
+  idTipoContenedor: Int!
+  tipoContenedor: String!
+  pliegoConcurrenciaResumen: [PliegoConcurrenciaResumen!]!
+}
+
+type SolicitudCodificacion {
+  idSolicitudCompra: Int!
+  idPliegoResumen: Int!
+  referencia: String!
+  decripcion: String!
+  um: String!
+  marca: String!
+  naturaleza: String!
+  packing: Int!
+  cantidad: Float!
+  dimension: String!
+  cubicaje: String!
+  embalaje: String!
+  precioCosto: Float!
+  pliegoResumen: PliegoConcurrenciaResumen!
+}
+
+type PliegoConcurrenciaResumen {
+  idPliegoResumen: Int!
+  idPliego: Int!
+  idIncoterm: Int!
+  idFormaPago: Int!
+  idFormaEntrega: Int!
+  idPuertoEmbarque: Int!
+  idPuertoDestino: Int!
+  idTipoContenedor: Int!
+  idProveedor: Int!
+  paisOrigenMercancia: Int!
+  fechaOfertaRecibida: DateTime!
+  fechaEntregaOferta: DateTime!
+  idMonedaOferta: Int!
+  idMonedaPago: Int!
+  idMonedaCartaCredito: Int!
+  rateCambioOferta: Float!
+  fechaRateCOferta: DateTime!
+  rateCambioCuc: Float!
+  fechaRateCambio: DateTime!
+  tasaInteres: Float!
+  inicioFinanciamiento: String!
+  idNaviera: Int!
+  tiempoPrimeraEntrega: Int!
+  seguro: Float!
+  flete: Float!
+  rateCambioFlete: Float!
+  contenedores: Int!
+  pesoBruto: Float!
+  pliegoConcurrenciaDetalles: [PliegoConcurrenciaDetalle!]!
+  pliegoConcurrencia: PliegoConcurrencia!
+  monedaOferta: Monedas!
+  monedaPago: Monedas!
+  monedaCartaCredito: Monedas!
+  incoterm: Incoterm!
+  formaPago: FormasPago!
+  formaEntrega: FormasEntrega!
+  puertoEmbarque: Puertos!
+  puertoDestino: Puertos!
+  tipoContenedor: TiposContenedor!
+  solicitudCodificacion: [SolicitudCodificacion!]!
+}
+
+type FormasPago {
+  idFormaPago: Int!
+  formaPago: String!
+  dias: Int!
+  fichaCostoResumen: [FichaCostoResumen!]!
+  pliegoConcurrenciaResumen: [PliegoConcurrenciaResumen!]!
+}
+
+type FichaCostoResumen {
+  idFicha: Int!
+  idCCosto: Int!
+  idBaseCMarco: Int!
+  idMoneda: Int!
+  idFormaPago: Int!
+  idIncoterm: Int!
+  idPuerto: Int!
+  idEmbalaje: Int!
+  idProveedor: Int!
+  bl: String!
+  cantAnexos: Int!
+  viaTransporte: Int!
+  idPais: Int!
+  destino: String!
+  contenedores: String!
+  pesoBruto: Float!
+  pesoNeto: Float!
+  cantidadEmbalaje: Float!
+  cantidad: Float!
+  codigo: String!
+  descripcion: String!
+  valorContratacion: Float!
+  gastoAlmacenOrigen: Float!
+  gastoTranspOrigen: Float!
+  gastoAduanaOrigen: Float!
+  gastoManipulacionOrigen: Float!
+  otrosGastosOrigen: Float!
+  totalGastoOrigen: Float!
+  recargoContratacion: Float!
+  descuentoContratacion: Float!
+  totalRecDescContrato: Float!
+  totalAdquisicion: Float!
+  difCambioMoneda: Float!
+  tasaCambioContratacion: Float!
+  valorMercancia: Float!
+  tarifaFlete: Float!
+  recargoFlete: Float!
+  descuentoFlete: Float!
+  totalFlete: Float!
+  costoFleteUsd: Float!
+  seguro: Float!
+  tasaSeguro: Float!
+  costoCifFleteUsd: Float!
+  tasaCambioMn: Float!
+  costoFleteSeguroMn: Float!
+  factorConversion: Float!
+  tasaArancelaria: Float!
+  valorArancel: Float!
+  gastoManipulacion: Float!
+  gastoDoc: Float!
+  gastoEmisionBl: Float!
+  gastoMovContenedores: Float!
+  gastoAsistenciaTecn: Float!
+  gastoSeguridadCont: Float!
+  gastoFumigacion: Float!
+  gastoSupervisiones: Float!
+  gastoFitosanitario: Float!
+  oGastosPortuariosAduanales: Float!
+  gastosImportacion: Float!
+  otrosGastos: Float!
+  totalGastos: Float!
+  indicePGasto: Float!
+  tasaMaxRecargo: Float!
+  margenComercial: Float!
+  tasaImpuestoVentas: Float!
+  tasaContibucion: Float!
+  tasaImpuetoProducto: Float!
+  totalImpuestoContrib: Float!
+  pVentaImportador: Float!
+  fecha: DateTime!
+  nota: String!
+  elaborado: Int!
+  aprobado: Int!
+  baseCMarco: BasesCMarco!
+  moneda: Monedas!
+  formaPago: FormasPago!
+  incoterm: Incoterm!
+  puerto: Puertos!
+  embalaje: Embalajes!
+}
+
+type Puertos {
+  idPuerto: Int!
+  nombre: String!
+  pais: Int!
+  deposito: String!
+  basesCMarco: [BasesCMarco!]
+  fichaCostoResumen: [FichaCostoResumen!]
+  pliegoConcurrenciaResumenEmbarque: [PliegoConcurrenciaResumen!]
+  pliegoConcurrenciaResumenDestino: [PliegoConcurrenciaResumen!]
+}
+
+type BasesCMarco {
+  idBaseCMarco: Int!
+  idBasesGenerales: Int!
+  idProveedor: Int!
+  consecutivo: Int!
+  directivaTrd: String!
+  directivaGae: String!
+  fecha: DateTime!
+  idProforma: Int!
+  especificos: String!
+  periodoInic: DateTime!
+  periodoFin: DateTime!
+  importeTotal: Float!
+  importeFinanciamiento: Float!
+  importeConFinanciamiento: Float!
+  idPuerto: Int!
+  aprobado: Boolean!
+  cancelado: Boolean!
+  activo: Boolean!
+  actualizado: DateTime!
+  importeTotalLetras: String!
+  importeFinanciamientoLetras: String!
+  importeTotalFinanciamientoLetras: String!
+  periodoInicV: DateTime!
+  periodoFinV: DateTime!
+  idComprador: Int!
+  noCMarco: String!
+  nProveedor: String!
+  basesCMarcoClausulas: [BasesCMarcoClausulas!]
+  basesCMarcoEspecificos: [BasesCMarcoEspecificos!]
+  basesGenerales: BasesGenerales
+  puerto: Puertos
+  proforma: Proformas
+  compradores: Compradores
+  fichaCostoResumen: [FichaCostoResumen!]
+  comprador: Compradores
+}
+
+type Proformas {
+  idProforma: Int!
+  idTipoContrato: Int!
+  idIncoterm: Int!
+  nombreProfoma: String!
+  activa: Boolean!
+  cMarcoF: Boolean!
+  basesCMarco: [BasesCMarco!]
+  proformaClausulas: [ProformaClausulas!]
+  basesGenerales: [BasesGenerales!]
+  contratos: [Contratos!]
+}
+
+type TiposDocumento {
+  idTipoDoc: Int!
+  nombreDoc: String!
+  documentaciones: [Documentacion!]!
+}
+
+type Documentacion {
+  idDocumento: Int!
+  idTipoDoc: Int!
+  nombreFichero: String!
+  descripcion: String!
+  tipoFichero: String!
+  iDoc: String!
+  tiposDocumento: TiposDocumento
+  documentacionContratos: [DocumentacionContrato!]
+}
+
+type DocumentacionContrato {
+  idDocumentacionContrato: Int!
+  idDocumento: Int!
+  idContrato: Int!
+  idAsociacion: Int!
+  documentacion: Documentacion
+  contratos: Contratos
+}
+
+type Contratos {
+  idContrato: Int!
+  idBasesGenerales: Int!
+  idTipoContrato: Int!
+  idProforma: Int!
+  consecutivo: Int!
+  condicionCompra: Int!
+  lugar: String!
+  fecha: DateTime!
+  paS: Int!
+  cancelado: Boolean!
+  terminado: Boolean!
+  noContrato: String!
+  proveedor: Int!
+  basesGenerales: BasesGenerales!
+  tipoContrato: TipoContrato!
+  proformas: Proformas!
+  contratoDesgloses: [ContratoDesglose!]!
+  documentacionContratos: [DocumentacionContrato!]!
+  fichaCompraResumen: [FichaCompraResumen!]!
+}
+
+type TipoContrato {
+  idTipoContrato: Int!
+  tipoContrato: String!
+  encabezado: String!
+  ambasPartes: String!
+  visible: Boolean!
+  basesGenerales: [BasesGenerales!]
+  contratos: [Contratos!]
+}
+
+type BasesGenerales {
+  idBasesGenerales: Int!
+  consecutivo: Int!
+  fecha: DateTime!
+  idTipoContrato: Int!
+  idIncoterm: Int!
+  idProforma: Int!
+  idClasificacion: Int!
+  lugardeFirma: String!
+  pais: Int!
+  idProveedor: Int!
+  nProveedor: String!
+  nombreRepresentante: String!
+  cargoRepresentante: String!
+  direccionProveedor: String!
+  idComprador: Int!
+  vigencia: Int!
+  fechaVencimiento: DateTime!
+  aprobado: Boolean!
+  cancelado: Boolean!
+  activo: Boolean!
+  actualizado: DateTime!
+  noContrato: String!
+  clasificaciones: Clasificaciones
+  tipoDeContrato: TipoContrato
+  incoterm: Incoterm
+  proforma: Proformas
+  compradores: Compradores
+  basesGeneralesClausulas: [BasesGeneralesClausulas!]
+  contratos: [Contratos!]
+  basesCMarco: [BasesCMarco!]
+}
+
+type Incoterm {
+  idIncoterm: Int!
+  nombre: String!
+  abreviatura: String!
+  nota: String!
+  activo: Boolean!
+  basesGenerales: [BasesGenerales!]
+  fichaCompraResumen: [FichaCompraResumen!]
+  fichaCostoResumen: [FichaCostoResumen!]
+  pliegoConcurrenciaResumen: [PliegoConcurrenciaResumen!]
 }
 
 type FichaCompraResumen {
@@ -514,17 +775,10 @@ type Monedas {
   abreviatura: String!
   negociacionResumen: [NegociacionResumen!]!
   fichaCompraResumen: [FichaCompraResumen!]!
-}
-
-type Embalajes {
-  idEmbalaje: Int!
-  descripcion: String!
-  abreviatura: String!
-}
-
-type TiposContenedor {
-  idTipoContenedor: Int!
-  tipoContenedor: String!
+  fichaCostoResumen: [FichaCostoResumen!]!
+  pliegoConcurrenciaResumenOferta: [PliegoConcurrenciaResumen!]!
+  pliegoConcurrenciaResumenPago: [PliegoConcurrenciaResumen!]!
+  pliegoConcurrenciaResumenCredito: [PliegoConcurrenciaResumen!]!
 }
 
 type Configuracion {
@@ -607,14 +861,6 @@ type Query {
   findOneProforma(id: Int!): Proformas!
   findAllCompradores: [Compradores!]!
   findOneCompradores(id: Int!): Compradores!
-  findAllBasesCMarcoClausula: [BasesCMarcoClausulas!]!
-  findOneBasesCMarcoClausula(id: Int!): BasesCMarcoClausulas!
-  findAllTiposDeClausulas: [TiposDeClausulas!]!
-  findOneTiposDeClausulas(id: Int!): TiposDeClausulas!
-  findAllProformaClausulas: [ProformaClausulas!]!
-  findOneProformaClausulas(id: Int!): ProformaClausulas!
-  findAllBasesCmarcoEspecificos: [BasesCMarcoEspecificos!]!
-  findOneBasesCmarcoEspecificos(id: Int!): BasesCMarcoEspecificos!
   findAllBasesGenerales: [BasesGenerales!]!
   findOneBasesGenerales(id: Int!): BasesGenerales!
   findAllClasificaciones: [Clasificaciones!]!
@@ -623,6 +869,14 @@ type Query {
   findOneTipoContrato(id: Int!): TipoContrato!
   findAllIncoterm: [Incoterm!]!
   findOneIncoterm(id: Int!): Incoterm!
+  findAllBasesCMarcoClausula: [BasesCMarcoClausulas!]!
+  findOneBasesCMarcoClausula(id: Int!): BasesCMarcoClausulas!
+  findAllTiposDeClausulas: [TiposDeClausulas!]!
+  findOneTiposDeClausulas(id: Int!): TiposDeClausulas!
+  findAllProformaClausulas: [ProformaClausulas!]!
+  findOneProformaClausulas(id: Int!): ProformaClausulas!
+  findAllBasesCmarcoEspecificos: [BasesCMarcoEspecificos!]!
+  findOneBasesCmarcoEspecificos(id: Int!): BasesCMarcoEspecificos!
   findAllBasesGeneralesClausulas: [BasesGeneralesClausulas!]!
   findOneBasesGeneralesClausulas(id: Int!): BasesGeneralesClausulas!
   documentacion(id: Int!): Documentacion!
@@ -664,6 +918,28 @@ type Query {
   findOneFichaCompraDetalle(id: Int!): FichaCompraDetalle!
   findAllFichaCompraResumen: [FichaCompraResumen!]!
   findOneFichaCompraResumen(id: Int!): FichaCompraResumen!
+  findAllFichaCostoResumen: [FichaCostoResumen!]!
+  findOneFichaCostoResumen(id: Int!): FichaCostoResumen!
+  findAllFormasPago: [FormasPago!]!
+  findOneFormasPago(id: Int!): FormasPago!
+  findAllFormasEntrega: [FormasEntrega!]!
+  findOneFormasEntrega(id: Int!): FormasEntrega!
+  findAllPliegoConcurrencia: [PliegoConcurrencia!]!
+  findOnePliegoConcurrencia(id: Int!): PliegoConcurrencia!
+  findAllSolicitudOfertas: [SolicitudOfertas!]!
+  findOneSolicitudOfertas(id: Int!): SolicitudOfertas!
+  findAllSolicitudContratacion: [SolicitudContratacion!]!
+  findOneSolicitudContratacion(id: Int!): SolicitudContratacion!
+  findAllPliegoConcurrenciaDetalle: [PliegoConcurrenciaDetalle!]!
+  findOnePliegoConcurrenciaDetalle(id: Int!): PliegoConcurrenciaDetalle!
+  findAllPliegoConcurrenciaResumen: [PliegoConcurrenciaResumen!]!
+  findOnePliegoConcurrenciaResumen(id: Int!): PliegoConcurrenciaResumen!
+  findAllSolicitudCodificacion: [SolicitudCodificacion!]!
+  findOneSolicitudCodificacion(id: Int!): SolicitudCodificacion!
+  findAllSolicitudOfertasEntrada: [SolicitudOfertasEntradas!]!
+  findOneSolicitudOfertasEntrada(id: Int!): SolicitudOfertasEntradas!
+  findAllSolicitudOfertasProveedor: [SolicitudOfertasProveedor!]!
+  findOneSolicitudOfertasProveedor(id: Int!): SolicitudOfertasProveedor!
 }
 
 type Mutation {
@@ -686,14 +962,6 @@ type Mutation {
   removeProforma(id: Int!): Proformas!
   createCompradore(createCompradoreInput: CreateCompradoresInput!): Compradores!
   removeCompradore(id: Int!): Compradores!
-  createBasesCmarcoClausula(createBasesCmarcoClausulaInput: CreateBasesCmarcoClausulaInput!): BasesCMarcoClausulas!
-  removeBasesCmarcoClausula(id: Int!): BasesCMarcoClausulas!
-  createTiposDeClausulas(createTiposDeClausulaInput: CreateTiposDeClausulaInput!): TiposDeClausulas!
-  removeTiposDeClausulas(id: Int!): TiposDeClausulas!
-  createProformaClausula(createProformaClausulaInput: CreateProformaClausulaInput!): ProformaClausulas!
-  removeProformaClausula(id: Int!): ProformaClausulas!
-  createBasesCmarcoEspecifico(createBasesCmarcoEspecificoInput: CreateBasesCmarcoEspecificoInput!): BasesCMarcoEspecificos!
-  removeBasesCmarcoEspecifico(id: Int!): BasesCMarcoEspecificos!
   createBasesGenerales(createBasesGeneraleInput: CreateBasesGeneralesInput!): BasesGenerales!
   removeBasesGenerales(id: Int!): BasesGenerales!
   createClasificaciones(createClasificacioneInput: CreateClasificacioneInput!): Clasificaciones!
@@ -702,6 +970,14 @@ type Mutation {
   removeTipoContrato(id: Int!): TipoContrato!
   createIncoterm(createIncotermInput: CreateIncotermInput!): Incoterm!
   removeIncoterm(id: Int!): Incoterm!
+  createBasesCmarcoClausula(createBasesCmarcoClausulaInput: CreateBasesCmarcoClausulaInput!): BasesCMarcoClausulas!
+  removeBasesCmarcoClausula(id: Int!): BasesCMarcoClausulas!
+  createTiposDeClausulas(createTiposDeClausulaInput: CreateTiposDeClausulaInput!): TiposDeClausulas!
+  removeTiposDeClausulas(id: Int!): TiposDeClausulas!
+  createProformaClausula(createProformaClausulaInput: CreateProformaClausulaInput!): ProformaClausulas!
+  removeProformaClausula(id: Int!): ProformaClausulas!
+  createBasesCmarcoEspecifico(createBasesCmarcoEspecificoInput: CreateBasesCmarcoEspecificoInput!): BasesCMarcoEspecificos!
+  removeBasesCmarcoEspecifico(id: Int!): BasesCMarcoEspecificos!
   createBasesGeneralesClausula(createBasesGeneralesClausulaInput: CreateBasesGeneralesClausulaInput!): BasesGeneralesClausulas!
   removeBasesGeneralesClausula(id: Int!): BasesGeneralesClausulas!
   createDocumentacion(createDocumentacionInput: CreateDocumentacionInput!): Documentacion!
@@ -744,6 +1020,28 @@ type Mutation {
   removeFichaCompraDetalle(id: Int!): FichaCompraDetalle!
   createFichaCompraResuman(createFichaCompraResumanInput: CreateFichaCompraResumanInput!): FichaCompraResumen!
   removeFichaCompraResuman(id: Int!): FichaCompraResumen!
+  createFichaCostoResuman(createFichaCostoResumanInput: CreateFichaCostoResumenInput!): FichaCostoResumen!
+  removeFichaCostoResuman(id: Int!): FichaCostoResumen!
+  createFormasPago(createFormasPagoInput: CreateFormasPagoInput!): FormasPago!
+  removeFormasPago(id: Int!): FormasPago!
+  createFormasEntrega(createFormasEntregaInput: CreateFormasEntregaInput!): FormasEntrega!
+  removeFormasEntrega(id: Int!): FormasEntrega!
+  createPliegoConcurrencia(createPliegoConcurrenciaInput: CreatePliegoConcurrenciaInput!): PliegoConcurrencia!
+  removePliegoConcurrencia(id: Int!): PliegoConcurrencia!
+  createSolicitudOferta(createSolicitudOfertaInput: CreateSolicitudOfertaInput!): SolicitudOfertas!
+  removeSolicitudOferta(id: Int!): SolicitudOfertas!
+  createSolicitudContratacion(createSolicitudContratacionInput: CreateSolicitudContratacionInput!): SolicitudContratacion!
+  removeSolicitudContratacion(id: Int!): SolicitudContratacion!
+  createPliegoConcurrenciaDetalle(createPliegoConcurrenciaDetalleInput: CreatePliegoConcurrenciaDetalleInput!): PliegoConcurrenciaDetalle!
+  removePliegoConcurrenciaDetalle(id: Int!): PliegoConcurrenciaDetalle!
+  createPliegoConcurrenciaResuman(createPliegoConcurrenciaResumanInput: CreatePliegoConcurrenciaResumanInput!): PliegoConcurrenciaResumen!
+  removePliegoConcurrenciaResuman(id: Int!): PliegoConcurrenciaResumen!
+  createSolicitudCodificacion(createSolicitudCodificacionInput: CreateSolicitudCodificacionInput!): SolicitudCodificacion!
+  removeSolicitudCodificacion(id: Int!): SolicitudCodificacion!
+  createSolicitudOfertasEntrada(createSolicitudOfertasEntradaInput: CreateSolicitudOfertasEntradaInput!): SolicitudOfertasEntradas!
+  removeSolicitudOfertasEntrada(id: Int!): SolicitudOfertasEntradas!
+  createSolicitudOfertasProveedor(createSolicitudOfertasProveedorInput: CreateSolicitudOfertasProveedorInput!): SolicitudOfertasProveedor!
+  removeSolicitudOfertasProveedor(id: Int!): SolicitudOfertasProveedor!
 }
 
 input CreateMonedaInput {
@@ -781,7 +1079,7 @@ input CreateGruposDeCompraInput {
 
 input CreateBasesCmarcoInput {
   idBaseCMarco: Int
-  idBaseGenerales: Int!
+  idBasesGenerales: Int!
   idProveedor: Int!
   consecutivo: Int!
   directivaTrd: String!
@@ -835,6 +1133,52 @@ input CreateCompradoresInput {
   activo: Boolean!
 }
 
+input CreateBasesGeneralesInput {
+  idBasesGenerales: Int
+  consecutivo: Int!
+  fecha: DateTime!
+  idTipoContrato: Int!
+  idIncoterm: Int!
+  idProforma: Int!
+  idClasificacion: Int!
+  lugardeFirma: String!
+  pais: Int!
+  idProveedor: Int!
+  nProveedor: String!
+  nombreRepresentante: String!
+  cargoRepresentante: String!
+  direccionProveedor: String!
+  idComprador: Int!
+  vigencia: Int!
+  fechaVencimiento: DateTime!
+  aprobado: Boolean!
+  cancelado: Boolean!
+  activo: Boolean!
+  actualizado: DateTime!
+  noContrato: String!
+}
+
+input CreateClasificacioneInput {
+  idClasificacion: Int
+  clasificacion: String!
+}
+
+input CreateTipoContratoInput {
+  idTipoContrato: Int
+  tipoContrato: String!
+  encabezado: String!
+  ambasPartes: String!
+  visible: Boolean!
+}
+
+input CreateIncotermInput {
+  idIncoterm: Int
+  nombre: String!
+  abreviatura: String!
+  nota: String!
+  activo: Boolean!
+}
+
 input CreateBasesCmarcoClausulaInput {
   idBasesCMarcoClausulas: Int
   idBaseCMarco: Int!
@@ -874,54 +1218,9 @@ input CreateBasesCmarcoEspecificoInput {
   idPadre: Int!
 }
 
-input CreateBasesGeneralesInput {
-  idBaseGenerales: Int
-  consecutivo: Int!
-  fecha: DateTime!
-  idTipoContrato: Int!
-  idIncoterm: Int!
-  idProforma: Int!
-  lugardeFirma: String!
-  pais: Int!
-  idProveedor: Int!
-  nProveedor: String!
-  nombreRepresentante: String!
-  cargoRepresentante: String!
-  direccionProveedor: String!
-  idComprador: Int!
-  vigencia: Int!
-  fechaVencimiento: DateTime!
-  aprobado: Boolean!
-  cancelado: Boolean!
-  activo: Boolean!
-  actualizado: DateTime!
-  noContrato: String!
-}
-
-input CreateClasificacioneInput {
-  idClasificacion: Int
-  clasificacion: String!
-}
-
-input CreateTipoContratoInput {
-  idTipoContrato: Int
-  tipoContrato: String!
-  encabezado: String!
-  ambasPartes: String!
-  visible: Boolean!
-}
-
-input CreateIncotermInput {
-  idIncoterm: Int
-  nombre: String!
-  abreviatura: String!
-  nota: String!
-  activo: Boolean!
-}
-
 input CreateBasesGeneralesClausulaInput {
   idBasesGeneralesClausulas: Int
-  idBaseGenerales: Int!
+  idBasesGenerales: Int!
   idProformaClausula: Int!
   idTipoClausula: Int!
   orden: Int!
@@ -1243,4 +1542,205 @@ input CreateFichaCompraResumanInput {
   fechaCancelacion: DateTime!
   chkRecepcion: Boolean!
   noFicha: String!
+}
+
+input CreateFichaCostoResumenInput {
+  idFicha: Int
+  idCCosto: Int!
+  idBaseCMarco: Int!
+  idMoneda: Int!
+  idFormaPago: Int!
+  idIncoterm: Int!
+  idPuerto: Int!
+  idEmbalaje: Int!
+  idProveedor: Int!
+  bl: String!
+  cantAnexos: Int!
+  viaTransporte: Int!
+  idPais: Int!
+  destino: String!
+  contenedores: String!
+  pesoBruto: Float!
+  pesoNeto: Float!
+  cantidadEmbalaje: Float!
+  cantidad: Float!
+  codigo: String!
+  descripcion: String!
+  valorContratacion: Float!
+  gastoAlmacenOrigen: Float!
+  gastoTranspOrigen: Float!
+  gastoAduanaOrigen: Float!
+  gastoManipulacionOrigen: Float!
+  otrosGastosOrigen: Float!
+  totalGastoOrigen: Float!
+  recargoContratacion: Float!
+  descuentoContratacion: Float!
+  totalRecDescContrato: Float!
+  totalAdquisicion: Float!
+  difCambioMoneda: Float!
+  tasaCambioContratacion: Float!
+  valorMercancia: Float!
+  tarifaFlete: Float!
+  recargoFlete: Float!
+  descuentoFlete: Float!
+  totalFlete: Float!
+  costoFleteUsd: Float!
+  seguro: Float!
+  tasaSeguro: Float!
+  costoCifFleteUsd: Float!
+  tasaCambioMn: Float!
+  costoFleteSeguroMn: Float!
+  factorConversion: Float!
+  tasaArancelaria: Float!
+  valorArancel: Float!
+  gastoManipulacion: Float!
+  gastoDoc: Float!
+  gastoEmisionBl: Float!
+  gastoMovContenedores: Float!
+  gastoAsistenciaTecn: Float!
+  gastoSeguridadCont: Float!
+  gastoFumigacion: Float!
+  gastoSupervisiones: Float!
+  gastoFitosanitario: Float!
+  oGastosPortuariosAduanales: Float!
+  gastosImportacion: Float!
+  otrosGastos: Float!
+  totalGastos: Float!
+  indicePGasto: Float!
+  tasaMaxRecargo: Float!
+  margenComercial: Float!
+  tasaImpuestoVentas: Float!
+  tasaContibucion: Float!
+  tasaImpuetoProducto: Float!
+  totalImpuestoContrib: Float!
+  pVentaImportador: Float!
+  fecha: DateTime!
+  nota: String!
+  elaborado: Int!
+  aprobado: Int!
+}
+
+input CreateFormasPagoInput {
+  idFormaPago: Int
+  formaPago: String!
+  dias: Int!
+}
+
+input CreateFormasEntregaInput {
+  idFormaEntrega: Int
+  formaEntrega: String!
+  dias: Int!
+}
+
+input CreatePliegoConcurrenciaInput {
+  idPliego: Int
+  idOferta: Int!
+}
+
+input CreateSolicitudOfertaInput {
+  idOferta: Int
+  idSolicitudContrato: Int!
+  consecutivo: Int!
+  solicitud: String!
+  fechaSolicitudOferta: DateTime!
+  fechaEnviadaOferta: DateTime!
+  fechaFin: DateTime!
+  contraOferta: Boolean!
+  terminada: Boolean!
+  cancelada: Boolean!
+  elaboradoPor: Int!
+  aprobadoPor: Int!
+}
+
+input CreateSolicitudContratacionInput {
+  idSolicitudContrato: Int
+  idNegociacion: Int!
+  consecutivo: Int!
+  idComprador: Int!
+  fecha: DateTime!
+  nota: String!
+}
+
+input CreatePliegoConcurrenciaDetalleInput {
+  idPliegoDetalle: Int
+  idPliegoResumen: Int!
+  idEspecifico: Int!
+  idEmbalaje: Int!
+  cantidad: Float!
+  idUnidadMedida: Int!
+  pesoBruto: Float!
+  precioI: Float!
+  precioIi: Float!
+  precioIii: Float!
+}
+
+input CreatePliegoConcurrenciaResumanInput {
+  idPliegoResumen: Int
+  idPliego: Int!
+  idIncoterm: Int!
+  idFormaPago: Int!
+  idFormaEntrega: Int!
+  idPuertoEmbarque: Int!
+  idPuertoDestino: Int!
+  idTipoContenedor: Int!
+  idProveedor: Int!
+  paisOrigenMercancia: Int!
+  fechaOfertaRecibida: DateTime!
+  fechaEntregaOferta: DateTime!
+  idMonedaOferta: Int!
+  idMonedaPago: Int!
+  idMonedaCartaCredito: Int!
+  rateCambioOferta: Float!
+  fechaRateCOferta: DateTime!
+  rateCambioCuc: Float!
+  fechaRateCambio: DateTime!
+  tasaInteres: Float!
+  inicioFinanciamiento: String!
+  idNaviera: Int!
+  tiempoPrimeraEntrega: Int!
+  seguro: Float!
+  flete: Float!
+  rateCambioFlete: Float!
+  contenedores: Int!
+  pesoBruto: Float!
+}
+
+input CreateSolicitudCodificacionInput {
+  idSolicitudCompra: Int
+  idPliegoResumen: Int!
+  referencia: String!
+  decripcion: String!
+  um: String!
+  marca: String!
+  naturaleza: String!
+  packing: Int!
+  cantidad: Float!
+  dimension: String!
+  cubicaje: String!
+  embalaje: String!
+  precioCosto: Float!
+}
+
+input CreateSolicitudOfertasEntradaInput {
+  idOfertasEntradas: Int
+  idOfertasProveedor: Int!
+  fechaRecepcionOferta: DateTime!
+  detalle: String!
+  referencia: String!
+  codigo: String!
+  decripcion: String!
+  um: String!
+  packing: Int!
+  cantidad: Float!
+  dimension: String!
+  cubicaje: String!
+  precioCosto: Float!
+}
+
+input CreateSolicitudOfertasProveedorInput {
+  idOfertasProveedor: Int
+  idOferta: Int!
+  idProveedor: Int!
+  representante: String!
+  cargo: String!
 }

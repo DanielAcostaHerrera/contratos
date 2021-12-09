@@ -1,6 +1,8 @@
 import { Field, Int, ObjectType } from "@nestjs/graphql";
 import { Column, Entity, Index, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { BasesCMarco } from "./BasesCMarco.entity";
+import { FichaCostoResumen } from "./FichaCostoResumen.entity";
+import { PliegoConcurrenciaResumen } from "./PliegoConcurrenciaResumen.entity";
 
 @ObjectType()
 @Index("IX_NOM_Puertos", ["pais", "nombre"], { unique: true })
@@ -27,4 +29,16 @@ export class Puertos {
   @Field(() => [BasesCMarco], { nullable: true })
   @OneToMany(() => BasesCMarco, (basesCMarco) => basesCMarco.puerto)
   basesCMarco: BasesCMarco[];
+
+  @Field(() => [FichaCostoResumen], { nullable: true })
+  @OneToMany(() => FichaCostoResumen,(fichaCostoResumen) => fichaCostoResumen.puerto)
+  fichaCostoResumen: FichaCostoResumen[];
+
+  @Field(() => [PliegoConcurrenciaResumen], { nullable: true })
+  @OneToMany(() => PliegoConcurrenciaResumen,(pliegoConcurrenciaResumen) => pliegoConcurrenciaResumen.puertoEmbarque)
+  pliegoConcurrenciaResumenEmbarque: PliegoConcurrenciaResumen[];
+
+  @Field(() => [PliegoConcurrenciaResumen], { nullable: true })
+  @OneToMany(() => PliegoConcurrenciaResumen,(pliegoConcurrenciaResumen) => pliegoConcurrenciaResumen.puertoDestino)
+  pliegoConcurrenciaResumenDestino: PliegoConcurrenciaResumen[];
 }

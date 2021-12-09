@@ -73,7 +73,7 @@ export class Contratos {
 
   @Field(() => BasesGenerales)
   @ManyToOne(() => BasesGenerales, (basesGenerales) => basesGenerales.contratos)
-  @JoinColumn([{ name: "IdBasesGenerales", referencedColumnName: "idBaseGenerales" }])
+  @JoinColumn([{ name: "IdBasesGenerales", referencedColumnName: "idBasesGenerales" }])
   basesGenerales: BasesGenerales;
 
   @Field(() => TipoContrato)

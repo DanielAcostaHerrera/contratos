@@ -33,27 +33,27 @@ export class BasesGeneralesResolver {
   }
 
   @ResolveField(() => Clasificaciones, {nullable: true})
-  clasificaciones(@Parent() clasificaciones: Clasificaciones) {
-    return this.basesGeneralesService.getClasificacion(clasificaciones.idClasificacion);
+  clasificaciones(@Parent() basesGenerales: BasesGenerales): Promise<Clasificaciones> {
+    return this.basesGeneralesService.getClasificacion(basesGenerales.idClasificacion);
   }
 
   @ResolveField(() => TipoContrato, {nullable: true})
-  tipoDeContrato(@Parent() tipoContrato: TipoContrato) {
-    return this.basesGeneralesService.getTipoContrato(tipoContrato.idTipoContrato);
+  tipoDeContrato(@Parent() basesGenerales: BasesGenerales): Promise<TipoContrato> {
+    return this.basesGeneralesService.getTipoContrato(basesGenerales.idTipoContrato);
   }
 
   @ResolveField(() => Incoterm, {nullable: true})
-  incoterm(@Parent() incoterm: Incoterm) {
-    return this.basesGeneralesService.getIncoterm(incoterm.idIncoterm);
+  incoterm(@Parent() basesGenerales: BasesGenerales): Promise<Incoterm> {
+    return this.basesGeneralesService.getIncoterm(basesGenerales.idIncoterm);
   }
 
   @ResolveField(() => Proformas, {nullable: true})
-  proforma(@Parent() proformas: Proformas) {
-    return this.basesGeneralesService.getProforma(proformas.idProforma);
+  proforma(@Parent() basesGenerales: BasesGenerales): Promise<Proformas> {
+    return this.basesGeneralesService.getProforma(basesGenerales.idProforma);
   }
 
   @ResolveField(() => Compradores, {nullable: true})
-  compradores(@Parent() compradores: Compradores) {
-    return this.basesGeneralesService.getComprador(compradores.idComprador);
+  compradores(@Parent() basesGenerales: BasesGenerales): Promise<Compradores> {
+    return this.basesGeneralesService.getComprador(basesGenerales.idComprador);
   }
 }

@@ -29,7 +29,7 @@ export class FichaCompraDetalleResolver {
   }
 
   @ResolveField(() => FichaCompraResumen, {nullable: true})
-  fichaCompraResumen(@Parent() fichaCompraResumen: FichaCompraResumen) {
-    return this.fichaCompraDetalleService.getFichaCompraResumen(fichaCompraResumen.idFicha);
+  fichaCompraResumen(@Parent() fichaCompraDetalle: FichaCompraDetalle): Promise<FichaCompraResumen> {
+    return this.fichaCompraDetalleService.getFichaCompraResumen(fichaCompraDetalle.idFicha);
   }
 }

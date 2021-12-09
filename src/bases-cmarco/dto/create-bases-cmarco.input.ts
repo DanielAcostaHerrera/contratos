@@ -6,7 +6,7 @@ export class CreateBasesCmarcoInput {
   idBaseCMarco?: number;
 
   @Field(() => Int)
-  idBaseGenerales: number | null;
+  idBasesGenerales: number | null;
 
   @Field(() => Int)
   idProveedor: number;

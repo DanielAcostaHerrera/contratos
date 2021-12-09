@@ -1,7 +1,9 @@
 import { Field, Int, ObjectType } from "@nestjs/graphql";
 import { Column, Entity, Index, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { FichaCompraResumen } from "./FichaCompraResumen.entity";
+import { FichaCostoResumen } from "./FichaCostoResumen.entity";
 import { NegociacionResumen } from "./NegociacionResumen.entity";
+import { PliegoConcurrenciaResumen } from "./PliegoConcurrenciaResumen.entity";
 
 @ObjectType()
 @Index("IX_NOM_MonedasAbreviatura", ["abreviatura"], { unique: true })
@@ -27,4 +29,20 @@ export class Monedas {
   @Field(() => [FichaCompraResumen])
   @OneToMany(() => FichaCompraResumen,(fichaCompraResumen) => fichaCompraResumen.moneda)
   fichaCompraResumen: FichaCompraResumen[];
+
+  @Field(() => [FichaCostoResumen])
+  @OneToMany(() => FichaCostoResumen,(fichaCostoResumen) => fichaCostoResumen.moneda)
+  fichaCostoResumen: FichaCostoResumen[];
+
+  @Field(() => [PliegoConcurrenciaResumen])
+  @OneToMany(() => PliegoConcurrenciaResumen,(pliegoConcurrenciaResumen) => pliegoConcurrenciaResumen.monedaOferta)
+  pliegoConcurrenciaResumenOferta: PliegoConcurrenciaResumen[];
+
+  @Field(() => [PliegoConcurrenciaResumen])
+  @OneToMany(() => PliegoConcurrenciaResumen,(pliegoConcurrenciaResumen) => pliegoConcurrenciaResumen.monedaPago)
+  pliegoConcurrenciaResumenPago: PliegoConcurrenciaResumen[];
+
+  @Field(() => [PliegoConcurrenciaResumen])
+  @OneToMany(() => PliegoConcurrenciaResumen,(pliegoConcurrenciaResumen) => pliegoConcurrenciaResumen.monedaCartaCredito)
+  pliegoConcurrenciaResumenCredito: PliegoConcurrenciaResumen[];
 }
