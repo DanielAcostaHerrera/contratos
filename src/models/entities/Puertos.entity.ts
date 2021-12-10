@@ -1,8 +1,12 @@
 import { Field, Int, ObjectType } from "@nestjs/graphql";
 import { Column, Entity, Index, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { BasesCMarco } from "./BasesCMarco.entity";
+import { Contratos } from "./Contratos.entity";
+import { FacturaResumen } from "./FacturaResumen.entity";
 import { FichaCostoResumen } from "./FichaCostoResumen.entity";
 import { PliegoConcurrenciaResumen } from "./PliegoConcurrenciaResumen.entity";
+import { SuplementoEmbarques } from "./SuplementoEmbarques.entity";
+import { SuplementoResumen } from "./SuplementoResumen.entity";
 
 @ObjectType()
 @Index("IX_NOM_Puertos", ["pais", "nombre"], { unique: true })
@@ -41,4 +45,28 @@ export class Puertos {
   @Field(() => [PliegoConcurrenciaResumen], { nullable: true })
   @OneToMany(() => PliegoConcurrenciaResumen,(pliegoConcurrenciaResumen) => pliegoConcurrenciaResumen.puertoDestino)
   pliegoConcurrenciaResumenDestino: PliegoConcurrenciaResumen[];
+
+  @Field(() => [Contratos], { nullable: true })
+  @OneToMany(() => Contratos, (contratos) => contratos.puertoOrigen)
+  contratosOrigen: Contratos[];
+
+  @Field(() => [Contratos], { nullable: true })
+  @OneToMany(() => Contratos, (contratos) => contratos.puertoDestino)
+  contratosDestino: Contratos[];
+
+  @Field(() => [FacturaResumen], { nullable: true })
+  @OneToMany(() => FacturaResumen,(facturaResumen) => facturaResumen.puertoDestino)
+  facturaResumen: FacturaResumen[];
+
+  @Field(() => [SuplementoEmbarques], { nullable: true })
+  @OneToMany(() => SuplementoEmbarques,(suplementoEmbarques) => suplementoEmbarques.puertoDestino)
+  suplementoEmbarques: SuplementoEmbarques[];
+
+  @Field(() => [SuplementoResumen], { nullable: true })
+  @OneToMany(() => SuplementoResumen,(suplementoResumen) => suplementoResumen.puertoOrigen)
+  suplementoResumenOrigen: SuplementoResumen[];
+
+  @Field(() => [SuplementoResumen], { nullable: true })
+  @OneToMany(() => SuplementoResumen,(suplementoResumen) => suplementoResumen.puertoDestino)
+  suplementoResumenDestino: SuplementoResumen[];
 }

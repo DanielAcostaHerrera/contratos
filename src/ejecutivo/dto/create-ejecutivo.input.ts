@@ -14,9 +14,6 @@ export class CreateEjecutivoInput {
   @Field()
   msreplTranVersion: string;
 
-  @Field({nullable: true})
-  usuarioSlq: string | null;
-
   @Field()
   activo: boolean;
 

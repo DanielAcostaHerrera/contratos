@@ -14,11 +14,11 @@ export class ProformasService {
   }
 
   async findAll(): Promise<Proformas[]> {
-    return await this.proformaRepository.find({ relations: ['basesCMarco','proformaClausulas','basesGenerales','contratos']});
+    return await this.proformaRepository.find({ relations: ['basesCMarco','proformaClausulas','basesGenerales']});
   }
 
   async findOne(id: number) : Promise<Proformas> {
-    return await this.proformaRepository.findOne(id,{ relations: ['basesCMarco','proformaClausulas','basesGenerales','contratos']});
+    return await this.proformaRepository.findOne(id,{ relations: ['basesCMarco','proformaClausulas','basesGenerales']});
   }
 
   async remove(id: number) : Promise<any> {

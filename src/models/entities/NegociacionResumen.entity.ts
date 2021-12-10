@@ -8,6 +8,8 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
 } from "typeorm";
+import { Contratos } from "./Contratos.entity";
+import { FacturaResumen } from "./FacturaResumen.entity";
 import { FichaCompraResumen } from "./FichaCompraResumen.entity";
 import { GruposDeCompras } from "./GruposDeCompras.entity";
 import { Monedas } from "./Monedas.entity";
@@ -163,4 +165,12 @@ export class NegociacionResumen {
   @Field(() => [SolicitudContratacion])
   @OneToMany(() => SolicitudContratacion,(solicitudContratacion) => solicitudContratacion.negociacion)
   solicitudContratacion: SolicitudContratacion[];
+
+  @Field(() => [Contratos])
+  @OneToMany(() => Contratos, (contratos) => contratos.negociacionResumen)
+  contratos: Contratos[];
+
+  @Field(() => [FacturaResumen])
+  @OneToMany(() => FacturaResumen,(facturaResumen) => facturaResumen.negociacionResumen)
+  facturaResumen: FacturaResumen[];
 }

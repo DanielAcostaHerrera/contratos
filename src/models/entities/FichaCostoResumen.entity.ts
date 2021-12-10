@@ -4,6 +4,7 @@ import {
   Index,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from "typeorm";
 import { BasesCMarco } from "./BasesCMarco.entity";
@@ -13,6 +14,7 @@ import { Incoterm } from "./Incoterm.entity";
 import { Puertos } from "./Puertos.entity";
 import { Embalajes } from "./Embalajes.entity";
 import { Field, Float, Int, ObjectType } from "@nestjs/graphql";
+import { Contratos } from "./Contratos.entity";
 
 @ObjectType()
 @Index("IX_FichaCostoResumen", ["fecha"], {})
@@ -410,4 +412,8 @@ export class FichaCostoResumen {
   @ManyToOne(() => Embalajes, (embalajes) => embalajes.fichaCostoResumen)
   @JoinColumn([{ name: "IdEmbalaje", referencedColumnName: "idEmbalaje" }])
   embalaje: Embalajes;
+
+  @Field(() => [Contratos])
+  @OneToMany(() => Contratos, (contratos) => contratos.fichaCostoResumen)
+  contratos: Contratos[];
 }

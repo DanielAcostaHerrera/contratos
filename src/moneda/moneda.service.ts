@@ -15,12 +15,12 @@ export class MonedaService {
 
   async findAll(): Promise<Monedas[]> {
     return await this.monedaRepository.find({ relations: ['negociacionResumen','fichaCompraResumen','fichaCostoResumen','pliegoConcurrenciaResumenOferta'
-    ,'pliegoConcurrenciaResumenPago','pliegoConcurrenciaResumenCredito']});
+    ,'pliegoConcurrenciaResumenPago','pliegoConcurrenciaResumenCredito','contratos','suplementoResumen']});
   }
 
   async findOne(id: number) : Promise<Monedas> {
     return await this.monedaRepository.findOne(id, { relations: ['negociacionResumen','fichaCompraResumen','fichaCostoResumen','pliegoConcurrenciaResumenOferta'
-    ,'pliegoConcurrenciaResumenPago','pliegoConcurrenciaResumenCredito']});
+    ,'pliegoConcurrenciaResumenPago','pliegoConcurrenciaResumenCredito','contratos','suplementoResumen']});
   }
 
   async remove(id: number) : Promise<any> {

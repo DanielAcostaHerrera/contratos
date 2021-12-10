@@ -1,16 +1,46 @@
-import { InputType, Int, Field } from '@nestjs/graphql';
+import { InputType, Int, Field, Float } from '@nestjs/graphql';
 
 @InputType()
 export class CreateContratoDesgloseInput {
-  @Field(() => Int, {nullable: true})
+  @Field(() => Int,{nullable:true})
   idContratoDesglose?: number;
 
   @Field(() => Int)
-  idContrato: number;
+  idEmbarque: number | null;
+  
+  @Field(() => Int)
+  referencia: number | null;
 
   @Field(() => Int)
-  noClausula: number;
+  codigo: number;
 
   @Field()
-  contenido: string | null;
+  descripcionAx: string | null;
+
+  @Field(() => Int)
+  unidadMedidaCarton: number;
+
+  @Field(() => Float)
+  cantidadPorCarton: number;
+
+  @Field(() => Int)
+  paquete: number;
+
+  @Field(() => Int)
+  cantidadCartones: number;
+
+  @Field(() => Float)
+  volumen: number;
+
+  @Field(() => Float)
+  precio: number;
+
+  @Field(() => Float)
+  precioPaquete: number;
+
+  @Field(() => Float)
+  packing: number;
+
+  @Field(() => Int)
+  cajas: number;
 }

@@ -8,6 +8,7 @@ import {
 } from "typeorm";
 import { FichaCostoResumen } from "./FichaCostoResumen.entity";
 import { PliegoConcurrenciaResumen } from "./PliegoConcurrenciaResumen.entity";
+import { SuplementoPagos } from "./SuplementoPagos.entity";
 
 @ObjectType()
 @Index("PK_FormasPago", ["idFormaPago"], { unique: true })
@@ -32,4 +33,8 @@ export class FormasPago {
   @Field(() => [PliegoConcurrenciaResumen])
   @OneToMany(() => PliegoConcurrenciaResumen,(pliegoConcurrenciaResumen) => pliegoConcurrenciaResumen.formaPago)
   pliegoConcurrenciaResumen: PliegoConcurrenciaResumen[];
+
+  @Field(() => [SuplementoPagos])
+  @OneToMany(() => SuplementoPagos,(suplementoPagos) => suplementoPagos.formasPago)
+  suplementoPagos: SuplementoPagos[];
 }

@@ -1,16 +1,8 @@
-import { Field, Int, ObjectType } from "@nestjs/graphql";
-import {
-  Column,
-  Entity,
-  Index,
-  JoinColumn,
-  ManyToOne,
-  PrimaryGeneratedColumn,
-} from "typeorm";
-import { Contratos } from "./Contratos.entity";
+import { Field, Float, Int, ObjectType } from "@nestjs/graphql";
+import { Column, Entity, Index, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Embarques } from "./Embarques.entity";
 
 @ObjectType()
-@Index("IX_ContratoDesglose", ["idContrato", "noClausula"], { unique: true })
 @Index("PK_ContratoDesglose", ["idContratoDesglose"], { unique: true })
 @Entity("ContratoDesglose", { schema: "dbo" })
 export class ContratoDesglose {
@@ -18,20 +10,65 @@ export class ContratoDesglose {
   @Field(() => Int)
   idContratoDesglose: number;
 
-  @Column("int", { name: "IdContrato" })
+  @Column("int", { name: "IdEmbarque", nullable: true })
   @Field(() => Int)
-  idContrato: number;
-
-  @Column("int", { name: "NoClausula" })
+  idEmbarque: number | null;
+  
+  @Column("int", { name: "Referencia", nullable: true })
   @Field(() => Int)
-  noClausula: number;
+  referencia: number | null;
 
-  @Column("nvarchar", { name: "Contenido", nullable: true })
+  @Column("int", { name: "Codigo" })
+  @Field(() => Int)
+  codigo: number;
+
+  @Column("nvarchar", { name: "DescripcionAx", nullable: true, length: 200 })
   @Field()
-  contenido: string | null;
+  descripcionAx: string | null;
 
-  @Field(() => Contratos, {nullable: true})
-  @ManyToOne(() => Contratos, (contratos) => contratos.contratoDesgloses)
-  @JoinColumn([{ name: "IdContrato", referencedColumnName: "idContrato" }])
-  contratos: Contratos;
+  @Column("int", { name: "UnidadMedidaCarton" })
+  @Field(() => Int)
+  unidadMedidaCarton: number;
+
+  @Column("decimal", { name: "CantidadPorCarton", precision: 18, scale: 4 })
+  @Field(() => Float)
+  cantidadPorCarton: number;
+
+  @Column("smallint", { name: "Paquete" })
+  @Field(() => Int)
+  paquete: number;
+
+  @Column("int", { name: "CantidadCartones" })
+  @Field(() => Int)
+  cantidadCartones: number;
+
+  @Column("decimal", {
+    name: "Volumen",
+    precision: 10,
+    scale: 3,
+    default: () => "(1)",
+  })
+  @Field(() => Float)
+  volumen: number;
+
+  @Column("float", { name: "Precio", precision: 53 })
+  @Field(() => Float)
+  precio: number;
+
+  @Column("float", { name: "PrecioPaquete", precision: 53 })
+  @Field(() => Float)
+  precioPaquete: number;
+
+  @Column("float", { name: "Packing", precision: 53, default: () => "(1)" })
+  @Field(() => Float)
+  packing: number;
+
+  @Column("int", { name: "Cajas", default: () => "(1)" })
+  @Field(() => Int)
+  cajas: number;
+
+  @Field(() => Embarques)
+  @ManyToOne(() => Embarques, (embarques) => embarques.contratoDesgloses)
+  @JoinColumn([{ name: "IdEmbarque", referencedColumnName: "idEmbarque" }])
+  embarques: Embarques;
 }

@@ -15,6 +15,7 @@ import { Proformas } from "./Proformas.entity";
 import { Compradores } from "./Compradores.entity";
 import { FichaCostoResumen } from "./FichaCostoResumen.entity";
 import { BasesGenerales } from "./BasesGenerales.entity";
+import { Contratos } from "./Contratos.entity";
 
 @ObjectType()
 @Index("PK_CTO_BasesCMarco", ["idBaseCMarco"], { unique: true })
@@ -171,4 +172,8 @@ export class BasesCMarco {
   @Field(() => [FichaCostoResumen], {nullable: true})
   @OneToMany(() => FichaCostoResumen,(fichaCostoResumen) => fichaCostoResumen.baseCMarco)
   fichaCostoResumen: FichaCostoResumen[];
+
+  @Field(() => [Contratos], {nullable: true})
+  @OneToMany(() => Contratos, (contratos) => contratos.baseCMarco)
+  contratos: Contratos[];
 }

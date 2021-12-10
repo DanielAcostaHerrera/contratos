@@ -61,8 +61,4 @@ export class Proformas {
   @Field(() => [BasesGenerales], { nullable: true })
   @OneToMany(() => BasesGenerales, (basesGenerales) => basesGenerales.proforma)
   basesGenerales: BasesGenerales[];
-
-  @Field(() => [Contratos], { nullable: true })
-  @OneToMany(() => Contratos, (contratos) => contratos.proformas)
-  contratos: Contratos[];
 }

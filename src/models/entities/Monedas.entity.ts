@@ -1,9 +1,11 @@
 import { Field, Int, ObjectType } from "@nestjs/graphql";
 import { Column, Entity, Index, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Contratos } from "./Contratos.entity";
 import { FichaCompraResumen } from "./FichaCompraResumen.entity";
 import { FichaCostoResumen } from "./FichaCostoResumen.entity";
 import { NegociacionResumen } from "./NegociacionResumen.entity";
 import { PliegoConcurrenciaResumen } from "./PliegoConcurrenciaResumen.entity";
+import { SuplementoResumen } from "./SuplementoResumen.entity";
 
 @ObjectType()
 @Index("IX_NOM_MonedasAbreviatura", ["abreviatura"], { unique: true })
@@ -45,4 +47,12 @@ export class Monedas {
   @Field(() => [PliegoConcurrenciaResumen])
   @OneToMany(() => PliegoConcurrenciaResumen,(pliegoConcurrenciaResumen) => pliegoConcurrenciaResumen.monedaCartaCredito)
   pliegoConcurrenciaResumenCredito: PliegoConcurrenciaResumen[];
+
+  @Field(() => [Contratos])
+  @OneToMany(() => Contratos, (contratos) => contratos.moneda)
+  contratos: Contratos[];
+
+  @Field(() => [SuplementoResumen])
+  @OneToMany(() => SuplementoResumen,(suplementoResumen) => suplementoResumen.moneda)
+  suplementoResumen: SuplementoResumen[];
 }

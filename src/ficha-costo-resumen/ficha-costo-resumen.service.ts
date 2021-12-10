@@ -32,11 +32,11 @@ export class FichaCostoResumenService {
   }
 
   async findOne(id: number) : Promise<FichaCostoResumen> {
-    return await this.fichaCostoResumenRepository.findOne(id);
+    return await this.fichaCostoResumenRepository.findOne(id,{relations:['contratos']});
   }
 
   async remove(id: number) : Promise<any> {
-    return await this.fichaCostoResumenRepository.delete(id);
+    return await this.fichaCostoResumenRepository.delete(id),{relations:['contratos']};
   }
 
   async getBaseCMarco (baseCMarcoId: number) : Promise<BasesCMarco>{

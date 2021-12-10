@@ -1,6 +1,6 @@
 import { Resolver, Query, Mutation, Args, Int, ResolveField, Parent } from '@nestjs/graphql';
 import { ContratoDesglose } from 'src/models/entities/ContratoDesglose.entity';
-import { Contratos } from 'src/models/entities/Contratos.entity';
+import { Embarques } from 'src/models/entities/Embarques.entity';
 import { ContratoDesgloseService } from './contrato-desglose.service';
 import { CreateContratoDesgloseInput } from './dto/create-contrato-desglose.input';
 
@@ -27,9 +27,9 @@ export class ContratoDesgloseResolver {
   removeContratoDesglose(@Args('id', { type: () => Int }) id: number) {
     return this.contratoDesgloseService.remove(id);
   }
-
-  @ResolveField(() => Contratos, {nullable: true})
-  contratos(@Parent() contratoDesglose: ContratoDesglose): Promise<Contratos> {
-    return this.contratoDesgloseService.getContrato(contratoDesglose.idContrato);
+  
+  @ResolveField(() => Embarques, {nullable: true})
+  embarques(@Parent() contratoDesglose: ContratoDesglose): Promise<Embarques> {
+    return this.contratoDesgloseService.getEmbarque(contratoDesglose.idEmbarque);
   }
 }

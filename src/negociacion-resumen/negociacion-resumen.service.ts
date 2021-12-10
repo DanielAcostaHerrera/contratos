@@ -22,12 +22,12 @@ export class NegociacionResumenService {
 
   async findAll(): Promise<NegociacionResumen[]> {
     return await this.negociacionResumenRepository.find({ relations: ['negociacionDetalle','negociacionDetalles','negociacionProveedores','fichaCompraResumen',
-    'solicitudContratacion']});
+    'solicitudContratacion','contratos','facturaResumen']});
   }
 
   async findOne(id: number) : Promise<NegociacionResumen> {
     return await this.negociacionResumenRepository.findOne(id,{ relations: ['negociacionDetalle','negociacionDetalles','negociacionProveedores',
-    'fichaCompraResumen','solicitudContratacion']});
+    'fichaCompraResumen','solicitudContratacion','contratos','facturaResumen']});
   }
 
   async remove(id: number) : Promise<any> {

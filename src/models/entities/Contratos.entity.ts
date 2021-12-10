@@ -7,13 +7,22 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
 } from "typeorm";
-import { ContratoDesglose } from "./ContratoDesglose.entity";
+import { ContratoClausulas } from "./ContratoClausulas.entity";
 import { BasesGenerales } from "./BasesGenerales.entity";
-import { TipoContrato } from "./TipoContrato.entity";
-import { Proformas } from "./Proformas.entity";
+import { BasesCMarco } from "./BasesCMarco.entity";
+import { Puertos } from "./Puertos.entity";
+import { Monedas } from "./Monedas.entity";
+import { FormasEntrega } from "./FormasEntrega.entity";
+import { NegociacionResumen } from "./NegociacionResumen.entity";
+import { FichaCostoResumen } from "./FichaCostoResumen.entity";
+import { Ejecutivos } from "./Ejecutivos.entity";
 import { DocumentacionContrato } from "./DocumentacionContrato.entity";
-import { Field, Int, ObjectType } from "@nestjs/graphql";
+import { Embarques } from "./Embarques.entity";
+import { FacturaResumen } from "./FacturaResumen.entity";
 import { FichaCompraResumen } from "./FichaCompraResumen.entity";
+import { SuplementoEmbarques } from "./SuplementoEmbarques.entity";
+import { SuplementoResumen } from "./SuplementoResumen.entity";
+import { Field, Float, Int, ObjectType } from "@nestjs/graphql";
 
 @ObjectType()
 @Index("PK_Contratos", ["idContrato"], { unique: true })
@@ -27,14 +36,50 @@ export class Contratos {
   @Field(() => Int)
   idBasesGenerales: number;
 
-  @Column("int", { name: "IdTipoContrato" })
+  @Column("int", { name: "IdBaseCMarco" })
   @Field(() => Int)
-  idTipoContrato: number;
+  idBaseCMarco: number;
 
-  @Column("int", { name: "IdProforma" })
+  @Column("int", { name: "IdPuertoOrigen" })
   @Field(() => Int)
-  idProforma: number;
-  
+  idPuertoOrigen: number;
+
+  @Column("int", { name: "IdPuertoDestino" })
+  @Field(() => Int)
+  idPuertoDestino: number;
+
+  @Column("int", { name: "IdMoneda" })
+  @Field(() => Int)
+  idMoneda: number;
+
+  @Column("int", { name: "IdFormaEntrega" })
+  @Field(() => Int)
+  idFormaEntrega: number;
+
+  @Column("int", { name: "IdNegociacion" })
+  @Field(() => Int)
+  idNegociacion: number;
+
+  @Column("int", { name: "IdFichaCosto" })
+  @Field(() => Int)
+  idFichaCosto: number;
+
+  @Column("int", { name: "RealizadoPor" })
+  @Field(() => Int)
+  realizadoPor: number;
+
+  @Column("int", { name: "FirmadoPor" })
+  @Field(() => Int)
+  firmadoPor: number;
+
+  @Column("int", { name: "ModificadoPor" })
+  @Field(() => Int)
+  modificadoPor: number;
+
+  @Column("nvarchar", { name: "LugarFirma", nullable: true, length: 50 })
+  @Field()
+  lugarFirma: string | null;
+
   @Column("int", { name: "Consecutivo" })
   @Field(() => Int)
   consecutivo: number;
@@ -42,14 +87,6 @@ export class Contratos {
   @Column("int", { name: "CondicionCompra" })
   @Field(() => Int)
   condicionCompra: number;
-
-  @Column("nvarchar", { name: "Lugar", length: 50 })
-  @Field()
-  lugar: string;
-
-  @Column("smalldatetime", { name: "Fecha" })
-  @Field()
-  fecha: Date;
 
   @Column("int", { name: "País" })
   @Field(() => Int)
@@ -63,39 +100,195 @@ export class Contratos {
   @Field()
   terminado: boolean;
 
-  @Column("nvarchar", { name: "NoContrato", nullable: true })
+  @Column("bit", { name: "Modificado", default: () => "(0)" })
   @Field()
-  noContrato: string | null;
+  modificado: boolean;
 
-  @Column("int", { name: "Proveedor", nullable: true })
+  @Column("int", { name: "Proveedor" })
   @Field(() => Int)
   proveedor: number;
+
+  @Column("nvarchar", {
+    name: "EmpresaSeguro",
+    nullable: true,
+    length: 50,
+    default: () => "N'ESICUBA'",
+  })
+  @Field()
+  empresaSeguro: string | null;
+
+  @Column("int", {
+    name: "EmpresaNaviera",
+    nullable: true,
+    default: () => "(1)",
+  })
+  @Field(() => Int)
+  empresaNaviera: number | null;
+
+  @Column("nvarchar", { name: "LugarEntrega", nullable: true, length: 50 })
+  @Field()
+  lugarEntrega: string | null;
+
+  @Column("ntext", { name: "Notas", nullable: true })
+  @Field()
+  notas: string | null;
+
+  @Column("bit", { name: "PermitirEmbarquesParciales", default: () => "(0)" })
+  @Field()
+  permitirEmbarquesParciales: boolean;
+
+  @Column("tinyint", { name: "CantidadEP", nullable: true })
+  @Field(() => Int)
+  cantidadEp: number | null;
+
+  @Column("bit", { name: "PermitirEntregas", default: () => "(0)" })
+  @Field()
+  permitirEntregas: boolean;
+
+  @Column("bit", { name: "PermitirTrasbordos", default: () => "(0)" })
+  @Field()
+  permitirTrasbordos: boolean;
+
+  @Column("ntext", { name: "Producto", nullable: true })
+  @Field()
+  producto: string | null;
+
+  @Column("smallint", { name: "NoEntregasParciales", nullable: true })
+  @Field(() => Int)
+  noEntregasParciales: number | null;
+
+  @Column("smalldatetime", { name: "FechaElaboracion" })
+  @Field()
+  fechaElaboracion: Date;
+
+  @Column("smalldatetime", { name: "FechaInicial", nullable: true })
+  @Field()
+  fechaInicial: Date | null;
+
+  @Column("smalldatetime", { name: "FechaFinal", nullable: true })
+  @Field()
+  fechaFinal: Date | null;
+
+  @Column("smalldatetime", { name: "FechaFirma", nullable: true })
+  @Field()
+  fechaFirma: Date | null;
+
+  @Column("smalldatetime", { name: "FechaRecepcion", nullable: true })
+  @Field()
+  fechaRecepcion: Date | null;
+
+  @Column("smalldatetime", { name: "FechaArribo", nullable: true })
+  @Field()
+  fechaArribo: Date | null;
+
+  @Column("datetime", { name: "FechaPFirma", nullable: true })
+  @Field()
+  fechaPFirma: Date | null;
+
+  @Column("float", {
+    name: "Financiamiento",
+    precision: 53,
+    default: () => "(0)",
+  })
+  @Field(() => Float)
+  financiamiento: number;
+
+  @Column("float", { name: "TasaMoneda", precision: 53, default: () => "(0)" })
+  @Field(() => Float)
+  tasaMoneda: number;
+
+  @Column("datetime", {
+    name: "FechaTasa",
+    nullable: true,
+    default: () => "getdate()",
+  })
+  @Field()
+  fechaTasa: Date | null;
+
+  @Column("float", { name: "PFin", precision: 53, default: () => "(0)" })
+  @Field(() => Float)
+  pFin: number;
+
+  @Field(() => [ContratoClausulas])
+  @OneToMany(() => ContratoClausulas,(contratoClausulas) => contratoClausulas.contratos)
+  contratoClausulas: ContratoClausulas[];
 
   @Field(() => BasesGenerales)
   @ManyToOne(() => BasesGenerales, (basesGenerales) => basesGenerales.contratos)
   @JoinColumn([{ name: "IdBasesGenerales", referencedColumnName: "idBasesGenerales" }])
   basesGenerales: BasesGenerales;
 
-  @Field(() => TipoContrato)
-  @ManyToOne(() => TipoContrato, (tipoContrato) => tipoContrato.contratos)
-  @JoinColumn([{ name: "IdTipoContrato", referencedColumnName: "idTipoContrato" }])
-  tipoContrato: TipoContrato;
+  @Field(() => BasesCMarco)
+  @ManyToOne(() => BasesCMarco, (basesCMarco) => basesCMarco.contratos)
+  @JoinColumn([{ name: "IdBaseCMarco", referencedColumnName: "idBaseCMarco" }])
+  baseCMarco: BasesCMarco;
 
-  @Field(() => Proformas)
-  @ManyToOne(() => Proformas, (proformas) => proformas.contratos)
-  @JoinColumn([{ name: "IdProforma", referencedColumnName: "idProforma" }])
-  proformas: Proformas;
+  @Field(() => Puertos)
+  @ManyToOne(() => Puertos, (puertos) => puertos.contratosOrigen)
+  @JoinColumn([{ name: "IdPuertoOrigen", referencedColumnName: "idPuerto" }])
+  puertoOrigen: Puertos;
 
-  @Field(() => [ContratoDesglose])
-  @OneToMany(() => ContratoDesglose,(contratoDesglose) => contratoDesglose.contratos)
-  contratoDesgloses: ContratoDesglose[];
+  @Field(() => Puertos)
+  @ManyToOne(() => Puertos, (puertos) => puertos.contratosDestino)
+  @JoinColumn([{ name: "IdPuertoDestino", referencedColumnName: "idPuerto" }])
+  puertoDestino: Puertos;
+
+  @Field(() => Monedas)
+  @ManyToOne(() => Monedas, (monedas) => monedas.contratos)
+  @JoinColumn([{ name: "IdMoneda", referencedColumnName: "idMoneda" }])
+  moneda: Monedas;
+
+  @Field(() => FormasEntrega)
+  @ManyToOne(() => FormasEntrega, (formasEntrega) => formasEntrega.contratos)
+  @JoinColumn([{ name: "IdFormaEntrega", referencedColumnName: "idFormaEntrega" }])
+  formaEntrega: FormasEntrega;
+
+  @Field(() => NegociacionResumen)
+  @ManyToOne(() => NegociacionResumen,(negociacionResumen) => negociacionResumen.contratos)
+  @JoinColumn([{ name: "IdNegociacion", referencedColumnName: "idNegociacion" }])
+  negociacionResumen: NegociacionResumen;
+
+  @Field(() => FichaCostoResumen)
+  @ManyToOne(() => FichaCostoResumen,(fichaCostoResumen) => fichaCostoResumen.contratos)
+  @JoinColumn([{ name: "IdFichaCosto", referencedColumnName: "idFicha" }])
+  fichaCostoResumen: FichaCostoResumen;
+
+  @Field(() => Ejecutivos)
+  @ManyToOne(() => Ejecutivos, (ejecutivos) => ejecutivos.contratosRealiza)
+  @JoinColumn([{ name: "RealizadoPor", referencedColumnName: "idEjecutivo" }])
+  ejecutivoRealiza: Ejecutivos;
+
+  @Field(() => Ejecutivos)
+  @ManyToOne(() => Ejecutivos, (ejecutivos) => ejecutivos.contratosFirma)
+  @JoinColumn([{ name: "FirmadoPor", referencedColumnName: "idEjecutivo" }])
+  ejecutivoFirma: Ejecutivos;
+
+  @Field(() => Ejecutivos)
+  @ManyToOne(() => Ejecutivos, (ejecutivos) => ejecutivos.contratosModifica)
+  @JoinColumn([{ name: "ModificadoPor", referencedColumnName: "idEjecutivo" }])
+  EjecutivoModifica: Ejecutivos;
 
   @Field(() => [DocumentacionContrato])
   @OneToMany(() => DocumentacionContrato,(documentacionContrato) => documentacionContrato.contratos)
   documentacionContratos: DocumentacionContrato[];
 
+  @Field(() => [Embarques])
+  @OneToMany(() => Embarques, (embarques) => embarques.contratos)
+  embarques: Embarques[];
+
+  @Field(() => [FacturaResumen])
+  @OneToMany(() => FacturaResumen,(facturaResumen) => facturaResumen.contratos)
+  facturaResumen: FacturaResumen[];
+
   @Field(() => [FichaCompraResumen])
   @OneToMany(() => FichaCompraResumen,(fichaCompraResumen) => fichaCompraResumen.contrato)
   fichaCompraResumen: FichaCompraResumen[];
 
+  @Field(() => [SuplementoEmbarques])
+  @OneToMany(() => SuplementoEmbarques,(suplementoEmbarques) => suplementoEmbarques.contrato)
+  suplementoEmbarques: SuplementoEmbarques[];
+
+  @Field(() => [SuplementoResumen])
+  @OneToMany(() => SuplementoResumen,(suplementoResumen) => suplementoResumen.contrato)
+  suplementoResumen: SuplementoResumen[];
 }

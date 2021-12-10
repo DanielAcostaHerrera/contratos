@@ -6,6 +6,7 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
 } from "typeorm";
+import { Contratos } from "./Contratos.entity";
 import { PliegoConcurrenciaResumen } from "./PliegoConcurrenciaResumen.entity";
 
 @ObjectType()
@@ -28,4 +29,8 @@ export class FormasEntrega {
   @Field(() => [PliegoConcurrenciaResumen])
   @OneToMany(() => PliegoConcurrenciaResumen,(pliegoConcurrenciaResumen) => pliegoConcurrenciaResumen.formaEntrega)
   pliegoConcurrenciaResumen: PliegoConcurrenciaResumen[];
+
+  @Field(() => [Contratos])
+  @OneToMany(() => Contratos, (contratos) => contratos.formaEntrega)
+  contratos: Contratos[];
 }

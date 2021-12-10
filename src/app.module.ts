@@ -23,8 +23,7 @@ import { TipoContratoModule } from './tipo-contrato/tipo-contrato.module';
 import { TiposDeClausulasModule } from './tipos-de-clausulas/tipos-de-clausulas.module';
 import { DocumentacionModule } from './documentacion/documentacion.module';
 import { DocumentacionContratoModule } from './documentacion-contrato/documentacion-contrato.module';
-import { ContratosModule } from './contratos/contratos.module';
-import { ContratoDesgloseModule } from './contrato-desglose/contrato-desglose.module';
+import { ContratoClausulaModule } from './contrato-clausulas/contrato-clausulas.module';
 import { NegociacionDetalleModule } from './negociacion-detalle/negociacion-detalle.module';
 import { NegociacionDetallesModule } from './negociacion-detalles/negociacion-detalles.module';
 import { NegociacionProveedoresModule } from './negociacion-proveedores/negociacion-proveedores.module';
@@ -53,6 +52,14 @@ import { SolicitudContratacionModule } from './solicitud-contratacion/solicitud-
 import { SolicitudOfertasModule } from './solicitud-ofertas/solicitud-ofertas.module';
 import { SolicitudOfertasEntradasModule } from './solicitud-ofertas-entradas/solicitud-ofertas-entradas.module';
 import { SolicitudOfertasProveedorModule } from './solicitud-ofertas-proveedor/solicitud-ofertas-proveedor.module';
+import { ContratosModule } from './contratos/contratos.module';
+import { ContenedoresModule } from './contenedores/contenedores.module';
+import { ContratoDesgloseModule } from './contrato-desglose/contrato-desglose.module';
+import { EmbarquesModule } from './embarques/embarques.module';
+import { FacturaResumenModule } from './factura-resumen/factura-resumen.module';
+import { FacturaContenedorModule } from './factura-contenedor/factura-contenedor.module';
+import { FacturaDesgloseModule } from './factura-desglose/factura-desglose.module';
+import { SuplementoResumenModule } from './suplemento-resumen/suplemento-resumen.module';
 
 @Module({
   imports: [
@@ -90,7 +97,7 @@ import { SolicitudOfertasProveedorModule } from './solicitud-ofertas-proveedor/s
     DocumentacionModule,
     DocumentacionContratoModule,
     ContratosModule,
-    ContratoDesgloseModule,
+    ContratoClausulaModule,
     NegociacionDetalleModule,
     NegociacionDetallesModule,
     NegociacionProveedoresModule,
@@ -119,6 +126,13 @@ import { SolicitudOfertasProveedorModule } from './solicitud-ofertas-proveedor/s
     SolicitudOfertasModule,
     SolicitudOfertasEntradasModule,
     SolicitudOfertasProveedorModule,
+    ContenedoresModule,
+    ContratoDesgloseModule,
+    EmbarquesModule,
+    FacturaResumenModule,
+    FacturaContenedorModule,
+    FacturaDesgloseModule,
+    SuplementoResumenModule,
   ],
   controllers: [AppController],
   providers: [AppService],

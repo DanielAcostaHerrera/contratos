@@ -31,8 +31,4 @@ export class TipoContrato {
   @Field(() => [BasesGenerales] , {nullable: true})
   @OneToMany(() => BasesGenerales,(basesGenerales) => basesGenerales.tipoDeContrato)
   basesGenerales: BasesGenerales[];
-
-  @Field(() => [Contratos] , {nullable: true})
-  @OneToMany(() => Contratos, (contratos) => contratos.tipoContrato)
-  contratos: Contratos[];
 }

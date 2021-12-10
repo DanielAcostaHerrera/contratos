@@ -19,11 +19,13 @@ export class EjecutivoService {
   }
 
   async findAll(): Promise<Ejecutivos[]> {
-    return await this.ejecutivosRepository.find();
+    return await this.ejecutivosRepository.find({relations:['contratosRealiza','contratosFirma','contratosModifica','embarques','facturaResumen','facturaResumenRealiza',
+    'suplementoResumenSuplementa','suplementoResumen','suplementoResumenFirma','usuarios']});
   }
 
   async findOne(id: number) : Promise<Ejecutivos> {
-    return await this.ejecutivosRepository.findOne(id);
+    return await this.ejecutivosRepository.findOne(id,{relations:['contratosRealiza','contratosFirma','contratosModifica','embarques','facturaResumen','facturaResumenRealiza',
+    'suplementoResumenSuplementa','suplementoResumen','suplementoResumenFirma','usuarios']});
   }
 
   async remove(id: number) : Promise<any> {
