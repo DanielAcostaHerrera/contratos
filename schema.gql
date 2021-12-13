@@ -1299,6 +1299,7 @@ type Query {
   findOneRoles(id: Int!): Roles!
   findAllUsuarios: [Usuarios!]!
   findOneUsuarios(id: Int!): Usuarios!
+  autenticarUsuarios(contrasena: String!, nombreUsuario: String!): Usuarios!
   findAllUsuarioRol: [UsuarioRol!]!
   findOneUsuarioRol(id: Int!): UsuarioRol!
 }

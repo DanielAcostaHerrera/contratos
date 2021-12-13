@@ -23,6 +23,14 @@ export class UsuariosResolver {
     return this.usuariosService.findOne(id);
   }
 
+  @Query(() => Usuarios)
+  autenticarUsuarios(
+      @Args('nombreUsuario', { type: () => String }) nombreUsuario: string, 
+      @Args('contrasena', { type: () => String }) contrasena: string, 
+    ) {
+    return this.usuariosService.autenticar(nombreUsuario,contrasena);
+  }
+
   @Mutation(() => Usuarios)
   removeUsuario(@Args('id', { type: () => Int }) id: number) {
     return this.usuariosService.remove(id);

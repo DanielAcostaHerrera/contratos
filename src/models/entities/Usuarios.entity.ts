@@ -13,7 +13,8 @@ import { Field, Int, ObjectType } from "@nestjs/graphql";
 
 @ObjectType()
 @Index("IX_Usuarios", ["idEjecutivo"], { unique: true })
-@Index("PK_Usuarios", ["idUsuario"], { unique: true })
+@Index("IX_Usuarios_NombreUsuario", ["nombreUsuario"], { unique: true })
+@Index("PK_Usuarios", ["idUsuario"], { unique: true })  
 @Entity("Usuarios", { schema: "dbo" })
 export class Usuarios {
   @PrimaryGeneratedColumn({ type: "int", name: "IdUsuario" })
