@@ -30,7 +30,7 @@ export class Usuarios {
 
   @Column("nvarchar", { name: "Contraseña", length: 200 })
   @Field()
-  contraseA: string;
+  contrasena: string;
 
   @Field(() => [UsuarioRol])
   @OneToMany(() => UsuarioRol, (usuarioRol) => usuarioRol.usuario)

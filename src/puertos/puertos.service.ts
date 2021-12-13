@@ -8,7 +8,6 @@ import { CreatePuertoInput } from './dto/create-puerto.input';
 export class PuertosService {
   constructor(@InjectRepository(Puertos) public readonly puertoRepository: Repository<Puertos>) {}
 
-
   async save(createPuertoInput: CreatePuertoInput) : Promise<Puertos> {
     return await this.puertoRepository.save(createPuertoInput);
   }

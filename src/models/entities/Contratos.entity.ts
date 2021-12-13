@@ -266,7 +266,7 @@ export class Contratos {
   @Field(() => Ejecutivos)
   @ManyToOne(() => Ejecutivos, (ejecutivos) => ejecutivos.contratosModifica)
   @JoinColumn([{ name: "ModificadoPor", referencedColumnName: "idEjecutivo" }])
-  EjecutivoModifica: Ejecutivos;
+  ejecutivoModifica: Ejecutivos;
 
   @Field(() => [DocumentacionContrato])
   @OneToMany(() => DocumentacionContrato,(documentacionContrato) => documentacionContrato.contratos)

@@ -59,15 +59,15 @@ export class Ejecutivos {
 
   
   @Field(() => [Contratos])
-  @OneToMany(() => Contratos, (contratos) => contratos.realizadoPor)
+  @OneToMany(() => Contratos, (contratos) => contratos.ejecutivoRealiza)
   contratosRealiza: Contratos[];
 
   @Field(() => [Contratos])
-  @OneToMany(() => Contratos, (contratos) => contratos.firmadoPor)
+  @OneToMany(() => Contratos, (contratos) => contratos.ejecutivoFirma)
   contratosFirma: Contratos[];
 
   @Field(() => [Contratos])
-  @OneToMany(() => Contratos, (contratos) => contratos.modificadoPor)
+  @OneToMany(() => Contratos, (contratos) => contratos.ejecutivoModifica)
   contratosModifica: Contratos[];
 
   @Field(() => [Embarques])

@@ -856,9 +856,10 @@ type Usuarios {
   idUsuario: Int!
   idEjecutivo: Int!
   nombreUsuario: String!
-  contraseA: String!
+  contrasena: String!
   usuarioRoles: [UsuarioRol!]!
   ejecutivo: Ejecutivos!
+  ejecutivoModifica: Ejecutivos
 }
 
 type Ejecutivos {
@@ -1081,7 +1082,7 @@ type Contratos {
   fichaCostoResumen: FichaCostoResumen!
   ejecutivoRealiza: Ejecutivos!
   ejecutivoFirma: Ejecutivos!
-  EjecutivoModifica: Ejecutivos!
+  ejecutivoModifica: Ejecutivos!
   documentacionContratos: [DocumentacionContrato!]!
   embarques: [Embarques!]!
   facturaResumen: [FacturaResumen!]!
@@ -1294,6 +1295,12 @@ type Query {
   findOneSuplementoChange(id: Int!): SuplementoChange!
   findAllCambiosSuplementos: [CambiosSuplementos!]!
   findOneCambiosSuplementos(id: Int!): CambiosSuplementos!
+  findAllRoles: [Roles!]!
+  findOneRoles(id: Int!): Roles!
+  findAllUsuarios: [Usuarios!]!
+  findOneUsuarios(id: Int!): Usuarios!
+  findAllUsuarioRol: [UsuarioRol!]!
+  findOneUsuarioRol(id: Int!): UsuarioRol!
 }
 
 type Mutation {
@@ -1422,6 +1429,12 @@ type Mutation {
   removeSuplementoChange(id: Int!): SuplementoChange!
   createCambiosSuplemento(createCambiosSuplementoInput: CreateCambiosSuplementoInput!): CambiosSuplementos!
   removeCambiosSuplemento(id: Int!): CambiosSuplementos!
+  createRole(createRoleInput: CreateRoleInput!): Roles!
+  removeRole(id: Int!): Roles!
+  createUsuario(createUsuarioInput: CreateUsuarioInput!): Usuarios!
+  removeUsuario(id: Int!): Usuarios!
+  createUsuarioRol(createUsuarioRolInput: CreateUsuarioRolInput!): UsuarioRol!
+  removeUsuarioRol(id: Int!): UsuarioRol!
 }
 
 input CreateMonedaInput {
@@ -2345,4 +2358,22 @@ input CreateSuplementoChangeInput {
 input CreateCambiosSuplementoInput {
   idCambio: Int
   descripciN: String!
+}
+
+input CreateRoleInput {
+  idRol: Int
+  rol: String!
+}
+
+input CreateUsuarioInput {
+  idUsuario: Int
+  idEjecutivo: Int!
+  nombreUsuario: String!
+  contrasena: String!
+}
+
+input CreateUsuarioRolInput {
+  idUsuarioRol: Int
+  idUsuario: Int!
+  idRol: Int!
 }

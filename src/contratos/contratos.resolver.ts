@@ -86,7 +86,7 @@ export class ContratosResolver {
   }
 
   @ResolveField(() => Ejecutivos, {nullable: true})
-  EjecutivoModifica(@Parent() contratos: Contratos): Promise<Ejecutivos> {
+  ejecutivoModifica(@Parent() contratos: Contratos): Promise<Ejecutivos> {
     return this.contratosService.getEjecutivoModifica(contratos.modificadoPor);
   }
 }

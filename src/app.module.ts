@@ -66,6 +66,9 @@ import { SuplementoDesgloseModule } from './suplemento-desglose/suplemento-desgl
 import { SuplementoClausulasModule } from './suplemento-clausulas/suplemento-clausulas.module';
 import { SuplementoChangeModule } from './suplemento-change/suplemento-change.module';
 import { CambiosSuplementosModule } from './cambios-suplementos/cambios-suplementos.module';
+import { RolesModule } from './roles/roles.module';
+import { UsuariosModule } from './usuarios/usuarios.module';
+import { UsuarioRolModule } from './usuario-rol/usuario-rol.module';
 
 @Module({
   imports: [
@@ -145,6 +148,9 @@ import { CambiosSuplementosModule } from './cambios-suplementos/cambios-suplemen
     SuplementoClausulasModule,
     SuplementoChangeModule,
     CambiosSuplementosModule,
+    RolesModule,
+    UsuariosModule,
+    UsuarioRolModule,
   ],
   controllers: [AppController],
   providers: [AppService],
