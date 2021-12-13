@@ -60,6 +60,12 @@ import { FacturaResumenModule } from './factura-resumen/factura-resumen.module';
 import { FacturaContenedorModule } from './factura-contenedor/factura-contenedor.module';
 import { FacturaDesgloseModule } from './factura-desglose/factura-desglose.module';
 import { SuplementoResumenModule } from './suplemento-resumen/suplemento-resumen.module';
+import { SuplementoPagosModule } from './suplemento-pagos/suplemento-pagos.module';
+import { SuplementoEmbarquesModule } from './suplemento-embarques/suplemento-embarques.module';
+import { SuplementoDesgloseModule } from './suplemento-desglose/suplemento-desglose.module';
+import { SuplementoClausulasModule } from './suplemento-clausulas/suplemento-clausulas.module';
+import { SuplementoChangeModule } from './suplemento-change/suplemento-change.module';
+import { CambiosSuplementosModule } from './cambios-suplementos/cambios-suplementos.module';
 
 @Module({
   imports: [
@@ -133,6 +139,12 @@ import { SuplementoResumenModule } from './suplemento-resumen/suplemento-resumen
     FacturaContenedorModule,
     FacturaDesgloseModule,
     SuplementoResumenModule,
+    SuplementoPagosModule,
+    SuplementoEmbarquesModule,
+    SuplementoDesgloseModule,
+    SuplementoClausulasModule,
+    SuplementoChangeModule,
+    CambiosSuplementosModule,
   ],
   controllers: [AppController],
   providers: [AppService],

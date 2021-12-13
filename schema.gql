@@ -1165,6 +1165,11 @@ type DatosEntidad {
   compaIa: String!
 }
 
+type CambiosSuplementos {
+  idCambio: Int!
+  descripciN: String!
+}
+
 type Query {
   findAllMoneda: [Monedas!]!
   findOneMoneda(id: Int!): Monedas!
@@ -1277,6 +1282,18 @@ type Query {
   findOneFacturaDesglose(id: Int!): FacturaDesglose!
   findAllSuplementoResumen: [SuplementoResumen!]!
   findOneSuplementoResumen(id: Int!): SuplementoResumen!
+  findAllSuplementoPagos: [SuplementoPagos!]!
+  findOneSuplementoPagos(id: Int!): SuplementoPagos!
+  findAllSuplementoEmbarques: [SuplementoEmbarques!]!
+  findOneSuplementoEmbarques(id: Int!): SuplementoEmbarques!
+  findAllSuplementoDesglose: [SuplementoDesglose!]!
+  findOneSuplementoDesglose(id: Int!): SuplementoDesglose!
+  findAllSuplementoClausulas: [SuplementoClausulas!]!
+  findOneSuplementoClausulas(id: Int!): SuplementoClausulas!
+  findAllSuplementoChange: [SuplementoChange!]!
+  findOneSuplementoChange(id: Int!): SuplementoChange!
+  findAllCambiosSuplementos: [CambiosSuplementos!]!
+  findOneCambiosSuplementos(id: Int!): CambiosSuplementos!
 }
 
 type Mutation {
@@ -1393,6 +1410,18 @@ type Mutation {
   removeFacturaDesglose(id: Int!): FacturaDesglose!
   createSuplementoResuman(createSuplementoResumanInput: CreateSuplementoResumanInput!): SuplementoResumen!
   removeSuplementoResuman(id: Int!): SuplementoResumen!
+  createSuplementoPago(createSuplementoPagoInput: CreateSuplementoPagoInput!): SuplementoPagos!
+  removeSuplementoPago(id: Int!): SuplementoPagos!
+  createSuplementoEmbarque(createSuplementoEmbarqueInput: CreateSuplementoEmbarqueInput!): SuplementoEmbarques!
+  removeSuplementoEmbarque(id: Int!): SuplementoEmbarques!
+  createSuplementoDesglose(createSuplementoDesgloseInput: CreateSuplementoDesgloseInput!): SuplementoDesglose!
+  removeSuplementoDesglose(id: Int!): SuplementoDesglose!
+  createSuplementoClausula(createSuplementoClausulaInput: CreateSuplementoClausulaInput!): SuplementoClausulas!
+  removeSuplementoClausula(id: Int!): SuplementoClausulas!
+  createSuplementoChange(createSuplementoChangeInput: CreateSuplementoChangeInput!): SuplementoChange!
+  removeSuplementoChange(id: Int!): SuplementoChange!
+  createCambiosSuplemento(createCambiosSuplementoInput: CreateCambiosSuplementoInput!): CambiosSuplementos!
+  removeCambiosSuplemento(id: Int!): CambiosSuplementos!
 }
 
 input CreateMonedaInput {
@@ -2250,4 +2279,70 @@ input CreateSuplementoResumanInput {
   terminadoS: Boolean!
   notaSuple: String!
   canceladoSup: Boolean!
+}
+
+input CreateSuplementoPagoInput {
+  idSuplementoPagos: Int
+  idSuplementoResumen: Int!
+  idEmbarque: Int!
+  idFormaPago: Int!
+  plazoPago: Int!
+  aPartirDe: Int!
+  porciento: Float!
+}
+
+input CreateSuplementoEmbarqueInput {
+  idSuplementoEmbarques: Int
+  idSuplementoResumen: Int!
+  idEmbarque: Int!
+  idContrato: Int!
+  idPuertoDestino: Int!
+  fechaEntrega: DateTime!
+  numero: Int!
+  descuento: Float!
+  terminado: Boolean!
+  cancelado: Boolean!
+  porFirmar: Boolean!
+  qtyCnt: Int!
+  flete: Float!
+  seguro: Float!
+}
+
+input CreateSuplementoDesgloseInput {
+  idSuplementoDesglose: Int
+  idSuplementoResumen: Int!
+  idEmbarque: Int!
+  referencia: Int!
+  codigo: Int!
+  descripcionSp: String!
+  unidadMedidaCarton: Int!
+  cantidadPorCarton: Float!
+  paquete: Int!
+  cantidadCartones: Int!
+  volumen: Float!
+  precio: Float!
+  precioPaquete: Float!
+  packing: Float!
+}
+
+input CreateSuplementoClausulaInput {
+  idSuplementoClausulas: Int
+  idSuplementoResumen: Int!
+  idContratoClausulas: Int!
+  orden: Int!
+  modificada: Boolean!
+}
+
+input CreateSuplementoChangeInput {
+  idClausulaChange: Int
+  idSuplementoResumen: Int!
+  idEmbarque: Int!
+  idContratoClausula: Int!
+  contenidoViejo: String!
+  contenidoNuevo: String!
+}
+
+input CreateCambiosSuplementoInput {
+  idCambio: Int
+  descripciN: String!
 }
