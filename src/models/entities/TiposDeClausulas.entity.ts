@@ -14,7 +14,7 @@ import { ProformaClausulas } from "./ProformaClausulas.entity";
 @Index("IX_CTO_TiposDeClausulasNombre", ["nombre"], { unique: true })
 @Index("IX_CTO_TiposDeClausulasOrden", ["orden"], {})
 @Index("PK_CTO_TiposDeClausulas", ["idTipoClausula"], { unique: true })
-@Entity("TiposDeClausulas", { schema: "dbo" })
+@Entity("TiposDeClausulas", { schema: "CONTRATO.dbo" })
 export class TiposDeClausulas {
   @PrimaryGeneratedColumn({ type: "int", name: "IdTipoClausula" })
   @Field(() => Int)

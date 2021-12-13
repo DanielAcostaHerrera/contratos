@@ -14,7 +14,7 @@ import { FichaCompraResumen } from "./FichaCompraResumen.entity";
 @ObjectType()
 @Index("IX_FichaCompraDetalle", ["idFicha", "idProducto"], { unique: true })
 @Index("PK_FichaCompraDetalle", ["idFichaCompraDetalle"], { unique: true })
-@Entity("FichaCompraDetalle", { schema: "dbo" })
+@Entity("FichaCompraDetalle", { schema: "CONTRATO.dbo" })
 export class FichaCompraDetalle {
   @PrimaryGeneratedColumn({ type: "int", name: "IdFichaCompraDetalle" })
   @Field(() => Int)
@@ -140,11 +140,11 @@ export class FichaCompraDetalle {
   @Field(() => Float)
   impMinorista: number | null;
 
-  @Field(() => [FichaCompraAtributos])
+  @Field(() => [FichaCompraAtributos], {nullable: true})
   @OneToMany(() => FichaCompraAtributos,(fichaCompraAtributos) => fichaCompraAtributos.fichaCompraDetalle)
   fichaCompraAtributos: FichaCompraAtributos[];
 
-  @Field(() => FichaCompraResumen)
+  @Field(() => FichaCompraResumen, {nullable: true})
   @ManyToOne( () => FichaCompraResumen,(fichaCompraResumen) => fichaCompraResumen.fichaCompraDetalles,{ onDelete: "CASCADE" })
   @JoinColumn([{ name: "IdFicha", referencedColumnName: "idFicha" }])
   fichaCompraResumen: FichaCompraResumen;

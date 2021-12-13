@@ -10,7 +10,7 @@ import { BasesGenerales } from "./BasesGenerales.entity";
 
 @ObjectType()
 @Index("PK_NOM_Clasificaciones", ["idClasificacion"], { unique: true })
-@Entity("NOM_Clasificaciones", { schema: "dbo" })
+@Entity("NOM_Clasificaciones", { schema: "CONTRATO.dbo" })
 export class Clasificaciones {
   @PrimaryGeneratedColumn({ type: "int", name: "IdClasificacion" })
   @Field(() => Int)

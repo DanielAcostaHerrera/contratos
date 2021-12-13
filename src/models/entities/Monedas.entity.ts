@@ -10,7 +10,7 @@ import { SuplementoResumen } from "./SuplementoResumen.entity";
 @ObjectType()
 @Index("IX_NOM_MonedasAbreviatura", ["abreviatura"], { unique: true })
 @Index("PK_NOM_Monedas", ["idMoneda"], { unique: true })
-@Entity("NOM_Monedas", { schema: "dbo" })
+@Entity("NOM_Monedas", { schema: "CONTRATO.dbo" })
 export class Monedas {
   @PrimaryGeneratedColumn({ type: "int", name: "IdMoneda" })
   @Field(() => Int)
@@ -24,35 +24,35 @@ export class Monedas {
   @Field()
   abreviatura: string | null;
 
-  @Field(() => [NegociacionResumen])
+  @Field(() => [NegociacionResumen], {nullable: true})
   @OneToMany(() => NegociacionResumen,(negociacionResumen) => negociacionResumen.monedas)
   negociacionResumen: NegociacionResumen[];
 
-  @Field(() => [FichaCompraResumen])
+  @Field(() => [FichaCompraResumen], {nullable: true})
   @OneToMany(() => FichaCompraResumen,(fichaCompraResumen) => fichaCompraResumen.moneda)
   fichaCompraResumen: FichaCompraResumen[];
 
-  @Field(() => [FichaCostoResumen])
+  @Field(() => [FichaCostoResumen], {nullable: true})
   @OneToMany(() => FichaCostoResumen,(fichaCostoResumen) => fichaCostoResumen.moneda)
   fichaCostoResumen: FichaCostoResumen[];
 
-  @Field(() => [PliegoConcurrenciaResumen])
+  @Field(() => [PliegoConcurrenciaResumen], {nullable: true})
   @OneToMany(() => PliegoConcurrenciaResumen,(pliegoConcurrenciaResumen) => pliegoConcurrenciaResumen.monedaOferta)
   pliegoConcurrenciaResumenOferta: PliegoConcurrenciaResumen[];
 
-  @Field(() => [PliegoConcurrenciaResumen])
+  @Field(() => [PliegoConcurrenciaResumen], {nullable: true})
   @OneToMany(() => PliegoConcurrenciaResumen,(pliegoConcurrenciaResumen) => pliegoConcurrenciaResumen.monedaPago)
   pliegoConcurrenciaResumenPago: PliegoConcurrenciaResumen[];
 
-  @Field(() => [PliegoConcurrenciaResumen])
+  @Field(() => [PliegoConcurrenciaResumen], {nullable: true})
   @OneToMany(() => PliegoConcurrenciaResumen,(pliegoConcurrenciaResumen) => pliegoConcurrenciaResumen.monedaCartaCredito)
   pliegoConcurrenciaResumenCredito: PliegoConcurrenciaResumen[];
 
-  @Field(() => [Contratos])
+  @Field(() => [Contratos], {nullable: true})
   @OneToMany(() => Contratos, (contratos) => contratos.moneda)
   contratos: Contratos[];
 
-  @Field(() => [SuplementoResumen])
+  @Field(() => [SuplementoResumen], {nullable: true})
   @OneToMany(() => SuplementoResumen,(suplementoResumen) => suplementoResumen.moneda)
   suplementoResumen: SuplementoResumen[];
 }

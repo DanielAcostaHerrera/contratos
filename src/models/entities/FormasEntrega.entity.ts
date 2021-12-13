@@ -12,7 +12,7 @@ import { PliegoConcurrenciaResumen } from "./PliegoConcurrenciaResumen.entity";
 @ObjectType()
 @Index("IX_FormasEntrega", ["formaEntrega"], { unique: true })
 @Index("PK_FormasEntrega", ["idFormaEntrega"], { unique: true })
-@Entity("FormasEntrega", { schema: "dbo" })
+@Entity("FormasEntrega", { schema: "CONTRATO.dbo" })
 export class FormasEntrega {
   @PrimaryGeneratedColumn({ type: "int", name: "IdFormaEntrega" })
   @Field(() => Int)
@@ -26,11 +26,11 @@ export class FormasEntrega {
   @Field(() => Int)
   dias: number;
 
-  @Field(() => [PliegoConcurrenciaResumen])
+  @Field(() => [PliegoConcurrenciaResumen], {nullable: true})
   @OneToMany(() => PliegoConcurrenciaResumen,(pliegoConcurrenciaResumen) => pliegoConcurrenciaResumen.formaEntrega)
   pliegoConcurrenciaResumen: PliegoConcurrenciaResumen[];
 
-  @Field(() => [Contratos])
+  @Field(() => [Contratos], {nullable: true})
   @OneToMany(() => Contratos, (contratos) => contratos.formaEntrega)
   contratos: Contratos[];
 }

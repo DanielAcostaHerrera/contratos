@@ -4,7 +4,7 @@ import { PliegoConcurrenciaResumen } from "./PliegoConcurrenciaResumen.entity";
 
 @ObjectType()
 @Index("PK_CTO_TiposContenedor", ["idTipoContenedor"], { unique: true })
-@Entity("TiposContenedor", { schema: "dbo" })
+@Entity("TiposContenedor", { schema: "CONTRATO.dbo" })
 export class TiposContenedor {
   @PrimaryGeneratedColumn({ type: "int", name: "IdTipoContenedor" })
   @Field(() => Int)
@@ -14,7 +14,7 @@ export class TiposContenedor {
   @Field()
   tipoContenedor: string;
 
-  @Field(() => [PliegoConcurrenciaResumen])
+  @Field(() => [PliegoConcurrenciaResumen], {nullable: true})
   @OneToMany(() => PliegoConcurrenciaResumen,(pliegoConcurrenciaResumen) => pliegoConcurrenciaResumen.tipoContenedor)
   pliegoConcurrenciaResumen: PliegoConcurrenciaResumen[];
 }

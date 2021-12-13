@@ -26,7 +26,7 @@ import { Field, Float, Int, ObjectType } from "@nestjs/graphql";
 
 @ObjectType()
 @Index("PK_Contratos", ["idContrato"], { unique: true })
-@Entity("Contratos", { schema: "dbo" })
+@Entity("Contratos", { schema: "CONTRATO.dbo" })
 export class Contratos {
   @PrimaryGeneratedColumn({ type: "int", name: "IdContrato" })
   @Field(() => Int)
@@ -209,86 +209,86 @@ export class Contratos {
   @Field(() => Float)
   pFin: number;
 
-  @Field(() => [ContratoClausulas])
+  @Field(() => [ContratoClausulas], {nullable: true})
   @OneToMany(() => ContratoClausulas,(contratoClausulas) => contratoClausulas.contratos)
   contratoClausulas: ContratoClausulas[];
 
-  @Field(() => BasesGenerales)
+  @Field(() => BasesGenerales, {nullable: true})
   @ManyToOne(() => BasesGenerales, (basesGenerales) => basesGenerales.contratos)
   @JoinColumn([{ name: "IdBasesGenerales", referencedColumnName: "idBasesGenerales" }])
   basesGenerales: BasesGenerales;
 
-  @Field(() => BasesCMarco)
+  @Field(() => BasesCMarco, {nullable: true})
   @ManyToOne(() => BasesCMarco, (basesCMarco) => basesCMarco.contratos)
   @JoinColumn([{ name: "IdBaseCMarco", referencedColumnName: "idBaseCMarco" }])
   baseCMarco: BasesCMarco;
 
-  @Field(() => Puertos)
+  @Field(() => Puertos, {nullable: true})
   @ManyToOne(() => Puertos, (puertos) => puertos.contratosOrigen)
   @JoinColumn([{ name: "IdPuertoOrigen", referencedColumnName: "idPuerto" }])
   puertoOrigen: Puertos;
 
-  @Field(() => Puertos)
+  @Field(() => Puertos, {nullable: true})
   @ManyToOne(() => Puertos, (puertos) => puertos.contratosDestino)
   @JoinColumn([{ name: "IdPuertoDestino", referencedColumnName: "idPuerto" }])
   puertoDestino: Puertos;
 
-  @Field(() => Monedas)
+  @Field(() => Monedas, {nullable: true})
   @ManyToOne(() => Monedas, (monedas) => monedas.contratos)
   @JoinColumn([{ name: "IdMoneda", referencedColumnName: "idMoneda" }])
   moneda: Monedas;
 
-  @Field(() => FormasEntrega)
+  @Field(() => FormasEntrega, {nullable: true})
   @ManyToOne(() => FormasEntrega, (formasEntrega) => formasEntrega.contratos)
   @JoinColumn([{ name: "IdFormaEntrega", referencedColumnName: "idFormaEntrega" }])
   formaEntrega: FormasEntrega;
 
-  @Field(() => NegociacionResumen)
+  @Field(() => NegociacionResumen, {nullable: true})
   @ManyToOne(() => NegociacionResumen,(negociacionResumen) => negociacionResumen.contratos)
   @JoinColumn([{ name: "IdNegociacion", referencedColumnName: "idNegociacion" }])
   negociacionResumen: NegociacionResumen;
 
-  @Field(() => FichaCostoResumen)
+  @Field(() => FichaCostoResumen, {nullable: true})
   @ManyToOne(() => FichaCostoResumen,(fichaCostoResumen) => fichaCostoResumen.contratos)
   @JoinColumn([{ name: "IdFichaCosto", referencedColumnName: "idFicha" }])
   fichaCostoResumen: FichaCostoResumen;
 
-  @Field(() => Ejecutivos)
+  @Field(() => Ejecutivos, {nullable: true})
   @ManyToOne(() => Ejecutivos, (ejecutivos) => ejecutivos.contratosRealiza)
   @JoinColumn([{ name: "RealizadoPor", referencedColumnName: "idEjecutivo" }])
   ejecutivoRealiza: Ejecutivos;
 
-  @Field(() => Ejecutivos)
+  @Field(() => Ejecutivos, {nullable: true})
   @ManyToOne(() => Ejecutivos, (ejecutivos) => ejecutivos.contratosFirma)
   @JoinColumn([{ name: "FirmadoPor", referencedColumnName: "idEjecutivo" }])
   ejecutivoFirma: Ejecutivos;
 
-  @Field(() => Ejecutivos)
+  @Field(() => Ejecutivos, {nullable: true})
   @ManyToOne(() => Ejecutivos, (ejecutivos) => ejecutivos.contratosModifica)
   @JoinColumn([{ name: "ModificadoPor", referencedColumnName: "idEjecutivo" }])
   ejecutivoModifica: Ejecutivos;
 
-  @Field(() => [DocumentacionContrato])
+  @Field(() => [DocumentacionContrato], {nullable: true})
   @OneToMany(() => DocumentacionContrato,(documentacionContrato) => documentacionContrato.contratos)
   documentacionContratos: DocumentacionContrato[];
 
-  @Field(() => [Embarques])
+  @Field(() => [Embarques], {nullable: true})
   @OneToMany(() => Embarques, (embarques) => embarques.contratos)
   embarques: Embarques[];
 
-  @Field(() => [FacturaResumen])
+  @Field(() => [FacturaResumen], {nullable: true})
   @OneToMany(() => FacturaResumen,(facturaResumen) => facturaResumen.contratos)
   facturaResumen: FacturaResumen[];
 
-  @Field(() => [FichaCompraResumen])
+  @Field(() => [FichaCompraResumen], {nullable: true})
   @OneToMany(() => FichaCompraResumen,(fichaCompraResumen) => fichaCompraResumen.contrato)
   fichaCompraResumen: FichaCompraResumen[];
 
-  @Field(() => [SuplementoEmbarques])
+  @Field(() => [SuplementoEmbarques], {nullable: true})
   @OneToMany(() => SuplementoEmbarques,(suplementoEmbarques) => suplementoEmbarques.contrato)
   suplementoEmbarques: SuplementoEmbarques[];
 
-  @Field(() => [SuplementoResumen])
+  @Field(() => [SuplementoResumen], {nullable: true})
   @OneToMany(() => SuplementoResumen,(suplementoResumen) => suplementoResumen.contrato)
   suplementoResumen: SuplementoResumen[];
 }

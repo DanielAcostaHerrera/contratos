@@ -3,7 +3,7 @@ import { Column, Entity, Index } from "typeorm";
 
 @ObjectType()
 @Index("PK_DatosEntidad", ["codigo"], { unique: true })
-@Entity("DatosEntidad", { schema: "dbo" })
+@Entity("DatosEntidad", { schema: "CONTRATO.dbo" })
 export class DatosEntidad {
   @Column("int", { primary: true, name: "CODIGO" })
   @Field(() => Int)

@@ -18,7 +18,7 @@ import { Field, Float, Int, ObjectType } from "@nestjs/graphql";
 
 @ObjectType()
 @Index("PK_FacturaResumen", ["idFactura"], { unique: true })
-@Entity("FacturaResumen", { schema: "dbo" })
+@Entity("FacturaResumen", { schema: "CONTRATO.dbo" })
 export class FacturaResumen {
   @PrimaryGeneratedColumn({ type: "int", name: "IdFactura" })
   @Field(() => Int)
@@ -126,40 +126,40 @@ export class FacturaResumen {
   @Field(()=> Float)
   laTasaMn: number;
   
-  @Field(()=> [FacturaContenedor])
+  @Field(()=> [FacturaContenedor], {nullable: true})
   @OneToMany(() => FacturaContenedor,(facturaContenedor) => facturaContenedor.facturaResumen)
   facturaContenedores: FacturaContenedor[];
 
-  @Field(()=> [FacturaDesglose])
+  @Field(()=> [FacturaDesglose], {nullable: true})
   @OneToMany(() => FacturaDesglose,(facturaDesglose) => facturaDesglose.facturaResumen)
   facturaDesgloses: FacturaDesglose[];
 
-  @Field(()=> Contratos)
+  @Field(()=> Contratos, {nullable: true})
   @ManyToOne(() => Contratos, (contratos) => contratos.facturaResumen)
   @JoinColumn([{ name: "IdContrato", referencedColumnName: "idContrato" }])
   contratos: Contratos;
 
-  @Field(()=> Embarques)
+  @Field(()=> Embarques, {nullable: true})
   @ManyToOne(() => Embarques, (embarques) => embarques.facturaResumen)
   @JoinColumn([{ name: "IdEmbarque", referencedColumnName: "idEmbarque" }])
   embarques: Embarques;
 
-  @Field(()=> Ejecutivos)
+  @Field(()=> Ejecutivos, {nullable: true})
   @ManyToOne(() => Ejecutivos, (ejecutivos) => ejecutivos.facturaResumen)
   @JoinColumn([{ name: "IdEjecutivo", referencedColumnName: "idEjecutivo" }])
   ejecutivos: Ejecutivos;
 
-  @Field(()=> NegociacionResumen)
+  @Field(()=> NegociacionResumen, {nullable: true})
   @ManyToOne(() => NegociacionResumen,(negociacionResumen) => negociacionResumen.facturaResumen)
   @JoinColumn([{ name: "IdNegociacion", referencedColumnName: "idNegociacion" }])
   negociacionResumen: NegociacionResumen;
 
-  @Field(()=> Puertos)
+  @Field(()=> Puertos, {nullable: true})
   @ManyToOne(() => Puertos, (puertos) => puertos.facturaResumen)
   @JoinColumn([{ name: "IdPuertoDestino", referencedColumnName: "idPuerto" }])
   puertoDestino: Puertos;
 
-  @Field(()=> Ejecutivos)
+  @Field(()=> Ejecutivos, {nullable: true})
   @ManyToOne(() => Ejecutivos, (ejecutivos) => ejecutivos.facturaResumenRealiza)
   @JoinColumn([{ name: "RealizadoPor", referencedColumnName: "idEjecutivo" }])
   ejecutivoRealiza: Ejecutivos;

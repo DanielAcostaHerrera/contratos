@@ -1139,8 +1139,8 @@ type CampanaEtapasContratacion {
   idEtapa: Int!
   idPais: Int!
   mesDia: Int!
-  campana: Campanas!
-  etapaContratacion: EtapasContratacion!
+  campana: Campanas
+  etapaContratacion: EtapasContratacion
 }
 
 type Campanas {

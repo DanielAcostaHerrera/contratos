@@ -19,7 +19,7 @@ import { SuplementoPagos } from "./SuplementoPagos.entity";
 
 @ObjectType()
 @Index("PK_Embarques", ["idEmbarque"], { unique: true })
-@Entity("Embarques", { schema: "dbo" })
+@Entity("Embarques", { schema: "CONTRATO.dbo" })
 export class Embarques {
   @PrimaryGeneratedColumn({ type: "int", name: "IdEmbarque" })
   @Field(() => Int)
@@ -118,37 +118,37 @@ export class Embarques {
   @Field()
   actSci: boolean;
 
-  @Field(() => [ContratoDesglose])
+  @Field(() => [ContratoDesglose], {nullable: true})
   @OneToMany(() => ContratoDesglose,(contratoDesglose) => contratoDesglose.embarques)
   contratoDesgloses: ContratoDesglose[];
 
-  @Field(() => Contratos)
+  @Field(() => Contratos, {nullable: true})
   @ManyToOne(() => Contratos, (contratos) => contratos.embarques)
   @JoinColumn([{ name: "IdContrato", referencedColumnName: "idContrato" }])
   contratos: Contratos;
 
-  @Field(() => Ejecutivos)
+  @Field(() => Ejecutivos, {nullable: true})
   @ManyToOne(() => Ejecutivos, (ejecutivos) => ejecutivos.embarques)
   @JoinColumn([{ name: "IdEjecutivo", referencedColumnName: "idEjecutivo" }])
   ejecutivos: Ejecutivos;
 
-  @Field(() => [FacturaResumen])
+  @Field(() => [FacturaResumen], {nullable: true})
   @OneToMany(() => FacturaResumen,(facturaResumen) => facturaResumen.embarques)
   facturaResumen: FacturaResumen[];
 
-  @Field(() => [SuplementoChange])
+  @Field(() => [SuplementoChange], {nullable: true})
   @OneToMany(() => SuplementoChange,(suplementoChange) => suplementoChange.embarques)
   suplementoChanges: SuplementoChange[];
 
-  @Field(() => [SuplementoDesglose])
+  @Field(() => [SuplementoDesglose], {nullable: true})
   @OneToMany(() => SuplementoDesglose,(suplementoDesglose) => suplementoDesglose.embarques)
   suplementoDesgloses: SuplementoDesglose[];
 
-  @Field(() => [SuplementoEmbarques])
+  @Field(() => [SuplementoEmbarques], {nullable: true})
   @OneToMany(() => SuplementoEmbarques,(suplementoEmbarques) => suplementoEmbarques.embarques)
   suplementoEmbarques: SuplementoEmbarques[];
 
-  @Field(() => [SuplementoPagos])
+  @Field(() => [SuplementoPagos], {nullable: true})
   @OneToMany(() => SuplementoPagos,(suplementoPagos) => suplementoPagos.embarques)
   suplementoPagos: SuplementoPagos[];
 }

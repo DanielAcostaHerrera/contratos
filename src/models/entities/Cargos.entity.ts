@@ -5,7 +5,7 @@ import { Ejecutivos } from "./Ejecutivos.entity";
 @ObjectType()
 @Index("IX_CargosCargo", ["cargo"], { unique: true })
 @Index("PK_Cargos", ["idCargo"], { unique: true })
-@Entity("NOM_Cargos", { schema: "dbo" })
+@Entity("NOM_Cargos", { schema: "CONTRATO.dbo" })
 export class Cargos {
   
   @PrimaryGeneratedColumn({ type: "int", name: "IdCargo" })

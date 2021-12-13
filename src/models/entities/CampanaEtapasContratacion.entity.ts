@@ -15,7 +15,7 @@ import { EtapasContratacion } from "./EtapasContratacion.entity";
   unique: true,
 })
 @Index("PK_CTO_CampanaEtapasCont", ["idCampanaEtapas"], { unique: true })
-@Entity("CampanaEtapasContratacion", { schema: "dbo" })
+@Entity("CampanaEtapasContratacion", { schema: "CONTRATO.dbo" })
 export class CampanaEtapasContratacion {
   @PrimaryGeneratedColumn({ type: "int", name: "IdCampanaEtapas" })
   @Field(() => Int)
@@ -37,12 +37,12 @@ export class CampanaEtapasContratacion {
   @Field(() => Int)
   mesDia: number;
 
-  @Field(() => Campanas)
+  @Field(() => Campanas, { nullable: true })
   @ManyToOne(() => Campanas, (campanas) => campanas.campanaEtapasContratacion)
   @JoinColumn([{ name: "IdCampana", referencedColumnName: "idCampana" }])
   campana: Campanas;
 
-  @Field(() => EtapasContratacion)
+  @Field(() => EtapasContratacion, { nullable: true })
   @ManyToOne(() => EtapasContratacion,(etapasContratacion) => etapasContratacion.campanaEtapasContratacion)
   @JoinColumn([{ name: "IdEtapa", referencedColumnName: "idEtapa" }])
   etapaContratacion: EtapasContratacion;

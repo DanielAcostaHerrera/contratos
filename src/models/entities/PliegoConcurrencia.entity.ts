@@ -13,7 +13,7 @@ import { Field, Int, ObjectType } from "@nestjs/graphql";
 
 @ObjectType()
 @Index("PK_PliegoConcurrencia", ["idPliego"], { unique: true })
-@Entity("PliegoConcurrencia", { schema: "dbo" })
+@Entity("PliegoConcurrencia", { schema: "CONTRATO.dbo" })
 export class PliegoConcurrencia {
   @PrimaryGeneratedColumn({ type: "int", name: "IdPliego" })
   @Field(() => Int)
@@ -23,12 +23,12 @@ export class PliegoConcurrencia {
   @Field(() => Int)
   idOferta: number | null;
 
-  @Field(() => SolicitudOfertas)
+  @Field(() => SolicitudOfertas, {nullable: true})
   @ManyToOne(() => SolicitudOfertas,(solicitudOfertas) => solicitudOfertas.pliegoConcurrencias)
   @JoinColumn([{ name: "IdOferta", referencedColumnName: "idOferta" }])
   oferta: SolicitudOfertas;
 
-  @Field(() => [PliegoConcurrenciaResumen])
+  @Field(() => [PliegoConcurrenciaResumen], {nullable: true})
   @OneToMany(() => PliegoConcurrenciaResumen,(pliegoConcurrenciaResumen) => pliegoConcurrenciaResumen.pliegoConcurrencia)
   pliegoConcurrenciaResumen: PliegoConcurrenciaResumen[];
 }

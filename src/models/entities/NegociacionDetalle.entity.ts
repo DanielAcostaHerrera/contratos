@@ -10,7 +10,7 @@ import { NegociacionResumen } from "./NegociacionResumen.entity";
   unique: true,
 })
 
-@Entity("NegociacionDetalle", { schema: "dbo" })
+@Entity("NegociacionDetalle", { schema: "CONTRATO.dbo" })
 export class NegociacionDetalle {
   @PrimaryGeneratedColumn({ type: "int", name: "IdNegociacionDetalle" })
   @Field(() => Int)
@@ -52,7 +52,7 @@ export class NegociacionDetalle {
   @Field()
   detalles: string;
 
-  @Field(() => NegociacionResumen)
+  @Field(() => NegociacionResumen, {nullable: true})
   @ManyToOne(() => NegociacionResumen,(negociacionResumen) => negociacionResumen.negociacionDetalle)
   @JoinColumn([{ name: "IdNegociacion", referencedColumnName: "idNegociacion" },])
   negociacionResumen: NegociacionResumen;

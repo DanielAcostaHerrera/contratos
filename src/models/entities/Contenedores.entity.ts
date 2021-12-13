@@ -10,7 +10,7 @@ import { FacturaContenedor } from "./FacturaContenedor.entity";
 
 @ObjectType()
 @Index("PK_Contenedores", ["idContenedor"], { unique: true })
-@Entity("Contenedores", { schema: "dbo" })
+@Entity("Contenedores", { schema: "CONTRATO.dbo" })
 export class Contenedores {
   @PrimaryGeneratedColumn({ type: "int", name: "IdContenedor" })
   @Field(() => Int)
@@ -20,7 +20,7 @@ export class Contenedores {
   @Field()
   noContenedor: string;
 
-  @Field(() => [FacturaContenedor])
+  @Field(() => [FacturaContenedor], { nullable: true })
   @OneToMany(() => FacturaContenedor,(facturaContenedor) => facturaContenedor.idContenedor)
   facturaContenedores: FacturaContenedor[];
 }

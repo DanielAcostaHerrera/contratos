@@ -15,7 +15,7 @@ import { SolicitudOfertasProveedor } from "./SolicitudOfertasProveedor.entity";
 @ObjectType()
 @Index("IX_SolicitudOfertasSolicitudContrato", ["idSolicitudContrato"], {})
 @Index("PK_SolicitudOfertas", ["idOferta"], { unique: true })
-@Entity("SolicitudOfertas", { schema: "dbo" })
+@Entity("SolicitudOfertas", { schema: "CONTRATO.dbo" })
 export class SolicitudOfertas {
   @PrimaryGeneratedColumn({ type: "int", name: "IdOferta" })
   @Field(() => Int)
@@ -65,16 +65,16 @@ export class SolicitudOfertas {
   @Field(() => Int)
   aprobadoPor: number;
 
-  @Field(() => [PliegoConcurrencia])
+  @Field(() => [PliegoConcurrencia], {nullable: true})
   @OneToMany(() => PliegoConcurrencia,(pliegoConcurrencia) => pliegoConcurrencia.idOferta)
   pliegoConcurrencias: PliegoConcurrencia[];
 
-  @Field(() => SolicitudContratacion)
+  @Field(() => SolicitudContratacion, {nullable: true})
   @ManyToOne(() => SolicitudContratacion,(solicitudContratacion) => solicitudContratacion.solicitudOfertas)
   @JoinColumn([{name: "IdSolicitudContrato",referencedColumnName: "idSolicitudContrato",}])
   solicitudContrato: SolicitudContratacion;
 
-  @Field(() => [SolicitudOfertasProveedor])
+  @Field(() => [SolicitudOfertasProveedor], {nullable: true})
   @OneToMany(() => SolicitudOfertasProveedor,(solicitudOfertasProveedor) => solicitudOfertasProveedor.solicitudOfertas)
   solicitudOfertasProveedores: SolicitudOfertasProveedor[];
 }

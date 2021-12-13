@@ -15,7 +15,7 @@ import { SuplementoClausulas } from "./SuplementoClausulas.entity";
 @ObjectType()
 @Index("IX_ContratoClausulas", ["idContrato", "noClausula"], { unique: true })
 @Index("PK_ContratoClausulas", ["idContratoClausulas"], { unique: true })
-@Entity("ContratoDesglose", { schema: "dbo" })
+@Entity("ContratoDesglose", { schema: "CONTRATO.dbo" })
 export class ContratoClausulas {
   @PrimaryGeneratedColumn({ type: "int", name: "IdContratoClausulas" })
   @Field(() => Int)
@@ -42,7 +42,7 @@ export class ContratoClausulas {
   @OneToMany(() => SuplementoChange,(suplementoChange) => suplementoChange.contratoClausulas)
   suplementoChanges: SuplementoChange[];
 
-  @Field(() => SuplementoClausulas, {nullable: true})
+  @Field(() => [SuplementoClausulas], {nullable: true})
   @OneToMany(() => SuplementoClausulas,(suplementoClausulas) => suplementoClausulas.contratoClausulas)
   suplementoClausulas: SuplementoClausulas[];
 }

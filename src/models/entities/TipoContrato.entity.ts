@@ -6,7 +6,7 @@ import { Contratos } from "./Contratos.entity";
 @ObjectType()
 @Index("IX_CTO_TipoContrato", ["tipoContrato"], { unique: true })
 @Index("PK_CTO_TipoContrato", ["idTipoContrato"], { unique: true })
-@Entity("TipoContrato", { schema: "dbo" })
+@Entity("TipoContrato", { schema: "CONTRATO.dbo" })
 export class TipoContrato {
   @PrimaryGeneratedColumn({ type: "int", name: "IdTipoContrato" })  
   @Field(() => Int)

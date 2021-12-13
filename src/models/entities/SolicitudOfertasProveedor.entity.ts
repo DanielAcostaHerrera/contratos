@@ -16,7 +16,7 @@ import { Field, Int, ObjectType } from "@nestjs/graphql";
   unique: true,
 })
 @Index("PK_SolicitudOfertaProveedor", ["idOfertasProveedor"], { unique: true })
-@Entity("SolicitudOfertasProveedor", { schema: "dbo" })
+@Entity("SolicitudOfertasProveedor", { schema: "CONTRATO.dbo" })
 export class SolicitudOfertasProveedor {
   @PrimaryGeneratedColumn({ type: "int", name: "IdOfertasProveedor" })
   @Field(() => Int)
@@ -38,11 +38,11 @@ export class SolicitudOfertasProveedor {
   @Field()
   cargo: string | null;
 
-  @Field(() => [SolicitudOfertasEntradas])
+  @Field(() => [SolicitudOfertasEntradas], {nullable: true})
   @OneToMany(() => SolicitudOfertasEntradas,(solicitudOfertasEntradas) => solicitudOfertasEntradas.ofertasProveedor)
   solicitudOfertasEntradas: SolicitudOfertasEntradas[];
 
-  @Field(() => SolicitudOfertas)
+  @Field(() => SolicitudOfertas, {nullable: true})
   @ManyToOne(() => SolicitudOfertas,(solicitudOfertas) => solicitudOfertas.solicitudOfertasProveedores)
   @JoinColumn([{ name: "IdOferta", referencedColumnName: "idOferta" }])
   solicitudOfertas: SolicitudOfertas;

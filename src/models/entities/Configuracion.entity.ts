@@ -3,7 +3,7 @@ import { Column, Entity, Index, PrimaryGeneratedColumn } from "typeorm";
 
 @ObjectType()
 @Index("PK_CTO_Configuracion", ["idConfig"], { unique: true })
-@Entity("Configuracion", { schema: "dbo" })
+@Entity("Configuracion", { schema: "CONTRATO.dbo" })
 export class Configuracion {
   @PrimaryGeneratedColumn({ type: "int", name: "IdConfig" })
   @Field(() => Int)

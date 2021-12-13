@@ -23,7 +23,7 @@ import { Field, Float, Int, ObjectType } from "@nestjs/graphql";
   unique: true,
 })
 @Index("PK_PliegoConcurrenciaResumen", ["idPliegoResumen"], { unique: true })
-@Entity("PliegoConcurrenciaResumen", { schema: "dbo" })
+@Entity("PliegoConcurrenciaResumen", { schema: "CONTRATO.dbo" })
 export class PliegoConcurrenciaResumen {
   @PrimaryGeneratedColumn({ type: "int", name: "IdPliegoResumen" })
   @Field(() => Int)
@@ -137,61 +137,61 @@ export class PliegoConcurrenciaResumen {
   @Field(() => Float)
   pesoBruto: number;
 
-  @Field(() => [PliegoConcurrenciaDetalle])
+  @Field(() => [PliegoConcurrenciaDetalle], {nullable: true})
   @OneToMany(() => PliegoConcurrenciaDetalle,(pliegoConcurrenciaDetalle) => pliegoConcurrenciaDetalle.pliegoResumen)
   pliegoConcurrenciaDetalles: PliegoConcurrenciaDetalle[];
 
-  @Field(() => PliegoConcurrencia)
+  @Field(() => PliegoConcurrencia, {nullable: true})
   @ManyToOne(() => PliegoConcurrencia,(pliegoConcurrencia) => pliegoConcurrencia.pliegoConcurrenciaResumen)
   @JoinColumn([{ name: "IdPliego", referencedColumnName: "idPliego" }])
   pliegoConcurrencia: PliegoConcurrencia;
 
-  @Field(() => Monedas)
+  @Field(() => Monedas, {nullable: true})
   @ManyToOne(() => Monedas,(monedas) => monedas.pliegoConcurrenciaResumenOferta)
   @JoinColumn([{ name: "IdMonedaOferta", referencedColumnName: "idMoneda" }])
   monedaOferta: Monedas;
 
-  @Field(() => Monedas)
+  @Field(() => Monedas, {nullable: true})
   @ManyToOne(() => Monedas,(monedas) => monedas.pliegoConcurrenciaResumenPago)
   @JoinColumn([{ name: "IdMonedaPago", referencedColumnName: "idMoneda" }])
   monedaPago: Monedas;
 
-  @Field(() => Monedas)
+  @Field(() => Monedas, {nullable: true})
   @ManyToOne(() => Monedas,(monedas) => monedas.pliegoConcurrenciaResumenCredito)
   @JoinColumn([{ name: "IdMonedaCartaCredito", referencedColumnName: "idMoneda" }])
   monedaCartaCredito: Monedas;
 
-  @Field(() => Incoterm)
+  @Field(() => Incoterm, {nullable: true})
   @ManyToOne(() => Incoterm,(incoterm) => incoterm.pliegoConcurrenciaResumen)
   @JoinColumn([{ name: "IdIncoterm", referencedColumnName: "idIncoterm" }])
   incoterm: Incoterm;
 
-  @Field(() => FormasPago)
+  @Field(() => FormasPago, {nullable: true})
   @ManyToOne(() => FormasPago,(formasPago) => formasPago.pliegoConcurrenciaResumen)
   @JoinColumn([{ name: "IdFormaPago", referencedColumnName: "idFormaPago" }])
   formaPago: FormasPago;
 
-  @Field(() => FormasEntrega)
+  @Field(() => FormasEntrega, {nullable: true})
   @ManyToOne(() => FormasEntrega,(formasEntrega) => formasEntrega.pliegoConcurrenciaResumen)
   @JoinColumn([{ name: "IdFormaEntrega", referencedColumnName: "idFormaEntrega" }])
   formaEntrega: FormasEntrega;
 
-  @Field(() => Puertos)
+  @Field(() => Puertos, {nullable: true})
   @ManyToOne(() => Puertos,(puertos) => puertos.pliegoConcurrenciaResumenEmbarque)
   @JoinColumn([{ name: "IdPuertoEmbarque", referencedColumnName: "idPuerto" }])
   puertoEmbarque: Puertos;
 
-  @Field(() => Puertos)
+  @Field(() => Puertos, {nullable: true})
   @ManyToOne(() => Puertos,(puertos) => puertos.pliegoConcurrenciaResumenDestino)
   @JoinColumn([{ name: "IdPuertoDestino", referencedColumnName: "idPuerto" }])
   puertoDestino: Puertos;
 
-  @Field(() => TiposContenedor)
+  @Field(() => TiposContenedor, {nullable: true})
   @ManyToOne(() => TiposContenedor,(tiposContenedor) => tiposContenedor.pliegoConcurrenciaResumen)
   @JoinColumn([{ name: "IdTipoContenedor", referencedColumnName: "idTipoContenedor" }])
   tipoContenedor: TiposContenedor;
 
-  @Field(() => [SolicitudCodificacion])
+  @Field(() => [SolicitudCodificacion], {nullable: true})
   @OneToMany(() => SolicitudCodificacion,(solicitudCodificacion) => solicitudCodificacion.pliegoResumen)
   solicitudCodificacion: SolicitudCodificacion[];
 }

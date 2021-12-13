@@ -4,7 +4,7 @@ import { Documentacion } from "./Documentacion.entity";
 
 @ObjectType()
 @Index("PK_CTO_TiposDocumento", ["idTipoDoc"], { unique: true })
-@Entity("TiposDocumento", { schema: "dbo" })
+@Entity("TiposDocumento", { schema: "CONTRATO.dbo" })
 export class TiposDocumento {
   @PrimaryGeneratedColumn({ type: "int", name: "IdTipoDoc" })
   @Field(() => Int)
@@ -14,7 +14,7 @@ export class TiposDocumento {
   @Field()
   nombreDoc: string;
 
-  @Field(() => [Documentacion])
+  @Field(() => [Documentacion], {nullable: true})
   @OneToMany(() => Documentacion, (documentacion) => documentacion.tiposDocumento)
   documentaciones: Documentacion[];
 }

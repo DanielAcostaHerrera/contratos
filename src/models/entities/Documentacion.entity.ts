@@ -14,7 +14,7 @@ import { TiposDocumento } from "./TiposDocumento.entity";
 @ObjectType()
 @Index("IX_Documentacion_TipoDoc", ["idTipoDoc"], {})
 @Index("PK_CTO_Documentacion", ["idDocumento"], { unique: true })
-@Entity("Documentacion", { schema: "dbo" })
+@Entity("Documentacion", { schema: "CONTRATO.dbo" })
 export class Documentacion {
   @PrimaryGeneratedColumn({ type: "int", name: "IdDocumento" })
   @Field(() => Int)

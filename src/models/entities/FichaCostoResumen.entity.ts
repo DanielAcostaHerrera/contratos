@@ -21,7 +21,7 @@ import { Contratos } from "./Contratos.entity";
 @Index("IX_FichaCostoResumen_Pais", ["idPais"], {})
 @Index("IX_FichaCostoResumen_Prov", ["idProveedor"], {})
 @Index("PK_FichaCostoResumen", ["idFicha"], { unique: true })
-@Entity("FichaCostoResumen", { schema: "dbo" })
+@Entity("FichaCostoResumen", { schema: "CONTRATO.dbo" })
 export class FichaCostoResumen {
   @PrimaryGeneratedColumn({ type: "int", name: "IdFicha" })
   @Field(() => Int)
@@ -383,37 +383,37 @@ export class FichaCostoResumen {
   @Field(() => Int)
   aprobado: number | null;
 
-  @Field(() => BasesCMarco)
+  @Field(() => BasesCMarco, {nullable: true})
   @ManyToOne(() => BasesCMarco, (basesCMarco) => basesCMarco.fichaCostoResumen)
   @JoinColumn([{ name: "IdBaseCMarco", referencedColumnName: "idBaseCMarco" }])
   baseCMarco: BasesCMarco;
 
-  @Field(() => Monedas)
+  @Field(() => Monedas, {nullable: true})
   @ManyToOne(() => Monedas, (monedas) => monedas.fichaCostoResumen)
   @JoinColumn([{ name: "IdMoneda", referencedColumnName: "idMoneda" }])
   moneda: Monedas;
 
-  @Field(() => FormasPago)
+  @Field(() => FormasPago, {nullable: true})
   @ManyToOne(() => FormasPago, (formasPago) => formasPago.fichaCostoResumen)
   @JoinColumn([{ name: "IdFormaPago", referencedColumnName: "idFormaPago" }])
   formaPago: FormasPago;
 
-  @Field(() => Incoterm)
+  @Field(() => Incoterm, {nullable: true})
   @ManyToOne(() => Incoterm, (incoterm) => incoterm.fichaCostoResumen)
   @JoinColumn([{ name: "IdIncoterm", referencedColumnName: "idIncoterm" }])
   incoterm: Incoterm;
 
-  @Field(() => Puertos)
+  @Field(() => Puertos, {nullable: true})
   @ManyToOne(() => Puertos, (puertos) => puertos.fichaCostoResumen)
   @JoinColumn([{ name: "IdPuerto", referencedColumnName: "idPuerto" }])
   puerto: Puertos;
 
-  @Field(() => Embalajes)
+  @Field(() => Embalajes, {nullable: true})
   @ManyToOne(() => Embalajes, (embalajes) => embalajes.fichaCostoResumen)
   @JoinColumn([{ name: "IdEmbalaje", referencedColumnName: "idEmbalaje" }])
   embalaje: Embalajes;
 
-  @Field(() => [Contratos])
+  @Field(() => [Contratos], {nullable: true})
   @OneToMany(() => Contratos, (contratos) => contratos.fichaCostoResumen)
   contratos: Contratos[];
 }

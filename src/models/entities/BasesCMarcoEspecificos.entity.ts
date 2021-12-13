@@ -14,7 +14,7 @@ import { BasesCMarco } from "./BasesCMarco.entity";
   ["idBaseCMarco", "idEspecifico", "idPadre"],
   { unique: true }
 )
-@Entity("BasesCMarcoEspecificos", { schema: "dbo" })
+@Entity("BasesCMarcoEspecificos", { schema: "CONTRATO.dbo" })
 export class BasesCMarcoEspecificos {
   @PrimaryGeneratedColumn({ type: "int", name: "IdBaseCMarcoEspecificos" })
   @Field(() => Int)

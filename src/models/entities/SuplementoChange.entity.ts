@@ -13,7 +13,7 @@ import { Field, Int, ObjectType } from "@nestjs/graphql";
 
 @ObjectType()
 @Index("PK_SuplementoChange", ["idClausulaChange"], { unique: true })
-@Entity("SuplementoChange", { schema: "dbo" })
+@Entity("SuplementoChange", { schema: "CONTRATO.dbo" })
 export class SuplementoChange {
   @PrimaryGeneratedColumn({ type: "int", name: "IdClausulaChange" })
   @Field(() => Int)
@@ -39,17 +39,17 @@ export class SuplementoChange {
   @Field()
   contenidoNuevo: string | null;
 
-  @Field(() => SuplementoResumen)
+  @Field(() => SuplementoResumen, {nullable: true})
   @ManyToOne(() => SuplementoResumen,(suplementoResumen) => suplementoResumen.suplementoChanges)
   @JoinColumn([{name: "IdSuplementoResumen",referencedColumnName: "idSuplementoResumen",}])
   suplementoResumen: SuplementoResumen;
 
-  @Field(() => Embarques)
+  @Field(() => Embarques, {nullable: true})
   @ManyToOne(() => Embarques, (embarques) => embarques.suplementoChanges)
   @JoinColumn([{ name: "IdEmbarque", referencedColumnName: "idEmbarque" }])
   embarques: Embarques;
 
-  @Field(() => ContratoClausulas)
+  @Field(() => ContratoClausulas, {nullable: true})
   @ManyToOne(() => ContratoClausulas,(contratoClausulas) => contratoClausulas.suplementoChanges)
   @JoinColumn([{ name: "IdContratoClausula", referencedColumnName: "idContratoClausulas" },])
   contratoClausulas: ContratoClausulas;

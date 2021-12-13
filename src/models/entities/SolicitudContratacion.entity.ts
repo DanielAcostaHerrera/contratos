@@ -16,7 +16,7 @@ import { Field, Int, ObjectType } from "@nestjs/graphql";
 @Index("IX_SolicitudContratacion", ["idNegociacion"], {})
 @Index("IX_SolicitudContratacion_Comprador", ["idComprador"], {})
 @Index("PK_SolicitudContratacion", ["idSolicitudContrato"], { unique: true })
-@Entity("SolicitudContratacion", { schema: "dbo" })
+@Entity("SolicitudContratacion", { schema: "CONTRATO.dbo" })
 export class SolicitudContratacion {
   @PrimaryGeneratedColumn({ type: "int", name: "IdSolicitudContrato" })
   @Field(() => Int)
@@ -42,17 +42,17 @@ export class SolicitudContratacion {
   @Field()
   nota: string | null;
 
-  @Field(() => NegociacionResumen)
+  @Field(() => NegociacionResumen, {nullable: true})
   @ManyToOne(() => NegociacionResumen,(negociacionResumen) => negociacionResumen.solicitudContratacion)
   @JoinColumn([{ name: "IdNegociacion", referencedColumnName: "idNegociacion" }])
   negociacion: NegociacionResumen;
 
-  @Field(() => Compradores)
+  @Field(() => Compradores, {nullable: true})
   @ManyToOne(() => Compradores,(compradores) => compradores.solicitudContratacion)
   @JoinColumn([{ name: "IdComprador", referencedColumnName: "idComprador" }])
   comprador: Compradores;
 
-  @Field(() => [SolicitudOfertas])
+  @Field(() => [SolicitudOfertas], {nullable: true})
   @OneToMany(() => SolicitudOfertas,(solicitudOfertas) => solicitudOfertas.solicitudContrato)
   solicitudOfertas: SolicitudOfertas[];
 }

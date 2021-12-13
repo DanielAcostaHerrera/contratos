@@ -12,7 +12,7 @@ import { Field, Int, ObjectType } from "@nestjs/graphql";
   ["idBasesGenerales", "idProformaClausula", "idTipoClausula"],
   { unique: true }
 )
-@Entity("BasesGeneralesClausulas", { schema: "dbo" })
+@Entity("BasesGeneralesClausulas", { schema: "CONTRATO.dbo" })
 export class BasesGeneralesClausulas {
   @PrimaryGeneratedColumn({ type: "int", name: "IdBasesGeneralesClausulas" })
   @Field(() => Int)

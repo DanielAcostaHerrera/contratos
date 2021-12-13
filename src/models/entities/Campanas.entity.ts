@@ -10,7 +10,7 @@ import { CampanaEtapasContratacion } from "./CampanaEtapasContratacion.entity";
 
 @ObjectType()
 @Index("PK_CTO_Campanas", ["idCampana"], { unique: true })
-@Entity("Campanas", { schema: "dbo" })
+@Entity("Campanas", { schema: "CONTRATO.dbo" })
 export class Campanas {
   @PrimaryGeneratedColumn({ type: "int", name: "IdCampana" })
   @Field(() => Int)
@@ -20,7 +20,7 @@ export class Campanas {
   @Field()
   campana: string;
 
-  @Field(() => [CampanaEtapasContratacion])
+  @Field(() => [CampanaEtapasContratacion], { nullable: true })
   @OneToMany(() => CampanaEtapasContratacion,(campanaEtapasContratacion) => campanaEtapasContratacion.campana)
   campanaEtapasContratacion: CampanaEtapasContratacion[];
 }

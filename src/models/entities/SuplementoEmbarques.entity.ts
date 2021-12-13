@@ -14,7 +14,7 @@ import { Field, Float, Int, ObjectType } from "@nestjs/graphql";
 
 @ObjectType()
 @Index("PK_SuplementoEmbarques", ["idSuplementoEmbarques"], { unique: true })
-@Entity("SuplementoEmbarques", { schema: "dbo" })
+@Entity("SuplementoEmbarques", { schema: "CONTRATO.dbo" })
 export class SuplementoEmbarques {
   @PrimaryGeneratedColumn({ type: "int", name: "IdSuplementoEmbarques" })
   @Field(() => Int)
@@ -72,22 +72,22 @@ export class SuplementoEmbarques {
   @Field(() => Float)
   seguro: number;
 
-  @Field(() => SuplementoResumen)
+  @Field(() => SuplementoResumen, {nullable: true})
   @ManyToOne(() => SuplementoResumen,(suplementoResumen) => suplementoResumen.suplementoEmbarques)
   @JoinColumn([{name: "IdSuplementoResumen",referencedColumnName: "idSuplementoResumen"}])
   suplementoResumen: SuplementoResumen;
 
-  @Field(() => Embarques)
+  @Field(() => Embarques, {nullable: true})
   @ManyToOne(() => Embarques, (embarques) => embarques.suplementoEmbarques)
   @JoinColumn([{ name: "IdEmbarque", referencedColumnName: "idEmbarque" }])
   embarques: Embarques;
 
-  @Field(() => Contratos)
+  @Field(() => Contratos, {nullable: true})
   @ManyToOne(() => Contratos, (contratos) => contratos.suplementoEmbarques)
   @JoinColumn([{ name: "IdContrato", referencedColumnName: "idContrato" }])
   contrato: Contratos;
 
-  @Field(() => Puertos)
+  @Field(() => Puertos, {nullable: true})
   @ManyToOne(() => Puertos, (puertos) => puertos.suplementoEmbarques)
   @JoinColumn([{ name: "IdPuertoDestino", referencedColumnName: "idPuerto" }])
   puertoDestino: Puertos;

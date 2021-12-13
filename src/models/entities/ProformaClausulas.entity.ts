@@ -21,7 +21,7 @@ import { Field, Int, ObjectType } from "@nestjs/graphql";
 @Index("IX_CTO_ProformaClausulas_IdTipoClausula", ["idTipoClausula"], {})
 @Index("IX_CTO_ProformaClausulas_Orden", ["orden"], {})
 @Index("PK_CTO_ProformaClausulas", ["idProformaClausula"], { unique: true })
-@Entity("ProformaClausulas", { schema: "dbo" })
+@Entity("ProformaClausulas", { schema: "CONTRATO.dbo" })
 export class ProformaClausulas {
   @PrimaryGeneratedColumn({ type: "int", name: "IdProformaClausula" })
   @Field(() => Int)

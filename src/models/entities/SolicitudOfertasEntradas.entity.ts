@@ -11,7 +11,7 @@ import { SolicitudOfertasProveedor } from "./SolicitudOfertasProveedor.entity";
 
 @ObjectType()
 @Index("PK_RecepcionOfertas", ["idOfertasEntradas"], { unique: true })
-@Entity("SolicitudOfertasEntradas", { schema: "dbo" })
+@Entity("SolicitudOfertasEntradas", { schema: "CONTRATO.dbo" })
 export class SolicitudOfertasEntradas {
   @PrimaryGeneratedColumn({ type: "int", name: "IdOfertasEntradas" })
   @Field(() => Int)
@@ -65,7 +65,7 @@ export class SolicitudOfertasEntradas {
   @Field(() => Float)
   precioCosto: number;
 
-  @Field(() => SolicitudOfertasProveedor)
+  @Field(() => SolicitudOfertasProveedor, {nullable: true})
   @ManyToOne(() => SolicitudOfertasProveedor,(solicitudOfertasProveedor) => solicitudOfertasProveedor.solicitudOfertasEntradas)
   @JoinColumn([{ name: "IdOfertasProveedor", referencedColumnName: "idOfertasProveedor" }])
   ofertasProveedor: SolicitudOfertasProveedor;

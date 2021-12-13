@@ -22,7 +22,7 @@ import { TiposDeCompras } from "./TiposDeCompras.entity";
 @ObjectType()
 @Index("IX_NegociacionResumen", ["idNegociacionUnico"], { unique: true })
 @Index("PK_NegociacionResumen", ["idNegociacion"], { unique: true })
-@Entity("NegociacionResumen", { schema: "dbo" })
+@Entity("NegociacionResumen", { schema: "CONTRATO.dbo" })
 export class NegociacionResumen {
   @PrimaryGeneratedColumn({ type: "int", name: "IdNegociacion" })
   @Field(() => Int)
@@ -131,46 +131,46 @@ export class NegociacionResumen {
   @Field()
   idNegociacionUnico: string | null;
 
-  @Field(() => [NegociacionDetalle])
+  @Field(() => [NegociacionDetalle], {nullable: true})
   @OneToMany(() => NegociacionDetalle,(negociacionDetalle) => negociacionDetalle.negociacionResumen)
   negociacionDetalle: NegociacionDetalle[];
 
-  @Field(() => [NegociacionDetalles])
+  @Field(() => [NegociacionDetalles], {nullable: true})
   @OneToMany(() => NegociacionDetalles,(negociacionDetalles) => negociacionDetalles.negociacionResumen)
   negociacionDetalles: NegociacionDetalles[];
 
-  @Field(() => [NegociacionProveedores])
+  @Field(() => [NegociacionProveedores], {nullable: true})
   @OneToMany(() => NegociacionProveedores,(negociacionProveedores) => negociacionProveedores.negociacionResumen)
   negociacionProveedores: NegociacionProveedores[];
 
-  @Field(() => TiposDeCompras)
+  @Field(() => TiposDeCompras, {nullable: true})
   @ManyToOne(() => TiposDeCompras,(tiposDeCompras) => tiposDeCompras.negociacionResumen)
   @JoinColumn([{ name: "IdTipoCompras", referencedColumnName: "idTipoCompras" },])
   tiposDeCompras: TiposDeCompras;
 
-  @Field(() => Monedas)
+  @Field(() => Monedas, {nullable: true})
   @ManyToOne(() => Monedas,(monedas) => monedas.negociacionResumen)
   @JoinColumn([{ name: "IdMoneda", referencedColumnName: "idMoneda" },])
   monedas: Monedas;
 
-  @Field(() => GruposDeCompras)
+  @Field(() => GruposDeCompras, {nullable: true})
   @ManyToOne(() => GruposDeCompras,(grupos) => grupos.negociacionResumen)
   @JoinColumn([{ name: "IdGrupo", referencedColumnName: "idGrupo" },])
   grupos: GruposDeCompras;
 
-  @Field(() => [FichaCompraResumen])
+  @Field(() => [FichaCompraResumen], {nullable: true})
   @OneToMany(() => FichaCompraResumen,(fichaCompraResumen) => fichaCompraResumen.negociacionResumen)
   fichaCompraResumen: FichaCompraResumen[];
 
-  @Field(() => [SolicitudContratacion])
+  @Field(() => [SolicitudContratacion], {nullable: true})
   @OneToMany(() => SolicitudContratacion,(solicitudContratacion) => solicitudContratacion.negociacion)
   solicitudContratacion: SolicitudContratacion[];
 
-  @Field(() => [Contratos])
+  @Field(() => [Contratos], {nullable: true})
   @OneToMany(() => Contratos, (contratos) => contratos.negociacionResumen)
   contratos: Contratos[];
 
-  @Field(() => [FacturaResumen])
+  @Field(() => [FacturaResumen], {nullable: true})
   @OneToMany(() => FacturaResumen,(facturaResumen) => facturaResumen.negociacionResumen)
   facturaResumen: FacturaResumen[];
 }

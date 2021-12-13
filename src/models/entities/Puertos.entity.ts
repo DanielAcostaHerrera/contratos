@@ -12,7 +12,7 @@ import { SuplementoResumen } from "./SuplementoResumen.entity";
 @Index("IX_NOM_Puertos", ["pais", "nombre"], { unique: true })
 @Index("IX_NOM_Puertos_Nombre", ["nombre"], {})
 @Index("PK_NOM_Puertos", ["idPuerto"], { unique: true })
-@Entity("NOM_Puertos", { schema: "dbo" })
+@Entity("NOM_Puertos", { schema: "CONTRATO.dbo" })
 export class Puertos {
   @PrimaryGeneratedColumn({ type: "int", name: "IdPuerto" })
   @Field(() => Int)

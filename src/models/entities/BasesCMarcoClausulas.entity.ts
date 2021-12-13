@@ -11,7 +11,7 @@ import { Field, Int, ObjectType } from "@nestjs/graphql";
   ["idBaseCMarco", "idProformaClausula", "idTipoClausula"],
   { unique: true }
 )
-@Entity("BasesCMarcoClausulas", { schema: "dbo" })
+@Entity("BasesCMarcoClausulas", { schema: "CONTRATO.dbo" })
 export class BasesCMarcoClausulas {
 
   @PrimaryGeneratedColumn({ type: "int", name: "IdBasesCMarcoClausulas" })

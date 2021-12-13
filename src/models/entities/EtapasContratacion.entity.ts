@@ -11,7 +11,7 @@ import { TiemposTravesia } from "./TiemposTravesia.entity";
 
 @ObjectType()
 @Index("PK_CTO_EtapasContratacion", ["idEtapa"], { unique: true })
-@Entity("EtapasContratacion", { schema: "dbo" })
+@Entity("EtapasContratacion", { schema: "CONTRATO.dbo" })
 export class EtapasContratacion {
   @PrimaryGeneratedColumn({ type: "int", name: "IdEtapa" })
   @Field(() => Int)
@@ -33,11 +33,11 @@ export class EtapasContratacion {
   @Field(() => Int)
   tiempoReal: number;
 
-  @Field(() => [CampanaEtapasContratacion])
+  @Field(() => [CampanaEtapasContratacion], {nullable: true})
   @OneToMany(() => CampanaEtapasContratacion,(campanaEtapasContratacion) => campanaEtapasContratacion.etapaContratacion)
   campanaEtapasContratacion: CampanaEtapasContratacion[];
 
-  @Field(() => [TiemposTravesia])
+  @Field(() => [TiemposTravesia], {nullable: true})
   @OneToMany(() => TiemposTravesia,(tiemposTravesia) => tiemposTravesia.etapaContratacion)
   tiemposTravesias: TiemposTravesia[];
 }

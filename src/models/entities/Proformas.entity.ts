@@ -24,7 +24,7 @@ import { ProformaClausulas } from "./ProformaClausulas.entity";
   { unique: true }
 )
 @Index("PK_CTO_ProformaResumen", ["idProforma"], { unique: true })
-@Entity("Proformas", { schema: "dbo" })
+@Entity("Proformas", { schema: "CONTRATO.dbo" })
 export class Proformas {
   @PrimaryGeneratedColumn({ type: "int", name: "IdProforma" })
   @Field(() => Int)

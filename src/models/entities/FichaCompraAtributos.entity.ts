@@ -13,7 +13,7 @@ import { FichaCompraDetalle } from "./FichaCompraDetalle.entity";
 @Index("PK_FichaCompraAtributos_1", ["idFichaCompraAtributos"], {
   unique: true,
 })
-@Entity("FichaCompraAtributos", { schema: "dbo" })
+@Entity("FichaCompraAtributos", { schema: "CONTRATO.dbo" })
 export class FichaCompraAtributos {
   @PrimaryGeneratedColumn({ type: "int", name: "IdFichaCompraAtributos" })
   @Field(() => Int)
@@ -135,7 +135,7 @@ export class FichaCompraAtributos {
   @Field(() => Float)
   mccuc: number | null;
 
-  @Field(() => FichaCompraDetalle)
+  @Field(() => FichaCompraDetalle, {nullable: true})
   @ManyToOne(() => FichaCompraDetalle,(fichaCompraDetalle) => fichaCompraDetalle.fichaCompraAtributos)
   @JoinColumn([{name: "IdFichaCompraDetalle",referencedColumnName: "idFichaCompraDetalle",}])
   fichaCompraDetalle: FichaCompraDetalle;

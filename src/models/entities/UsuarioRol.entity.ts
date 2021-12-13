@@ -12,7 +12,7 @@ import { Field, Int, ObjectType } from "@nestjs/graphql";
 
 @ObjectType()
 @Index("PK_UsuarioRol", ["idUsuarioRol"], { unique: true })
-@Entity("UsuarioRol", { schema: "dbo" })
+@Entity("UsuarioRol", { schema: "CONTRATO.dbo" })
 export class UsuarioRol {
   @PrimaryGeneratedColumn({ type: "int", name: "IdUsuarioRol" })
   @Field(() => Int)
@@ -31,7 +31,7 @@ export class UsuarioRol {
   @JoinColumn([{ name: "IdUsuario", referencedColumnName: "idUsuario" }])
   usuario: Usuarios;
 
-  @Field(() => Roles)
+  @Field(() => Roles, {nullable: true})
   @ManyToOne(() => Roles, (roles) => roles.usuarioRoles)
   @JoinColumn([{ name: "IdRol", referencedColumnName: "idRol" }])
   rol: Roles;

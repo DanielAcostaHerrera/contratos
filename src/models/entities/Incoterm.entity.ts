@@ -14,7 +14,7 @@ import { PliegoConcurrenciaResumen } from "./PliegoConcurrenciaResumen.entity";
 @ObjectType()
 @Index("IX_Incoterm", ["abreviatura"], { unique: true })
 @Index("PK_Incoterm", ["idIncoterm"], { unique: true })
-@Entity("NOM_Incoterm", { schema: "dbo" })
+@Entity("NOM_Incoterm", { schema: "CONTRATO.dbo" })
 export class Incoterm {
   @PrimaryGeneratedColumn({ type: "int", name: "IdIncoterm" })
   @Field(() => Int)

@@ -11,7 +11,7 @@ import { PliegoConcurrenciaResumen } from "./PliegoConcurrenciaResumen.entity";
 
 @ObjectType()
 @Index("PK_SolicitudCodificacion_1", ["idSolicitudCompra"], { unique: true })
-@Entity("SolicitudCodificacion", { schema: "dbo" })
+@Entity("SolicitudCodificacion", { schema: "CONTRATO.dbo" })
 export class SolicitudCodificacion {
   @PrimaryGeneratedColumn({ type: "int", name: "IdSolicitudCompra" })
   @Field(() => Int)
@@ -65,7 +65,7 @@ export class SolicitudCodificacion {
   @Field(() => Float)
   precioCosto: number;
 
-  @Field(() => PliegoConcurrenciaResumen)
+  @Field(() => PliegoConcurrenciaResumen, {nullable: true})
   @ManyToOne(() => PliegoConcurrenciaResumen,(pliegoConcurrenciaResumen) => pliegoConcurrenciaResumen.solicitudCodificacion)
   @JoinColumn([{ name: "IdPliegoResumen", referencedColumnName: "idPliegoResumen" }])
   pliegoResumen: PliegoConcurrenciaResumen;

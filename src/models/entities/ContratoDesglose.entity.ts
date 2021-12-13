@@ -4,7 +4,7 @@ import { Embarques } from "./Embarques.entity";
 
 @ObjectType()
 @Index("PK_ContratoDesglose", ["idContratoDesglose"], { unique: true })
-@Entity("ContratoDesglose", { schema: "dbo" })
+@Entity("ContratoDesglose", { schema: "CONTRATO.dbo" })
 export class ContratoDesglose {
   @PrimaryGeneratedColumn({ type: "int", name: "IdContratoDesglose" })
   @Field(() => Int)
@@ -67,7 +67,7 @@ export class ContratoDesglose {
   @Field(() => Int)
   cajas: number;
 
-  @Field(() => Embarques)
+  @Field(() => Embarques, {nullable: true})
   @ManyToOne(() => Embarques, (embarques) => embarques.contratoDesgloses)
   @JoinColumn([{ name: "IdEmbarque", referencedColumnName: "idEmbarque" }])
   embarques: Embarques;

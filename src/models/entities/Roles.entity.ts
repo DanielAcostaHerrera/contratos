@@ -10,7 +10,7 @@ import { UsuarioRol } from "./UsuarioRol.entity";
 
 @ObjectType()
 @Index("PK_Roles", ["idRol"], { unique: true })
-@Entity("Roles", { schema: "dbo" })
+@Entity("Roles", { schema: "CONTRATO.dbo" })
 export class Roles {
   @PrimaryGeneratedColumn({ type: "int", name: "IdRol" })
   @Field(() => Int)
@@ -20,7 +20,7 @@ export class Roles {
   @Field()
   rol: string;
 
-  @Field(() => [UsuarioRol])
+  @Field(() => [UsuarioRol], {nullable: true})
   @OneToMany(() => UsuarioRol, (usuarioRol) => usuarioRol.rol)
   usuarioRoles: UsuarioRol[];
 }

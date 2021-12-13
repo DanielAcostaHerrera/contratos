@@ -26,7 +26,7 @@ import { BasesCMarco } from "./BasesCMarco.entity";
 @Index("IX_CTO_BasesGeneralesProveedor", ["idProveedor"], {})
 @Index("IX_CTO_BasesGeneralesTipoContrato", ["idTipoContrato"], {})
 @Index("PK_CTO_BasesGenerales", ["idBasesGenerales"], { unique: true })
-@Entity("BasesGenerales", { schema: "dbo" })
+@Entity("BasesGenerales", { schema: "CONTRATO.dbo" })
 export class BasesGenerales {
   @PrimaryGeneratedColumn({ type: "int", name: "IdBasesGenerales" })
   @Field(() => Int)

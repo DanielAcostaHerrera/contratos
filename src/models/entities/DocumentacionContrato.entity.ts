@@ -16,7 +16,7 @@ import { Documentacion } from "./Documentacion.entity";
   { unique: true }
 )
 
-@Entity("DocumentacionContrato", { schema: "dbo" })
+@Entity("DocumentacionContrato", { schema: "CONTRATO.dbo" })
 export class DocumentacionContrato {
   @PrimaryGeneratedColumn({ type: "int", name: "IdDocumentacionContrato" })
   @Field(() => Int)

@@ -20,7 +20,7 @@ import { Field, Float, Int, ObjectType } from "@nestjs/graphql";
 
 @ObjectType()
 @Index("PK_SuplementoResumen", ["idSuplementoResumen"], { unique: true })
-@Entity("SuplementoResumen", { schema: "dbo" })
+@Entity("SuplementoResumen", { schema: "CONTRATO.dbo" })
 export class SuplementoResumen {
   @PrimaryGeneratedColumn({ type: "int", name: "IdSuplementoResumen" })
   @Field(() => Int)
@@ -150,57 +150,57 @@ export class SuplementoResumen {
   @Field()
   canceladoSup: boolean;
 
-  @Field(() => [SuplementoChange])
+  @Field(() => [SuplementoChange], {nullable: true})
   @OneToMany(() => SuplementoChange,(suplementoChange) => suplementoChange.suplementoResumen)
   suplementoChanges: SuplementoChange[];
 
-  @Field(() => [SuplementoClausulas])
+  @Field(() => [SuplementoClausulas], {nullable: true})
   @OneToMany(() => SuplementoClausulas,(suplementoClausulas) => suplementoClausulas.suplementoResumen)
   suplementoClausulas: SuplementoClausulas[];
 
-  @Field(() => [SuplementoDesglose])
+  @Field(() => [SuplementoDesglose], {nullable: true})
   @OneToMany(() => SuplementoDesglose,(suplementoDesglose) => suplementoDesglose.suplementoResumen)
   suplementoDesgloses: SuplementoDesglose[];
 
-  @Field(() => [SuplementoEmbarques])
+  @Field(() => [SuplementoEmbarques], {nullable: true})
   @OneToMany(() => SuplementoEmbarques,(suplementoEmbarques) => suplementoEmbarques.suplementoResumen)
   suplementoEmbarques: SuplementoEmbarques[];
 
-  @Field(() => [SuplementoPagos])
+  @Field(() => [SuplementoPagos], {nullable: true})
   @OneToMany(() => SuplementoPagos,(suplementoPagos) => suplementoPagos.suplementoResumen)
   suplementoPagos: SuplementoPagos[];
   
-  @Field(() => Contratos)
+  @Field(() => Contratos, {nullable: true})
   @ManyToOne(() => Contratos, (contratos) => contratos.suplementoResumen)
   @JoinColumn([{ name: "IdContrato", referencedColumnName: "idContrato" }])
   contrato: Contratos;
 
-  @Field(() => Puertos)
+  @Field(() => Puertos, {nullable: true})
   @ManyToOne(() => Puertos, (puertos) => puertos.suplementoResumenOrigen)
   @JoinColumn([{ name: "IdPuertoOrigen", referencedColumnName: "idPuerto" }])
   puertoOrigen: Puertos;
 
-  @Field(() => Puertos)
+  @Field(() => Puertos, {nullable: true})
   @ManyToOne(() => Puertos, (puertos) => puertos.suplementoResumenDestino)
   @JoinColumn([{ name: "IdPuertoDestino", referencedColumnName: "idPuerto" }])
   puertoDestino: Puertos;
 
-  @Field(() => Ejecutivos)
+  @Field(() => Ejecutivos, {nullable: true})
   @ManyToOne(() => Ejecutivos, (ejecutivos) => ejecutivos.suplementoResumenSuplementa)
   @JoinColumn([{ name: "SuplementadoPor", referencedColumnName: "idEjecutivo" }])
   ejecutivoSuplementa: Ejecutivos;
 
-  @Field(() => Ejecutivos)
+  @Field(() => Ejecutivos, {nullable: true})
   @ManyToOne(() => Ejecutivos, (ejecutivos) => ejecutivos.suplementoResumen)
   @JoinColumn([{ name: "IdEjecutivo", referencedColumnName: "idEjecutivo" }])
   ejecutivo: Ejecutivos;
 
-  @Field(() => Ejecutivos)
+  @Field(() => Ejecutivos, {nullable: true})
   @ManyToOne(() => Ejecutivos, (ejecutivos) => ejecutivos.suplementoResumenFirma)
   @JoinColumn([{ name: "Firma", referencedColumnName: "idEjecutivo" }])
   ejecutivoFirma: Ejecutivos;
 
-  @Field(() => Monedas)
+  @Field(() => Monedas, {nullable: true})
   @ManyToOne(() => Monedas, (monedas) => monedas.suplementoResumen)
   @JoinColumn([{ name: "IdMoneda", referencedColumnName: "idMoneda" }])
   moneda: Monedas;

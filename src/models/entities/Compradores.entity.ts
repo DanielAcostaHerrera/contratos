@@ -12,7 +12,7 @@ import { SolicitudContratacion } from "./SolicitudContratacion.entity";
 
 @ObjectType()
 @Index("PK_Compradores", ["idComprador"], { unique: true })
-@Entity("Compradores", { schema: "dbo" })
+@Entity("Compradores", { schema: "CONTRATO.dbo" })
 export class Compradores {
   @PrimaryGeneratedColumn({ type: "int", name: "IdComprador" })
   @Field(() => Int)
@@ -42,15 +42,15 @@ export class Compradores {
   @Field()
   activo: boolean | null;
 
-  @Field(() => [BasesCMarco])
+  @Field(() => [BasesCMarco], { nullable: true })
   @OneToMany(() => BasesCMarco, (basesCMarco) => basesCMarco.compradores)
   basesCMarcos: BasesCMarco[];
 
-  @Field(() => [BasesGenerales])
+  @Field(() => [BasesGenerales], { nullable: true })
   @OneToMany(() => BasesGenerales,(basesGenerales) => basesGenerales.compradores)
   basesGenerales: BasesGenerales[];
 
-  @Field(() => [SolicitudContratacion])
+  @Field(() => [SolicitudContratacion], { nullable: true })
   @OneToMany(() => SolicitudContratacion,(solicitudContratacion) => solicitudContratacion.comprador)
   solicitudContratacion: SolicitudContratacion[];
 }

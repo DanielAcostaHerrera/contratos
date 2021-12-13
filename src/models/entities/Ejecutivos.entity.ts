@@ -21,7 +21,7 @@ import { Usuarios } from "./Usuarios.entity";
 @Index("IX_CTO_Ejecutivos", ["nombre"], { unique: true })
 @Index("IX_CTO_Ejecutivos_Grupo", ["idGrupo"], {})
 @Index("PK_CTO_Ejecutivos", ["idEjecutivo"], { unique: true })
-@Entity("Ejecutivos", { schema: "dbo" })
+@Entity("Ejecutivos", { schema: "CONTRATO.dbo" })
 export class Ejecutivos {
   @PrimaryGeneratedColumn({ type: "int", name: "IdEjecutivo" })
   @Field(() => Int)
@@ -58,43 +58,43 @@ export class Ejecutivos {
   grupo: GruposDeCompras;
 
   
-  @Field(() => [Contratos])
+  @Field(() => [Contratos], {nullable: true})
   @OneToMany(() => Contratos, (contratos) => contratos.ejecutivoRealiza)
   contratosRealiza: Contratos[];
 
-  @Field(() => [Contratos])
+  @Field(() => [Contratos], {nullable: true})
   @OneToMany(() => Contratos, (contratos) => contratos.ejecutivoFirma)
   contratosFirma: Contratos[];
 
-  @Field(() => [Contratos])
+  @Field(() => [Contratos], {nullable: true})
   @OneToMany(() => Contratos, (contratos) => contratos.ejecutivoModifica)
   contratosModifica: Contratos[];
 
-  @Field(() => [Embarques])
+  @Field(() => [Embarques], {nullable: true})
   @OneToMany(() => Embarques, (embarques) => embarques.ejecutivos)
   embarques: Embarques[];
 
-  @Field(() => [FacturaResumen])
+  @Field(() => [FacturaResumen], {nullable: true})
   @OneToMany(() => FacturaResumen,(facturaResumen) => facturaResumen.ejecutivos)
   facturaResumen: FacturaResumen[];
 
-  @Field(() => [FacturaResumen])
+  @Field(() => [FacturaResumen], {nullable: true})
   @OneToMany(() => FacturaResumen,(facturaResumen) => facturaResumen.ejecutivoRealiza)
   facturaResumenRealiza: FacturaResumen[];
 
-  @Field(() => [SuplementoResumen])
+  @Field(() => [SuplementoResumen], {nullable: true})
   @OneToMany(() => SuplementoResumen,(suplementoResumen) => suplementoResumen.ejecutivoSuplementa)
   suplementoResumenSuplementa: SuplementoResumen[];
 
-  @Field(() => [SuplementoResumen])
+  @Field(() => [SuplementoResumen], {nullable: true})
   @OneToMany(() => SuplementoResumen,(suplementoResumen) => suplementoResumen.ejecutivo)
   suplementoResumen: SuplementoResumen[];
 
-  @Field(() => [SuplementoResumen])
+  @Field(() => [SuplementoResumen], {nullable: true})
   @OneToMany(() => SuplementoResumen,(suplementoResumen) => suplementoResumen.ejecutivoFirma)
   suplementoResumenFirma: SuplementoResumen[];
 
-  @Field(() => Usuarios)
+  @Field(() => Usuarios, {nullable: true})
   @OneToOne(() => Usuarios, (usuarios) => usuarios.ejecutivo)
   usuarios: Usuarios;
 
