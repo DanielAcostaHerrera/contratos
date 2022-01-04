@@ -26,4 +26,9 @@ export class TiposDocumentoResolver {
   removeTiposDocumento(@Args('id', { type: () => Int }) id: number) {
     return this.tiposDocumentoService.remove(id);
   }
+
+  @Mutation(() => [TiposDocumento])
+  removeSeveralTiposDocumento(@Args('id', { type: () => [Int] }) id: number[]) {
+    return this.tiposDocumentoService.removeSeveral(id);
+  }
 }

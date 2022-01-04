@@ -28,6 +28,11 @@ export class SolicitudCodificacionResolver {
     return this.solicitudCodificacionService.remove(id);
   }
 
+  @Mutation(() => [SolicitudCodificacion])
+  removeSeveralSolicitudCodificacion(@Args('id', { type: () => [Int] }) id: number[]) {
+    return this.solicitudCodificacionService.removeSeveral(id);
+  }
+
   @ResolveField(() => PliegoConcurrenciaResumen, {nullable: true})
   pliegoResumen(@Parent() solicitudCodificacion: SolicitudCodificacion): Promise<PliegoConcurrenciaResumen> {
     return this.solicitudCodificacionService.getPliegoConcurrenciaResumen(solicitudCodificacion.idPliegoResumen);

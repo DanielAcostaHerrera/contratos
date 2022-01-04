@@ -21,6 +21,12 @@ export class IncotermService {
   }
 
   async remove(id: number) : Promise<any> {
-    return await this.grupoRepository.delete(id);
+    const incoterm = await this.findOne(id);
+    return await this.grupoRepository.remove(incoterm);
+  }
+
+  async removeSeveral(id: number[]) : Promise<any> {
+    const incoterm = await this.grupoRepository.findByIds(id);
+    return await this.grupoRepository.remove(incoterm);
   }
 }

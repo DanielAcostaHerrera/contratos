@@ -34,6 +34,11 @@ export class PliegoConcurrenciaResumenResolver {
     return this.pliegoConcurrenciaResumenService.remove(id);
   }
 
+  @Mutation(() => [PliegoConcurrenciaResumen])
+  removeSeveralPliegoConcurrenciaResuman(@Args('id', { type: () => [Int] }) id: number[]) {
+    return this.pliegoConcurrenciaResumenService.removeSeveral(id);
+  }
+
   @ResolveField(() => PliegoConcurrencia, {nullable: true})
   pliegoConcurrencia(@Parent() pliegoConcurrenciaResumen: PliegoConcurrenciaResumen): Promise<PliegoConcurrencia> {
     return this.pliegoConcurrenciaResumenService.getPliegoConcurrencia(pliegoConcurrenciaResumen.idPliego);

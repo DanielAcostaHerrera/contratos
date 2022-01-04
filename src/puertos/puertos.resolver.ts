@@ -26,4 +26,9 @@ export class PuertosResolver {
   removePuerto(@Args('id', { type: () => Int }) id: number) {
     return this.puertosService.remove(id);
   }
+
+  @Mutation(() => [Puertos])
+  removeSeveralPuerto(@Args('id', { type: () => [Int] }) id: number[]) {
+    return this.puertosService.removeSeveral(id);
+  }
 }

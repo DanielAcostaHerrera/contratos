@@ -26,4 +26,9 @@ export class EtapasContratacionResolver {
   removeEtapasContratacion(@Args('id', { type: () => Int }) id: number) {
     return this.etapasContratacionService.remove(id);
   }
+
+  @Mutation(() => [EtapasContratacion])
+  removeSeveralEtapasContratacion(@Args('id', { type: () => [Int]}) id: number[]) {
+    return this.etapasContratacionService.removeSeveral(id);
+  }
 }

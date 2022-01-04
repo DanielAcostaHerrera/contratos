@@ -26,4 +26,9 @@ export class TipoContratoResolver {
   removeTipoContrato(@Args('id', { type: () => Int }) id: number) {
     return this.tipoContratoService.remove(id);
   }
+
+  @Mutation(() => [TipoContrato])
+  removeSeveralTipoContrato(@Args('id', { type: () => [Int] }) id: number[]) {
+    return this.tipoContratoService.removeSeveral(id);
+  }
 }

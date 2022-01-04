@@ -25,7 +25,13 @@ export class SolicitudOfertasService {
   }
 
   async remove(id: number) : Promise<any> {
-    return await this.solicitudOfertaRepository.delete(id);
+    const solicitudOfertas = await this.findOne(id);
+    return await this.solicitudOfertaRepository.remove(solicitudOfertas);
+  }
+
+  async removeSeveral(id: number[]) : Promise<any> {
+    const solicitudOfertas = await this.solicitudOfertaRepository.findByIds(id);
+    return await this.solicitudOfertaRepository.remove(solicitudOfertas);
   }
 
   async getSolicitudContratacion (id: number) : Promise<SolicitudContratacion>{

@@ -28,6 +28,11 @@ export class NegociacionDetallesResolver {
     return this.negociacionDetallesService.remove(id);
   }
 
+  @Mutation(() => [NegociacionDetalles])
+  removeSeveralNegociacionDetalles(@Args('id', { type: () => [Int] }) id: number[]) {
+    return this.negociacionDetallesService.removeSeveral(id);
+  }
+
   @ResolveField(() => NegociacionResumen, {nullable: true})
   negociacionResumen(@Parent() negociacionDetalles: NegociacionDetalles): Promise<NegociacionResumen> {
     return this.negociacionDetallesService.getNegociacionResumen(negociacionDetalles.idNegociacion);

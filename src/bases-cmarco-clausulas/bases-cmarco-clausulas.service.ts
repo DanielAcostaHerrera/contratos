@@ -29,7 +29,13 @@ export class BasesCmarcoClausulasService {
   }
 
   async remove(id: number) : Promise<any> {
-    return await this.basesCMarcoClausulasRepository.delete(id);
+    const basesCMarcoClausulas = await this.findOne(id);
+    return await this.basesCMarcoClausulasRepository.remove(basesCMarcoClausulas);
+  }
+
+  async removeSeveral(id: number[]) : Promise<any> {
+    const basesCMarcoClausulas = await this.basesCMarcoClausulasRepository.findByIds(id);
+    return await this.basesCMarcoClausulasRepository.remove(basesCMarcoClausulas);
   }
 
   async getBaseCMarco (basesCMarcoId: number) : Promise<BasesCMarco>{

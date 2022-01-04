@@ -29,6 +29,11 @@ export class EjecutivoResolver {
     return this.ejecutivoService.remove(id);
   }
 
+  @Mutation(() => [Ejecutivos])
+  removeSeveralEjecutivo(@Args('id', { type: () => [Int] }) id: number[]) {
+    return this.ejecutivoService.removeSeveral(id);
+  }
+
   @ResolveField(() => Cargos, {nullable: true})
   cargo(@Parent() ejecutivos: Ejecutivos): Promise<Cargos> {
     return this.ejecutivoService.getCargo(ejecutivos.idCargo);

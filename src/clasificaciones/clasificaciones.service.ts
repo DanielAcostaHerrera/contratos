@@ -22,6 +22,12 @@ export class ClasificacionesService {
   }
 
   async remove(id: number) : Promise<any> {
-    return await this.clasificacionesRepository.delete(id);
+    const clasificaciones = await this.findOne(id);
+    return await this.clasificacionesRepository.remove(clasificaciones);
+  }
+
+  async removeSeveral(id: number[]) : Promise<any> {
+    const clasificaciones = await this.clasificacionesRepository.findByIds(id);
+    return await this.clasificacionesRepository.remove(clasificaciones);
   }
 }

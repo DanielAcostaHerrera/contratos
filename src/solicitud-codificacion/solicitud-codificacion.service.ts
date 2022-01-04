@@ -25,7 +25,13 @@ export class SolicitudCodificacionService {
   }
 
   async remove(id: number) : Promise<any> {
-    return await this.solicitudCodificacionRepository.delete(id);
+    const solicitudCodificacion = await this.findOne(id);
+    return await this.solicitudCodificacionRepository.remove(solicitudCodificacion);
+  }
+
+  async removeSeveral(id: number[]) : Promise<any> {
+    const solicitudCodificacion = await this.solicitudCodificacionRepository.findByIds(id);
+    return await this.solicitudCodificacionRepository.remove(solicitudCodificacion);
   }
 
   async getPliegoConcurrenciaResumen (id: number) : Promise<PliegoConcurrenciaResumen>{

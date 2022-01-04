@@ -26,4 +26,9 @@ export class TiposDeClausulasResolver {
   removeTiposDeClausulas(@Args('id', { type: () => Int }) id: number) {
     return this.tiposDeClausulasService.remove(id);
   }
+
+  @Mutation(() => [TiposDeClausulas])
+  removeSeveralTiposDeClausulas(@Args('id', { type: () => [Int] }) id: number[]) {
+    return this.tiposDeClausulasService.removeSeveral(id);
+  }
 }

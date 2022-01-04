@@ -41,7 +41,13 @@ export class PliegoConcurrenciaResumenService {
   }
 
   async remove(id: number) : Promise<any> {
-    return await this.pliegoConcurrenciaResumenRepository.delete(id);
+    const pliegoConcurrenciaResumen = await this.findOne(id);
+    return await this.pliegoConcurrenciaResumenRepository.remove(pliegoConcurrenciaResumen);
+  }
+
+  async removeSeveral(id: number[]) : Promise<any> {
+    const pliegoConcurrenciaResumen = await this.pliegoConcurrenciaResumenRepository.findByIds(id);
+    return await this.pliegoConcurrenciaResumenRepository.remove(pliegoConcurrenciaResumen);
   }
 
   async getPliegoConcurrencia (id: number) : Promise<PliegoConcurrencia>{

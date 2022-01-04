@@ -29,6 +29,11 @@ export class ProformaClausulasResolver {
     return this.proformaClausulasService.remove(id);
   }
 
+  @Mutation(() => [ProformaClausulas])
+  removeSeveralProformaClausula(@Args('id', { type: () => [Int] }) id: number[]) {
+    return this.proformaClausulasService.removeSeveral(id);
+  }
+
   @ResolveField(() => TiposDeClausulas, {nullable: true})
   tiposDeClausulas(@Parent() proformaClausulas: ProformaClausulas): Promise<TiposDeClausulas> {
     return this.proformaClausulasService.getTipoClausula(proformaClausulas.idTipoClausula);

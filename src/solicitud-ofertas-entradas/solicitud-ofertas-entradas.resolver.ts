@@ -28,6 +28,11 @@ export class SolicitudOfertasEntradasResolver {
     return this.solicitudOfertasEntradasService.remove(id);
   }
 
+  @Mutation(() => [SolicitudOfertasEntradas])
+  removeSeveralSolicitudOfertasEntrada(@Args('id', { type: () => [Int] }) id: number[]) {
+    return this.solicitudOfertasEntradasService.removeSeveral(id);
+  }
+
   @ResolveField(() => SolicitudOfertasProveedor, {nullable: true})
   ofertasProveedor(@Parent() solicitudOfertasEntradas: SolicitudOfertasEntradas): Promise<SolicitudOfertasProveedor> {
     return this.solicitudOfertasEntradasService.getSolicitudOfertasProveedor(solicitudOfertasEntradas.idOfertasProveedor);

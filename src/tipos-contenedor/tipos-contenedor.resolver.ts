@@ -26,4 +26,9 @@ export class TiposContenedorResolver {
   removeTiposContenedor(@Args('id', { type: () => Int }) id: number) {
     return this.tiposContenedorService.remove(id);
   }
+
+  @Mutation(() => [TiposContenedor])
+  removeSeveralTiposContenedor(@Args('id', { type: () => [Int] }) id: number[]) {
+    return this.tiposContenedorService.removeSeveral(id);
+  }
 }

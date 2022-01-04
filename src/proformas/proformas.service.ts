@@ -22,6 +22,12 @@ export class ProformasService {
   }
 
   async remove(id: number) : Promise<any> {
-    return await this.proformaRepository.delete(id);
+    const proformas = await this.findOne(id);
+    return await this.proformaRepository.remove(proformas);
+  }
+
+  async removeSeveral(id: number[]) : Promise<any> {
+    const proformas = await this.proformaRepository.findByIds(id);
+    return await this.proformaRepository.remove(proformas);
   }
 }

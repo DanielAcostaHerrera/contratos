@@ -35,6 +35,11 @@ export class ContratosResolver {
     return this.contratosService.remove(id);
   }
 
+  @Mutation(() => [Contratos])
+  removeSeveralContrato(@Args('id', { type: () => [Int] }) id: number[]) {
+    return this.contratosService.removeSeveral(id);
+  }
+
   @ResolveField(() => BasesGenerales, {nullable: true})
   basesGenerales(@Parent() contratos: Contratos): Promise<BasesGenerales> {
     return this.contratosService.getBasesGenerales(contratos.idBasesGenerales);

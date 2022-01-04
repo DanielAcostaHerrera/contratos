@@ -44,4 +44,9 @@ export class BasesCmarcoClausulasResolver {
   removeBasesCmarcoClausula(@Args('id', { type: () => Int }) id: number) {
     return this.basesCmarcoClausulasService.remove(id);
   }
+
+  @Mutation(() => [BasesCMarcoClausulas])
+  removeSeveralBasesCmarcoClausula(@Args('id', { type: () => [Int] }) id: number[]) {
+    return this.basesCmarcoClausulasService.removeSeveral(id);
+  }
 }

@@ -50,4 +50,9 @@ export class BasesCmarcoResolver {
   removeBasesCmarco(@Args('id', { type: () => Int }) id: number) {
     return this.basesCmarcoService.remove(id);
   }
+
+  @Mutation(() => [BasesCMarco])
+  removeSeveralBasesCmarco(@Args('id', { type: () => [Int] }) id: number[]) {
+    return this.basesCmarcoService.removeSeveral(id);
+  }
 }

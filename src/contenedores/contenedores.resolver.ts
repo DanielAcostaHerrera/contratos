@@ -23,7 +23,12 @@ export class ContenedoresResolver {
   }
 
   @Mutation(() => Contenedores)
-  removeContenedore(@Args('id', { type: () => Int }) id: number) {
+  removeContenedores(@Args('id', { type: () => Int }) id: number) {
     return this.contenedoresService.remove(id);
+  }
+
+  @Mutation(() => [Contenedores])
+  removeSeveralContenedores(@Args('id', { type: () => [Int] }) id: number[]) {
+    return this.contenedoresService.removeSeveral(id);
   }
 }

@@ -22,6 +22,12 @@ export class DatosEntidadService {
   }
 
   async remove(id: number) : Promise<any> {
-    return await this.datosEntidadRepository.delete(id);
+    const datosEntidad = await this.findOne(id);
+    return await this.datosEntidadRepository.remove(datosEntidad);
+  }
+
+  async removeSeveral(id: number[]) : Promise<any> {
+    const datosEntidad = await this.datosEntidadRepository.findByIds(id);
+    return await this.datosEntidadRepository.remove(datosEntidad);
   }
 }

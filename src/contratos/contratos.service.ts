@@ -43,7 +43,13 @@ export class ContratosService {
   }
 
   async remove(id: number) : Promise<any> {
-    return await this.contratoRepository.delete(id);
+    const contratos = await this.findOne(id);
+    return await this.contratoRepository.remove(contratos);
+  }
+
+  async removeSeveral(id: number[]) : Promise<any> {
+    const contratos = await this.contratoRepository.findByIds(id);
+    return await this.contratoRepository.remove(contratos);
   }
 
   async getBasesGenerales (Id: number) : Promise<BasesGenerales>{

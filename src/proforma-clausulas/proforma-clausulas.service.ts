@@ -27,7 +27,13 @@ export class ProformaClausulasService {
   }
 
   async remove(id: number) : Promise<any> {
-    return await this.proformaRepository.delete(id);
+    const proformaClausulas = await this.findOne(id);
+    return await this.proformaRepository.remove(proformaClausulas);
+  }
+
+  async removeSeveral(id: number[]) : Promise<any> {
+    const proformaClausulas = await this.proformaRepository.findByIds(id);
+    return await this.proformaRepository.remove(proformaClausulas);
   }
 
   async getTipoClausula (tipoClausulaId: number) : Promise<TiposDeClausulas>{

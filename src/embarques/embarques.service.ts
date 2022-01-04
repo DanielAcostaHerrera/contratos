@@ -27,7 +27,13 @@ export class EmbarquesService {
   }
 
   async remove(id: number) : Promise<any> {
-    return await this.embarquesRepository.delete(id);
+    const embarques = await this.findOne(id);
+    return await this.embarquesRepository.remove(embarques);
+  }
+
+  async removeSeveral(id: number[]) : Promise<any> {
+    const embarques = await this.embarquesRepository.findByIds(id);
+    return await this.embarquesRepository.remove(embarques);
   }
 
   async getContrato (Id: number) : Promise<Contratos>{

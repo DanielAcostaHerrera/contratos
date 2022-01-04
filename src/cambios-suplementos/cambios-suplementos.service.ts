@@ -22,6 +22,12 @@ export class CambiosSuplementosService {
   }
 
   async remove(id: number) : Promise<any> {
-    return await this.cambiosSuplementosRepository.delete(id);
+    const cambiosSuplementos = await this.findOne(id);
+    return await this.cambiosSuplementosRepository.remove(cambiosSuplementos);
+  }
+
+  async removeSeveral(id: number[]) : Promise<any> {
+    const cambiosSuplementos = await this.cambiosSuplementosRepository.findByIds(id);
+    return await this.cambiosSuplementosRepository.remove(cambiosSuplementos);
   }
 }

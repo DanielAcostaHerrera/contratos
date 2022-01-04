@@ -22,6 +22,12 @@ export class CampanasService {
   }
 
   async remove(id: number) : Promise<any> {
-    return await this.campanaRepository.delete(id);
+    const campanas = await this.findOne(id);
+    return await this.campanaRepository.remove(campanas);
+  }
+
+  async removeSeveral(id: number[]) : Promise<any> {
+    const campanas = await this.campanaRepository.findByIds(id);
+    return await this.campanaRepository.remove(campanas);
   }
 }

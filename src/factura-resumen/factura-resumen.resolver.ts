@@ -32,6 +32,11 @@ export class FacturaResumenResolver {
     return this.facturaResumenService.remove(id);
   }
 
+  @Mutation(() => [FacturaResumen])
+  removeSeveralFacturaResuman(@Args('id', { type: () => [Int] }) id: number[]) {
+    return this.facturaResumenService.removeSeveral(id);
+  }
+
   @ResolveField(() => Contratos, {nullable: true})
   contratos(@Parent() facturaResumen: FacturaResumen): Promise<Contratos> {
     return this.facturaResumenService.getContrato(facturaResumen.idContrato);

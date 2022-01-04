@@ -22,6 +22,12 @@ export class CargoService {
   }
 
   async remove(id: number) : Promise<any> {
-    return await this.cargoRepository.delete(id);
+    const cargos = await this.findOne(id);
+    return await this.cargoRepository.remove(cargos);
+  }
+
+  async removeSeveral(id: number[]) : Promise<any> {
+    const cargos = await this.cargoRepository.findByIds(id);
+    return await this.cargoRepository.remove(cargos);
   }
 }

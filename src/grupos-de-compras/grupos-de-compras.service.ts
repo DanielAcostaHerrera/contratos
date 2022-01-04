@@ -21,6 +21,12 @@ export class GruposDeComprasService {
   }
 
   async remove(id: number) : Promise<any> {
-    return await this.grupoRepository.delete(id);
+    const gruposDeCompras = await this.findOne(id);
+    return await this.grupoRepository.remove(gruposDeCompras);
+  }
+
+  async removeSeveral(id: number[]) : Promise<any> {
+    const gruposDeCompras = await this.grupoRepository.findByIds(id);
+    return await this.grupoRepository.remove(gruposDeCompras);
   }
 }

@@ -28,6 +28,11 @@ export class DocumentacionResolver {
     return this.documentacionService.remove(id);
   }
 
+  @Mutation(() => [Documentacion])
+  removeSeveralDocumentacion(@Args('id', { type: () => [Int] }) id: number[]) {
+    return this.documentacionService.removeSeveral(id);
+  }
+
   @ResolveField(() => TiposDocumento, {nullable: true})
   tiposDocumento(@Parent() documentacion: Documentacion): Promise<TiposDocumento> {
     return this.documentacionService.getTipoDocumento(documentacion.idTipoDoc);

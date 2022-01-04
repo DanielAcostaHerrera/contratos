@@ -30,8 +30,15 @@ export class BasesCmarcoService {
     return await this.basesCMarcoRepository.findOne(id, { relations: ['basesCMarcoClausulas','basesCMarcoEspecificos','fichaCostoResumen','contratos']});
   }
 
+
   async remove(id: number) : Promise<any> {
-    return await this.basesCMarcoRepository.delete(id);
+    const basesCMarco = await this.findOne(id);
+    return await this.basesCMarcoRepository.remove(basesCMarco);
+  }
+
+  async removeSeveral(id: number[]) : Promise<any> {
+    const basesCMarco = await this.basesCMarcoRepository.findByIds(id);
+    return await this.basesCMarcoRepository.remove(basesCMarco);
   }
 
   async getPuerto (puertoId: number) : Promise<Puertos>{

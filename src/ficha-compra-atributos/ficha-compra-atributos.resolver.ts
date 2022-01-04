@@ -28,6 +28,11 @@ export class FichaCompraAtributosResolver {
     return this.fichaCompraAtributosService.remove(id);
   }
 
+  @Mutation(() => [FichaCompraAtributos])
+  removeSeveralFichaCompraAtributos(@Args('id', { type: () => [Int] }) id: number[]) {
+    return this.fichaCompraAtributosService.removeSeveral(id);
+  }
+
   @ResolveField(() => FichaCompraDetalle, {nullable: true})
   fichaCompraDetalle(@Parent() fichaCompraAtributos: FichaCompraAtributos): Promise<FichaCompraDetalle> {
     return this.fichaCompraAtributosService.getFichaCompraDetalle(fichaCompraAtributos.idFichaCompraDetalle);

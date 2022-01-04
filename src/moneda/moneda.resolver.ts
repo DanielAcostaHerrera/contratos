@@ -32,4 +32,9 @@ export class MonedaResolver {
   removeMoneda(@Args('id', { type: () => Int }) id: number) {
     return this.monedaService.remove(id);
   }
+
+  @Mutation(() => [Monedas])
+  removeSeveralMoneda(@Args('id', { type: () => [Int] }) id: number[]) {
+    return this.monedaService.removeSeveral(id);
+  }
 }

@@ -28,6 +28,11 @@ export class FacturaDesgloseResolver {
     return this.facturaDesgloseService.remove(id);
   }
 
+  @Mutation(() => [FacturaDesglose])
+  removeSeveralFacturaDesglose(@Args('id', { type: () => [Int] }) id: number[]) {
+    return this.facturaDesgloseService.removeSeveral(id);
+  }
+
   @ResolveField(() => FacturaResumen, {nullable: true})
   facturaResumen(@Parent() facturaDesglose: FacturaDesglose): Promise<FacturaResumen> {
     return this.facturaDesgloseService.getFacturaResumen(facturaDesglose.idFactura);

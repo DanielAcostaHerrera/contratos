@@ -26,4 +26,9 @@ export class CampanasResolver {
   removeCampana(@Args('id', { type: () => Int }) id: number) {
     return this.campanasService.remove(id);
   }
+
+  @Mutation(() => [Campanas])
+  removeSeveralCampana(@Args('id', { type: () => [Int] }) id: number[]) {
+    return this.campanasService.removeSeveral(id);
+  }
 }

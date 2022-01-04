@@ -26,4 +26,9 @@ export class ProformasResolver {
   removeProforma(@Args('id', { type: () => Int }) id: number) {
     return this.proformasService.remove(id);
   }
+
+  @Mutation(() => [Proformas])
+  removeSeveralProforma(@Args('id', { type: () => [Int] }) id: number[]) {
+    return this.proformasService.removeSeveral(id);
+  }
 }

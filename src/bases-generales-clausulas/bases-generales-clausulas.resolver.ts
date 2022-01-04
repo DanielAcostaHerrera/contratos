@@ -30,6 +30,11 @@ export class BasesGeneralesClausulasResolver {
     return this.basesGeneralesClausulasService.remove(id);
   }
 
+  @Mutation(() => [BasesGeneralesClausulas])
+  removeSeveralBasesGeneralesClausula(@Args('id', { type: () => [Int] }) id: number[]) {
+    return this.basesGeneralesClausulasService.removeSeveral(id);
+  }
+
   @ResolveField(() => TiposDeClausulas, {nullable: true})
   tiposDeClausulas(@Parent() basesGeneralesClausulas: BasesGeneralesClausulas): Promise<TiposDeClausulas> {
     return this.basesGeneralesClausulasService.getTipoClausula(basesGeneralesClausulas.idTipoClausula);

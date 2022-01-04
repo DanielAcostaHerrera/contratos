@@ -26,7 +26,13 @@ export class UsuarioRolService {
   }
 
   async remove(id: number) : Promise<any> {
-    return await this.usuarioRolRepository.delete(id);
+    const usuarioRol = await this.findOne(id);
+    return await this.usuarioRolRepository.remove(usuarioRol);
+  }
+
+  async removeSeveral(id: number[]) : Promise<any> {
+    const usuarioRol = await this.usuarioRolRepository.findByIds(id);
+    return await this.usuarioRolRepository.remove(usuarioRol);
   }
 
   async getUsuario (Id: number) : Promise<Usuarios>{

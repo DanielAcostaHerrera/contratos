@@ -50,7 +50,13 @@ export class UsuariosService {
   }
 
   async remove(id: number) : Promise<any> {
-    return await this.usuariosRepository.delete(id);
+    const usuarios = await this.findOne(id);
+    return await this.usuariosRepository.remove(usuarios);
+  }
+
+  async removeSeveral(id: number[]) : Promise<any> {
+    const usuarios = await this.usuariosRepository.findByIds(id);
+    return await this.usuariosRepository.remove(usuarios);
   }
 
   async getEjecutivo (Id: number) : Promise<Ejecutivos>{

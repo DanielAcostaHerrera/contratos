@@ -29,6 +29,11 @@ export class DocumentacionContratoResolver {
     return this.documentacionContratoService.remove(id);
   }
 
+  @Mutation(() => [DocumentacionContrato])
+  removeSeveralDocumentacionContrato(@Args('id', { type: () => [Int] }) id: number[]) {
+    return this.documentacionContratoService.removeSeveral(id);
+  }
+
   @ResolveField(() => Documentacion, {nullable: true})
   documentacion(@Parent() documentacionContrato: DocumentacionContrato): Promise<Documentacion> {
     return this.documentacionContratoService.getDocumentacion(documentacionContrato.idDocumento);

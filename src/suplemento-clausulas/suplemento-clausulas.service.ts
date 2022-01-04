@@ -27,7 +27,13 @@ export class SuplementoClausulasService {
   }
 
   async remove(id: number) : Promise<any> {
-    return await this.suplementoClausulaRepository.delete(id);
+    const suplementoClausulas = await this.findOne(id);
+    return await this.suplementoClausulaRepository.remove(suplementoClausulas);
+  }
+
+  async removeSeveral(id: number[]) : Promise<any> {
+    const suplementoClausulas = await this.suplementoClausulaRepository.findByIds(id);
+    return await this.suplementoClausulaRepository.remove(suplementoClausulas);
   }
 
   async getSuplementoResumen (id: number) : Promise<SuplementoResumen>{

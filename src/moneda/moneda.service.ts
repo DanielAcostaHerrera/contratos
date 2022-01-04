@@ -24,6 +24,12 @@ export class MonedaService {
   }
 
   async remove(id: number) : Promise<any> {
-    return await this.monedaRepository.delete(id);
+    const monedas = await this.findOne(id);
+    return await this.monedaRepository.remove(monedas);
+  }
+
+  async removeSeveral(id: number[]) : Promise<any> {
+    const monedas = await this.monedaRepository.findByIds(id);
+    return await this.monedaRepository.remove(monedas);
   }
 }

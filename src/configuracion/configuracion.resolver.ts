@@ -26,4 +26,9 @@ export class ConfiguracionResolver {
   removeConfiguracion(@Args('id', { type: () => Int }) id: number) {
     return this.configuracionService.remove(id);
   }
+
+  @Mutation(() => [Configuracion])
+  removeSeveralConfiguracion(@Args('id', { type: () => [Int] }) id: number[]) {
+    return this.configuracionService.removeSeveral(id);
+  }
 }

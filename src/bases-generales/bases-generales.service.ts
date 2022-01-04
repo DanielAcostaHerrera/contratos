@@ -32,7 +32,13 @@ export class BasesGeneralesService {
   }
 
   async remove(id: number) : Promise<any> {
-    return await this.basesGeneralesRepository.delete(id);
+    const basesGenerales = await this.findOne(id);
+    return await this.basesGeneralesRepository.remove(basesGenerales);
+  }
+
+  async removeSeveral(id: number[]) : Promise<any> {
+    const basesGenerales = await this.basesGeneralesRepository.findByIds(id);
+    return await this.basesGeneralesRepository.remove(basesGenerales);
   }
 
   async getClasificacion (clasificacionId: number) : Promise<Clasificaciones>{

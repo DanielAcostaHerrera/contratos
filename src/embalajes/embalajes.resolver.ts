@@ -29,4 +29,9 @@ export class EmbalajesResolver {
   removeEmbalajes(@Args('id', { type: () => Int }) id: number) {
     return this.embalajesService.remove(id);
   }
+
+  @Mutation(() => [Embalajes])
+  removeSeveralEmbalajes(@Args('id', { type: () => [Int] }) id: number[]) {
+    return this.embalajesService.removeSeveral(id);
+  }
 }

@@ -26,4 +26,9 @@ export class IncotermResolver {
   removeIncoterm(@Args('id', { type: () => Int }) id: number) {
     return this.incotermService.remove(id);
   }
+
+  @Mutation(() => [Incoterm])
+  removeSeveralIncoterm(@Args('id', { type: () => [Int] }) id: number[]) {
+    return this.incotermService.removeSeveral(id);
+  }
 }

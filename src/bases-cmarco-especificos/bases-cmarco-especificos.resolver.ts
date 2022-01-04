@@ -32,4 +32,9 @@ export class BasesCmarcoEspecificosResolver {
   removeBasesCmarcoEspecifico(@Args('id', { type: () => Int }) id: number) {
     return this.basesCmarcoEspecificosService.remove(id);
   }
+
+  @Mutation(() => [BasesCMarcoEspecificos])
+  removeSeveralBasesCmarcoEspecifico(@Args('id', { type: () => [Int] }) id: number[]) {
+    return this.basesCmarcoEspecificosService.removeSeveral(id);
+  }
 }

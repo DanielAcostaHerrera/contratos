@@ -26,4 +26,9 @@ export class FormasPagoResolver {
   removeFormasPago(@Args('id', { type: () => Int }) id: number) {
     return this.formasPagoService.remove(id);
   }
+
+  @Mutation(() => [FormasPago])
+  removeSeveralFormasPago(@Args('id', { type: () => [Int] }) id: number[]) {
+    return this.formasPagoService.removeSeveral(id);
+  }
 }

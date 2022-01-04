@@ -22,6 +22,12 @@ export class EtapasContratacionService {
   }
 
   async remove(id: number) : Promise<any> {
-    return await this.etapasContratacionRepository.delete(id);
+    const etapasContratacion = await this.findOne(id);
+    return await this.etapasContratacionRepository.remove(etapasContratacion);
+  }
+
+  async removeSeveral(id: number[]) : Promise<any> {
+    const etapasContratacion = await this.etapasContratacionRepository.findByIds(id);
+    return await this.etapasContratacionRepository.remove(etapasContratacion);
   }
 }

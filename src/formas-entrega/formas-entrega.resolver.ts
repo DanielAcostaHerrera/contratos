@@ -26,4 +26,9 @@ export class FormasEntregaResolver {
   removeFormasEntrega(@Args('id', { type: () => Int }) id: number) {
     return this.formasEntregaService.remove(id);
   }
+
+  @Mutation(() => [FormasEntrega])
+  removeSeveralFormasEntrega(@Args('id', { type: () => [Int] }) id: number[]) {
+    return this.formasEntregaService.removeSeveral(id);
+  }
 }

@@ -29,6 +29,11 @@ export class CampanaEtapasContratacionResolver {
     return this.campanaEtapasContratacionService.remove(id);
   }
 
+  @Mutation(() => [CampanaEtapasContratacion])
+  removeSeveralCampanaEtapasContratacion(@Args('id', { type: () => [Int] }) id: number[]) {
+    return this.campanaEtapasContratacionService.removeSeveral(id);
+  }
+
   @ResolveField(() => Campanas, {nullable: true})
   campana(@Parent() campanaEtapasContratacion: CampanaEtapasContratacion): Promise<Campanas> {
     return this.campanaEtapasContratacionService.getCampana(campanaEtapasContratacion.idCampana);

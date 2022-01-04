@@ -29,6 +29,11 @@ export class EmbarquesResolver {
     return this.embarquesService.remove(id);
   }
 
+  @Mutation(() => [Embarques])
+  removeSeveralEmbarque(@Args('id', { type: () => [Int] }) id: number[]) {
+    return this.embarquesService.removeSeveral(id);
+  }
+
   @ResolveField(() => Contratos, {nullable: true})
   contratos(@Parent() embarques: Embarques): Promise<Contratos> {
     return this.embarquesService.getContrato(embarques.idContrato);

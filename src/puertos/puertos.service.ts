@@ -23,6 +23,12 @@ export class PuertosService {
   }
 
   async remove(id: number) : Promise<any> {
-    return await this.puertoRepository.delete(id);
+    const puertos = await this.findOne(id);
+    return await this.puertoRepository.remove(puertos);
+  }
+
+  async removeSeveral(id: number[]) : Promise<any> {
+    const puertos = await this.puertoRepository.findByIds(id);
+    return await this.puertoRepository.remove(puertos);
   }
 }

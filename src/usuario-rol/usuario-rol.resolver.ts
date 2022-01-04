@@ -29,6 +29,11 @@ export class UsuarioRolResolver {
     return this.usuarioRolService.remove(id);
   }
 
+  @Mutation(() => [UsuarioRol])
+  removeSeveralUsuarioRol(@Args('id', { type: () => [Int] }) id: number[]) {
+    return this.usuarioRolService.removeSeveral(id);
+  }
+
   @ResolveField(() => Usuarios, {nullable: true})
   usuario(@Parent() usuarioRol: UsuarioRol): Promise<Usuarios> {
     return this.usuarioRolService.getUsuario(usuarioRol.idUsuario);

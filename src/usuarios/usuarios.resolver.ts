@@ -36,6 +36,11 @@ export class UsuariosResolver {
     return this.usuariosService.remove(id);
   }
 
+  @Mutation(() => [Usuarios])
+  removeSeveralUsuario(@Args('id', { type: () => [Int] }) id: number[]) {
+    return this.usuariosService.removeSeveral(id);
+  }
+
   @ResolveField(() => Ejecutivos, {nullable: true})
   ejecutivoModifica(@Parent() usuarios: Usuarios): Promise<Ejecutivos> {
     return this.usuariosService.getEjecutivo(usuarios.idEjecutivo);

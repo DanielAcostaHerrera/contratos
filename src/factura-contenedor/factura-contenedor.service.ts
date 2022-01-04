@@ -27,7 +27,13 @@ export class FacturaContenedorService {
   }
 
   async remove(id: number) : Promise<any> {
-    return await this.facturaContenedorRepository.delete(id);
+    const facturaContenedor = await this.findOne(id);
+    return await this.facturaContenedorRepository.remove(facturaContenedor);
+  }
+
+  async removeSeveral(id: number[]) : Promise<any> {
+    const facturaContenedor = await this.facturaContenedorRepository.findByIds(id);
+    return await this.facturaContenedorRepository.remove(facturaContenedor);
   }
 
   async getFacturaResumen (Id: number) : Promise<FacturaResumen>{

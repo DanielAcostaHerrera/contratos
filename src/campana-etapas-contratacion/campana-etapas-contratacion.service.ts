@@ -27,7 +27,13 @@ export class CampanaEtapasContratacionService {
   }
 
   async remove(id: number) : Promise<any> {
-    return await this.campanaEtapasContratacionRepository.delete(id);
+    const campanaEtapasContratacion = await this.findOne(id);
+    return await this.campanaEtapasContratacionRepository.remove(campanaEtapasContratacion);
+  }
+
+  async removeSeveral(id: number[]) : Promise<any> {
+    const campanaEtapasContratacion = await this.campanaEtapasContratacionRepository.findByIds(id);
+    return await this.campanaEtapasContratacionRepository.remove(campanaEtapasContratacion);
   }
 
   async getCampana (campanaId: number) : Promise<Campanas>{

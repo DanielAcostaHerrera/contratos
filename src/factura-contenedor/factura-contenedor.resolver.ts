@@ -29,6 +29,11 @@ export class FacturaContenedorResolver {
     return this.facturaContenedorService.remove(id);
   }
 
+  @Mutation(() => [FacturaContenedor])
+  removeSeveralFacturaContenedor(@Args('id', { type: () => [Int]}) id: number[]) {
+    return this.facturaContenedorService.removeSeveral(id);
+  }
+
   @ResolveField(() => FacturaResumen, {nullable: true})
   facturaResumen(@Parent() facturaContenedor: FacturaContenedor): Promise<FacturaResumen> {
     return this.facturaContenedorService.getFacturaResumen(facturaContenedor.idFactura);

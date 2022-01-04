@@ -21,6 +21,12 @@ export class RolesService {
   }
 
   async remove(id: number) : Promise<any> {
-    return await this.rolesRepository.delete(id);
+    const roles = await this.findOne(id);
+    return await this.rolesRepository.remove(roles);
+  }
+
+  async removeSeveral(id: number[]) : Promise<any> {
+    const roles = await this.rolesRepository.findByIds(id);
+    return await this.rolesRepository.remove(roles);
   }
 }

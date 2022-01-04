@@ -22,6 +22,12 @@ export class ConfiguracionService {
   }
 
   async remove(id: number) : Promise<any> {
-    return await this.configuracionRepository.delete(id);
+    const configuracion = await this.findOne(id);
+    return await this.configuracionRepository.remove(configuracion);
+  }
+
+  async removeSeveral(id: number[]) : Promise<any> {
+    const configuracion = await this.configuracionRepository.findByIds(id);
+    return await this.configuracionRepository.remove(configuracion);
   }
 }

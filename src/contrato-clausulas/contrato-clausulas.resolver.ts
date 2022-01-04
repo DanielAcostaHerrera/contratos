@@ -28,6 +28,11 @@ export class ContratoClausulasResolver {
     return this.contratoClausulaService.remove(id);
   }
 
+  @Mutation(() => [ContratoClausulas])
+  removeSeveralContratoClausulas(@Args('id', { type: () => [Int] }) id: number[]) {
+    return this.contratoClausulaService.removeSeveral(id);
+  }
+
   @ResolveField(() => Contratos, {nullable: true})
   contratos(@Parent() contratoClausulas: ContratoClausulas): Promise<Contratos> {
     return this.contratoClausulaService.getContrato(contratoClausulas.idContrato);

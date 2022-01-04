@@ -24,7 +24,13 @@ export class TiemposTravesiaService {
   }
 
   async remove(id: number) : Promise<any> {
-    return await this.tiemposTravesiaRepository.delete(id);
+    const tiemposTravesia = await this.findOne(id);
+    return await this.tiemposTravesiaRepository.remove(tiemposTravesia);
+  }
+
+  async removeSeveral(id: number[]) : Promise<any> {
+    const tiemposTravesia = await this.tiemposTravesiaRepository.findByIds(id);
+    return await this.tiemposTravesiaRepository.remove(tiemposTravesia);
   }
 
   async getEtapasContratacion (etapaId: number) : Promise<EtapasContratacion>{

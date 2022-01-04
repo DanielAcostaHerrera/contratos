@@ -22,6 +22,12 @@ export class EmbalajesService {
   }
 
   async remove(id: number) : Promise<any> {
-    return await this.embalajesRepository.delete(id);
+    const embalajes = await this.findOne(id);
+    return await this.embalajesRepository.remove(embalajes);
+  }
+
+  async removeSeveral(id: number[]) : Promise<any> {
+    const embalajes = await this.embalajesRepository.findByIds(id);
+    return await this.embalajesRepository.remove(embalajes);
   }
 }

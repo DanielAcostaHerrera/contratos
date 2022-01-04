@@ -8,8 +8,8 @@ type SuplementoClausulas {
   idContratoClausulas: Int!
   orden: Int!
   modificada: Boolean!
-  suplementoResumen: SuplementoResumen!
-  contratoClausulas: ContratoClausulas!
+  suplementoResumen: SuplementoResumen
+  contratoClausulas: ContratoClausulas
 }
 
 type ContratoDesglose {
@@ -27,7 +27,7 @@ type ContratoDesglose {
   precioPaquete: Float!
   packing: Float!
   cajas: Int!
-  embarques: Embarques!
+  embarques: Embarques
 }
 
 type Cargos {
@@ -39,15 +39,15 @@ type Cargos {
 type Contenedores {
   idContenedor: Int!
   noContenedor: String!
-  facturaContenedores: [FacturaContenedor!]!
+  facturaContenedores: [FacturaContenedor!]
 }
 
 type FacturaContenedor {
   idFacturaContenedor: Int!
   idFactura: Int!
   idContenedor: Int!
-  facturaResumen: FacturaResumen!
-  contenedores: Contenedores!
+  facturaResumen: FacturaResumen
+  contenedores: Contenedores
 }
 
 type FacturaDesglose {
@@ -64,7 +64,7 @@ type FacturaDesglose {
   suplemento: Float!
   packing: Float!
   cajas: Int!
-  facturaResumen: FacturaResumen!
+  facturaResumen: FacturaResumen
 }
 
 type FichaCompraAtributos {
@@ -98,7 +98,7 @@ type FichaCompraAtributos {
   gastbanc: Float!
   mcmn: Float!
   mccuc: Float!
-  fichaCompraDetalle: FichaCompraDetalle!
+  fichaCompraDetalle: FichaCompraDetalle
 }
 
 type FichaCompraDetalle {
@@ -130,8 +130,8 @@ type FichaCompraDetalle {
   valorCircMinorista: Float!
   pCostoMinorista: Float!
   impMinorista: Float!
-  fichaCompraAtributos: [FichaCompraAtributos!]!
-  fichaCompraResumen: FichaCompraResumen!
+  fichaCompraAtributos: [FichaCompraAtributos!]
+  fichaCompraResumen: FichaCompraResumen
 }
 
 type Clasificaciones {
@@ -165,8 +165,8 @@ type Embalajes {
   idEmbalaje: Int!
   descripcion: String!
   abreviatura: String!
-  fichaCostoResumen: [FichaCostoResumen!]!
-  pliegoConcurrenciaDetalles: [PliegoConcurrenciaDetalle!]!
+  fichaCostoResumen: [FichaCostoResumen!]
+  pliegoConcurrenciaDetalles: [PliegoConcurrenciaDetalle!]
 }
 
 type PliegoConcurrenciaDetalle {
@@ -180,8 +180,8 @@ type PliegoConcurrenciaDetalle {
   precioI: Float!
   precioIi: Float!
   precioIii: Float!
-  pliegoResumen: PliegoConcurrenciaResumen!
-  embalaje: Embalajes!
+  pliegoResumen: PliegoConcurrenciaResumen
+  embalaje: Embalajes
 }
 
 type Compradores {
@@ -192,9 +192,9 @@ type Compradores {
   cargo: String!
   doble: Boolean!
   activo: Boolean!
-  basesCMarcos: [BasesCMarco!]!
-  basesGenerales: [BasesGenerales!]!
-  solicitudContratacion: [SolicitudContratacion!]!
+  basesCMarcos: [BasesCMarco!]
+  basesGenerales: [BasesGenerales!]
+  solicitudContratacion: [SolicitudContratacion!]
 }
 
 type SolicitudContratacion {
@@ -204,9 +204,9 @@ type SolicitudContratacion {
   idComprador: Int!
   fecha: DateTime!
   nota: String!
-  negociacion: NegociacionResumen!
-  comprador: Compradores!
-  solicitudOfertas: [SolicitudOfertas!]!
+  negociacion: NegociacionResumen
+  comprador: Compradores
+  solicitudOfertas: [SolicitudOfertas!]
 }
 
 """
@@ -228,7 +228,7 @@ type SolicitudOfertasEntradas {
   dimension: String!
   cubicaje: String!
   precioCosto: Float!
-  ofertasProveedor: SolicitudOfertasProveedor!
+  ofertasProveedor: SolicitudOfertasProveedor
 }
 
 type SolicitudOfertasProveedor {
@@ -237,8 +237,8 @@ type SolicitudOfertasProveedor {
   idProveedor: Int!
   representante: String!
   cargo: String!
-  solicitudOfertasEntradas: [SolicitudOfertasEntradas!]!
-  solicitudOfertas: SolicitudOfertas!
+  solicitudOfertasEntradas: [SolicitudOfertasEntradas!]
+  solicitudOfertas: SolicitudOfertas
 }
 
 type SolicitudOfertas {
@@ -254,30 +254,30 @@ type SolicitudOfertas {
   cancelada: Boolean!
   elaboradoPor: Int!
   aprobadoPor: Int!
-  pliegoConcurrencias: [PliegoConcurrencia!]!
-  solicitudContrato: SolicitudContratacion!
-  solicitudOfertasProveedores: [SolicitudOfertasProveedor!]!
+  pliegoConcurrencias: [PliegoConcurrencia!]
+  solicitudContrato: SolicitudContratacion
+  solicitudOfertasProveedores: [SolicitudOfertasProveedor!]
 }
 
 type PliegoConcurrencia {
   idPliego: Int!
   idOferta: Int!
-  oferta: SolicitudOfertas!
-  pliegoConcurrenciaResumen: [PliegoConcurrenciaResumen!]!
+  oferta: SolicitudOfertas
+  pliegoConcurrenciaResumen: [PliegoConcurrenciaResumen!]
 }
 
 type FormasEntrega {
   idFormaEntrega: Int!
   formaEntrega: String!
   dias: Int!
-  pliegoConcurrenciaResumen: [PliegoConcurrenciaResumen!]!
-  contratos: [Contratos!]!
+  pliegoConcurrenciaResumen: [PliegoConcurrenciaResumen!]
+  contratos: [Contratos!]
 }
 
 type TiposContenedor {
   idTipoContenedor: Int!
   tipoContenedor: String!
-  pliegoConcurrenciaResumen: [PliegoConcurrenciaResumen!]!
+  pliegoConcurrenciaResumen: [PliegoConcurrenciaResumen!]
 }
 
 type SolicitudCodificacion {
@@ -294,7 +294,7 @@ type SolicitudCodificacion {
   cubicaje: String!
   embalaje: String!
   precioCosto: Float!
-  pliegoResumen: PliegoConcurrenciaResumen!
+  pliegoResumen: PliegoConcurrenciaResumen
 }
 
 type PliegoConcurrenciaResumen {
@@ -326,18 +326,18 @@ type PliegoConcurrenciaResumen {
   rateCambioFlete: Float!
   contenedores: Int!
   pesoBruto: Float!
-  pliegoConcurrenciaDetalles: [PliegoConcurrenciaDetalle!]!
-  pliegoConcurrencia: PliegoConcurrencia!
-  monedaOferta: Monedas!
-  monedaPago: Monedas!
-  monedaCartaCredito: Monedas!
-  incoterm: Incoterm!
-  formaPago: FormasPago!
-  formaEntrega: FormasEntrega!
-  puertoEmbarque: Puertos!
-  puertoDestino: Puertos!
-  tipoContenedor: TiposContenedor!
-  solicitudCodificacion: [SolicitudCodificacion!]!
+  pliegoConcurrenciaDetalles: [PliegoConcurrenciaDetalle!]
+  pliegoConcurrencia: PliegoConcurrencia
+  monedaOferta: Monedas
+  monedaPago: Monedas
+  monedaCartaCredito: Monedas
+  incoterm: Incoterm
+  formaPago: FormasPago
+  formaEntrega: FormasEntrega
+  puertoEmbarque: Puertos
+  puertoDestino: Puertos
+  tipoContenedor: TiposContenedor
+  solicitudCodificacion: [SolicitudCodificacion!]
 }
 
 type SuplementoPagos {
@@ -348,18 +348,18 @@ type SuplementoPagos {
   plazoPago: Int!
   aPartirDe: Int!
   porciento: Float!
-  suplementoResumen: SuplementoResumen!
-  embarques: Embarques!
-  formasPago: FormasPago!
+  suplementoResumen: SuplementoResumen
+  embarques: Embarques
+  formasPago: FormasPago
 }
 
 type FormasPago {
   idFormaPago: Int!
   formaPago: String!
   dias: Int!
-  fichaCostoResumen: [FichaCostoResumen!]!
-  pliegoConcurrenciaResumen: [PliegoConcurrenciaResumen!]!
-  suplementoPagos: [SuplementoPagos!]!
+  fichaCostoResumen: [FichaCostoResumen!]
+  pliegoConcurrenciaResumen: [PliegoConcurrenciaResumen!]
+  suplementoPagos: [SuplementoPagos!]
 }
 
 type FichaCostoResumen {
@@ -436,13 +436,13 @@ type FichaCostoResumen {
   nota: String!
   elaborado: Int!
   aprobado: Int!
-  baseCMarco: BasesCMarco!
-  moneda: Monedas!
-  formaPago: FormasPago!
-  incoterm: Incoterm!
-  puerto: Puertos!
-  embalaje: Embalajes!
-  contratos: [Contratos!]!
+  baseCMarco: BasesCMarco
+  moneda: Monedas
+  formaPago: FormasPago
+  incoterm: Incoterm
+  puerto: Puertos
+  embalaje: Embalajes
+  contratos: [Contratos!]
 }
 
 type SuplementoEmbarques {
@@ -460,10 +460,10 @@ type SuplementoEmbarques {
   qtyCnt: Int!
   flete: Float!
   seguro: Float!
-  suplementoResumen: SuplementoResumen!
-  embarques: Embarques!
-  contrato: Contratos!
-  puertoDestino: Puertos!
+  suplementoResumen: SuplementoResumen
+  embarques: Embarques
+  contrato: Contratos
+  puertoDestino: Puertos
 }
 
 type Puertos {
@@ -716,11 +716,11 @@ type FichaCompraResumen {
   fechaCancelacion: DateTime!
   chkRecepcion: Boolean!
   noFicha: String!
-  fichaCompraDetalles: [FichaCompraDetalle!]!
-  moneda: Monedas!
-  incoterm: Incoterm!
-  contrato: Contratos!
-  negociacionResumen: NegociacionResumen!
+  fichaCompraDetalles: [FichaCompraDetalle!]
+  moneda: Monedas
+  incoterm: Incoterm
+  contrato: Contratos
+  negociacionResumen: NegociacionResumen
 }
 
 type GruposDeCompras {
@@ -741,7 +741,7 @@ type NegociacionDetalle {
   tasa: Float!
   idAcuerdo: Int!
   detalles: String!
-  negociacionResumen: NegociacionResumen!
+  negociacionResumen: NegociacionResumen
 }
 
 type NegociacionDetalles {
@@ -751,7 +751,7 @@ type NegociacionDetalles {
   fecha: DateTime!
   acuerdo: Int!
   detalles: String!
-  negociacionResumen: NegociacionResumen!
+  negociacionResumen: NegociacionResumen
 }
 
 type NegociacionProveedores {
@@ -760,13 +760,13 @@ type NegociacionProveedores {
   proveedor: Int!
   importe: Float!
   ladi: Boolean!
-  negociacionResumen: NegociacionResumen!
+  negociacionResumen: NegociacionResumen
 }
 
 type TiposDeCompras {
   idTipoCompras: Int!
   compras: String!
-  negociacionResumen: [NegociacionResumen!]!
+  negociacionResumen: [NegociacionResumen!]
 }
 
 type NegociacionResumen {
@@ -792,16 +792,16 @@ type NegociacionResumen {
   tasa: Float!
   terminado: Boolean!
   idNegociacionUnico: String!
-  negociacionDetalle: [NegociacionDetalle!]!
-  negociacionDetalles: [NegociacionDetalles!]!
-  negociacionProveedores: [NegociacionProveedores!]!
-  tiposDeCompras: TiposDeCompras!
-  monedas: Monedas!
-  grupos: GruposDeCompras!
-  fichaCompraResumen: [FichaCompraResumen!]!
-  solicitudContratacion: [SolicitudContratacion!]!
-  contratos: [Contratos!]!
-  facturaResumen: [FacturaResumen!]!
+  negociacionDetalle: [NegociacionDetalle!]
+  negociacionDetalles: [NegociacionDetalles!]
+  negociacionProveedores: [NegociacionProveedores!]
+  tiposDeCompras: TiposDeCompras
+  monedas: Monedas
+  grupos: GruposDeCompras
+  fichaCompraResumen: [FichaCompraResumen!]
+  solicitudContratacion: [SolicitudContratacion!]
+  contratos: [Contratos!]
+  facturaResumen: [FacturaResumen!]
 }
 
 type FacturaResumen {
@@ -828,20 +828,20 @@ type FacturaResumen {
   cancelado: Boolean!
   fechaTerminada: DateTime!
   laTasaMn: Float!
-  facturaContenedores: [FacturaContenedor!]!
-  facturaDesgloses: [FacturaDesglose!]!
-  contratos: Contratos!
-  embarques: Embarques!
-  ejecutivos: Ejecutivos!
-  negociacionResumen: NegociacionResumen!
-  puertoDestino: Puertos!
-  ejecutivoRealiza: Ejecutivos!
+  facturaContenedores: [FacturaContenedor!]
+  facturaDesgloses: [FacturaDesglose!]
+  contratos: Contratos
+  embarques: Embarques
+  ejecutivos: Ejecutivos
+  negociacionResumen: NegociacionResumen
+  puertoDestino: Puertos
+  ejecutivoRealiza: Ejecutivos
 }
 
 type Roles {
   idRol: Int!
   rol: String!
-  usuarioRoles: [UsuarioRol!]!
+  usuarioRoles: [UsuarioRol!]
 }
 
 type UsuarioRol {
@@ -849,7 +849,7 @@ type UsuarioRol {
   idUsuario: Int!
   idRol: Int!
   usuario: Usuarios!
-  rol: Roles!
+  rol: Roles
 }
 
 type Usuarios {
@@ -857,8 +857,8 @@ type Usuarios {
   idEjecutivo: Int!
   nombreUsuario: String!
   contrasena: String!
-  usuarioRoles: [UsuarioRol!]!
-  ejecutivo: Ejecutivos!
+  usuarioRoles: [UsuarioRol!]
+  ejecutivo: Ejecutivos
   ejecutivoModifica: Ejecutivos
 }
 
@@ -871,16 +871,16 @@ type Ejecutivos {
   activo: Boolean!
   cargo: Cargos
   grupo: GruposDeCompras
-  contratosRealiza: [Contratos!]!
-  contratosFirma: [Contratos!]!
-  contratosModifica: [Contratos!]!
-  embarques: [Embarques!]!
-  facturaResumen: [FacturaResumen!]!
-  facturaResumenRealiza: [FacturaResumen!]!
-  suplementoResumenSuplementa: [SuplementoResumen!]!
-  suplementoResumen: [SuplementoResumen!]!
-  suplementoResumenFirma: [SuplementoResumen!]!
-  usuarios: Usuarios!
+  contratosRealiza: [Contratos!]
+  contratosFirma: [Contratos!]
+  contratosModifica: [Contratos!]
+  embarques: [Embarques!]
+  facturaResumen: [FacturaResumen!]
+  facturaResumenRealiza: [FacturaResumen!]
+  suplementoResumenSuplementa: [SuplementoResumen!]
+  suplementoResumen: [SuplementoResumen!]
+  suplementoResumenFirma: [SuplementoResumen!]
+  usuarios: Usuarios
 }
 
 type Embarques {
@@ -905,14 +905,14 @@ type Embarques {
   c40: Int!
   c20: Int!
   actSci: Boolean!
-  contratoDesgloses: [ContratoDesglose!]!
-  contratos: Contratos!
-  ejecutivos: Ejecutivos!
-  facturaResumen: [FacturaResumen!]!
-  suplementoChanges: [SuplementoChange!]!
-  suplementoDesgloses: [SuplementoDesglose!]!
-  suplementoEmbarques: [SuplementoEmbarques!]!
-  suplementoPagos: [SuplementoPagos!]!
+  contratoDesgloses: [ContratoDesglose!]
+  contratos: Contratos
+  ejecutivos: Ejecutivos
+  facturaResumen: [FacturaResumen!]
+  suplementoChanges: [SuplementoChange!]
+  suplementoDesgloses: [SuplementoDesglose!]
+  suplementoEmbarques: [SuplementoEmbarques!]
+  suplementoPagos: [SuplementoPagos!]
 }
 
 type SuplementoDesglose {
@@ -930,8 +930,8 @@ type SuplementoDesglose {
   precio: Float!
   precioPaquete: Float!
   packing: Float!
-  suplementoResumen: SuplementoResumen!
-  embarques: Embarques!
+  suplementoResumen: SuplementoResumen
+  embarques: Embarques
 }
 
 type SuplementoResumen {
@@ -967,18 +967,18 @@ type SuplementoResumen {
   terminadoS: Boolean!
   notaSuple: String!
   canceladoSup: Boolean!
-  suplementoChanges: [SuplementoChange!]!
-  suplementoClausulas: [SuplementoClausulas!]!
-  suplementoDesgloses: [SuplementoDesglose!]!
-  suplementoEmbarques: [SuplementoEmbarques!]!
-  suplementoPagos: [SuplementoPagos!]!
-  contrato: Contratos!
-  puertoOrigen: Puertos!
-  puertoDestino: Puertos!
-  ejecutivoSuplementa: Ejecutivos!
-  ejecutivo: Ejecutivos!
-  ejecutivoFirma: Ejecutivos!
-  moneda: Monedas!
+  suplementoChanges: [SuplementoChange!]
+  suplementoClausulas: [SuplementoClausulas!]
+  suplementoDesgloses: [SuplementoDesglose!]
+  suplementoEmbarques: [SuplementoEmbarques!]
+  suplementoPagos: [SuplementoPagos!]
+  contrato: Contratos
+  puertoOrigen: Puertos
+  puertoDestino: Puertos
+  ejecutivoSuplementa: Ejecutivos
+  ejecutivo: Ejecutivos
+  ejecutivoFirma: Ejecutivos
+  moneda: Monedas
 }
 
 type SuplementoChange {
@@ -988,9 +988,9 @@ type SuplementoChange {
   idContratoClausula: Int!
   contenidoViejo: String!
   contenidoNuevo: String!
-  suplementoResumen: SuplementoResumen!
-  embarques: Embarques!
-  contratoClausulas: ContratoClausulas!
+  suplementoResumen: SuplementoResumen
+  embarques: Embarques
+  contratoClausulas: ContratoClausulas
 }
 
 type ContratoClausulas {
@@ -1000,13 +1000,13 @@ type ContratoClausulas {
   contenido: String!
   contratos: Contratos
   suplementoChanges: [SuplementoChange!]
-  suplementoClausulas: SuplementoClausulas
+  suplementoClausulas: [SuplementoClausulas!]
 }
 
 type TiposDocumento {
   idTipoDoc: Int!
   nombreDoc: String!
-  documentaciones: [Documentacion!]!
+  documentaciones: [Documentacion!]
 }
 
 type Documentacion {
@@ -1071,38 +1071,38 @@ type Contratos {
   tasaMoneda: Float!
   fechaTasa: DateTime!
   pFin: Float!
-  contratoClausulas: [ContratoClausulas!]!
-  basesGenerales: BasesGenerales!
-  baseCMarco: BasesCMarco!
-  puertoOrigen: Puertos!
-  puertoDestino: Puertos!
-  moneda: Monedas!
-  formaEntrega: FormasEntrega!
-  negociacionResumen: NegociacionResumen!
-  fichaCostoResumen: FichaCostoResumen!
-  ejecutivoRealiza: Ejecutivos!
-  ejecutivoFirma: Ejecutivos!
-  ejecutivoModifica: Ejecutivos!
-  documentacionContratos: [DocumentacionContrato!]!
-  embarques: [Embarques!]!
-  facturaResumen: [FacturaResumen!]!
-  fichaCompraResumen: [FichaCompraResumen!]!
-  suplementoEmbarques: [SuplementoEmbarques!]!
-  suplementoResumen: [SuplementoResumen!]!
+  contratoClausulas: [ContratoClausulas!]
+  basesGenerales: BasesGenerales
+  baseCMarco: BasesCMarco
+  puertoOrigen: Puertos
+  puertoDestino: Puertos
+  moneda: Monedas
+  formaEntrega: FormasEntrega
+  negociacionResumen: NegociacionResumen
+  fichaCostoResumen: FichaCostoResumen
+  ejecutivoRealiza: Ejecutivos
+  ejecutivoFirma: Ejecutivos
+  ejecutivoModifica: Ejecutivos
+  documentacionContratos: [DocumentacionContrato!]
+  embarques: [Embarques!]
+  facturaResumen: [FacturaResumen!]
+  fichaCompraResumen: [FichaCompraResumen!]
+  suplementoEmbarques: [SuplementoEmbarques!]
+  suplementoResumen: [SuplementoResumen!]
 }
 
 type Monedas {
   idMoneda: Int!
   moneda: String!
   abreviatura: String!
-  negociacionResumen: [NegociacionResumen!]!
-  fichaCompraResumen: [FichaCompraResumen!]!
-  fichaCostoResumen: [FichaCostoResumen!]!
-  pliegoConcurrenciaResumenOferta: [PliegoConcurrenciaResumen!]!
-  pliegoConcurrenciaResumenPago: [PliegoConcurrenciaResumen!]!
-  pliegoConcurrenciaResumenCredito: [PliegoConcurrenciaResumen!]!
-  contratos: [Contratos!]!
-  suplementoResumen: [SuplementoResumen!]!
+  negociacionResumen: [NegociacionResumen!]
+  fichaCompraResumen: [FichaCompraResumen!]
+  fichaCostoResumen: [FichaCostoResumen!]
+  pliegoConcurrenciaResumenOferta: [PliegoConcurrenciaResumen!]
+  pliegoConcurrenciaResumenPago: [PliegoConcurrenciaResumen!]
+  pliegoConcurrenciaResumenCredito: [PliegoConcurrenciaResumen!]
+  contratos: [Contratos!]
+  suplementoResumen: [SuplementoResumen!]
 }
 
 type Configuracion {
@@ -1120,7 +1120,7 @@ type TiemposTravesia {
   idPais: Int!
   idEtapa: Int!
   tiempo: Int!
-  etapaContratacion: EtapasContratacion!
+  etapaContratacion: EtapasContratacion
 }
 
 type EtapasContratacion {
@@ -1129,8 +1129,8 @@ type EtapasContratacion {
   calculos: String!
   tiempoMax: Int!
   tiempoReal: Int!
-  campanaEtapasContratacion: [CampanaEtapasContratacion!]!
-  tiemposTravesias: [TiemposTravesia!]!
+  campanaEtapasContratacion: [CampanaEtapasContratacion!]
+  tiemposTravesias: [TiemposTravesia!]
 }
 
 type CampanaEtapasContratacion {
@@ -1146,7 +1146,7 @@ type CampanaEtapasContratacion {
 type Campanas {
   idCampana: Int!
   campana: String!
-  campanaEtapasContratacion: [CampanaEtapasContratacion!]!
+  campanaEtapasContratacion: [CampanaEtapasContratacion!]
 }
 
 type DatosEntidad {
@@ -1308,134 +1308,199 @@ type Mutation {
   createMoneda(createMonedaInput: CreateMonedaInput!): Monedas!
   updateMoneda(updateMonedaInput: CreateMonedaInput!): Monedas!
   removeMoneda(id: Int!): Monedas!
+  removeSeveralMoneda(id: [Int!]!): [Monedas!]!
   createEmbalajes(createEmbalajeInput: CreateEmbalajeInput!): Embalajes!
   removeEmbalajes(id: Int!): Embalajes!
+  removeSeveralEmbalajes(id: [Int!]!): [Embalajes!]!
   createCargo(createCargoInput: CreateCargoInput!): Cargos!
   removeCargo(id: Int!): Cargos!
+  removeSeveralCargo(id: [Int!]!): [Cargos!]!
   createEjecutivo(createEjecutivoInput: CreateEjecutivoInput!): Ejecutivos!
   removeEjecutivo(id: Int!): Ejecutivos!
+  removeSeveralEjecutivo(id: [Int!]!): [Ejecutivos!]!
   createGruposDeCompra(createGruposDeCompraInput: CreateGruposDeCompraInput!): GruposDeCompras!
   removeGruposDeCompra(id: Int!): GruposDeCompras!
+  removeSeveralGruposDeCompra(id: [Int!]!): [GruposDeCompras!]!
   createBasesCmarco(createBasesCmarcoInput: CreateBasesCmarcoInput!): BasesCMarco!
   removeBasesCmarco(id: Int!): BasesCMarco!
+  removeSeveralBasesCmarco(id: [Int!]!): [BasesCMarco!]!
   createPuerto(createPuertoInput: CreatePuertoInput!): Puertos!
   removePuerto(id: Int!): Puertos!
+  removeSeveralPuerto(id: [Int!]!): [Puertos!]!
   createProforma(createProformaInput: CreateProformaInput!): Proformas!
   removeProforma(id: Int!): Proformas!
+  removeSeveralProforma(id: [Int!]!): [Proformas!]!
   createCompradore(createCompradoreInput: CreateCompradoresInput!): Compradores!
-  removeCompradore(id: Int!): Compradores!
+  removeCompradores(id: Int!): Compradores!
+  removeSeveralCompradores(id: [Int!]!): [Compradores!]!
   createBasesGenerales(createBasesGeneraleInput: CreateBasesGeneralesInput!): BasesGenerales!
   removeBasesGenerales(id: Int!): BasesGenerales!
+  removeSeveralBasesGenerales(id: [Int!]!): [BasesGenerales!]!
   createClasificaciones(createClasificacioneInput: CreateClasificacioneInput!): Clasificaciones!
-  removeClasificacione(id: Int!): Clasificaciones!
+  removeClasificaciones(id: Int!): Clasificaciones!
+  removeSeveralClasificaciones(id: [Int!]!): [Clasificaciones!]!
   createTipoContrato(createTipoContratoInput: CreateTipoContratoInput!): TipoContrato!
   removeTipoContrato(id: Int!): TipoContrato!
+  removeSeveralTipoContrato(id: [Int!]!): [TipoContrato!]!
   createIncoterm(createIncotermInput: CreateIncotermInput!): Incoterm!
   removeIncoterm(id: Int!): Incoterm!
+  removeSeveralIncoterm(id: [Int!]!): [Incoterm!]!
   createBasesCmarcoClausula(createBasesCmarcoClausulaInput: CreateBasesCmarcoClausulaInput!): BasesCMarcoClausulas!
   removeBasesCmarcoClausula(id: Int!): BasesCMarcoClausulas!
+  removeSeveralBasesCmarcoClausula(id: [Int!]!): [BasesCMarcoClausulas!]!
   createTiposDeClausulas(createTiposDeClausulaInput: CreateTiposDeClausulaInput!): TiposDeClausulas!
   removeTiposDeClausulas(id: Int!): TiposDeClausulas!
+  removeSeveralTiposDeClausulas(id: [Int!]!): [TiposDeClausulas!]!
   createProformaClausula(createProformaClausulaInput: CreateProformaClausulaInput!): ProformaClausulas!
   removeProformaClausula(id: Int!): ProformaClausulas!
+  removeSeveralProformaClausula(id: [Int!]!): [ProformaClausulas!]!
   createBasesCmarcoEspecifico(createBasesCmarcoEspecificoInput: CreateBasesCmarcoEspecificoInput!): BasesCMarcoEspecificos!
   removeBasesCmarcoEspecifico(id: Int!): BasesCMarcoEspecificos!
+  removeSeveralBasesCmarcoEspecifico(id: [Int!]!): [BasesCMarcoEspecificos!]!
   createBasesGeneralesClausula(createBasesGeneralesClausulaInput: CreateBasesGeneralesClausulaInput!): BasesGeneralesClausulas!
   removeBasesGeneralesClausula(id: Int!): BasesGeneralesClausulas!
+  removeSeveralBasesGeneralesClausula(id: [Int!]!): [BasesGeneralesClausulas!]!
   createDocumentacion(createDocumentacionInput: CreateDocumentacionInput!): Documentacion!
   removeDocumentacion(id: Int!): Documentacion!
+  removeSeveralDocumentacion(id: [Int!]!): [Documentacion!]!
   createTiposDocumento(createTiposDocumentoInput: CreateTiposDocumentoInput!): TiposDocumento!
   removeTiposDocumento(id: Int!): TiposDocumento!
+  removeSeveralTiposDocumento(id: [Int!]!): [TiposDocumento!]!
   createDocumentacionContrato(createDocumentacionContratoInput: CreateDocumentacionContratoInput!): DocumentacionContrato!
   removeDocumentacionContrato(id: Int!): DocumentacionContrato!
+  removeSeveralDocumentacionContrato(id: [Int!]!): [DocumentacionContrato!]!
   createContrato(createContratoInput: CreateContratoInput!): Contratos!
   removeContrato(id: Int!): Contratos!
+  removeSeveralContrato(id: [Int!]!): [Contratos!]!
   createFormasEntrega(createFormasEntregaInput: CreateFormasEntregaInput!): FormasEntrega!
   removeFormasEntrega(id: Int!): FormasEntrega!
+  removeSeveralFormasEntrega(id: [Int!]!): [FormasEntrega!]!
   createNegociacionResumen(createNegociacionResumenInput: CreateNegociacionResumenInput!): NegociacionResumen!
   removeNegociacionResumen(id: Int!): NegociacionResumen!
+  removeSeveralNegociacionResumen(id: [Int!]!): [NegociacionResumen!]!
   createTiposDeCompras(createTiposDeCompraInput: CreateTiposDeCompraInput!): TiposDeCompras!
   removeTiposDeCompras(id: Int!): TiposDeCompras!
+  removeSeveralTiposDeCompras(id: [Int!]!): [TiposDeCompras!]!
   createFichaCostoResuman(createFichaCostoResumanInput: CreateFichaCostoResumenInput!): FichaCostoResumen!
   removeFichaCostoResuman(id: Int!): FichaCostoResumen!
+  removeSeveralFichaCostoResuman(id: [Int!]!): [FichaCostoResumen!]!
   createFormasPago(createFormasPagoInput: CreateFormasPagoInput!): FormasPago!
   removeFormasPago(id: Int!): FormasPago!
+  removeSeveralFormasPago(id: [Int!]!): [FormasPago!]!
   createContratoClausulas(createContratoClausulaInput: CreateContratoClausulaInput!): ContratoClausulas!
   removeContratoClausulas(id: Int!): ContratoClausulas!
+  removeSeveralContratoClausulas(id: [Int!]!): [ContratoClausulas!]!
   createNegociacionDetalle(createNegociacionDetalleInput: CreateNegociacionDetalleInput!): NegociacionDetalle!
   removeNegociacionDetalle(id: Int!): NegociacionDetalle!
+  removeSeveralNegociacionDetalle(id: [Int!]!): [NegociacionDetalle!]!
   createNegociacionDetalles(createNegociacionDetallesInput: CreateNegociacionDetallesInput!): NegociacionDetalles!
   removeNegociacionDetalles(id: Int!): NegociacionDetalles!
+  removeSeveralNegociacionDetalles(id: [Int!]!): [NegociacionDetalles!]!
   createNegociacionProveedores(createNegociacionProveedoresInput: CreateNegociacionProveedoresInput!): NegociacionProveedores!
   removeNegociacionProveedores(id: Int!): NegociacionProveedores!
+  removeSeveralNegociacionProveedores(id: [Int!]!): [NegociacionProveedores!]!
   createTiposContenedor(createTiposContenedorInput: CreateTiposContenedorInput!): TiposContenedor!
   removeTiposContenedor(id: Int!): TiposContenedor!
+  removeSeveralTiposContenedor(id: [Int!]!): [TiposContenedor!]!
   createConfiguracion(createConfiguracionInput: CreateConfiguracionInput!): Configuracion!
   removeConfiguracion(id: Int!): Configuracion!
+  removeSeveralConfiguracion(id: [Int!]!): [Configuracion!]!
   createCampanaEtapasContratacion(createCampanaEtapasContratacionInput: CreateCampanaEtapasContratacionInput!): CampanaEtapasContratacion!
   removeCampanaEtapasContratacion(id: Int!): CampanaEtapasContratacion!
+  removeSeveralCampanaEtapasContratacion(id: [Int!]!): [CampanaEtapasContratacion!]!
   createCampana(createCampanaInput: CreateCampanaInput!): Campanas!
   removeCampana(id: Int!): Campanas!
+  removeSeveralCampana(id: [Int!]!): [Campanas!]!
   createEtapasContratacion(createEtapasContratacionInput: CreateEtapasContratacionInput!): EtapasContratacion!
   removeEtapasContratacion(id: Int!): EtapasContratacion!
+  removeSeveralEtapasContratacion(id: [Int!]!): [EtapasContratacion!]!
   createTiemposTravesia(createTiemposTravesiaInput: CreateTiemposTravesiaInput!): TiemposTravesia!
   removeTiemposTravesia(id: Int!): TiemposTravesia!
+  removeSeveralTiemposTravesia(id: [Int!]!): [TiemposTravesia!]!
   createDatosEntidad(createDatosEntidadInput: CreateDatosEntidadInput!): DatosEntidad!
   removeDatosEntidad(id: Int!): DatosEntidad!
+  removeSeveralDatosEntidad(id: [Int!]!): [DatosEntidad!]!
   createFichaCompraAtributos(createFichaCompraAtributoInput: CreateFichaCompraAtributoInput!): FichaCompraAtributos!
   removeFichaCompraAtributos(id: Int!): FichaCompraAtributos!
+  removeSeveralFichaCompraAtributos(id: [Int!]!): [FichaCompraAtributos!]!
   createFichaCompraDetalle(createFichaCompraDetalleInput: CreateFichaCompraDetalleInput!): FichaCompraDetalle!
   removeFichaCompraDetalle(id: Int!): FichaCompraDetalle!
+  removeSeveralFichaCompraDetalle(id: [Int!]!): [FichaCompraDetalle!]!
   createFichaCompraResuman(createFichaCompraResumanInput: CreateFichaCompraResumanInput!): FichaCompraResumen!
   removeFichaCompraResuman(id: Int!): FichaCompraResumen!
+  removeSeveralFichaCompraResuman(id: [Int!]!): [FichaCompraResumen!]!
   createPliegoConcurrencia(createPliegoConcurrenciaInput: CreatePliegoConcurrenciaInput!): PliegoConcurrencia!
   removePliegoConcurrencia(id: Int!): PliegoConcurrencia!
+  removeSeveralPliegoConcurrencia(id: [Int!]!): [PliegoConcurrencia!]!
   createSolicitudOferta(createSolicitudOfertaInput: CreateSolicitudOfertaInput!): SolicitudOfertas!
   removeSolicitudOferta(id: Int!): SolicitudOfertas!
+  removeSeveralSolicitudOferta(id: [Int!]!): [SolicitudOfertas!]!
   createSolicitudContratacion(createSolicitudContratacionInput: CreateSolicitudContratacionInput!): SolicitudContratacion!
   removeSolicitudContratacion(id: Int!): SolicitudContratacion!
+  removeSeveralSolicitudContratacion(id: [Int!]!): [SolicitudContratacion!]!
   createPliegoConcurrenciaDetalle(createPliegoConcurrenciaDetalleInput: CreatePliegoConcurrenciaDetalleInput!): PliegoConcurrenciaDetalle!
   removePliegoConcurrenciaDetalle(id: Int!): PliegoConcurrenciaDetalle!
+  removeSeveralPliegoConcurrenciaDetalle(id: [Int!]!): [PliegoConcurrenciaDetalle!]!
   createPliegoConcurrenciaResuman(createPliegoConcurrenciaResumanInput: CreatePliegoConcurrenciaResumanInput!): PliegoConcurrenciaResumen!
   removePliegoConcurrenciaResuman(id: Int!): PliegoConcurrenciaResumen!
+  removeSeveralPliegoConcurrenciaResuman(id: [Int!]!): [PliegoConcurrenciaResumen!]!
   createSolicitudCodificacion(createSolicitudCodificacionInput: CreateSolicitudCodificacionInput!): SolicitudCodificacion!
   removeSolicitudCodificacion(id: Int!): SolicitudCodificacion!
+  removeSeveralSolicitudCodificacion(id: [Int!]!): [SolicitudCodificacion!]!
   createSolicitudOfertasEntrada(createSolicitudOfertasEntradaInput: CreateSolicitudOfertasEntradaInput!): SolicitudOfertasEntradas!
   removeSolicitudOfertasEntrada(id: Int!): SolicitudOfertasEntradas!
+  removeSeveralSolicitudOfertasEntrada(id: [Int!]!): [SolicitudOfertasEntradas!]!
   createSolicitudOfertasProveedor(createSolicitudOfertasProveedorInput: CreateSolicitudOfertasProveedorInput!): SolicitudOfertasProveedor!
   removeSolicitudOfertasProveedor(id: Int!): SolicitudOfertasProveedor!
+  removeSeveralSolicitudOfertasProveedor(id: [Int!]!): [SolicitudOfertasProveedor!]!
   createContenedore(createContenedoreInput: CreateContenedoreInput!): Contenedores!
-  removeContenedore(id: Int!): Contenedores!
+  removeContenedores(id: Int!): Contenedores!
+  removeSeveralContenedores(id: [Int!]!): [Contenedores!]!
   createContratoDesglose(createContratoDesgloseInput: CreateContratoDesgloseInput!): ContratoDesglose!
   removeContratoDesglose(id: Int!): ContratoDesglose!
+  removeSeveralContratoDesglose(id: [Int!]!): [ContratoDesglose!]!
   createEmbarque(createEmbarqueInput: CreateEmbarqueInput!): Embarques!
   removeEmbarque(id: Int!): Embarques!
+  removeSeveralEmbarque(id: [Int!]!): [Embarques!]!
   createFacturaResuman(createFacturaResumanInput: CreateFacturaResumanInput!): FacturaResumen!
   removeFacturaResuman(id: Int!): FacturaResumen!
+  removeSeveralFacturaResuman(id: [Int!]!): [FacturaResumen!]!
   createFacturaContenedor(createFacturaContenedorInput: CreateFacturaContenedorInput!): FacturaContenedor!
   removeFacturaContenedor(id: Int!): FacturaContenedor!
+  removeSeveralFacturaContenedor(id: [Int!]!): [FacturaContenedor!]!
   createFacturaDesglose(createFacturaDesgloseInput: CreateFacturaDesgloseInput!): FacturaDesglose!
   removeFacturaDesglose(id: Int!): FacturaDesglose!
+  removeSeveralFacturaDesglose(id: [Int!]!): [FacturaDesglose!]!
   createSuplementoResuman(createSuplementoResumanInput: CreateSuplementoResumanInput!): SuplementoResumen!
   removeSuplementoResuman(id: Int!): SuplementoResumen!
+  removeSeveralSuplementoResuman(id: [Int!]!): [SuplementoResumen!]!
   createSuplementoPago(createSuplementoPagoInput: CreateSuplementoPagoInput!): SuplementoPagos!
   removeSuplementoPago(id: Int!): SuplementoPagos!
+  removeSeveralSuplementoPago(id: [Int!]!): [SuplementoPagos!]!
   createSuplementoEmbarque(createSuplementoEmbarqueInput: CreateSuplementoEmbarqueInput!): SuplementoEmbarques!
   removeSuplementoEmbarque(id: Int!): SuplementoEmbarques!
+  removeSeveralSuplementoEmbarque(id: [Int!]!): [SuplementoEmbarques!]!
   createSuplementoDesglose(createSuplementoDesgloseInput: CreateSuplementoDesgloseInput!): SuplementoDesglose!
   removeSuplementoDesglose(id: Int!): SuplementoDesglose!
+  removeSeveralSuplementoDesglose(id: [Int!]!): [SuplementoDesglose!]!
   createSuplementoClausula(createSuplementoClausulaInput: CreateSuplementoClausulaInput!): SuplementoClausulas!
   removeSuplementoClausula(id: Int!): SuplementoClausulas!
+  removeSeveralSuplementoClausula(id: [Int!]!): [SuplementoClausulas!]!
   createSuplementoChange(createSuplementoChangeInput: CreateSuplementoChangeInput!): SuplementoChange!
   removeSuplementoChange(id: Int!): SuplementoChange!
+  removeSeveralSuplementoChange(id: [Int!]!): [SuplementoChange!]!
   createCambiosSuplemento(createCambiosSuplementoInput: CreateCambiosSuplementoInput!): CambiosSuplementos!
   removeCambiosSuplemento(id: Int!): CambiosSuplementos!
+  removeSeveralCambiosSuplemento(id: [Int!]!): [CambiosSuplementos!]!
   createRole(createRoleInput: CreateRoleInput!): Roles!
-  removeRole(id: Int!): Roles!
+  removeRoles(id: Int!): Roles!
+  removeSeveralRoles(id: [Int!]!): [Roles!]!
   createUsuario(createUsuarioInput: CreateUsuarioInput!): Usuarios!
   removeUsuario(id: Int!): Usuarios!
+  removeSeveralUsuario(id: [Int!]!): [Usuarios!]!
   createUsuarioRol(createUsuarioRolInput: CreateUsuarioRolInput!): UsuarioRol!
   removeUsuarioRol(id: Int!): UsuarioRol!
+  removeSeveralUsuarioRol(id: [Int!]!): [UsuarioRol!]!
 }
 
 input CreateMonedaInput {

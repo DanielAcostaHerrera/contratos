@@ -28,6 +28,11 @@ export class TiemposTravesiaResolver {
     return this.tiemposTravesiaService.remove(id);
   }
 
+  @Mutation(() => [TiemposTravesia])
+  removeSeveralTiemposTravesia(@Args('id', { type: () => [Int] }) id: number[]) {
+    return this.tiemposTravesiaService.removeSeveral(id);
+  }
+
   @ResolveField(() => EtapasContratacion, {nullable: true})
   etapaContratacion(@Parent() tiemposTravesia: TiemposTravesia): Promise<EtapasContratacion> {
     return this.tiemposTravesiaService.getEtapasContratacion(tiemposTravesia.idEtapa);

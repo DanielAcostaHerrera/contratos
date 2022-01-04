@@ -29,6 +29,11 @@ export class SolicitudContratacionResolver {
     return this.solicitudContratacionService.remove(id);
   }
 
+  @Mutation(() => [SolicitudContratacion])
+  removeSeveralSolicitudContratacion(@Args('id', { type: () => [Int]}) id: number[]) {
+    return this.solicitudContratacionService.removeSeveral(id);
+  }
+
   @ResolveField(() => NegociacionResumen, {nullable: true})
   negociacion(@Parent() solicitudContratacion: SolicitudContratacion): Promise<NegociacionResumen> {
     return this.solicitudContratacionService.getNegociacionResumen(solicitudContratacion.idNegociacion);

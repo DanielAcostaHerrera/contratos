@@ -31,6 +31,11 @@ export class SuplementoResumenResolver {
     return this.suplementoResumenService.remove(id);
   }
 
+  @Mutation(() => [SuplementoResumen])
+  removeSeveralSuplementoResuman(@Args('id', { type: () => [Int] }) id: number[]) {
+    return this.suplementoResumenService.removeSeveral(id);
+  }
+
   @ResolveField(() => Contratos, {nullable: true})
   contrato(@Parent() suplementoResumen: SuplementoResumen): Promise<Contratos> {
     return this.suplementoResumenService.getContrato(suplementoResumen.idContrato);

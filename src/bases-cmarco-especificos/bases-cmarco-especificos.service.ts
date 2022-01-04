@@ -24,7 +24,13 @@ export class BasesCmarcoEspecificosService {
   }
 
   async remove(id: number) : Promise<any> {
-    return await this.basesCMarcoEspecificosRepository.delete(id);
+    const basesCMarcoEspecificos = await this.findOne(id);
+    return await this.basesCMarcoEspecificosRepository.remove(basesCMarcoEspecificos);
+  }
+
+  async removeSeveral(id: number[]) : Promise<any> {
+    const basesCMarcoEspecificos = await this.basesCMarcoEspecificosRepository.findByIds(id);
+    return await this.basesCMarcoEspecificosRepository.remove(basesCMarcoEspecificos);
   }
 
   async getBaseCMarco (basesCMarcoId: number) : Promise<BasesCMarco>{

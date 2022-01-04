@@ -24,7 +24,13 @@ export class DocumentacionService {
   }
 
   async remove(id: number) : Promise<any> {
-    return await this.documentacionRepository.delete(id);
+    const documentacion = await this.findOne(id);
+    return await this.documentacionRepository.remove(documentacion);
+  }
+
+  async removeSeveral(id: number[]) : Promise<any> {
+    const documentacion = await this.documentacionRepository.findByIds(id);
+    return await this.documentacionRepository.remove(documentacion);
   }
 
   async getTipoDocumento (tipoDocumentoId: number) : Promise<TiposDocumento>{

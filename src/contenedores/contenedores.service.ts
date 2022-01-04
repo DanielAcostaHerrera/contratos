@@ -22,6 +22,12 @@ export class ContenedoresService {
   }
 
   async remove(id: number) : Promise<any> {
-    return await this.contenedoresRepository.delete(id);
+    const contenedores = await this.findOne(id);
+    return await this.contenedoresRepository.remove(contenedores);
+  }
+
+  async removeSeveral(id: number[]) : Promise<any> {
+    const contenedores = await this.contenedoresRepository.findByIds(id);
+    return await this.contenedoresRepository.remove(contenedores);
   }
 }

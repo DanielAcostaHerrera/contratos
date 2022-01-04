@@ -22,6 +22,12 @@ export class TiposDeClausulasService {
   }
 
   async remove(id: number) : Promise<any> {
-    return await this.tiposDeClausulaRepository.delete(id);
+    const tiposDeClausulas = await this.findOne(id);
+    return await this.tiposDeClausulaRepository.remove(tiposDeClausulas);
+  }
+
+  async removeSeveral(id: number[]) : Promise<any> {
+    const tiposDeClausulas = await this.tiposDeClausulaRepository.findByIds(id);
+    return await this.tiposDeClausulaRepository.remove(tiposDeClausulas);
   }
 }

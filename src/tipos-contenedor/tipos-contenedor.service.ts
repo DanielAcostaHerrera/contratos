@@ -22,6 +22,12 @@ export class TiposContenedorService {
   }
 
   async remove(id: number) : Promise<any> {
-    return await this.tiposContenedorRepository.delete(id);
+    const tiposContenedor = await this.findOne(id);
+    return await this.tiposContenedorRepository.remove(tiposContenedor);
+  }
+
+  async removeSeveral(id: number[]) : Promise<any> {
+    const tiposContenedor = await this.tiposContenedorRepository.findByIds(id);
+    return await this.tiposContenedorRepository.remove(tiposContenedor);
   }
 }

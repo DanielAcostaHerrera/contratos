@@ -33,6 +33,11 @@ export class FichaCostoResumenResolver {
     return this.fichaCostoResumenService.remove(id);
   }
 
+  @Mutation(() => [FichaCostoResumen])
+  removeSeveralFichaCostoResuman(@Args('id', { type: () => [Int] }) id: number[]) {
+    return this.fichaCostoResumenService.removeSeveral(id);
+  }
+
   @ResolveField(() => BasesCMarco, {nullable: true})
   baseCMarco(@Parent() fichaCostoResumen: FichaCostoResumen): Promise<BasesCMarco> {
     return this.fichaCostoResumenService.getBaseCMarco(fichaCostoResumen.idBaseCMarco);

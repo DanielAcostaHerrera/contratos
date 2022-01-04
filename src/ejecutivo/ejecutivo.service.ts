@@ -29,7 +29,13 @@ export class EjecutivoService {
   }
 
   async remove(id: number) : Promise<any> {
-    return await this.ejecutivosRepository.delete(id);
+    const ejecutivos = await this.findOne(id);
+    return await this.ejecutivosRepository.remove(ejecutivos);
+  }
+
+  async removeSeveral(id: number[]) : Promise<any> {
+    const ejecutivos = await this.ejecutivosRepository.findByIds(id);
+    return await this.ejecutivosRepository.remove(ejecutivos);
   }
 
   async getCargo (cargoId: number) : Promise<Cargos>{

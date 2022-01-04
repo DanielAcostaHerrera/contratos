@@ -26,4 +26,9 @@ export class CambiosSuplementosResolver {
   removeCambiosSuplemento(@Args('id', { type: () => Int }) id: number) {
     return this.cambiosSuplementosService.remove(id);
   }
+
+  @Mutation(() => [CambiosSuplementos])
+  removeSeveralCambiosSuplemento(@Args('id', { type: () => [Int] }) id: number[]) {
+    return this.cambiosSuplementosService.removeSeveral(id);
+  }
 }

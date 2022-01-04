@@ -22,6 +22,12 @@ export class TipoContratoService {
   }
 
   async remove(id: number) : Promise<any> {
-    return await this.tipoContratoRepository.delete(id);
+    const tipoContrato = await this.findOne(id);
+    return await this.tipoContratoRepository.remove(tipoContrato);
+  }
+
+  async removeSeveral(id: number[]) : Promise<any> {
+    const tipoContrato = await this.tipoContratoRepository.findByIds(id);
+    return await this.tipoContratoRepository.remove(tipoContrato);
   }
 }

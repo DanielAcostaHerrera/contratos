@@ -31,7 +31,13 @@ export class FichaCompraResumenService {
   }
 
   async remove(id: number) : Promise<any> {
-    return await this.fichaCompraResumenRepository.delete(id);
+    const fichaCompraResumen = await this.findOne(id);
+    return await this.fichaCompraResumenRepository.remove(fichaCompraResumen);
+  }
+
+  async removeSeveral(id: number[]) : Promise<any> {
+    const fichaCompraResumen = await this.fichaCompraResumenRepository.findByIds(id);
+    return await this.fichaCompraResumenRepository.remove(fichaCompraResumen);
   }
 
   async getMoneda (monedaId: number) : Promise<Monedas>{

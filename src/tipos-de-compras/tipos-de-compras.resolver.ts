@@ -26,4 +26,9 @@ export class TiposDeComprasResolver {
   removeTiposDeCompras(@Args('id', { type: () => Int }) id: number) {
     return this.tiposDeComprasService.remove(id);
   }
+
+  @Mutation(() => [TiposDeCompras])
+  removeSeveralTiposDeCompras(@Args('id', { type: () => [Int] }) id: number[]) {
+    return this.tiposDeComprasService.removeSeveral(id);
+  }
 }

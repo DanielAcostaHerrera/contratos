@@ -27,7 +27,13 @@ export class SuplementoDesgloseService {
   }
 
   async remove(id: number) : Promise<any> {
-    return await this.suplementoDesgloseRepository.delete(id);
+    const suplementoDesglose = await this.findOne(id);
+    return await this.suplementoDesgloseRepository.remove(suplementoDesglose);
+  }
+
+  async removeSeveral(id: number[]) : Promise<any> {
+    const suplementoDesglose = await this.suplementoDesgloseRepository.findByIds(id);
+    return await this.suplementoDesgloseRepository.remove(suplementoDesglose);
   }
 
   async getSuplementoResumen (id: number) : Promise<SuplementoResumen>{

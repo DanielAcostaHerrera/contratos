@@ -26,4 +26,9 @@ export class CargoResolver {
   removeCargo(@Args('id', { type: () => Int }) id: number) {
     return this.cargoService.remove(id);
   }
+
+  @Mutation(() => [Cargos])
+  removeSeveralCargo(@Args('id', { type: () => [Int] }) id: number[]) {
+    return this.cargoService.removeSeveral(id);
+  }
 }

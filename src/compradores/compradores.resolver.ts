@@ -23,7 +23,12 @@ export class CompradoresResolver {
   }
 
   @Mutation(() => Compradores)
-  removeCompradore(@Args('id', { type: () => Int }) id: number) {
+  removeCompradores(@Args('id', { type: () => Int }) id: number) {
     return this.compradoresService.remove(id);
+  }
+
+  @Mutation(() => [Compradores])
+  removeSeveralCompradores(@Args('id', { type: () => [Int] }) id: number[]) {
+    return this.compradoresService.removeSeveral(id);
   }
 }

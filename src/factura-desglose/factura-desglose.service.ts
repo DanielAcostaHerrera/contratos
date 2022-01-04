@@ -25,7 +25,13 @@ export class FacturaDesgloseService {
   }
 
   async remove(id: number) : Promise<any> {
-    return await this.facturaDesgloseRepository.delete(id);
+    const facturaDesglose = await this.findOne(id);
+    return await this.facturaDesgloseRepository.remove(facturaDesglose);
+  }
+
+  async removeSeveral(id: number[]) : Promise<any> {
+    const facturaDesglose = await this.facturaDesgloseRepository.findByIds(id);
+    return await this.facturaDesgloseRepository.remove(facturaDesglose);
   }
 
   async getFacturaResumen (Id: number) : Promise<FacturaResumen>{

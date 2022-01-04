@@ -23,7 +23,13 @@ export class TiposDocumentoService {
   }
 
   async remove(id: number) : Promise<any> {
-    return await this.tiposDocumentoRepository.delete(id);
+    const tiposDocumento = await this.findOne(id);
+    return await this.tiposDocumentoRepository.remove(tiposDocumento);
+  }
+
+  async removeSeveral(id: number[]) : Promise<any> {
+    const tiposDocumento = await this.tiposDocumentoRepository.findByIds(id);
+    return await this.tiposDocumentoRepository.remove(tiposDocumento);
   }
 }
   

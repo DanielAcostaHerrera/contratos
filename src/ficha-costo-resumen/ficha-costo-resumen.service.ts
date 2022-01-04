@@ -36,7 +36,13 @@ export class FichaCostoResumenService {
   }
 
   async remove(id: number) : Promise<any> {
-    return await this.fichaCostoResumenRepository.delete(id),{relations:['contratos']};
+    const fichaCostoResumen = await this.findOne(id);
+    return await this.fichaCostoResumenRepository.remove(fichaCostoResumen);
+  }
+
+  async removeSeveral(id: number[]) : Promise<any> {
+    const fichaCostoResumen = await this.fichaCostoResumenRepository.findByIds(id);
+    return await this.fichaCostoResumenRepository.remove(fichaCostoResumen);
   }
 
   async getBaseCMarco (baseCMarcoId: number) : Promise<BasesCMarco>{

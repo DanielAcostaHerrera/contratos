@@ -32,7 +32,13 @@ export class SuplementoEmbarquesService {
   }
 
   async remove(id: number) : Promise<any> {
-    return await this.suplementoEmbarqueRepository.delete(id);
+    const suplementoEmbarques = await this.findOne(id);
+    return await this.suplementoEmbarqueRepository.remove(suplementoEmbarques);
+  }
+
+  async removeSeveral(id: number[]) : Promise<any> {
+    const suplementoEmbarques = await this.suplementoEmbarqueRepository.findByIds(id);
+    return await this.suplementoEmbarqueRepository.remove(suplementoEmbarques);
   }
 
   async getContrato (id: number) : Promise<Contratos>{

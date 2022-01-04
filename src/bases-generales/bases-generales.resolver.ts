@@ -32,6 +32,11 @@ export class BasesGeneralesResolver {
     return this.basesGeneralesService.remove(id);
   }
 
+  @Mutation(() => [BasesGenerales])
+  removeSeveralBasesGenerales(@Args('id', { type: () => [Int] }) id: number[]) {
+    return this.basesGeneralesService.removeSeveral(id);
+  }
+
   @ResolveField(() => Clasificaciones, {nullable: true})
   clasificaciones(@Parent() basesGenerales: BasesGenerales): Promise<Clasificaciones> {
     return this.basesGeneralesService.getClasificacion(basesGenerales.idClasificacion);

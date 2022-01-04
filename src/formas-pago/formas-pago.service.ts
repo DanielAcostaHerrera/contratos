@@ -22,6 +22,12 @@ export class FormasPagoService {
   }
 
   async remove(id: number) : Promise<any> {
-    return await this.formasPagoRepository.delete(id);
+    const formasPago = await this.findOne(id);
+    return await this.formasPagoRepository.remove(formasPago);
+  }
+
+  async removeSeveral(id: number[]) : Promise<any> {
+    const formasPago = await this.formasPagoRepository.findByIds(id);
+    return await this.formasPagoRepository.remove(formasPago);
   }
 }

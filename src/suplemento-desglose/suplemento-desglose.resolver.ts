@@ -29,6 +29,11 @@ export class SuplementoDesgloseResolver {
     return this.suplementoDesgloseService.remove(id);
   }
 
+  @Mutation(() => [SuplementoDesglose])
+  removeSeveralSuplementoDesglose(@Args('id', { type: () => [Int] }) id: number[]) {
+    return this.suplementoDesgloseService.removeSeveral(id);
+  }
+
   @ResolveField(() => SuplementoResumen, {nullable: true})
   suplementoResumen(@Parent() suplementoDesglose: SuplementoDesglose): Promise<SuplementoResumen> {
     return this.suplementoDesgloseService.getSuplementoResumen(suplementoDesglose.idSuplementoResumen);

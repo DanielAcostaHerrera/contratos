@@ -25,7 +25,13 @@ export class FichaCompraDetalleService {
   }
 
   async remove(id: number) : Promise<any> {
-    return await this.fichaCompraDetalleRepository.delete(id);
+    const fichaCompraDetalle = await this.findOne(id);
+    return await this.fichaCompraDetalleRepository.remove(fichaCompraDetalle);
+  }
+
+  async removeSeveral(id: number[]) : Promise<any> {
+    const fichaCompraDetalle = await this.fichaCompraDetalleRepository.findByIds(id);
+    return await this.fichaCompraDetalleRepository.remove(fichaCompraDetalle);
   }
 
   async getFichaCompraResumen (fichaId: number) : Promise<FichaCompraResumen>{

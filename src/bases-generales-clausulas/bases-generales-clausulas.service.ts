@@ -29,7 +29,13 @@ export class BasesGeneralesClausulasService {
   }
 
   async remove(id: number) : Promise<any> {
-    return await this.basesGeneralesClausulasRepository.delete(id);
+    const basesGeneralesClausulas = await this.findOne(id);
+    return await this.basesGeneralesClausulasRepository.remove(basesGeneralesClausulas);
+  }
+
+  async removeSeveral(id: number[]) : Promise<any> {
+    const basesGeneralesClausulas = await this.basesGeneralesClausulasRepository.findByIds(id);
+    return await this.basesGeneralesClausulasRepository.remove(basesGeneralesClausulas);
   }
 
   async getTipoClausula (tipoClausulaId: number) : Promise<TiposDeClausulas>{

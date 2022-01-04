@@ -23,7 +23,12 @@ export class ClasificacionesResolver {
   }
 
   @Mutation(() => Clasificaciones)
-  removeClasificacione(@Args('id', { type: () => Int }) id: number) {
+  removeClasificaciones(@Args('id', { type: () => Int }) id: number) {
     return this.clasificacionesService.remove(id);
+  }
+
+  @Mutation(() => [Clasificaciones])
+  removeSeveralClasificaciones(@Args('id', { type: () => [Int] }) id: number[]) {
+    return this.clasificacionesService.removeSeveral(id);
   }
 }

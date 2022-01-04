@@ -22,7 +22,13 @@ export class CompradoresService {
   }
 
   async remove(id: number) : Promise<any> {
-    return await this.compradoresRepository.delete(id);
+    const compradores = await this.findOne(id);
+    return await this.compradoresRepository.remove(compradores);
+  }
+
+  async removeSeveral(id: number[]) : Promise<any> {
+    const compradores = await this.compradoresRepository.findByIds(id);
+    return await this.compradoresRepository.remove(compradores);
   }
 }
   

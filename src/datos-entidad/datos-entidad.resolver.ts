@@ -26,4 +26,9 @@ export class DatosEntidadResolver {
   removeDatosEntidad(@Args('id', { type: () => Int }) id: number) {
     return this.datosEntidadService.remove(id);
   }
+
+  @Mutation(() => [DatosEntidad])
+  removeSeveralDatosEntidad(@Args('id', { type: () => [Int] }) id: number[]) {
+    return this.datosEntidadService.removeSeveral(id);
+  }
 }
