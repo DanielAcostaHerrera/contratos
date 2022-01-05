@@ -36,7 +36,7 @@ export class CreateSolicitudCodificacionInput {
   cubicaje: string | null;
 
   @Field()
-  embalaje: string | null;
+  idEmbalaje: number | null;
 
   @Field(() => Float)
   precioCosto: number;

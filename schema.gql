@@ -471,6 +471,7 @@ type Puertos {
   nombre: String!
   pais: Int!
   deposito: String!
+  embarques: [Embarques!]
   basesCMarco: [BasesCMarco!]
   fichaCostoResumen: [FichaCostoResumen!]
   pliegoConcurrenciaResumenEmbarque: [PliegoConcurrenciaResumen!]
@@ -908,6 +909,7 @@ type Embarques {
   contratoDesgloses: [ContratoDesglose!]
   contratos: Contratos
   ejecutivos: Ejecutivos
+  puertoDestino: Puertos
   facturaResumen: [FacturaResumen!]
   suplementoChanges: [SuplementoChange!]
   suplementoDesgloses: [SuplementoDesglose!]

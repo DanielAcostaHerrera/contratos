@@ -14,11 +14,11 @@ export class EmbalajesService {
   }
 
   async findAll(): Promise<Embalajes[]> {
-    return await this.embalajesRepository.find({relations:['fichaCostoResumen', 'pliegoConcurrenciaDetalles']});
+    return await this.embalajesRepository.find({relations:['fichaCostoResumen', 'pliegoConcurrenciaDetalles','solicitudCodificacion']});
   }
 
   async findOne(id: number) : Promise<Embalajes> {
-    return await this.embalajesRepository.findOne(id,{relations:['fichaCostoResumen','pliegoConcurrenciaDetalles']});
+    return await this.embalajesRepository.findOne(id,{relations:['fichaCostoResumen','pliegoConcurrenciaDetalles','solicitudCodificacion']});
   }
 
   async remove(id: number) : Promise<any> {

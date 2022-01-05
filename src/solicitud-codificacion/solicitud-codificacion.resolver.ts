@@ -3,6 +3,7 @@ import { SolicitudCodificacionService } from './solicitud-codificacion.service';
 import { CreateSolicitudCodificacionInput } from './dto/create-solicitud-codificacion.input';
 import { SolicitudCodificacion } from 'src/models/entities/SolicitudCodificacion.entity';
 import { PliegoConcurrenciaResumen } from 'src/models/entities/PliegoConcurrenciaResumen.entity';
+import { Embalajes } from 'src/models/entities/Embalajes.entity';
 
 @Resolver(() => SolicitudCodificacion)
 export class SolicitudCodificacionResolver {
@@ -36,5 +37,10 @@ export class SolicitudCodificacionResolver {
   @ResolveField(() => PliegoConcurrenciaResumen, {nullable: true})
   pliegoResumen(@Parent() solicitudCodificacion: SolicitudCodificacion): Promise<PliegoConcurrenciaResumen> {
     return this.solicitudCodificacionService.getPliegoConcurrenciaResumen(solicitudCodificacion.idPliegoResumen);
+  }
+
+  @ResolveField(() => Embalajes, {nullable: true})
+  embalaje(@Parent() solicitudCodificacion: SolicitudCodificacion): Promise<Embalajes> {
+    return this.solicitudCodificacionService.getEmbalaje(solicitudCodificacion.idEmbalaje);
   }
 }

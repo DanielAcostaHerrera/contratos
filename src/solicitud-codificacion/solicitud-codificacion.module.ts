@@ -4,11 +4,12 @@ import { SolicitudCodificacionResolver } from './solicitud-codificacion.resolver
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { SolicitudCodificacion } from 'src/models/entities/SolicitudCodificacion.entity';
 import { PliegoConcurrenciaResumenModule } from 'src/pliego-concurrencia-resumen/pliego-concurrencia-resumen.module';
+import { EmbalajesModule } from 'src/embalajes/embalajes.module';
 
 @Module({
   imports:[TypeOrmModule.forFeature([
     SolicitudCodificacion
-  ]),PliegoConcurrenciaResumenModule],
+  ]),PliegoConcurrenciaResumenModule,EmbalajesModule],
   providers: [SolicitudCodificacionResolver, SolicitudCodificacionService],
   exports: [SolicitudCodificacionService]
 })

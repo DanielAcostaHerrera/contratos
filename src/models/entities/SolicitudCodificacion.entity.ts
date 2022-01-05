@@ -7,6 +7,7 @@ import {
   ManyToOne,
   PrimaryGeneratedColumn,
 } from "typeorm";
+import { Embalajes } from "./Embalajes.entity";
 import { PliegoConcurrenciaResumen } from "./PliegoConcurrenciaResumen.entity";
 
 @ObjectType()
@@ -57,9 +58,9 @@ export class SolicitudCodificacion {
   @Field()
   cubicaje: string | null;
 
-  @Column("nvarchar", { name: "Embalaje", nullable: true, length: 50 })
+  @Column("int", { name: "IdEmbalaje", nullable: true})
   @Field()
-  embalaje: string | null;
+  idEmbalaje: number | null;
 
   @Column("float", { name: "PrecioCosto", precision: 53 })
   @Field(() => Float)
@@ -69,4 +70,9 @@ export class SolicitudCodificacion {
   @ManyToOne(() => PliegoConcurrenciaResumen,(pliegoConcurrenciaResumen) => pliegoConcurrenciaResumen.solicitudCodificacion)
   @JoinColumn([{ name: "IdPliegoResumen", referencedColumnName: "idPliegoResumen" }])
   pliegoResumen: PliegoConcurrenciaResumen;
+
+  @Field(() => Embalajes, {nullable: true})
+  @ManyToOne(() => Embalajes,(embalajes) => embalajes.solicitudCodificacion)
+  @JoinColumn([{ name: "IdEmbalaje", referencedColumnName: "idEmbalaje" }])
+  embalaje: Embalajes;
 }

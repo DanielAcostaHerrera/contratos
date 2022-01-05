@@ -12,6 +12,7 @@ import { ContratoDesglose } from "./ContratoDesglose.entity";
 import { Contratos } from "./Contratos.entity";
 import { Ejecutivos } from "./Ejecutivos.entity";
 import { FacturaResumen } from "./FacturaResumen.entity";
+import { Puertos } from "./Puertos.entity";
 import { SuplementoChange } from "./SuplementoChange.entity";
 import { SuplementoDesglose } from "./SuplementoDesglose.entity";
 import { SuplementoEmbarques } from "./SuplementoEmbarques.entity";
@@ -41,7 +42,7 @@ export class Embarques {
   @Field(() => Int)
   numero: number;
 
-  @Column("smallint", {
+  @Column("int", {
     name: "Destino",
     nullable: true,
     default: () => "(100)",
@@ -131,6 +132,11 @@ export class Embarques {
   @ManyToOne(() => Ejecutivos, (ejecutivos) => ejecutivos.embarques)
   @JoinColumn([{ name: "IdEjecutivo", referencedColumnName: "idEjecutivo" }])
   ejecutivos: Ejecutivos;
+
+  @Field(() => Puertos, {nullable: true})
+  @ManyToOne(() => Puertos, (puertos) => puertos.embarques)
+  @JoinColumn([{ name: "Destino", referencedColumnName: "idPuerto" }])
+  puertoDestino: Puertos;
 
   @Field(() => [FacturaResumen], {nullable: true})
   @OneToMany(() => FacturaResumen,(facturaResumen) => facturaResumen.embarques)

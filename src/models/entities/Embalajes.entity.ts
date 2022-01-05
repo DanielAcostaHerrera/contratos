@@ -2,6 +2,7 @@ import { Field, Int, ObjectType } from "@nestjs/graphql";
 import { Column, Entity, Index, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { FichaCostoResumen } from "./FichaCostoResumen.entity";
 import { PliegoConcurrenciaDetalle } from "./PliegoConcurrenciaDetalle.entity";
+import { SolicitudCodificacion } from "./SolicitudCodificacion.entity";
 
 @ObjectType()
 @Index("PK_CTO_Embalajes", ["idEmbalaje"], { unique: true })
@@ -26,4 +27,8 @@ export class Embalajes {
   @Field(() => [PliegoConcurrenciaDetalle], {nullable: true})
   @OneToMany(() => PliegoConcurrenciaDetalle,(pliegoConcurrenciaDetalle) => pliegoConcurrenciaDetalle.embalaje)
   pliegoConcurrenciaDetalles: PliegoConcurrenciaDetalle[];
+
+  @Field(() => [SolicitudCodificacion], {nullable: true})
+  @OneToMany(() => SolicitudCodificacion,(solicitudCodificacion) => solicitudCodificacion.embalaje)
+  solicitudCodificacion: SolicitudCodificacion[];
 }

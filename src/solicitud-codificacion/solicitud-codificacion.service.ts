@@ -1,5 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { EmbalajesService } from 'src/embalajes/Embalajes.service';
+import { Embalajes } from 'src/models/entities/Embalajes.entity';
 import { PliegoConcurrenciaResumen } from 'src/models/entities/PliegoConcurrenciaResumen.entity';
 import { SolicitudCodificacion } from 'src/models/entities/SolicitudCodificacion.entity';
 import { PliegoConcurrenciaResumenService } from 'src/pliego-concurrencia-resumen/pliego-concurrencia-resumen.service';
@@ -9,7 +11,7 @@ import { CreateSolicitudCodificacionInput } from './dto/create-solicitud-codific
 @Injectable()
 export class SolicitudCodificacionService {
   constructor(@InjectRepository(SolicitudCodificacion) public readonly solicitudCodificacionRepository: Repository<SolicitudCodificacion>,
-  private pliegoConcurrenciaResumenService: PliegoConcurrenciaResumenService) {}
+  private pliegoConcurrenciaResumenService: PliegoConcurrenciaResumenService, private embalajesService: EmbalajesService) {}
 
 
   async save(createSolicitudCodificacionInput: CreateSolicitudCodificacionInput) : Promise<SolicitudCodificacion> {
@@ -36,5 +38,9 @@ export class SolicitudCodificacionService {
 
   async getPliegoConcurrenciaResumen (id: number) : Promise<PliegoConcurrenciaResumen>{
     return this.pliegoConcurrenciaResumenService.findOne(id);
+  }
+
+  async getEmbalaje (id: number) : Promise<Embalajes>{
+    return this.embalajesService.findOne(id);
   }
 }

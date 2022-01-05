@@ -2,6 +2,7 @@ import { Field, Int, ObjectType } from "@nestjs/graphql";
 import { Column, Entity, Index, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { BasesCMarco } from "./BasesCMarco.entity";
 import { Contratos } from "./Contratos.entity";
+import { Embarques } from "./Embarques.entity";
 import { FacturaResumen } from "./FacturaResumen.entity";
 import { FichaCostoResumen } from "./FichaCostoResumen.entity";
 import { PliegoConcurrenciaResumen } from "./PliegoConcurrenciaResumen.entity";
@@ -30,6 +31,10 @@ export class Puertos {
   @Field()
   deposito: string | null;
 
+  @Field(() => [Embarques], { nullable: true })
+  @OneToMany(() => Embarques, (embarques) => embarques.puertoDestino)
+  embarques: Embarques[];
+  
   @Field(() => [BasesCMarco], { nullable: true })
   @OneToMany(() => BasesCMarco, (basesCMarco) => basesCMarco.puerto)
   basesCMarco: BasesCMarco[];

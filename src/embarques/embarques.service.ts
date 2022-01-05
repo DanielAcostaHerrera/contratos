@@ -5,13 +5,16 @@ import { EjecutivoService } from 'src/ejecutivo/ejecutivo.service';
 import { Contratos } from 'src/models/entities/Contratos.entity';
 import { Ejecutivos } from 'src/models/entities/Ejecutivos.entity';
 import { Embarques } from 'src/models/entities/Embarques.entity';
+import { Puertos } from 'src/models/entities/Puertos.entity';
+import { PuertosService } from 'src/puertos/puertos.service';
 import { Repository } from 'typeorm';
 import { CreateEmbarqueInput } from './dto/create-embarque.input';
 
 @Injectable()
 export class EmbarquesService {
   constructor(@InjectRepository(Embarques) public readonly embarquesRepository: Repository<Embarques>,
-  private contratosService: ContratosService,private ejecutivoService: EjecutivoService) {}
+  private contratosService: ContratosService,private ejecutivoService: EjecutivoService,
+  private puertosService: PuertosService) {}
 
 
   async save(createEmbarqueInput: CreateEmbarqueInput) : Promise<Embarques> {
@@ -42,5 +45,9 @@ export class EmbarquesService {
 
   async getEjecutivo (Id: number) : Promise<Ejecutivos>{
     return this.ejecutivoService.findOne(Id);
+  }
+
+  async getPuertoDestino (Id: number) : Promise<Puertos>{
+    return this.puertosService.findOne(Id);
   }
 }
