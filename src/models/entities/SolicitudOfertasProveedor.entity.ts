@@ -10,6 +10,7 @@ import {
 import { SolicitudOfertasEntradas } from "./SolicitudOfertasEntradas.entity";
 import { SolicitudOfertas } from "./SolicitudOfertas.entity";
 import { Field, Int, ObjectType } from "@nestjs/graphql";
+import { Proveedores } from "../../modelsMercurio/entities/Proveedores.entity";
 
 @ObjectType()
 @Index("IX_SolicitudOfertasProveedor", ["idOferta", "idProveedor"], {
@@ -26,7 +27,7 @@ export class SolicitudOfertasProveedor {
   @Field(() => Int)
   idOferta: number;
 
-  @Column("int", { name: "IdProveedor" })
+  @Column("smallint", { name: "IdProveedor" })
   @Field(() => Int)
   idProveedor: number;
 
@@ -46,4 +47,9 @@ export class SolicitudOfertasProveedor {
   @ManyToOne(() => SolicitudOfertas,(solicitudOfertas) => solicitudOfertas.solicitudOfertasProveedores)
   @JoinColumn([{ name: "IdOferta", referencedColumnName: "idOferta" }])
   solicitudOfertas: SolicitudOfertas;
+
+  @Field(() => Proveedores, {nullable: true})
+  @ManyToOne(() => Proveedores, (proveedores) => proveedores.solicitudOfertasProveedores)
+  @JoinColumn([{ name: "IdProveedor", referencedColumnName: "codigo" }])
+  proveedor: Proveedores;
 }

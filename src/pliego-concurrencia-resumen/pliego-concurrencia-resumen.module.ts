@@ -10,11 +10,15 @@ import { FormasPagoModule } from 'src/formas-pago/formas-pago.module';
 import { FormasEntregaModule } from 'src/formas-entrega/formas-entrega.module';
 import { PuertosModule } from 'src/puertos/puertos.module';
 import { TiposContenedorModule } from 'src/tipos-contenedor/tipos-contenedor.module';
+import { ProveedoresModule } from 'src/proveedores/proveedores.module';
+import { PaisesModule } from 'src/paises/paises.module';
+import { CompaniasNavierasModule } from 'src/companias-navieras/companias-navieras.module';
 
 @Module({
   imports:[TypeOrmModule.forFeature([
     PliegoConcurrenciaResumen
-  ]),PliegoConcurrenciaModule,MonedaModule,IncotermModule,FormasPagoModule,FormasEntregaModule,PuertosModule,TiposContenedorModule],
+  ]),PliegoConcurrenciaModule,MonedaModule,IncotermModule,FormasPagoModule,FormasEntregaModule,PuertosModule,TiposContenedorModule,
+     ProveedoresModule, PaisesModule, CompaniasNavierasModule],
   providers: [PliegoConcurrenciaResumenResolver, PliegoConcurrenciaResumenService],
   exports: [PliegoConcurrenciaResumenService]
 })

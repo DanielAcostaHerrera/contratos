@@ -2,6 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { SolicitudOfertas } from 'src/models/entities/SolicitudOfertas.entity';
 import { SolicitudOfertasProveedor } from 'src/models/entities/SolicitudOfertasProveedor.entity';
+import { Proveedores } from 'src/modelsMercurio/entities/Proveedores.entity';
+import { ProveedoresService } from 'src/proveedores/proveedores.service';
 import { SolicitudOfertasService } from 'src/solicitud-ofertas/solicitud-ofertas.service';
 import { Repository } from 'typeorm';
 import { CreateSolicitudOfertasProveedorInput } from './dto/create-solicitud-ofertas-proveedor.input';
@@ -9,7 +11,7 @@ import { CreateSolicitudOfertasProveedorInput } from './dto/create-solicitud-ofe
 @Injectable()
 export class SolicitudOfertasProveedorService {
   constructor(@InjectRepository(SolicitudOfertasProveedor) public readonly solicitudOfertasProveedorRepository: Repository<SolicitudOfertasProveedor>,
-  private solicitudOfertasService: SolicitudOfertasService) {}
+  private solicitudOfertasService: SolicitudOfertasService, private proveedoresService: ProveedoresService) {}
 
 
   async save(createSolicitudOfertasProveedorInput: CreateSolicitudOfertasProveedorInput) : Promise<SolicitudOfertasProveedor> {
@@ -36,5 +38,9 @@ export class SolicitudOfertasProveedorService {
 
   async getSolicitudOfertas (id: number) : Promise<SolicitudOfertas>{
     return this.solicitudOfertasService.findOne(id);
+  }
+
+  async getProveedor (id: number) : Promise<Proveedores>{
+    return this.proveedoresService.findOne(id);
   }
 }

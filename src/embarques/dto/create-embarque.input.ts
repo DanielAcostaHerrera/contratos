@@ -48,7 +48,7 @@ export class CreateEmbarqueInput {
   maquina: string | null;
 
   @Field(() => Int)
-  empNaviera: number;
+  idEmpresaNaviera: number;
 
   @Field(() => Float)
   inspeccion: number;

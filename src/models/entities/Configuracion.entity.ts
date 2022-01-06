@@ -1,8 +1,10 @@
 import { Field, Int, ObjectType } from "@nestjs/graphql";
-import { Column, Entity, Index, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, Index, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { DatosEntidad } from "./DatosEntidad.entity";
 
 @ObjectType()
 @Index("PK_CTO_Configuracion", ["idConfig"], { unique: true })
+@Index("IX_Configuracion", ["idEntidad"], { unique: true })
 @Entity("Configuracion", { schema: "CONTRATO.dbo" })
 export class Configuracion {
   @PrimaryGeneratedColumn({ type: "int", name: "IdConfig" })
@@ -25,10 +27,6 @@ export class Configuracion {
   @Field(() => Int)
   vigenciaContrato: number;
 
-  @Column("int", { name: "TravesiaXDefecto", default: () => "(20)" })
-  @Field(() => Int)
-  travesiaXDefecto: number;
-
   @Column("nvarchar", { name: "PathContratosPDF", nullable: true, length: 250 })
   @Field({nullable: true})
   pathContratosPdf: string | null;
@@ -36,4 +34,9 @@ export class Configuracion {
   @Column("int", { name: "AlertaVencContratos", default: () => "(90)" })
   @Field(() => Int)
   alertaVencContratos: number;
+
+  @Field(() => DatosEntidad, {nullable: true})
+  @OneToOne(() => DatosEntidad, (entidad) => entidad.configuracion)
+  @JoinColumn([{ name: "IdEntidad", referencedColumnName: "codigo" }])
+  entidad: DatosEntidad;
 }

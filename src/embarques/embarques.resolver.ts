@@ -5,6 +5,7 @@ import { Embarques } from 'src/models/entities/Embarques.entity';
 import { Contratos } from 'src/models/entities/Contratos.entity';
 import { Ejecutivos } from 'src/models/entities/Ejecutivos.entity';
 import { Puertos } from 'src/models/entities/Puertos.entity';
+import { CompaniasNavieras } from 'src/modelsNomgen/entities/CompaniasNavieras.entity';
 
 @Resolver(() => Embarques)
 export class EmbarquesResolver {
@@ -48,5 +49,10 @@ export class EmbarquesResolver {
   @ResolveField(() => Puertos, {nullable: true})
   puertoDestino(@Parent() embarques: Embarques): Promise<Puertos> {
     return this.embarquesService.getPuertoDestino(embarques.destino);
+  }
+
+  @ResolveField(() => CompaniasNavieras, {nullable: true})
+  companiaNaviera(@Parent() embarques: Embarques): Promise<CompaniasNavieras> {
+    return this.embarquesService.getCompaniaNaviera(embarques.idEmpresaNaviera);
   }
 }

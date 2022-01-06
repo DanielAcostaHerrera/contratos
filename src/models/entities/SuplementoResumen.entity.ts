@@ -1,3 +1,4 @@
+import { AgenciasAseguradoras } from './../../modelsNomgen/entities/AgenciasAseguradoras.entity';
 import {
   Column,
   Entity,
@@ -17,6 +18,7 @@ import { Puertos } from "./Puertos.entity";
 import { Ejecutivos } from "./Ejecutivos.entity";
 import { Monedas } from "./Monedas.entity";
 import { Field, Float, Int, ObjectType } from "@nestjs/graphql";
+import { CompaniasNavieras } from '../../modelsNomgen/entities/CompaniasNavieras.entity';
 
 @ObjectType()
 @Index("PK_SuplementoResumen", ["idSuplementoResumen"], { unique: true })
@@ -70,13 +72,13 @@ export class SuplementoResumen {
   @Field()
   fecha: Date;
 
-  @Column("nvarchar", { name: "EmpSeguro", nullable: true, length: 50 })
-  @Field({nullable: true})
-  empSeguro: string | null;
+  @Column("int", { name: "EmpSeguro", nullable: true})
+  @Field(() => Int,{nullable: true})
+  idEmpSeguro: number | null;
 
   @Column("int", { name: "EmpNaviera", nullable: true })
   @Field(() => Int,{nullable: true})
-  empNaviera: number | null;
+  idEmpNaviera: number | null;
 
   @Column("nvarchar", { name: "LugarEntrega", nullable: true, length: 50 })
   @Field({nullable: true})
@@ -204,4 +206,15 @@ export class SuplementoResumen {
   @ManyToOne(() => Monedas, (monedas) => monedas.suplementoResumen)
   @JoinColumn([{ name: "IdMoneda", referencedColumnName: "idMoneda" }])
   moneda: Monedas;
+
+
+  @Field(() => AgenciasAseguradoras, {nullable: true})
+  @ManyToOne(() => AgenciasAseguradoras, (agenciasAseguradoras) => agenciasAseguradoras.suplementoResumen)
+  @JoinColumn([{ name: "EmpSeguro", referencedColumnName: "idAgenciaS" }])
+  empresaAseguradora: AgenciasAseguradoras;
+
+  @Field(() => CompaniasNavieras, {nullable: true})
+  @ManyToOne(() => CompaniasNavieras, (companiasNavieras) => companiasNavieras.suplementoResumen)
+  @JoinColumn([{ name: "EmpNaviera", referencedColumnName: "id" }])
+  empresaNaviera: CompaniasNavieras;
 }

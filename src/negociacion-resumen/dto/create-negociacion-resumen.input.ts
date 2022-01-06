@@ -64,7 +64,4 @@ export class CreateNegociacionResumenInput {
 
   @Field()
   terminado: boolean | null;
-
-  @Field()
-  idNegociacionUnico: string | null;
 }

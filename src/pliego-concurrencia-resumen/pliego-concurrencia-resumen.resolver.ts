@@ -9,6 +9,9 @@ import { FormasPago } from 'src/models/entities/FormasPago.entity';
 import { FormasEntrega } from 'src/models/entities/FormasEntrega.entity';
 import { Puertos } from 'src/models/entities/Puertos.entity';
 import { TiposContenedor } from 'src/models/entities/TiposContenedor.entity';
+import { Proveedores } from 'src/modelsMercurio/entities/Proveedores.entity';
+import { Paises } from 'src/modelsMercurio/entities/Paises.entity';
+import { CompaniasNavieras } from 'src/modelsNomgen/entities/CompaniasNavieras.entity';
 
 @Resolver(() => PliegoConcurrenciaResumen)
 export class PliegoConcurrenciaResumenResolver {
@@ -87,5 +90,20 @@ export class PliegoConcurrenciaResumenResolver {
   @ResolveField(() => TiposContenedor, {nullable: true})
   tipoContenedor(@Parent() pliegoConcurrenciaResumen: PliegoConcurrenciaResumen): Promise<TiposContenedor> {
     return this.pliegoConcurrenciaResumenService.getTiposContenedor(pliegoConcurrenciaResumen.idTipoContenedor);
+  }
+
+  @ResolveField(() => Proveedores, {nullable: true})
+  proveedor(@Parent() pliegoConcurrenciaResumen: PliegoConcurrenciaResumen): Promise<Proveedores> {
+    return this.pliegoConcurrenciaResumenService.getProveedor(pliegoConcurrenciaResumen.idProveedor);
+  }
+
+  @ResolveField(() => Paises, {nullable: true})
+  paisOrigenMercancia(@Parent() pliegoConcurrenciaResumen: PliegoConcurrenciaResumen): Promise<Paises> {
+    return this.pliegoConcurrenciaResumenService.getPais(pliegoConcurrenciaResumen.idPaisOrigenMercancia);
+  }
+
+  @ResolveField(() => CompaniasNavieras, {nullable: true})
+  naviera(@Parent() pliegoConcurrenciaResumen: PliegoConcurrenciaResumen): Promise<CompaniasNavieras> {
+    return this.pliegoConcurrenciaResumenService.getEmpresaNaviera(pliegoConcurrenciaResumen.idNaviera);
   }
 }

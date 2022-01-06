@@ -75,6 +75,8 @@ import { PaisesModule } from './paises/paises.module';
 import { UnidadMedidaModule } from './unidad-medida/unidad-medida.module';
 import { AgenciasAseguradorasModule } from './agencias-aseguradoras/agencias-aseguradoras.module';
 import { CompaniasNavierasModule } from './companias-navieras/companias-navieras.module';
+import { DetalleCircularesAltasModule } from './detalle-circulares-altas/detalle-circulares-altas.module';
+import { ReferenciasModule } from './referencias/referencias.module';
 
 @Module({
   imports: [
@@ -185,6 +187,8 @@ import { CompaniasNavierasModule } from './companias-navieras/companias-navieras
     UnidadMedidaModule,
     AgenciasAseguradorasModule,
     CompaniasNavierasModule,
+    DetalleCircularesAltasModule,
+    ReferenciasModule,
   ],
   controllers: [AppController],
   providers: [AppService],

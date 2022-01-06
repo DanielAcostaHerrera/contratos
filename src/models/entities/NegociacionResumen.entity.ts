@@ -20,7 +20,6 @@ import { SolicitudContratacion } from "./SolicitudContratacion.entity";
 import { TiposDeCompras } from "./TiposDeCompras.entity";
 
 @ObjectType()
-@Index("IX_NegociacionResumen", ["idNegociacionUnico"], { unique: true })
 @Index("PK_NegociacionResumen", ["idNegociacion"], { unique: true })
 @Entity("NegociacionResumen", { schema: "CONTRATO.dbo" })
 export class NegociacionResumen {
@@ -123,14 +122,6 @@ export class NegociacionResumen {
   @Field({nullable: true})
   terminado: boolean | null;
 
-  @Column("nvarchar", {
-    name: "IdNegociacionUnico",
-    nullable: true,
-    length: 300,
-  })
-  @Field({nullable: true})
-  idNegociacionUnico: string | null;
-
   @Field(() => [NegociacionDetalle], {nullable: true})
   @OneToMany(() => NegociacionDetalle,(negociacionDetalle) => negociacionDetalle.negociacionResumen)
   negociacionDetalle: NegociacionDetalle[];
@@ -156,7 +147,7 @@ export class NegociacionResumen {
   @Field(() => GruposDeCompras, {nullable: true})
   @ManyToOne(() => GruposDeCompras,(grupos) => grupos.negociacionResumen)
   @JoinColumn([{ name: "IdGrupo", referencedColumnName: "idGrupo" },])
-  grupos: GruposDeCompras;
+  grupo: GruposDeCompras;
 
   @Field(() => [FichaCompraResumen], {nullable: true})
   @OneToMany(() => FichaCompraResumen,(fichaCompraResumen) => fichaCompraResumen.negociacionResumen)

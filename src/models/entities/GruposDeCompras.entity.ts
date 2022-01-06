@@ -1,26 +1,25 @@
 import { Field, Int, ObjectType } from "@nestjs/graphql";
-import { Column, Entity, Index, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, Index, OneToMany } from "typeorm";
 import { Ejecutivos } from "./Ejecutivos.entity";
 import { NegociacionResumen } from "./NegociacionResumen.entity";
 
 @ObjectType()
-@Index("IX_GruposDeCompras", ["grupos"], { unique: true })
 @Index("PK_GruposDeCompras", ["idGrupo"], { unique: true })
 @Entity("GruposDeCompras", { schema: "CONTRATO.dbo" })
 export class GruposDeCompras {
-  @PrimaryGeneratedColumn({ type: "int", name: "IdGrupo" })
+  @Column("int", { primary: true, name: "IdGrupo" })
   @Field(() => Int)
   idGrupo: number;
 
-  @Column("nvarchar", { name: "Grupos", length: 50 })
+  @Column("nvarchar", { name: "Grupos", length: 500 })
   @Field()
   grupos: string;
 
-  @Field(() => [Ejecutivos], { nullable: true })
+  @Field(() => [Ejecutivos])
   @OneToMany(() => Ejecutivos, (ejecutivos) => ejecutivos.grupo)
   ejecutivos: Ejecutivos[];
 
-  @Field(() => [NegociacionResumen], { nullable: true })
-  @OneToMany(() => NegociacionResumen,(negociacionResumen) => negociacionResumen.grupos)
+  @Field(() => [NegociacionResumen])
+  @OneToMany(() => NegociacionResumen,(negociacionResumen) => negociacionResumen.grupo)
   negociacionResumen: NegociacionResumen[];
 }

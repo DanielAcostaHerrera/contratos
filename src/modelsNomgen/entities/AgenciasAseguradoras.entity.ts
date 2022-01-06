@@ -1,6 +1,7 @@
 import { Contratos } from './../../models/entities/Contratos.entity';
 import { Field, Float, Int, ObjectType } from "@nestjs/graphql";
 import { Column, Entity, Index, OneToMany } from "typeorm";
+import { SuplementoResumen } from '../../models/entities/SuplementoResumen.entity';
 
 @ObjectType()
 @Index("PK_AgenciasAseguradoras", ["idAgenciaS"], { unique: true })
@@ -33,4 +34,8 @@ export class AgenciasAseguradoras {
   @Field(() => [Contratos], { nullable: true })
   @OneToMany(() => Contratos,(contratos) => contratos.agenciaAseguradora)
   contratos: Contratos[];
+
+  @Field(() => [SuplementoResumen], { nullable: true })
+  @OneToMany(() => SuplementoResumen,(suplementoResumen) => suplementoResumen.empresaAseguradora)
+  suplementoResumen: SuplementoResumen[];
 }

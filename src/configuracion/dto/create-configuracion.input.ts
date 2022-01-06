@@ -14,9 +14,6 @@ export class CreateConfiguracionInput {
   @Field(() => Int)
   vigenciaContrato: number;
 
-  @Field(() => Int)
-  travesiaXDefecto: number;
-
   @Field()
   pathContratosPdf: string | null;
 

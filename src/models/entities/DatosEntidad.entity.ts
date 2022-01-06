@@ -1,5 +1,6 @@
 import { Field, Int, ObjectType } from "@nestjs/graphql";
-import { Column, Entity, Index } from "typeorm";
+import { Column, Entity, Index, OneToOne } from "typeorm";
+import { Configuracion } from "./Configuracion.entity";
 
 @ObjectType()
 @Index("PK_DatosEntidad", ["codigo"], { unique: true })
@@ -60,4 +61,8 @@ export class DatosEntidad {
   @Column("varchar", { name: "Compañia", nullable: true, length: 300 })
   @Field({nullable: true})
   compaIa: string | null;
+
+  @Field(() => [Configuracion], {nullable: true})
+  @OneToOne(() => Configuracion,(configuracion) => configuracion.entidad)
+  configuracion: Configuracion;
 }

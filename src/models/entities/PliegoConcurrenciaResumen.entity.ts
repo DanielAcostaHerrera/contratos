@@ -17,6 +17,9 @@ import { Puertos } from "./Puertos.entity";
 import { TiposContenedor } from "./TiposContenedor.entity";
 import { SolicitudCodificacion } from "./SolicitudCodificacion.entity";
 import { Field, Float, Int, ObjectType } from "@nestjs/graphql";
+import { Proveedores } from "../../modelsMercurio/entities/Proveedores.entity";
+import { Paises } from "../../modelsMercurio/entities/Paises.entity";
+import { CompaniasNavieras } from "../../modelsNomgen/entities/CompaniasNavieras.entity";
 
 @ObjectType()
 @Index("IX_PliegoConcurrenciaResumen", ["idPliego", "idProveedor"], {
@@ -63,7 +66,7 @@ export class PliegoConcurrenciaResumen {
 
   @Column("int", { name: "PaisOrigenMercancia" })
   @Field(() => Int)
-  paisOrigenMercancia: number;
+  idPaisOrigenMercancia: number;
 
   @Column("datetime", { name: "FechaOfertaRecibida" })
   @Field()
@@ -194,4 +197,20 @@ export class PliegoConcurrenciaResumen {
   @Field(() => [SolicitudCodificacion], {nullable: true})
   @OneToMany(() => SolicitudCodificacion,(solicitudCodificacion) => solicitudCodificacion.pliegoResumen)
   solicitudCodificacion: SolicitudCodificacion[];
+
+
+  @Field(() => Proveedores, {nullable: true})
+  @ManyToOne(() => Proveedores,(proveedores) => proveedores.pliegoConcurrenciaResumen)
+  @JoinColumn([{ name: "IdProveedor", referencedColumnName: "codigo" }])
+  proveedor: Proveedores;
+
+  @Field(() => Paises, {nullable: true})
+  @ManyToOne(() => Paises,(paises) => paises.pliegoConcurrenciaResumen)
+  @JoinColumn([{ name: "PaisOrigenMercancia", referencedColumnName: "pais" }])
+  paisOrigenMercancia: Paises;
+
+  @Field(() => CompaniasNavieras, {nullable: true})
+  @ManyToOne(() => CompaniasNavieras,(companiasNavieras) => companiasNavieras.pliegoConcurrenciaResumen)
+  @JoinColumn([{ name: "IdNaviera", referencedColumnName: "id" }])
+  naviera: CompaniasNavieras;
 }

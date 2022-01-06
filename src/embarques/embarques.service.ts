@@ -1,11 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { CompaniasNavierasService } from 'src/companias-navieras/companias-navieras.service';
 import { ContratosService } from 'src/contratos/contratos.service';
 import { EjecutivoService } from 'src/ejecutivo/ejecutivo.service';
 import { Contratos } from 'src/models/entities/Contratos.entity';
 import { Ejecutivos } from 'src/models/entities/Ejecutivos.entity';
 import { Embarques } from 'src/models/entities/Embarques.entity';
 import { Puertos } from 'src/models/entities/Puertos.entity';
+import { CompaniasNavieras } from 'src/modelsNomgen/entities/CompaniasNavieras.entity';
 import { PuertosService } from 'src/puertos/puertos.service';
 import { Repository } from 'typeorm';
 import { CreateEmbarqueInput } from './dto/create-embarque.input';
@@ -14,7 +16,7 @@ import { CreateEmbarqueInput } from './dto/create-embarque.input';
 export class EmbarquesService {
   constructor(@InjectRepository(Embarques) public readonly embarquesRepository: Repository<Embarques>,
   private contratosService: ContratosService,private ejecutivoService: EjecutivoService,
-  private puertosService: PuertosService) {}
+  private puertosService: PuertosService,private companiasNavierasService: CompaniasNavierasService) {}
 
 
   async save(createEmbarqueInput: CreateEmbarqueInput) : Promise<Embarques> {
@@ -49,5 +51,9 @@ export class EmbarquesService {
 
   async getPuertoDestino (Id: number) : Promise<Puertos>{
     return this.puertosService.findOne(Id);
+  }
+
+  async getCompaniaNaviera (Id: number) : Promise<CompaniasNavieras>{
+    return this.companiasNavierasService.findOne(Id);
   }
 }

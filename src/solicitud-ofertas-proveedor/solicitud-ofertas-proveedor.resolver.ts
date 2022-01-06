@@ -3,6 +3,7 @@ import { SolicitudOfertasProveedorService } from './solicitud-ofertas-proveedor.
 import { CreateSolicitudOfertasProveedorInput } from './dto/create-solicitud-ofertas-proveedor.input';
 import { SolicitudOfertasProveedor } from 'src/models/entities/SolicitudOfertasProveedor.entity';
 import { SolicitudOfertas } from 'src/models/entities/SolicitudOfertas.entity';
+import { Proveedores } from 'src/modelsMercurio/entities/Proveedores.entity';
 
 @Resolver(() => SolicitudOfertasProveedor)
 export class SolicitudOfertasProveedorResolver {
@@ -36,5 +37,10 @@ export class SolicitudOfertasProveedorResolver {
   @ResolveField(() => SolicitudOfertas, {nullable: true})
   solicitudOfertas(@Parent() solicitudOfertasProveedor: SolicitudOfertasProveedor): Promise<SolicitudOfertas> {
     return this.solicitudOfertasProveedorService.getSolicitudOfertas(solicitudOfertasProveedor.idOferta);
+  }
+
+  @ResolveField(() => Proveedores, {nullable: true})
+  proveedor(@Parent() solicitudOfertasProveedor: SolicitudOfertasProveedor): Promise<Proveedores> {
+    return this.solicitudOfertasProveedorService.getProveedor(solicitudOfertasProveedor.idProveedor);
   }
 }

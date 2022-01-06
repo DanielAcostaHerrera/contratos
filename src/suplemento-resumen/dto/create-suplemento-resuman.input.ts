@@ -39,10 +39,10 @@ export class CreateSuplementoResumanInput {
   fecha: Date;
 
   @Field()
-  empSeguro: string | null;
+  idEmpSeguro: number | null;
 
   @Field(() => Int)
-  empNaviera: number | null;
+  idEmpNaviera: number | null;
 
   @Field()
   lugarEntrega: string | null;

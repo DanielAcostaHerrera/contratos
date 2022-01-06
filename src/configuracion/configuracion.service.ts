@@ -14,11 +14,11 @@ export class ConfiguracionService {
   }
 
   async findAll(): Promise<Configuracion[]> {
-    return await this.configuracionRepository.find();
+    return await this.configuracionRepository.find({relations:['entidad']});
   }
 
   async findOne(id: number) : Promise<Configuracion> {
-    return await this.configuracionRepository.findOne(id);
+    return await this.configuracionRepository.findOne(id,{relations:['entidad']});
   }
 
   async remove(id: number) : Promise<any> {

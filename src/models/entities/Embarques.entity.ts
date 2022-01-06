@@ -1,3 +1,4 @@
+import { CompaniasNavieras } from './../../modelsNomgen/entities/CompaniasNavieras.entity';
 import { Field, Float, Int, ObjectType } from "@nestjs/graphql";
 import {
   Column,
@@ -97,7 +98,7 @@ export class Embarques {
 
   @Column("int", { name: "EmpNaviera", default: () => "(1)" })
   @Field(() => Int)
-  empNaviera: number;
+  idEmpresaNaviera: number;
 
   @Column("float", { name: "Inspeccion", default: () => "(0)" })
   @Field(() => Float)
@@ -157,4 +158,9 @@ export class Embarques {
   @Field(() => [SuplementoPagos], {nullable: true})
   @OneToMany(() => SuplementoPagos,(suplementoPagos) => suplementoPagos.embarques)
   suplementoPagos: SuplementoPagos[];
+
+  @Field(() => CompaniasNavieras, {nullable: true})
+  @ManyToOne(() => CompaniasNavieras, (companiasNavieras) => companiasNavieras.embarques)
+  @JoinColumn([{ name: "EmpNaviera", referencedColumnName: "id" }])
+  companiaNaviera: CompaniasNavieras;
 }

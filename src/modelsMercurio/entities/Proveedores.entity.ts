@@ -3,6 +3,8 @@ import { Field, Float, Int, ObjectType } from "@nestjs/graphql";
 import { Column, Entity, Index, JoinColumn, ManyToOne, OneToMany } from "typeorm";
 import { BasesGenerales } from '../../models/entities/BasesGenerales.entity';
 import { Contratos } from '../../models/entities/Contratos.entity';
+import { SolicitudOfertasProveedor } from '../../models/entities/SolicitudOfertasProveedor.entity';
+import { PliegoConcurrenciaResumen } from '../../models/entities/PliegoConcurrenciaResumen.entity';
 
 @ObjectType()
 @Index("Actualizacion", ["actualizacion"], {})
@@ -275,4 +277,12 @@ export class Proveedores {
   @Field(() => [Contratos], { nullable: true })
   @OneToMany(() => Contratos,(contratos) => contratos.pais)
   contratos: Contratos[];
+
+  @Field(() => [SolicitudOfertasProveedor], { nullable: true })
+  @OneToMany(() => SolicitudOfertasProveedor,(solicitudOfertasProveedor) => solicitudOfertasProveedor.proveedor)
+  solicitudOfertasProveedores: SolicitudOfertasProveedor[];
+
+  @Field(() => [PliegoConcurrenciaResumen], { nullable: true })
+  @OneToMany(() => PliegoConcurrenciaResumen,(pliegoConcurrenciaResumen) => pliegoConcurrenciaResumen.proveedor)
+  pliegoConcurrenciaResumen: PliegoConcurrenciaResumen[];
 }

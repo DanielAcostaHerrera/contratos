@@ -3,6 +3,7 @@ import { Field, Float, Int, ObjectType } from "@nestjs/graphql";
 import { Column, Entity, Index, OneToMany } from "typeorm";
 import { BasesGenerales } from "../../models/entities/BasesGenerales.entity";
 import { Contratos } from '../../models/entities/Contratos.entity';
+import { PliegoConcurrenciaResumen } from '../../models/entities/PliegoConcurrenciaResumen.entity';
 
 @ObjectType()
 @Index("aaaaaPaises_PK", ["pais"], { unique: true })
@@ -93,4 +94,8 @@ export class Paises {
   @Field(() => [Contratos], { nullable: true })
   @OneToMany(() => Contratos,(contratos) => contratos.pais)
   contratos: Contratos[];
+
+  @Field(() => [PliegoConcurrenciaResumen], { nullable: true })
+  @OneToMany(() => PliegoConcurrenciaResumen,(pliegoConcurrenciaResumen) => pliegoConcurrenciaResumen.paisOrigenMercancia)
+  pliegoConcurrenciaResumen: PliegoConcurrenciaResumen[];
 }

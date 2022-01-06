@@ -30,7 +30,7 @@ export class CreatePliegoConcurrenciaResumanInput {
   idProveedor: number;
 
   @Field(() => Int)
-  paisOrigenMercancia: number;
+  idPaisOrigenMercancia: number;
 
   @Field()
   fechaOfertaRecibida: Date;

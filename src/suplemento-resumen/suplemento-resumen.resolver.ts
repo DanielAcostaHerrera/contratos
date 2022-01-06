@@ -6,6 +6,8 @@ import { Monedas } from 'src/models/entities/Monedas.entity';
 import { Ejecutivos } from 'src/models/entities/Ejecutivos.entity';
 import { Puertos } from 'src/models/entities/Puertos.entity';
 import { Contratos } from 'src/models/entities/Contratos.entity';
+import { AgenciasAseguradoras } from 'src/modelsNomgen/entities/AgenciasAseguradoras.entity';
+import { CompaniasNavieras } from 'src/modelsNomgen/entities/CompaniasNavieras.entity';
 
 @Resolver(() => SuplementoResumen)
 export class SuplementoResumenResolver {
@@ -69,5 +71,15 @@ export class SuplementoResumenResolver {
   @ResolveField(() => Monedas, {nullable: true})
   moneda(@Parent() suplementoResumen: SuplementoResumen): Promise<Monedas> {
     return this.suplementoResumenService.getMoneda(suplementoResumen.idMoneda);
+  }
+
+  @ResolveField(() => AgenciasAseguradoras, {nullable: true})
+  empresaAseguradora(@Parent() suplementoResumen: SuplementoResumen): Promise<AgenciasAseguradoras> {
+    return this.suplementoResumenService.getEmpresaAseguradora(suplementoResumen.idEmpSeguro);
+  }
+
+  @ResolveField(() => CompaniasNavieras, {nullable: true})
+  empresaNaviera(@Parent() suplementoResumen: SuplementoResumen): Promise<CompaniasNavieras> {
+    return this.suplementoResumenService.getEmpresaNaviera(suplementoResumen.idEmpNaviera);
   }
 }
