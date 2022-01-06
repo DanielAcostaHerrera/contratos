@@ -71,15 +71,15 @@ export class SuplementoResumen {
   fecha: Date;
 
   @Column("nvarchar", { name: "EmpSeguro", nullable: true, length: 50 })
-  @Field()
+  @Field({nullable: true})
   empSeguro: string | null;
 
   @Column("int", { name: "EmpNaviera", nullable: true })
-  @Field(() => Int)
+  @Field(() => Int,{nullable: true})
   empNaviera: number | null;
 
   @Column("nvarchar", { name: "LugarEntrega", nullable: true, length: 50 })
-  @Field()
+  @Field({nullable: true})
   lugarEntrega: string | null;
 
   @Column("bit", { name: "Cancelado" })
@@ -87,7 +87,7 @@ export class SuplementoResumen {
   cancelado: boolean;
 
   @Column("ntext", { name: "Notas", nullable: true })
-  @Field()
+  @Field({nullable: true})
   notas: string | null;
 
   @Column("bit", { name: "PermitirEmbarquesParciales" })
@@ -95,7 +95,7 @@ export class SuplementoResumen {
   permitirEmbarquesParciales: boolean;
 
   @Column("tinyint", { name: "CantidadEP", nullable: true })
-  @Field(() => Int)
+  @Field(() => Int,{nullable: true})
   cantidadEp: number | null;
 
   @Column("bit", { name: "PermitirEntregas" })
@@ -111,7 +111,7 @@ export class SuplementoResumen {
   producto: string;
 
   @Column("smallint", { name: "NoEntregasParciales", nullable: true })
-  @Field(() => Int)
+  @Field(() => Int,{nullable: true})
   noEntregasParciales: number | null;
 
   @Column("smalldatetime", { name: "FInicial" })
@@ -123,15 +123,15 @@ export class SuplementoResumen {
   fFinal: Date;
 
   @Column("smalldatetime", { name: "FFirma", nullable: true })
-  @Field()
+  @Field({nullable: true})
   fFirma: Date | null;
 
   @Column("smalldatetime", { name: "FRecepcion", nullable: true })
-  @Field()
+  @Field({nullable: true})
   fRecepcion: Date | null;
 
   @Column("smalldatetime", { name: "FArribo", nullable: true })
-  @Field()
+  @Field({nullable: true})
   fArribo: Date | null;
 
   @Column("float", { name: "Financiamiento", precision: 53 })
@@ -143,7 +143,7 @@ export class SuplementoResumen {
   terminadoS: boolean;
 
   @Column("ntext", { name: "NotaSuple", nullable: true })
-  @Field()
+  @Field({nullable: true})
   notaSuple: string | null;
 
   @Column("bit", { name: "CanceladoSup", default: () => "(0)" })

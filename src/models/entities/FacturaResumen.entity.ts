@@ -49,7 +49,7 @@ export class FacturaResumen {
   realizadoPor: number;
 
   @Column("smalldatetime", { name: "Fecha", nullable: true })
-  @Field()
+  @Field({nullable: true})
   fecha: Date | null;
 
   @Column("smalldatetime", { name: "FechaFactura", default: () => "getdate()" })
@@ -57,39 +57,39 @@ export class FacturaResumen {
   fechaFactura: Date;
 
   @Column("nvarchar", { name: "NumeroBL", nullable: true, length: 50 })
-  @Field()
+  @Field({nullable: true})
   numeroBl: string | null;
 
   @Column("nvarchar", { name: "Numero", nullable: true, length: 50 })
-  @Field()
+  @Field({nullable: true})
   numero: string | null;
 
   @Column("smallint", { name: "Nivel", nullable: true, default: () => "(0)" })
-  @Field(() => Int)
+  @Field(() => Int,{nullable: true})
   nivel: number | null;
 
   @Column("tinyint", { name: "PlazoPuerto", nullable: true })
-  @Field(() => Int)
+  @Field(() => Int,{nullable: true})
   plazoPuerto: number | null;
 
   @Column("tinyint", { name: "PlazoAlmacen", nullable: true })
-  @Field(() => Int)
+  @Field(() => Int,{nullable: true})
   plazoAlmacen: number | null;
 
   @Column("tinyint", { name: "PlazoTienda", nullable: true })
-  @Field(() => Int)
+  @Field(() => Int,{nullable: true})
   plazoTienda: number | null;
 
   @Column("smalldatetime", { name: "FechaPartida", nullable: true })
-  @Field()
+  @Field({nullable: true})
   fechaPartida: Date | null;
 
   @Column("real", { name: "Descuento", nullable: true, precision: 24 })
-  @Field(() => Float)
+  @Field(() => Float,{nullable: true})
   descuento: number | null;
 
   @Column("ntext", { name: "Nota", nullable: true })
-  @Field()
+  @Field({nullable: true})
   nota: string | null;
 
   @Column("bit", { name: "Terminado", default: () => "(0)" })
@@ -114,7 +114,7 @@ export class FacturaResumen {
     nullable: true,
     default: () => "getdate()",
   })
-  @Field()
+  @Field({nullable: true})
   fechaTerminada: Date | null;
 
   @Column("decimal", {

@@ -2,8 +2,8 @@ import { InputType, Int, Field } from '@nestjs/graphql';
 
 @InputType()
 export class CreateContratoClausulaInput {
-  @Field(() => Int, {nullable: true})
-  idContratoClausulas?: number;
+  @Field(() => Int)
+  idContratoClausulas: number;
 
   @Field(() => Int)
   idContrato: number;
@@ -11,6 +11,6 @@ export class CreateContratoClausulaInput {
   @Field(() => Int)
   noClausula: number;
 
-  @Field()
+  @Field({nullable: true})
   contenido: string | null;
 }

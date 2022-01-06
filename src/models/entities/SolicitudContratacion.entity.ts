@@ -39,7 +39,7 @@ export class SolicitudContratacion {
   fecha: Date;
 
   @Column("nvarchar", { name: "Nota", nullable: true })
-  @Field()
+  @Field({nullable: true})
   nota: string | null;
 
   @Field(() => NegociacionResumen, {nullable: true})

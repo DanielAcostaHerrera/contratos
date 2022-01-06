@@ -20,7 +20,7 @@ export class PliegoConcurrencia {
   idPliego: number;
 
   @Column("int", { name: "IdOferta", nullable: true })
-  @Field(() => Int)
+  @Field(() => Int,{nullable: true})
   idOferta: number | null;
 
   @Field(() => SolicitudOfertas, {nullable: true})

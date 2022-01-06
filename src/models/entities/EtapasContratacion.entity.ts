@@ -22,7 +22,7 @@ export class EtapasContratacion {
   etapa: string;
 
   @Column("nvarchar", { name: "Calculos", nullable: true, length: 100 })
-  @Field()
+  @Field({nullable: true})
   calculos: string | null;
 
   @Column("int", { name: "TiempoMax", default: () => "(0)" })

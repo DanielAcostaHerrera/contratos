@@ -16,6 +16,9 @@ import { Compradores } from "./Compradores.entity";
 import { FichaCostoResumen } from "./FichaCostoResumen.entity";
 import { BasesGenerales } from "./BasesGenerales.entity";
 import { Contratos } from "./Contratos.entity";
+import { Proveedores } from './../../modelsMercurio/entities/Proveedores.entity';
+
+
 
 @ObjectType()
 @Index("PK_CTO_BasesCMarco", ["idBaseCMarco"], { unique: true })
@@ -29,7 +32,7 @@ export class BasesCMarco {
   @Field(() => Int)
   idBasesGenerales: number | null;
 
-  @Column("int", { name: "IdProveedor", default: () => "(0)" })
+  @Column("smallint", { name: "IdProveedor", default: () => "(0)" })
   @Field(() => Int)
   idProveedor: number;
 
@@ -38,11 +41,11 @@ export class BasesCMarco {
   consecutivo: number;
 
   @Column("nvarchar", { name: "DirectivaTRD", nullable: true, length: 50 })
-  @Field()
+  @Field({nullable: true})
   directivaTrd: string | null;
 
   @Column("nvarchar", { name: "DirectivaGAE", nullable: true, length: 50 })
-  @Field()
+  @Field({nullable: true})
   directivaGae: string | null;
 
   @Column("datetime", { name: "Fecha" })
@@ -102,7 +105,7 @@ export class BasesCMarco {
     nullable: true,
     length: 512,
   })
-  @Field()
+  @Field({nullable: true})
   importeTotalLetras: string | null;
 
   @Column("varchar", {
@@ -110,7 +113,7 @@ export class BasesCMarco {
     nullable: true,
     length: 512,
   })
-  @Field()
+  @Field({nullable: true})
   importeFinanciamientoLetras: string | null;
 
   @Column("varchar", {
@@ -118,27 +121,27 @@ export class BasesCMarco {
     nullable: true,
     length: 512,
   })
-  @Field()
+  @Field({nullable: true})
   importeTotalFinanciamientoLetras: string | null;
 
   @Column("smalldatetime", { name: "PeriodoInicV", nullable: true })
-  @Field()
+  @Field({nullable: true})
   periodoInicV: Date | null;
 
   @Column("smalldatetime", { name: "PeriodoFinV", nullable: true })
-  @Field()
+  @Field({nullable: true})
   periodoFinV: Date | null;
 
   @Column("int", { name: "IdComprador", nullable: true })
-  @Field(() => Int)
+  @Field(() => Int,{nullable: true})
   idComprador: number | null;
 
   @Column("nvarchar", { name: "NoCMarco", nullable: true, length: 500 })
-  @Field()
+  @Field({nullable: true})
   noCMarco: string | null;
 
   @Column("nvarchar", { name: "NProveedor", nullable: true, length: 500 })
-  @Field()
+  @Field({nullable: true})
   nProveedor: string | null;
 
   @Field(() => [BasesCMarcoClausulas], { nullable: true })
@@ -158,6 +161,11 @@ export class BasesCMarco {
   @ManyToOne(() => Puertos, (puertos) => puertos.basesCMarco)
   @JoinColumn([{ name: "IdPuerto", referencedColumnName: "idPuerto" }])
   puerto: Puertos;
+
+  @Field(() => Proveedores, {nullable: true})
+  @ManyToOne(() => Proveedores, (proveedores) => proveedores.basesCMarco)
+  @JoinColumn([{ name: "IdProveedor", referencedColumnName: "codigo" }])
+  proveedor: Proveedores;
 
   @Field(() => Proformas, {nullable: true})
   @ManyToOne(() => Proformas, (proformas) => proformas.basesCMarco)

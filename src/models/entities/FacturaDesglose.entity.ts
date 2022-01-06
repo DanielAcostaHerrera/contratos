@@ -11,7 +11,7 @@ export class FacturaDesglose {
   idFacturaDesglose: number;
 
   @Column("int", { name: "Referencia", nullable: true })
-  @Field(() => Int)
+  @Field(() => Int,{nullable: true})
   referencia: number | null;
   
   @Column("int", { name: "IdFactura", nullable: true })
@@ -43,7 +43,7 @@ export class FacturaDesglose {
   precio: number;
 
   @Column("int", { name: "PaisOrigen", nullable: true })
-  @Field(() => Int)
+  @Field(() => Int,{nullable: true})
   paisOrigen: number | null;
 
   @Column("float", { name: "Suplemento", precision: 53, default: () => "(0)" })

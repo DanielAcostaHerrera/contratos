@@ -8,11 +8,13 @@ import { TipoContratoModule } from 'src/tipo-contrato/tipo-contrato.module';
 import { IncotermModule } from 'src/incoterm/incoterm.module';
 import { ProformasModule } from 'src/proformas/proformas.module';
 import { CompradoresModule } from 'src/compradores/compradores.module';
+import { PaisesModule } from 'src/paises/paises.module';
+import { ProveedoresModule } from 'src/proveedores/proveedores.module';
 
 @Module({
   imports:[TypeOrmModule.forFeature([
     BasesGenerales
-  ]),ClasificacionesModule,TipoContratoModule,IncotermModule,ProformasModule,CompradoresModule],
+  ]),ClasificacionesModule,TipoContratoModule,IncotermModule,ProformasModule,CompradoresModule,PaisesModule,ProveedoresModule],
   providers: [BasesGeneralesResolver, BasesGeneralesService],
   exports: [BasesGeneralesService]
 })

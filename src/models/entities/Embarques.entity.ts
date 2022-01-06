@@ -47,7 +47,7 @@ export class Embarques {
     nullable: true,
     default: () => "(100)",
   })
-  @Field(() => Int)
+  @Field(() => Int,{nullable: true})
   destino: number | null;
 
   @Column("real", {
@@ -56,7 +56,7 @@ export class Embarques {
     precision: 24,
     default: () => "(0)",
   })
-  @Field(() => Float)
+  @Field(() => Float,{nullable: true})
   descuento: number | null;
 
   @Column("bit", { name: "Terminado", default: () => "(0)" })
@@ -92,7 +92,7 @@ export class Embarques {
   financiamiento: number;
 
   @Column("nvarchar", { name: "Maquina", nullable: true, length: 100 })
-  @Field()
+  @Field({nullable: true})
   maquina: string | null;
 
   @Column("int", { name: "EmpNaviera", default: () => "(1)" })

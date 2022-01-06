@@ -11,7 +11,7 @@ export class TiposDeCompras {
   idTipoCompras: number;
 
   @Column("nchar", { name: "Compras", nullable: true, length: 300 })
-  @Field()
+  @Field({nullable: true})
   compras: string | null;
 
   @Field(() => [NegociacionResumen], {nullable: true})

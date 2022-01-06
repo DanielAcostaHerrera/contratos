@@ -7,6 +7,7 @@ import {
   ManyToOne,
   PrimaryGeneratedColumn,
 } from "typeorm";
+import { Paises } from "../../modelsMercurio/entities/Paises.entity";
 import { Campanas } from "./Campanas.entity";
 import { EtapasContratacion } from "./EtapasContratacion.entity";
 
@@ -46,4 +47,9 @@ export class CampanaEtapasContratacion {
   @ManyToOne(() => EtapasContratacion,(etapasContratacion) => etapasContratacion.campanaEtapasContratacion)
   @JoinColumn([{ name: "IdEtapa", referencedColumnName: "idEtapa" }])
   etapaContratacion: EtapasContratacion;
+
+  @Field(() => Paises, { nullable: true })
+  @ManyToOne(() => Paises,(paises) => paises.campanaEtapasContratacion)
+  @JoinColumn([{ name: "IdPais", referencedColumnName: "pais" }])
+  pais: Paises;
 }

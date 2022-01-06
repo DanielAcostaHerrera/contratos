@@ -7,6 +7,8 @@ import { TipoContrato } from 'src/models/entities/TipoContrato.entity';
 import { Incoterm } from 'src/models/entities/Incoterm.entity';
 import { Proformas } from 'src/models/entities/Proformas.entity';
 import { Compradores } from 'src/models/entities/Compradores.entity';
+import { Paises } from 'src/modelsMercurio/entities/Paises.entity';
+import { Proveedores } from 'src/modelsMercurio/entities/Proveedores.entity';
 
 @Resolver(() => BasesGenerales)
 export class BasesGeneralesResolver {
@@ -60,5 +62,15 @@ export class BasesGeneralesResolver {
   @ResolveField(() => Compradores, {nullable: true})
   compradores(@Parent() basesGenerales: BasesGenerales): Promise<Compradores> {
     return this.basesGeneralesService.getComprador(basesGenerales.idComprador);
+  }
+
+  @ResolveField(() => Paises, {nullable: true})
+  pais(@Parent() basesGenerales: BasesGenerales): Promise<Paises> {
+    return this.basesGeneralesService.getPais(basesGenerales.idPais);
+  }
+
+  @ResolveField(() => Proveedores, {nullable: true})
+  proveedor(@Parent() basesGenerales: BasesGenerales): Promise<Proveedores> {
+    return this.basesGeneralesService.getProveedor(basesGenerales.idProveedor);
   }
 }

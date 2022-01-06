@@ -51,31 +51,31 @@ export class FichaCompraResumen {
   contenedores: number;
 
   @Column("float", { name: "PesoBruto", nullable: true, precision: 53 })
-  @Field(() => Float)
+  @Field(() => Float,{nullable: true})
   pesoBruto: number | null;
 
   @Column("float", { name: "PesoNeto", nullable: true, precision: 53 })
-  @Field(() => Float)
+  @Field(() => Float,{nullable: true})
   pesoNeto: number | null;
 
   @Column("nvarchar", { name: "Embalaje", nullable: true, length: 50 })
-  @Field()
+  @Field({nullable: true})
   embalaje: string | null;
 
   @Column("float", { name: "CantidadEmbalaje", nullable: true, precision: 53 })
-  @Field(() => Float)
+  @Field(() => Float,{nullable: true})
   cantidadEmbalaje: number | null;
 
   @Column("float", { name: "Cantidad", nullable: true, precision: 53 })
-  @Field(() => Float)
+  @Field(() => Float,{nullable: true})
   cantidad: number | null;
 
   @Column("nvarchar", { name: "Codigo", nullable: true, length: 13 })
-  @Field()
+  @Field({nullable: true})
   codigo: string | null;
 
   @Column("nvarchar", { name: "Descripcion", nullable: true, length: 200 })
-  @Field()
+  @Field({nullable: true})
   descripcion: string | null;
 
   @Column("float", {
@@ -211,15 +211,15 @@ export class FichaCompraResumen {
   seguroContrato: number;
 
   @Column("float", { name: "Seguro", nullable: true, precision: 53 })
-  @Field(() => Float)
+  @Field(() => Float,{nullable: true})
   seguro: number | null;
 
   @Column("float", { name: "TasaSeguro", nullable: true, precision: 53 })
-  @Field(() => Float)
+  @Field(() => Float,{nullable: true})
   tasaSeguro: number | null;
 
   @Column("float", { name: "CostoCIFFleteUSD", nullable: true, precision: 53 })
-  @Field(() => Float)
+  @Field(() => Float,{nullable: true})
   costoCifFleteUsd: number | null;
 
   @Column("float", {
@@ -235,11 +235,11 @@ export class FichaCompraResumen {
     nullable: true,
     precision: 53,
   })
-  @Field(() => Float)
+  @Field(() => Float,{nullable: true})
   costoFleteSeguroMn: number | null;
 
   @Column("float", { name: "FactorConversion", nullable: true, precision: 53 })
-  @Field(() => Float)
+  @Field(() => Float,{nullable: true})
   factorConversion: number | null;
 
   @Column("float", {
@@ -251,7 +251,7 @@ export class FichaCompraResumen {
   tasaArancelaria: number;
 
   @Column("float", { name: "ValorArancel", nullable: true, precision: 53 })
-  @Field(() => Float)
+  @Field(() => Float,{nullable: true})
   valorArancel: number | null;
 
   @Column("float", {
@@ -351,7 +351,7 @@ export class FichaCompraResumen {
   totalGastos: number;
 
   @Column("float", { name: "IndicePGasto", nullable: true, precision: 53 })
-  @Field(() => Float)
+  @Field(() => Float,{nullable: true})
   indicePGasto: number | null;
 
   @Column("float", {
@@ -359,7 +359,7 @@ export class FichaCompraResumen {
     nullable: true,
     precision: 53,
   })
-  @Field(() => Float)
+  @Field(() => Float,{nullable: true})
   indGastoAdquisicion: number | null;
 
   @Column("float", {
@@ -371,7 +371,7 @@ export class FichaCompraResumen {
   tasaMaxRecargo: number;
 
   @Column("float", { name: "MargenComercial", nullable: true, precision: 53 })
-  @Field(() => Float)
+  @Field(() => Float,{nullable: true})
   margenComercial: number | null;
 
   @Column("float", {
@@ -403,7 +403,7 @@ export class FichaCompraResumen {
   totalImpuestoContrib: number;
 
   @Column("float", { name: "PVentaImportador", nullable: true, precision: 53 })
-  @Field(() => Float)
+  @Field(() => Float,{nullable: true})
   pVentaImportador: number | null;
 
   @Column("float", {
@@ -455,11 +455,11 @@ export class FichaCompraResumen {
   fecha: Date;
 
   @Column("nvarchar", { name: "Nota", nullable: true })
-  @Field()
+  @Field({nullable: true})
   nota: string | null;
 
   @Column("int", { name: "RealizadoPor", nullable: true })
-  @Field(() => Int)
+  @Field(() => Int,{nullable: true})
   realizadoPor: number | null;
 
   @Column("bit", { name: "Aprobado", default: () => "(0)" })
@@ -471,7 +471,7 @@ export class FichaCompraResumen {
   terminado: boolean;
 
   @Column("datetime", { name: "FechaAprobado", nullable: true })
-  @Field()
+  @Field({nullable: true})
   fechaAprobado: Date | null;
 
   @Column("bit", { name: "Cancelado", default: () => "(0)" })
@@ -479,11 +479,11 @@ export class FichaCompraResumen {
   cancelado: boolean;
 
   @Column("int", { name: "CanceladoPor", nullable: true })
-  @Field(() => Int)
+  @Field(() => Int,{nullable: true})
   canceladoPor: number | null;
 
   @Column("datetime", { name: "FechaCancelacion", nullable: true })
-  @Field()
+  @Field({nullable: true})
   fechaCancelacion: Date | null;
 
   @Column("bit", { name: "ChkRecepcion", default: () => "(0)" })
@@ -491,7 +491,7 @@ export class FichaCompraResumen {
   chkRecepcion: boolean;
 
   @Column("nvarchar", { name: "NoFicha", nullable: true, length: 4000 })
-  @Field()
+  @Field({nullable: true})
   noFicha: string | null;
 
   @Field(() => [FichaCompraDetalle], {nullable: true})

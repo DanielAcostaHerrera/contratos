@@ -11,11 +11,16 @@ import { PuertosModule } from 'src/puertos/puertos.module';
 import { MonedaModule } from 'src/moneda/moneda.module';
 import { FormasEntregaModule } from 'src/formas-entrega/formas-entrega.module';
 import { NegociacionResumenModule } from 'src/negociacion-resumen/negociacion-resumen.module';
+import { PaisesModule } from 'src/paises/paises.module';
+import { ProveedoresModule } from 'src/proveedores/proveedores.module';
+import { AgenciasAseguradorasModule } from 'src/agencias-aseguradoras/agencias-aseguradoras.module';
+import { CompaniasNavierasModule } from 'src/companias-navieras/companias-navieras.module';
 
 @Module({
   imports: [TypeOrmModule.forFeature(
     [Contratos]
-  ),BasesGeneralesModule,BasesCmarcoModule,PuertosModule,MonedaModule,FormasEntregaModule,NegociacionResumenModule,FichaCostoResumenModule,EjecutivoModule],
+  ),BasesGeneralesModule,BasesCmarcoModule,PuertosModule,MonedaModule,FormasEntregaModule,NegociacionResumenModule,FichaCostoResumenModule,EjecutivoModule,
+  PaisesModule,ProveedoresModule,AgenciasAseguradorasModule,CompaniasNavierasModule],
   providers: [ContratosResolver, ContratosService],
   exports: [ContratosService]
 })

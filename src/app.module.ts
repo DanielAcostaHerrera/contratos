@@ -69,6 +69,12 @@ import { CambiosSuplementosModule } from './cambios-suplementos/cambios-suplemen
 import { RolesModule } from './roles/roles.module';
 import { UsuariosModule } from './usuarios/usuarios.module';
 import { UsuarioRolModule } from './usuario-rol/usuario-rol.module';
+import { ProveedoresModule } from './proveedores/proveedores.module';
+import { EspecificosModule } from './especificos/especificos.module';
+import { PaisesModule } from './paises/paises.module';
+import { UnidadMedidaModule } from './unidad-medida/unidad-medida.module';
+import { AgenciasAseguradorasModule } from './agencias-aseguradoras/agencias-aseguradoras.module';
+import { CompaniasNavierasModule } from './companias-navieras/companias-navieras.module';
 
 @Module({
   imports: [
@@ -82,6 +88,28 @@ import { UsuarioRolModule } from './usuario-rol/usuario-rol.module';
       username: 'sa',
       password: 'sa',
       database: 'CONTRATO',
+      entities: [join(__dirname, '**', '*.entity.{ts,js}')],
+      synchronize: false,  
+      options: { encrypt: false },
+    }),
+    TypeOrmModule.forRoot({
+      type: 'mssql',
+      host: '10.128.16.10',
+      port: 1433,
+      username: 'sa',
+      password: 'adminstyle.378',
+      database: 'Mercurio',
+      entities: [join(__dirname, '**', '*.entity.{ts,js}')],
+      synchronize: false,  
+      options: { encrypt: false },
+    }),
+    TypeOrmModule.forRoot({
+      type: 'mssql',
+      host: '10.128.16.10',
+      port: 1433,
+      username: 'sa',
+      password: 'adminstyle.378',
+      database: 'Nomgen',
       entities: [join(__dirname, '**', '*.entity.{ts,js}')],
       synchronize: false,  
       options: { encrypt: false },
@@ -151,6 +179,12 @@ import { UsuarioRolModule } from './usuario-rol/usuario-rol.module';
     RolesModule,
     UsuariosModule,
     UsuarioRolModule,
+    ProveedoresModule,
+    EspecificosModule,
+    PaisesModule,
+    UnidadMedidaModule,
+    AgenciasAseguradorasModule,
+    CompaniasNavierasModule,
   ],
   controllers: [AppController],
   providers: [AppService],

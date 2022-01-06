@@ -45,7 +45,7 @@ export class NegociacionDetalle {
   tasa: number;
 
   @Column("int", { name: "IdAcuerdo", nullable: true })
-  @Field(() => Int)
+  @Field(() => Int,{nullable: true})
   idAcuerdo: number | null;
 
   @Column("nvarchar", { name: "Detalles" })

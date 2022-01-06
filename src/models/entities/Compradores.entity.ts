@@ -19,27 +19,27 @@ export class Compradores {
   idComprador: number;
 
   @Column("nvarchar", { name: "Nombre", nullable: true, length: 100 })
-  @Field()
+  @Field({nullable: true})
   nombre: string | null;
 
   @Column("nvarchar", { name: "Representante", nullable: true, length: 100 })
-  @Field()
+  @Field({nullable: true})
   representante: string | null;
 
   @Column("nvarchar", { name: "Domicilio", nullable: true, length: 100 })
-  @Field()
+  @Field({nullable: true})
   domicilio: string | null;
 
   @Column("nvarchar", { name: "Cargo", nullable: true, length: 100 })
-  @Field()
+  @Field({nullable: true})
   cargo: string | null;
 
   @Column("bit", { name: "Doble", nullable: true })
-  @Field()
+  @Field({nullable: true})
   doble: boolean | null;
 
   @Column("bit", { name: "Activo", nullable: true })
-  @Field()
+  @Field({nullable: true})
   activo: boolean | null;
 
   @Field(() => [BasesCMarco], { nullable: true })

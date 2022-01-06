@@ -16,6 +16,8 @@ import { Proformas } from "./Proformas.entity";
 import { Contratos } from "./Contratos.entity";
 import { Compradores } from "./Compradores.entity";
 import { BasesCMarco } from "./BasesCMarco.entity";
+import { Proveedores } from './../../modelsMercurio/entities/Proveedores.entity';
+import { Paises } from './../../modelsMercurio/entities/Paises.entity';
 
 @ObjectType()
 @Index("IX_CTO_BasesGeneralesComprador", ["idComprador"], {})
@@ -62,14 +64,14 @@ export class BasesGenerales {
 
   @Column("int", { name: "Pais" })
   @Field(() => Int)
-  pais: number;
+  idPais: number;
 
-  @Column("int", { name: "IdProveedor" })
+  @Column("smallint", { name: "IdProveedor" })
   @Field(() => Int)
   idProveedor: number;
 
   @Column("nvarchar", { name: "NProveedor", nullable: true, length: 250 })
-  @Field()
+  @Field({nullable: true})
   nProveedor: string | null;
 
   @Column("nvarchar", { name: "NombreRepresentante", length: 100 })
@@ -93,7 +95,7 @@ export class BasesGenerales {
   vigencia: number;
 
   @Column("datetime", { name: "FechaVencimiento", nullable: true })
-  @Field()
+  @Field({nullable: true})
   fechaVencimiento: Date | null;
 
   @Column("bit", { name: "Aprobado", default: () => "(0)" })
@@ -113,7 +115,7 @@ export class BasesGenerales {
   actualizado: Date;
 
   @Column("nvarchar", { name: "NoContrato", nullable: true, length: 4000 })
-  @Field()
+  @Field({nullable: true})
   noContrato: string | null;
 
   @Field(() => Clasificaciones , {nullable: true})
@@ -152,4 +154,14 @@ export class BasesGenerales {
   @Field(() => [BasesCMarco], { nullable: true })
   @OneToMany(() => BasesCMarco,(basesCMarco) => basesCMarco.basesGenerales)
   basesCMarco: BasesCMarco[];
+
+  @Field(() => Proveedores , {nullable: true})
+  @ManyToOne(() => Proveedores, (proveedores) => proveedores.basesGenerales)
+  @JoinColumn([{ name: "IdProveedor", referencedColumnName: "codigo" }])
+  proveedor: Proveedores;
+
+  @Field(() => Paises , {nullable: true})
+  @ManyToOne(() => Paises, (paises) => paises.basesGenerales)
+  @JoinColumn([{ name: "Pais", referencedColumnName: "pais" }])
+  pais: Paises;
 }

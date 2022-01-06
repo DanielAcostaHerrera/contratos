@@ -1,3 +1,5 @@
+import { AgenciasAseguradoras } from './../../modelsNomgen/entities/AgenciasAseguradoras.entity';
+import { CompaniasNavieras } from './../../modelsNomgen/entities/CompaniasNavieras.entity';
 import {
   Column,
   Entity,
@@ -7,7 +9,6 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
 } from "typeorm";
-import { ContratoClausulas } from "./ContratoClausulas.entity";
 import { BasesGenerales } from "./BasesGenerales.entity";
 import { BasesCMarco } from "./BasesCMarco.entity";
 import { Puertos } from "./Puertos.entity";
@@ -23,6 +24,9 @@ import { FichaCompraResumen } from "./FichaCompraResumen.entity";
 import { SuplementoEmbarques } from "./SuplementoEmbarques.entity";
 import { SuplementoResumen } from "./SuplementoResumen.entity";
 import { Field, Float, Int, ObjectType } from "@nestjs/graphql";
+import { Paises } from "../../modelsMercurio/entities/Paises.entity";
+import { Proveedores } from "../../modelsMercurio/entities/Proveedores.entity";
+import { ContratoClausulas } from "./ContratoClausulas.entity";
 
 @ObjectType()
 @Index("PK_Contratos", ["idContrato"], { unique: true })
@@ -77,7 +81,7 @@ export class Contratos {
   modificadoPor: number;
 
   @Column("nvarchar", { name: "LugarFirma", nullable: true, length: 50 })
-  @Field()
+  @Field({nullable: true})
   lugarFirma: string | null;
 
   @Column("int", { name: "Consecutivo" })
@@ -90,7 +94,7 @@ export class Contratos {
 
   @Column("int", { name: "País" })
   @Field(() => Int)
-  paS: number;
+  idPais: number;
 
   @Column("bit", { name: "Cancelado", default: () => "(0)" })
   @Field()
@@ -106,31 +110,30 @@ export class Contratos {
 
   @Column("int", { name: "Proveedor" })
   @Field(() => Int)
-  proveedor: number;
+  idProveedor: number;
 
-  @Column("nvarchar", {
+  @Column("int", {
     name: "EmpresaSeguro",
     nullable: true,
-    length: 50,
-    default: () => "N'ESICUBA'",
+    default: () => "(1)",
   })
-  @Field()
-  empresaSeguro: string | null;
+  @Field({nullable: true})
+  idEmpresaSeguro: number | null;
 
   @Column("int", {
     name: "EmpresaNaviera",
     nullable: true,
     default: () => "(1)",
   })
-  @Field(() => Int)
-  empresaNaviera: number | null;
+  @Field(() => Int,{nullable: true})
+  idEmpresaNaviera: number | null;
 
   @Column("nvarchar", { name: "LugarEntrega", nullable: true, length: 50 })
-  @Field()
+  @Field({nullable: true})
   lugarEntrega: string | null;
 
   @Column("ntext", { name: "Notas", nullable: true })
-  @Field()
+  @Field({nullable: true})
   notas: string | null;
 
   @Column("bit", { name: "PermitirEmbarquesParciales", default: () => "(0)" })
@@ -138,7 +141,7 @@ export class Contratos {
   permitirEmbarquesParciales: boolean;
 
   @Column("tinyint", { name: "CantidadEP", nullable: true })
-  @Field(() => Int)
+  @Field(() => Int,{nullable: true})
   cantidadEp: number | null;
 
   @Column("bit", { name: "PermitirEntregas", default: () => "(0)" })
@@ -150,11 +153,11 @@ export class Contratos {
   permitirTrasbordos: boolean;
 
   @Column("ntext", { name: "Producto", nullable: true })
-  @Field()
+  @Field({nullable: true})
   producto: string | null;
 
   @Column("smallint", { name: "NoEntregasParciales", nullable: true })
-  @Field(() => Int)
+  @Field(() => Int,{nullable: true})
   noEntregasParciales: number | null;
 
   @Column("smalldatetime", { name: "FechaElaboracion" })
@@ -162,27 +165,27 @@ export class Contratos {
   fechaElaboracion: Date;
 
   @Column("smalldatetime", { name: "FechaInicial", nullable: true })
-  @Field()
+  @Field({nullable: true})
   fechaInicial: Date | null;
 
   @Column("smalldatetime", { name: "FechaFinal", nullable: true })
-  @Field()
+  @Field({nullable: true})
   fechaFinal: Date | null;
 
   @Column("smalldatetime", { name: "FechaFirma", nullable: true })
-  @Field()
+  @Field({nullable: true})
   fechaFirma: Date | null;
 
   @Column("smalldatetime", { name: "FechaRecepcion", nullable: true })
-  @Field()
+  @Field({nullable: true})
   fechaRecepcion: Date | null;
 
   @Column("smalldatetime", { name: "FechaArribo", nullable: true })
-  @Field()
+  @Field({nullable: true})
   fechaArribo: Date | null;
 
   @Column("datetime", { name: "FechaPFirma", nullable: true })
-  @Field()
+  @Field({nullable: true})
   fechaPFirma: Date | null;
 
   @Column("float", {
@@ -202,7 +205,7 @@ export class Contratos {
     nullable: true,
     default: () => "getdate()",
   })
-  @Field()
+  @Field({nullable: true})
   fechaTasa: Date | null;
 
   @Column("float", { name: "PFin", precision: 53, default: () => "(0)" })
@@ -291,4 +294,24 @@ export class Contratos {
   @Field(() => [SuplementoResumen], {nullable: true})
   @OneToMany(() => SuplementoResumen,(suplementoResumen) => suplementoResumen.contrato)
   suplementoResumen: SuplementoResumen[];
+
+  @Field(() => Paises, {nullable: true})
+  @ManyToOne(() => Paises, (paises) => paises.contratos)
+  @JoinColumn([{ name: "País", referencedColumnName: "pais" }])
+  pais: Paises;
+
+  @Field(() => Proveedores, {nullable: true})
+  @ManyToOne(() => Proveedores, (proveedores) => proveedores.contratos)
+  @JoinColumn([{ name: "Proveedor", referencedColumnName: "codigo" }])
+  proveedor: Proveedores;
+
+  @Field(() => CompaniasNavieras, {nullable: true})
+  @ManyToOne(() => CompaniasNavieras, (companiasNavieras) => companiasNavieras.contratos)
+  @JoinColumn([{ name: "EmpresaNaviera", referencedColumnName: "id" }])
+  companiaNaviera: CompaniasNavieras;
+
+  @Field(() => AgenciasAseguradoras, {nullable: true})
+  @ManyToOne(() => AgenciasAseguradoras, (agenciasAseguradoras) => agenciasAseguradoras.contratos)
+  @JoinColumn([{ name: "EmpresaSeguro", referencedColumnName: "idAgenciaS" }])
+  agenciaAseguradora: AgenciasAseguradoras;
 }

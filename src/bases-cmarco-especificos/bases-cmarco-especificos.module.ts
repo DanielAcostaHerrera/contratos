@@ -1,3 +1,4 @@
+import { EspecificosModule } from './../especificos/especificos.module';
 import { Module } from '@nestjs/common';
 import { BasesCmarcoEspecificosService } from './bases-cmarco-especificos.service';
 import { BasesCmarcoEspecificosResolver } from './bases-cmarco-especificos.resolver';
@@ -8,7 +9,7 @@ import { BasesCmarcoModule } from 'src/bases-cmarco/bases-cmarco.module';
 @Module({
   imports:[TypeOrmModule.forFeature([
     BasesCMarcoEspecificos
-  ]),BasesCmarcoModule],
+  ]),BasesCmarcoModule,EspecificosModule],
   providers: [BasesCmarcoEspecificosResolver, BasesCmarcoEspecificosService],
   exports: [BasesCmarcoEspecificosService]
 })

@@ -48,7 +48,7 @@ export class CreateContratoInput {
   condicionCompra: number;
 
   @Field(() => Int)
-  paS: number;
+  idPais: number;
 
   @Field()
   cancelado: boolean;
@@ -60,13 +60,13 @@ export class CreateContratoInput {
   modificado: boolean;
 
   @Field(() => Int)
-  proveedor: number;
+  idProveedor: number;
 
   @Field()
-  empresaSeguro: string | null;
+  idEmpresaSeguro: number | null;
 
   @Field(() => Int)
-  empresaNaviera: number | null;
+  idEmpresaNaviera: number | null;
 
   @Field()
   lugarEntrega: string | null;

@@ -35,11 +35,11 @@ export class SolicitudCodificacion {
   um: string;
 
   @Column("nvarchar", { name: "Marca", nullable: true, length: 50 })
-  @Field()
+  @Field({nullable: true})
   marca: string | null;
 
   @Column("nvarchar", { name: "Naturaleza", nullable: true, length: 50 })
-  @Field()
+  @Field({nullable: true})
   naturaleza: string | null;
 
   @Column("int", { name: "Packing" })
@@ -51,15 +51,15 @@ export class SolicitudCodificacion {
   cantidad: number;
 
   @Column("nvarchar", { name: "Dimension", nullable: true, length: 10 })
-  @Field()
+  @Field({nullable: true})
   dimension: string | null;
 
   @Column("nvarchar", { name: "Cubicaje", nullable: true, length: 10 })
-  @Field()
+  @Field({nullable: true})
   cubicaje: string | null;
 
   @Column("int", { name: "IdEmbalaje", nullable: true})
-  @Field()
+  @Field({nullable: true})
   idEmbalaje: number | null;
 
   @Column("float", { name: "PrecioCosto", precision: 53 })

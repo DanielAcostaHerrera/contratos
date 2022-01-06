@@ -3,6 +3,7 @@ import { BasesCmarcoEspecificosService } from './bases-cmarco-especificos.servic
 import { CreateBasesCmarcoEspecificoInput } from './dto/create-bases-cmarco-especifico.input';
 import { BasesCMarcoEspecificos } from 'src/models/entities/BasesCMarcoEspecificos.entity';
 import { BasesCMarco } from 'src/models/entities/BasesCMarco.entity';
+import { Especificos } from 'src/modelsMercurio/entities/Especificos.entity';
 
 @Resolver(() => BasesCMarcoEspecificos)
 export class BasesCmarcoEspecificosResolver {
@@ -26,6 +27,11 @@ export class BasesCmarcoEspecificosResolver {
   @ResolveField(() => BasesCMarco, {nullable: true})
   baseCMarco(@Parent() basesCMarcoEspecificos: BasesCMarcoEspecificos): Promise<BasesCMarco> {
     return this.basesCmarcoEspecificosService.getBaseCMarco(basesCMarcoEspecificos.idBaseCMarco);
+  }
+
+  @ResolveField(() => Especificos, {nullable: true})
+  especifico(@Parent() basesCMarcoEspecificos: BasesCMarcoEspecificos): Promise<Especificos> {
+    return this.basesCmarcoEspecificosService.getEspecifico(basesCMarcoEspecificos.idEspecifico);
   }
 
   @Mutation(() => BasesCMarcoEspecificos)

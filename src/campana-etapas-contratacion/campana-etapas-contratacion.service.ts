@@ -5,13 +5,15 @@ import { EtapasContratacionService } from 'src/etapas-contratacion/etapas-contra
 import { CampanaEtapasContratacion } from 'src/models/entities/CampanaEtapasContratacion.entity';
 import { Campanas } from 'src/models/entities/Campanas.entity';
 import { EtapasContratacion } from 'src/models/entities/EtapasContratacion.entity';
+import { Paises } from 'src/modelsMercurio/entities/Paises.entity';
+import { PaisesService } from 'src/paises/paises.service';
 import { Repository } from 'typeorm';
 import { CreateCampanaEtapasContratacionInput } from './dto/create-campana-etapas-contratacion.input';
 
 @Injectable()
 export class CampanaEtapasContratacionService {
   constructor(@InjectRepository(CampanaEtapasContratacion) public readonly campanaEtapasContratacionRepository: Repository<CampanaEtapasContratacion>,
-  private campanasService: CampanasService, private etapasContratacionService: EtapasContratacionService) {}
+  private campanasService: CampanasService, private etapasContratacionService: EtapasContratacionService,private paisesService: PaisesService) {}
 
 
   async save(createCampanaEtapasContratacionInput: CreateCampanaEtapasContratacionInput) : Promise<CampanaEtapasContratacion> {
@@ -42,5 +44,9 @@ export class CampanaEtapasContratacionService {
 
   async getEtapaContratacion (etapaContratacionId: number) : Promise<EtapasContratacion>{
     return this.etapasContratacionService.findOne(etapaContratacionId);
+  }
+
+  async getPais (paisId: number) : Promise<Paises>{
+    return this.paisesService.findOne(paisId);
   }
 }

@@ -1,3 +1,4 @@
+import { Proveedores } from './../modelsMercurio/entities/Proveedores.entity';
 import { Resolver, Query, Mutation, Args, Int, ResolveField, Parent } from '@nestjs/graphql';
 import { BasesCmarcoService } from './bases-cmarco.service';
 import { CreateBasesCmarcoInput } from './dto/create-bases-cmarco.input';
@@ -44,6 +45,11 @@ export class BasesCmarcoResolver {
   @ResolveField(() => BasesGenerales, {nullable: true})
   basesGenerales(@Parent() basesCMarco: BasesCMarco): Promise<BasesGenerales> {
     return this.basesCmarcoService.getBasesGenerales(basesCMarco.idBasesGenerales);
+  }
+
+  @ResolveField(() => Proveedores, {nullable: true})
+  proveedor(@Parent() basesCMarco: BasesCMarco): Promise<Proveedores> {
+    return this.basesCmarcoService.getProveedor(basesCMarco.idProveedor);
   }
 
   @Mutation(() => BasesCMarco)

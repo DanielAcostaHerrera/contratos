@@ -21,7 +21,7 @@ export class Monedas {
   moneda: string;
 
   @Column("nvarchar", { name: "Abreviatura", nullable: true, length: 3 })
-  @Field()
+  @Field({nullable: true})
   abreviatura: string | null;
 
   @Field(() => [NegociacionResumen], {nullable: true})

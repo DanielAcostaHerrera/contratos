@@ -27,12 +27,12 @@ export class CreateBasesGeneralesInput {
   lugardeFirma: string;
 
   @Field(() => Int)
-  pais: number;
+  idPais: number;
 
   @Field(() => Int)
   idProveedor: number;
 
-  @Field()
+  @Field({nullable: true})
   nProveedor: string | null;
 
   @Field()
@@ -50,7 +50,7 @@ export class CreateBasesGeneralesInput {
   @Field(() => Int)
   vigencia: number;
 
-  @Field()
+  @Field({nullable: true})
   fechaVencimiento: Date | null;
 
   @Field()
@@ -65,6 +65,6 @@ export class CreateBasesGeneralesInput {
   @Field()
   actualizado: Date;
 
-  @Field()
+  @Field({nullable: true})
   noContrato: string | null;
 }

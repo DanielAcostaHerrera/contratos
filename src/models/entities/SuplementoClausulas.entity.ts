@@ -27,7 +27,7 @@ export class SuplementoClausulas {
   idContratoClausulas: number;
 
   @Column("smallint", { name: "Orden", nullable: true })
-  @Field(() => Int)
+  @Field(() => Int,{nullable: true})
   orden: number | null;
 
   @Column("bit", { name: "Modificada", default: () => "(0)" })

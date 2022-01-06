@@ -40,7 +40,7 @@ export class Ejecutivos {
   idCargo: number;
 
   @Column("nvarchar", { name: "Correo", nullable: true, length: 50 })
-  @Field()
+  @Field({nullable: true})
   correo: string | null;
 
   @Column("bit", { name: "Activo" })

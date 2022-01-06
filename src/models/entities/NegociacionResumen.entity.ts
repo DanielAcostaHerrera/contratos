@@ -33,7 +33,7 @@ export class NegociacionResumen {
   consecutivo: number;
 
   @Column("nvarchar", { name: "NoNegociacion", nullable: true, length: 17 })
-  @Field()
+  @Field({nullable: true})
   noNegociacion: string | null;
 
   @Column("datetime", { name: "Fecha", default: () => "getdate()" })
@@ -69,15 +69,15 @@ export class NegociacionResumen {
   cancelada: boolean;
 
   @Column("nvarchar", { name: "Nota", nullable: true })
-  @Field()
+  @Field({nullable: true})
   nota: string | null;
 
   @Column("nvarchar", { name: "NoNegociacion", nullable: true, length: 4000 })
-  @Field()
+  @Field({nullable: true})
   noNeg: string | null;
 
   @Column("int", { name: "Proveedor", nullable: true })
-  @Field(() => Int)
+  @Field(() => Int,{nullable: true})
   proveedor: number | null;
 
   @Column("decimal", {
@@ -86,7 +86,7 @@ export class NegociacionResumen {
     precision: 18,
     scale: 0,
   })
-  @Field(() => Float)
+  @Field(() => Float,{nullable: true})
   importeTrd: number | null;
 
   @Column("decimal", {
@@ -95,7 +95,7 @@ export class NegociacionResumen {
     precision: 18,
     scale: 0,
   })
-  @Field(() => Float)
+  @Field(() => Float,{nullable: true})
   importeGae: number | null;
 
   @Column("decimal", {
@@ -104,23 +104,23 @@ export class NegociacionResumen {
     precision: 18,
     scale: 0,
   })
-  @Field(() => Float)
+  @Field(() => Float,{nullable: true})
   importeCuc: number | null;
 
   @Column("nvarchar", { name: "Comentarios", nullable: true, length: 300 })
-  @Field()
+  @Field({nullable: true})
   comentarios: string | null;
 
   @Column("bit", { name: "Operacion", nullable: true })
-  @Field()
+  @Field({nullable: true})
   operacion: boolean | null;
 
   @Column("float", { name: "Tasa", nullable: true, precision: 53 })
-  @Field(() => Float)
+  @Field(() => Float,{nullable: true})
   tasa: number | null;
 
   @Column("bit", { name: "Terminado", nullable: true })
-  @Field()
+  @Field({nullable: true})
   terminado: boolean | null;
 
   @Column("nvarchar", {
@@ -128,7 +128,7 @@ export class NegociacionResumen {
     nullable: true,
     length: 300,
   })
-  @Field()
+  @Field({nullable: true})
   idNegociacionUnico: string | null;
 
   @Field(() => [NegociacionDetalle], {nullable: true})

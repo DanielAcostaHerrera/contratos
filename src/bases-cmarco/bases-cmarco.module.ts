@@ -7,11 +7,12 @@ import { PuertosModule } from 'src/puertos/puertos.module';
 import { ProformasModule } from 'src/proformas/proformas.module';
 import { CompradoresModule } from 'src/compradores/compradores.module';
 import { BasesGeneralesModule } from 'src/bases-generales/bases-generales.module';
+import { ProveedoresModule } from 'src/proveedores/proveedores.module';
 
 @Module({
   imports:[TypeOrmModule.forFeature([
     BasesCMarco,  
-  ]),PuertosModule,ProformasModule, CompradoresModule, BasesGeneralesModule ],
+  ]),PuertosModule,ProformasModule, CompradoresModule, BasesGeneralesModule, ProveedoresModule],
   providers: [BasesCmarcoResolver, BasesCmarcoService],
   exports: [BasesCmarcoService]
 })

@@ -11,11 +11,11 @@ export class ContratoDesglose {
   idContratoDesglose: number;
 
   @Column("int", { name: "IdEmbarque", nullable: true })
-  @Field(() => Int)
+  @Field(() => Int,{nullable: true})
   idEmbarque: number | null;
   
   @Column("int", { name: "Referencia", nullable: true })
-  @Field(() => Int)
+  @Field(() => Int,{nullable: true})
   referencia: number | null;
 
   @Column("int", { name: "Codigo" })
@@ -23,7 +23,7 @@ export class ContratoDesglose {
   codigo: number;
 
   @Column("nvarchar", { name: "DescripcionAx", nullable: true, length: 200 })
-  @Field()
+  @Field({nullable: true})
   descripcionAx: string | null;
 
   @Column("int", { name: "UnidadMedidaCarton" })

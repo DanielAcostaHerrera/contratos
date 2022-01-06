@@ -1,3 +1,5 @@
+import { Proveedores } from './../modelsMercurio/entities/Proveedores.entity';
+import { ProveedoresService } from './../proveedores/proveedores.service';
 import { Injectable } from '@nestjs/common';
 import { CreateBasesCmarcoInput } from './dto/create-bases-cmarco.input';
 import { BasesCMarco } from 'src/models/entities/BasesCMarco.entity';
@@ -15,7 +17,8 @@ import { BasesGenerales } from 'src/models/entities/BasesGenerales.entity';
 @Injectable()
 export class BasesCmarcoService {
   constructor(@InjectRepository(BasesCMarco) public readonly basesCMarcoRepository: Repository<BasesCMarco>, private puertosService:  PuertosService,
-  private proformasService:  ProformasService, private compradoresService:  CompradoresService,private basesGeneralesService:  BasesGeneralesService) {}
+  private proformasService:  ProformasService, private compradoresService:  CompradoresService,private basesGeneralesService:  BasesGeneralesService,
+  private proveedoresService:  ProveedoresService) {}
 
 
   async save(createBaseCMarcoInput: CreateBasesCmarcoInput) : Promise<BasesCMarco> {
@@ -55,5 +58,9 @@ export class BasesCmarcoService {
 
   async getBasesGenerales (basesGeneralesId: number) : Promise<BasesGenerales>{
     return this.basesGeneralesService.findOne(basesGeneralesId);
+  }
+
+  async getProveedor (proveedorId: number) : Promise<Proveedores>{
+    return this.proveedoresService.findOne(proveedorId);
   }
 }

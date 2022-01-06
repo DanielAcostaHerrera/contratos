@@ -13,11 +13,11 @@ export class Embalajes {
   idEmbalaje: number;
 
   @Column("nvarchar", { name: "Descripcion", nullable: true, length: 35 })
-  @Field()
+  @Field({nullable: true})
   descripcion: string | null;
 
   @Column("nvarchar", { name: "Abreviatura", nullable: true, length: 7 })
-  @Field()
+  @Field({nullable: true})
   abreviatura: string | null;
 
   @Field(() => [FichaCostoResumen], {nullable: true})

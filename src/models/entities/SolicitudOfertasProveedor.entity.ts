@@ -31,11 +31,11 @@ export class SolicitudOfertasProveedor {
   idProveedor: number;
 
   @Column("nvarchar", { name: "Representante", nullable: true, length: 100 })
-  @Field()
+  @Field({nullable: true})
   representante: string | null;
 
   @Column("nvarchar", { name: "Cargo", nullable: true, length: 100 })
-  @Field()
+  @Field({nullable: true})
   cargo: string | null;
 
   @Field(() => [SolicitudOfertasEntradas], {nullable: true})

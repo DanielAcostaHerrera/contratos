@@ -26,15 +26,15 @@ export class NegociacionDetalles {
   consecutivo: number;
 
   @Column("smalldatetime", { name: "Fecha", nullable: true })
-  @Field()
+  @Field({nullable: true})
   fecha: Date | null;
 
   @Column("int", { name: "Acuerdo", nullable: true })
-  @Field(() => Int)
+  @Field(() => Int,{nullable: true})
   acuerdo: number | null;
 
   @Column("nchar", { name: "Detalles", nullable: true, length: 300 })
-  @Field()
+  @Field({nullable: true})
   detalles: string | null;
 
   @Field(() => NegociacionResumen, {nullable: true})

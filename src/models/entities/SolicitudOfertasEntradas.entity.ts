@@ -54,11 +54,11 @@ export class SolicitudOfertasEntradas {
   cantidad: number;
 
   @Column("nvarchar", { name: "Dimension", nullable: true, length: 10 })
-  @Field()
+  @Field({nullable: true})
   dimension: string | null;
 
   @Column("nvarchar", { name: "Cubicaje", nullable: true, length: 10 })
-  @Field()
+  @Field({nullable: true})
   cubicaje: string | null;
 
   @Column("float", { name: "PrecioCosto", precision: 53 })

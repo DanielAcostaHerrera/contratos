@@ -70,7 +70,7 @@ export class PliegoConcurrenciaResumen {
   fechaOfertaRecibida: Date;
 
   @Column("datetime", { name: "FechaEntregaOferta", nullable: true })
-  @Field()
+  @Field({nullable: true})
   fechaEntregaOferta: Date | null;
 
   @Column("int", { name: "IdMonedaOferta" })

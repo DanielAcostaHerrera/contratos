@@ -27,7 +27,7 @@ export class SuplementoDesglose {
   idEmbarque: number;
 
   @Column("int", { name: "Referencia", nullable: true })
-  @Field(() => Int)
+  @Field(() => Int,{nullable: true})
   referencia: number | null;
 
   @Column("int", { name: "Codigo" })
@@ -35,7 +35,7 @@ export class SuplementoDesglose {
   codigo: number;
 
   @Column("nvarchar", { name: "DescripcionSP", nullable: true, length: 200 })
-  @Field()
+  @Field({nullable: true})
   descripcionSp: string | null;
 
   @Column("int", { name: "UnidadMedidaCarton" })

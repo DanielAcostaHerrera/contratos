@@ -30,7 +30,7 @@ export class Configuracion {
   travesiaXDefecto: number;
 
   @Column("nvarchar", { name: "PathContratosPDF", nullable: true, length: 250 })
-  @Field()
+  @Field({nullable: true})
   pathContratosPdf: string | null;
 
   @Column("int", { name: "AlertaVencContratos", default: () => "(90)" })

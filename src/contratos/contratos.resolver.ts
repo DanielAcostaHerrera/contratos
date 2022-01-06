@@ -1,3 +1,5 @@
+import { AgenciasAseguradoras } from './../modelsNomgen/entities/AgenciasAseguradoras.entity';
+import { CompaniasNavieras } from './../modelsNomgen/entities/CompaniasNavieras.entity';
 import { Resolver, Query, Mutation, Args, Int, ResolveField, Parent } from '@nestjs/graphql';
 import { BasesCMarco } from 'src/models/entities/BasesCMarco.entity';
 import { BasesGenerales } from 'src/models/entities/BasesGenerales.entity';
@@ -8,6 +10,8 @@ import { FormasEntrega } from 'src/models/entities/FormasEntrega.entity';
 import { Monedas } from 'src/models/entities/Monedas.entity';
 import { NegociacionResumen } from 'src/models/entities/NegociacionResumen.entity';
 import { Puertos } from 'src/models/entities/Puertos.entity';
+import { Paises } from 'src/modelsMercurio/entities/Paises.entity';
+import { Proveedores } from 'src/modelsMercurio/entities/Proveedores.entity';
 import { ContratosService } from './contratos.service';
 import { CreateContratoInput } from './dto/create-contrato.input';
 
@@ -93,5 +97,25 @@ export class ContratosResolver {
   @ResolveField(() => Ejecutivos, {nullable: true})
   ejecutivoModifica(@Parent() contratos: Contratos): Promise<Ejecutivos> {
     return this.contratosService.getEjecutivoModifica(contratos.modificadoPor);
+  }
+
+  @ResolveField(() => Paises, {nullable: true})
+  pais(@Parent() contratos: Contratos): Promise<Paises> {
+    return this.contratosService.getPais(contratos.idPais);
+  }
+
+  @ResolveField(() => Paises, {nullable: true})
+  proveedor(@Parent() contratos: Contratos): Promise<Proveedores> {
+    return this.contratosService.getProveedor(contratos.idProveedor);
+  }
+
+  @ResolveField(() => CompaniasNavieras, {nullable: true})
+  companiaNaviera(@Parent() contratos: Contratos): Promise<CompaniasNavieras> {
+    return this.contratosService.getEmpresaNaviera(contratos.idEmpresaNaviera);
+  }
+
+  @ResolveField(() => AgenciasAseguradoras, {nullable: true})
+  agenciaAseguradora(@Parent() contratos: Contratos): Promise<AgenciasAseguradoras> {
+    return this.contratosService.getEmpresaAseguradora(contratos.idEmpresaSeguro);
   }
 }

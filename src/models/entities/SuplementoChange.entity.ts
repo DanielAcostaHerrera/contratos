@@ -32,11 +32,11 @@ export class SuplementoChange {
   idContratoClausula: number;
 
   @Column("nvarchar", { name: "ContenidoViejo", nullable: true })
-  @Field()
+  @Field({nullable: true})
   contenidoViejo: string | null;
 
   @Column("nvarchar", { name: "ContenidoNuevo", nullable: true })
-  @Field()
+  @Field({nullable: true})
   contenidoNuevo: string | null;
 
   @Field(() => SuplementoResumen, {nullable: true})

@@ -17,11 +17,11 @@ export class TipoContrato {
   tipoContrato: string;
 
   @Column("nvarchar", { name: "Encabezado", nullable: true, length: 70 })
-  @Field()
+  @Field({nullable: true})
   encabezado: string | null;
 
   @Column("nvarchar", { name: "AmbasPartes", nullable: true, length: 3000 })
-  @Field()
+  @Field({nullable: true})
   ambasPartes: string | null;
 
   @Column("bit", { name: "Visible", default: () => "(1)" })

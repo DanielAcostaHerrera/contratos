@@ -28,7 +28,7 @@ export class Puertos {
   pais: number;
 
   @Column("nvarchar", { name: "Deposito", nullable: true, length: 10 })
-  @Field()
+  @Field({nullable: true})
   deposito: string | null;
 
   @Field(() => [Embarques], { nullable: true })

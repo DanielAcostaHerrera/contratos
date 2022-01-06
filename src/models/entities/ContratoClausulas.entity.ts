@@ -12,10 +12,11 @@ import { Contratos } from "./Contratos.entity";
 import { SuplementoChange } from "./SuplementoChange.entity";
 import { SuplementoClausulas } from "./SuplementoClausulas.entity";
 
+
 @ObjectType()
 @Index("IX_ContratoClausulas", ["idContrato", "noClausula"], { unique: true })
 @Index("PK_ContratoClausulas", ["idContratoClausulas"], { unique: true })
-@Entity("ContratoDesglose", { schema: "CONTRATO.dbo" })
+@Entity("ContratoClausulas", { schema: "dbo" })
 export class ContratoClausulas {
   @PrimaryGeneratedColumn({ type: "int", name: "IdContratoClausulas" })
   @Field(() => Int)
@@ -29,9 +30,10 @@ export class ContratoClausulas {
   @Field(() => Int)
   noClausula: number;
 
-  @Column("nvarchar", { name: "Contenido", nullable: true })
+  @Column("nvarchar", { name: "contenido", nullable: true })
   @Field()
   contenido: string | null;
+
 
   @Field(() => Contratos, {nullable: true})
   @ManyToOne(() => Contratos, (contratos) => contratos.contratoClausulas)

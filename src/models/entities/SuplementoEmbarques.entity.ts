@@ -45,7 +45,7 @@ export class SuplementoEmbarques {
   numero: number;
 
   @Column("float", { name: "Descuento", nullable: true, precision: 53 })
-  @Field(() => Float)
+  @Field(() => Float,{nullable: true})
   descuento: number | null;
 
   @Column("bit", { name: "Terminado" })

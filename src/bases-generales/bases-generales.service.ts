@@ -1,3 +1,4 @@
+import { PaisesService } from './../paises/paises.service';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ClasificacionesService } from 'src/clasificaciones/clasificaciones.service';
@@ -13,11 +14,15 @@ import { ProformasService } from 'src/proformas/proformas.service';
 import { TipoContratoService } from 'src/tipo-contrato/tipo-contrato.service';
 import { Repository } from 'typeorm';
 import { CreateBasesGeneralesInput } from './dto/create-bases-generales.input';
+import { ProveedoresService } from 'src/proveedores/proveedores.service';
+import { Paises } from 'src/modelsMercurio/entities/Paises.entity';
+import { Proveedores } from 'src/modelsMercurio/entities/Proveedores.entity';
 
 @Injectable()
 export class BasesGeneralesService {
   constructor(@InjectRepository(BasesGenerales) public readonly basesGeneralesRepository: Repository<BasesGenerales>, private clasificacionesService: ClasificacionesService,
-  private tipoContratoService: TipoContratoService, private incotermService: IncotermService, private proformasService: ProformasService, private compradoresService: CompradoresService) {}
+  private tipoContratoService: TipoContratoService, private incotermService: IncotermService, private proformasService: ProformasService, 
+  private compradoresService: CompradoresService, private paisesService: PaisesService, private proveedoresService: ProveedoresService) {}
 
   async save(createBasesCmarcoEspecificosInput: CreateBasesGeneralesInput) : Promise<BasesGenerales> {
     return await this.basesGeneralesRepository.save(createBasesCmarcoEspecificosInput);
@@ -59,6 +64,14 @@ export class BasesGeneralesService {
 
   async getComprador (compradorId: number) : Promise<Compradores>{
     return this.compradoresService.findOne(compradorId);
+  }
+
+  async getPais (paisId: number) : Promise<Paises>{
+    return this.paisesService.findOne(paisId);
+  }
+
+  async getProveedor (proveedorId: number) : Promise<Proveedores>{
+    return this.proveedoresService.findOne(proveedorId);
   }
 }
 
