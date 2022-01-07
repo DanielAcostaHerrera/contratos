@@ -8,10 +8,12 @@ export class ProveedoresService {
   constructor(@InjectRepository(Proveedores) public readonly proveedoresRepository: Repository<Proveedores>) {}
 
   async findAll(): Promise<Proveedores[]> {
-    return await this.proveedoresRepository.find({ relations: ['basesCMarco','basesGenerales','contratos','solicitudOfertasProveedores','pliegoConcurrenciaResumen']});
+    return await this.proveedoresRepository.find({ relations: ['basesCMarco','basesGenerales','contratos','solicitudOfertasProveedores','pliegoConcurrenciaResumen',
+  'negociacionResumen']});
   }
 
   async findOne(id: number) : Promise<Proveedores> {
-    return await this.proveedoresRepository.findOne(id,{ relations: ['basesCMarco','basesGenerales','contratos','solicitudOfertasProveedores','pliegoConcurrenciaResumen']});
+    return await this.proveedoresRepository.findOne(id,{ relations: ['basesCMarco','basesGenerales','contratos','solicitudOfertasProveedores','pliegoConcurrenciaResumen',
+  'negociacionResumen']});
   }
 }

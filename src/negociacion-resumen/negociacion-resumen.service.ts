@@ -9,11 +9,14 @@ import { GruposDeComprasService } from 'src/grupos-de-compras/grupos-de-compras.
 import { TiposDeCompras } from 'src/models/entities/TiposDeCompras.entity';
 import { Monedas } from 'src/models/entities/Monedas.entity';
 import { GruposDeCompras } from 'src/models/entities/GruposDeCompras.entity';
+import { ProveedoresService } from 'src/proveedores/proveedores.service';
+import { Proveedores } from 'src/modelsMercurio/entities/Proveedores.entity';
 
 @Injectable()
 export class NegociacionResumenService {
   constructor(@InjectRepository(NegociacionResumen) public readonly negociacionResumenRepository: Repository<NegociacionResumen>,
-  private tiposDeComprasService: TiposDeComprasService,private monedaService: MonedaService,private gruposDeComprasService: GruposDeComprasService) {}
+  private tiposDeComprasService: TiposDeComprasService,private monedaService: MonedaService,private gruposDeComprasService: GruposDeComprasService,
+  private proveedoresService: ProveedoresService) {}
 
 
   async save(createNegociacionResumenInput: CreateNegociacionResumenInput) : Promise<NegociacionResumen> {
@@ -50,5 +53,9 @@ export class NegociacionResumenService {
 
   async getGrupo (grupoId: number) : Promise<GruposDeCompras>{
     return this.gruposDeComprasService.findOne(grupoId);
+  }
+
+  async getProveedor (Id: number) : Promise<Proveedores>{
+    return this.proveedoresService.findOne(Id);
   }
 }

@@ -3,7 +3,7 @@ import { Column, Entity, Index, JoinColumn, ManyToOne, PrimaryGeneratedColumn } 
 import { NegociacionResumen } from "./NegociacionResumen.entity";
 
 @ObjectType()
-@Index("IX_NegociacionDetalle", ["idNegociacion", "idProveedor"], {
+@Index("IX_NegociacionDetalle", ["idNegociacion"], {
   unique: true,
 })
 @Index("PK_NegociacionDetalle", ["idNegociacionDetalle"], {

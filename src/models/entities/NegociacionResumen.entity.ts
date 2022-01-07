@@ -8,6 +8,7 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
 } from "typeorm";
+import { Proveedores } from "../../modelsMercurio/entities/Proveedores.entity";
 import { Contratos } from "./Contratos.entity";
 import { FacturaResumen } from "./FacturaResumen.entity";
 import { FichaCompraResumen } from "./FichaCompraResumen.entity";
@@ -164,4 +165,9 @@ export class NegociacionResumen {
   @Field(() => [FacturaResumen], {nullable: true})
   @OneToMany(() => FacturaResumen,(facturaResumen) => facturaResumen.negociacionResumen)
   facturaResumen: FacturaResumen[];
+
+  @Field(() => Proveedores, {nullable: true})
+  @ManyToOne(() => Proveedores,(proveedor) => proveedor.negociacionResumen)
+  @JoinColumn([{ name: "Proveedor", referencedColumnName: "codigo" },])
+  proveedor: Proveedores;
 }

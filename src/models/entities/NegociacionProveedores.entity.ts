@@ -6,7 +6,7 @@ import { NegociacionResumen } from "./NegociacionResumen.entity";
 @Index("PK_NegociacionProveedores", ["idNegociacionProveedores"], {
   unique: true,
 })
-@Index("IX_NegociacionProveedores", ["idNegociacion", "proveedor"], {
+@Index("IX_NegociacionProveedores", ["idNegociacion"], {
   unique: true,
 })
 
