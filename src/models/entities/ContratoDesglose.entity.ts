@@ -1,3 +1,6 @@
+import { UnidadMedida } from './../../modelsMercurio/entities/UnidadMedida.entity';
+import { Referencias } from './../../modelsMercurio/entities/Referencias.entity';
+import { DetalleDeCircularesAltas } from './../../modelsMercurio/entities/DetalleDeCircularesAltas.entity';
 import { Field, Float, Int, ObjectType } from "@nestjs/graphql";
 import { Column, Entity, Index, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { Embarques } from "./Embarques.entity";
@@ -16,11 +19,11 @@ export class ContratoDesglose {
   
   @Column("int", { name: "Referencia", nullable: true })
   @Field(() => Int,{nullable: true})
-  referencia: number | null;
+  idReferencia: number | null;
 
   @Column("int", { name: "Codigo" })
   @Field(() => Int)
-  codigo: number;
+  idCodigo: number;
 
   @Column("nvarchar", { name: "DescripcionAx", nullable: true, length: 200 })
   @Field({nullable: true})
@@ -28,7 +31,7 @@ export class ContratoDesglose {
 
   @Column("int", { name: "UnidadMedidaCarton" })
   @Field(() => Int)
-  unidadMedidaCarton: number;
+  idUnidadMedida: number;
 
   @Column("decimal", { name: "CantidadPorCarton", precision: 18, scale: 4 })
   @Field(() => Float)
@@ -71,4 +74,19 @@ export class ContratoDesglose {
   @ManyToOne(() => Embarques, (embarques) => embarques.contratoDesgloses)
   @JoinColumn([{ name: "IdEmbarque", referencedColumnName: "idEmbarque" }])
   embarques: Embarques;
+
+  @Field(() => Referencias, {nullable: true})
+  @ManyToOne(() => Referencias, (referencias) => referencias.contratoDesgloses)
+  @JoinColumn([{ name: "Referencia", referencedColumnName: "referenciaId" }])
+  referencia: Referencias;
+
+  @Field(() => DetalleDeCircularesAltas, {nullable: true})
+  @ManyToOne(() => DetalleDeCircularesAltas, (detalleDeCircularesAltas) => detalleDeCircularesAltas.contratoDesgloses)
+  @JoinColumn([{ name: "Codigo", referencedColumnName: "idCodigo" }])
+  detalleDeCircularesAltas: DetalleDeCircularesAltas;
+
+  @Field(() => UnidadMedida, {nullable: true})
+  @ManyToOne(() => UnidadMedida, (unidadMedida) => unidadMedida.contratoDesgloses)
+  @JoinColumn([{ name: "UnidadMedidaCarton", referencedColumnName: "id" }])
+  unidadMedida: UnidadMedida;
 }

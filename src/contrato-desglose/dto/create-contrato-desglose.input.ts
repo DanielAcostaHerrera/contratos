@@ -9,16 +9,16 @@ export class CreateContratoDesgloseInput {
   idEmbarque: number | null;
   
   @Field(() => Int)
-  referencia: number | null;
+  idReferencia: number | null;
 
   @Field(() => Int)
-  codigo: number;
+  idCodigo: number;
 
   @Field()
   descripcionAx: string | null;
 
   @Field(() => Int)
-  unidadMedidaCarton: number;
+  idUnidadMedida: number;
 
   @Field(() => Float)
   cantidadPorCarton: number;

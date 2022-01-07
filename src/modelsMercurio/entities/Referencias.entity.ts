@@ -3,8 +3,10 @@ import {
   Column,
   Entity,
   Index,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from "typeorm";
+import { ContratoDesglose } from "../../models/entities/ContratoDesglose.entity";
 
 @ObjectType()
 @Index("aaaaaReferencias_PK", ["referenciaId"], { unique: true })
@@ -12,7 +14,7 @@ import {
 @Index("IdCodigo", ["idCodigo"], {})
 @Index("IX_Referencias_Actualizacion", ["actualizacion"], {})
 @Index("Referencia", ["referencia"], {})
-@Entity("Referencias", { schema: "dbo" })
+@Entity("Referencias", { schema: "Mercurio.dbo" })
 export class Referencias {
   @PrimaryGeneratedColumn({ type: "int", name: "ReferenciaId" })
   @Field(() => Int)
@@ -41,4 +43,8 @@ export class Referencias {
   @Column("int", { name: "ProveedorRef", nullable: true })
   @Field(() => Int,{nullable: true})
   proveedorRef: number | null;
+
+  @Field(() => [ContratoDesglose], { nullable: true })
+  @OneToMany(() => ContratoDesglose,(contratoDesglose) => contratoDesglose.referencia)
+  contratoDesgloses: ContratoDesglose[];
 }

@@ -1,24 +1,31 @@
 import { Field, Float, Int, ObjectType } from "@nestjs/graphql";
-import { Column, Entity, Index, PrimaryGeneratedColumn } from "typeorm";
+import {
+  Column,
+  Entity,
+  Index,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from "typeorm";
+import { ContratoDesglose } from "../../models/entities/ContratoDesglose.entity";
 
 @ObjectType()
+@Index("aaaaaDetalle_de_Circulares_Altas_PK", ["idCodigo"], { unique: true })
 @Index("CategoríasDetalle de Circulares (Altas)", ["idCategorA"], {})
 @Index("CircularesDetalle de Circulares (Altas)", ["idCircular"], {})
 @Index("EspecificosDetalle de Circulares (Altas)", ["especifico"], {})
 @Index("Familias (DIVI)Detalle de Circulares (Altas)", ["familia"], {})
 @Index("IdCircular", ["idCircular"], {})
 @Index("IdOperacionC", ["idOperacionC"], {})
-@Index("IX_DetalleCircularesAltas_Codigo", ["codigo"], { unique: true })
+@Index("IX_Detalle_de_Circulares_Altas_Codigo", ["codigo"], { unique: true })
 @Index("MarcasDetalle de Circulares (Altas)", ["idMarca"], {})
 @Index("MedidasDetalle de Circulares (Altas)", ["idMedida"], {})
 @Index("NaturalezasDetalle de Circulares (Altas)", ["naturaleza"], {})
 @Index("PaisesDetalle de Circulares (Altas)", ["paisOrigen"], {})
 @Index("PARTIDAS ArancelariasDetalle de Circulares (Altas)", ["partida"], {})
-@Index("PK_DetalleCircularesAltas", ["idCodigo"], { unique: true })
 @Index("ProveedoresDetalle de Circulares (Altas)", ["proveedor"], {})
 @Index("UnidadMedidaDetalle de Circulares (Altas)", ["um"], {})
-@Entity("DetalleCircularesAltas", { schema: "dbo" })
-export class DetalleCircularesAltas {
+@Entity("Detalle_de_Circulares_Altas", { schema: "Mercurio.dbo" })
+export class DetalleDeCircularesAltas {
   @Column("int", { name: "IdCircular" })
   @Field(() => Int)
   idCircular: number;
@@ -589,4 +596,8 @@ export class DetalleCircularesAltas {
   @Column("int", { name: "IDFicha", nullable: true })
   @Field(() => Int,{nullable: true})
   idFicha: number | null;
+
+  @Field(() => [ContratoDesglose], { nullable: true })
+  @OneToMany(() => ContratoDesglose,(contratoDesglose) => contratoDesglose.detalleDeCircularesAltas)
+  contratoDesgloses: ContratoDesglose[];
 }

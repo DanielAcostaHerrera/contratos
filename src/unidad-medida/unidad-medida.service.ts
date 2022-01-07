@@ -8,10 +8,10 @@ export class UnidadMedidaService {
   constructor(@InjectRepository(UnidadMedida) public readonly unidadMedidaRepository: Repository<UnidadMedida>) {}
 
   async findAll(): Promise<UnidadMedida[]> {
-    return await this.unidadMedidaRepository.find();
+    return await this.unidadMedidaRepository.find({relations: ['contratoDesgloses']});
   }
 
   async findOne(id: number) : Promise<UnidadMedida> {
-    return await this.unidadMedidaRepository.findOne(id);
+    return await this.unidadMedidaRepository.findOne(id,{relations: ['contratoDesgloses']});
   }
 }

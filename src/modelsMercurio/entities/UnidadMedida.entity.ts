@@ -1,5 +1,6 @@
 import { Field, Int, ObjectType } from "@nestjs/graphql";
-import { Column, Entity, Index, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, Index, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { ContratoDesglose } from "../../models/entities/ContratoDesglose.entity";
 
 @ObjectType()
 @Index("aaaaaUnidadMedida_PK", ["id"], { unique: true })
@@ -34,4 +35,9 @@ export class UnidadMedida {
   })
   @Field(() => Int,{nullable: true})
   idCircularAct: number | null;
+
+  @Field(() => [ContratoDesglose], { nullable: true })
+  @OneToMany(() => ContratoDesglose,(contratoDesglose) => contratoDesglose.unidadMedida)
+  contratoDesgloses: ContratoDesglose[];
+
 }

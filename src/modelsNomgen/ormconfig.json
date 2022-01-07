@@ -1,12 +1,12 @@
 [
   {
-    "name": "default",
+    "name": "nomgen",
     "type": "mssql",
     "host": "10.128.16.10",
     "port": 1433,
     "username": "sa",
     "password": "adminstyle.378",
-    "database": "",
+    "database": "Nomgen",
     "synchronize": false,
     "entities": ["entities/*.js"]
   }
