@@ -2,6 +2,10 @@ import { Field, Int, ObjectType } from "@nestjs/graphql";
 import { Column, Entity, Index, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { ContratoDesglose } from "../../models/entities/ContratoDesglose.entity";
 import { FichaCompraDetalle } from "../../models/entities/FichaCompraDetalle.entity";
+import { PliegoConcurrenciaDetalle } from "../../models/entities/PliegoConcurrenciaDetalle.entity";
+import { SolicitudCodificacion } from "../../models/entities/SolicitudCodificacion.entity";
+import { SolicitudOfertasEntradas } from "../../models/entities/SolicitudOfertasEntradas.entity";
+import { SuplementoDesglose } from "../../models/entities/SuplementoDesglose.entity";
 
 @ObjectType()
 @Index("aaaaaUnidadMedida_PK", ["id"], { unique: true })
@@ -44,5 +48,21 @@ export class UnidadMedida {
   @Field(() => [FichaCompraDetalle], { nullable: true })
   @OneToMany(() => FichaCompraDetalle,(fichaCompraDetalle) => fichaCompraDetalle.unidadMedida)
   fichaCompraDetalles : FichaCompraDetalle[];
+
+  @Field(() => [SuplementoDesglose], { nullable: true })
+  @OneToMany(() => SuplementoDesglose,(suplementoDesgloses) => suplementoDesgloses.unidadMedida)
+  suplementoDesgloses: SuplementoDesglose[];
+
+  @Field(() => [SolicitudOfertasEntradas], { nullable: true })
+  @OneToMany(() => SolicitudOfertasEntradas,(solicitudOfertasEntradas) => solicitudOfertasEntradas.unidadMedida)
+  solicitudOfertasEntradas: SolicitudOfertasEntradas[];
+
+  @Field(() => [SolicitudCodificacion], { nullable: true })
+  @OneToMany(() => SolicitudCodificacion,(solicitudCodificacion) => solicitudCodificacion.unidadMedida)
+  solicitudCodificacion: SolicitudCodificacion[];
+
+  @Field(() => [PliegoConcurrenciaDetalle], { nullable: true })
+  @OneToMany(() => PliegoConcurrenciaDetalle,(pliegoConcurrenciaDetalles) => pliegoConcurrenciaDetalles.unidadMedida)
+  pliegoConcurrenciaDetalles: PliegoConcurrenciaDetalle[];
 
 }

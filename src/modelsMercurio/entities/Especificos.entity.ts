@@ -1,6 +1,7 @@
 import { Field, Int, ObjectType } from "@nestjs/graphql";
 import {Column,Entity,Index,JoinColumn,ManyToOne,OneToMany,PrimaryGeneratedColumn} from "typeorm";
 import { BasesCMarcoEspecificos } from "../../models/entities/BasesCMarcoEspecificos.entity";
+import { PliegoConcurrenciaDetalle } from "../../models/entities/PliegoConcurrenciaDetalle.entity";
 
 
 @ObjectType()
@@ -67,4 +68,8 @@ idCircularAct:number | null;
 @Field(() => [BasesCMarcoEspecificos], { nullable: true })
 @OneToMany(() => BasesCMarcoEspecificos,(basesCMarcoEspecificos) => basesCMarcoEspecificos.especifico)
 basesCMarcoEspecificos: BasesCMarcoEspecificos[];
+
+@Field(() => [PliegoConcurrenciaDetalle], { nullable: true })
+@OneToMany(() => PliegoConcurrenciaDetalle,(pliegoConcurrenciaDetalles) => pliegoConcurrenciaDetalles.especifico)
+pliegoConcurrenciaDetalles: PliegoConcurrenciaDetalle[];
 }

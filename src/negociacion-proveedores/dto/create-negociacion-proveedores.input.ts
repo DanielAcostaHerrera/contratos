@@ -8,9 +8,6 @@ export class CreateNegociacionProveedoresInput {
   @Field(() => Int)
   idNegociacion: number;
 
-  @Field(() => Int)
-  proveedor: number;
-
   @Field(() => Float)
   importe: number | null;
 

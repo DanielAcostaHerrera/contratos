@@ -26,26 +26,20 @@ export class CreateFichaCompraResumanInput {
   @Field(() => Int)
   contenedores: number;
 
+  @Field()
+  idEmbalaje: string | null;
+
   @Field(() => Float)
   pesoBruto: number | null;
 
   @Field(() => Float)
   pesoNeto: number | null;
 
-  @Field()
-  embalaje: string | null;
-
   @Field(() => Float)
   cantidadEmbalaje: number | null;
 
   @Field(() => Float)
   cantidad: number | null;
-
-  @Field()
-  codigo: string | null;
-
-  @Field()
-  descripcion: string | null;
 
   @Field(() => Float)
   valorContratacion: number;
@@ -75,22 +69,7 @@ export class CreateFichaCompraResumanInput {
   descuentoContratacion: number;
 
   @Field(() => Float)
-  totalRecDescContrato: number;
-
-  @Field(() => Float)
-  totalAdquisicion: number;
-
-  @Field(() => Float)
-  indicePpCosto: number;
-
-  @Field(() => Float)
-  difCambioMoneda: number;
-
-  @Field(() => Float)
   tasaCambioContratacion: number;
-
-  @Field(() => Float)
-  valorMercancia: number;
 
   @Field(() => Float)
   tarifaFlete: number;
@@ -102,37 +81,16 @@ export class CreateFichaCompraResumanInput {
   descuentoFlete: number;
 
   @Field(() => Float)
-  totalFlete: number;
-
-  @Field(() => Float)
-  costoFleteUsd: number;
-
-  @Field(() => Float)
   seguroContrato: number;
-
-  @Field(() => Float)
-  seguro: number | null;
 
   @Field(() => Float)
   tasaSeguro: number | null;
 
   @Field(() => Float)
-  costoCifFleteUsd: number | null;
-
-  @Field(() => Float)
   tasaCambioMn: number;
 
   @Field(() => Float)
-  costoFleteSeguroMn: number | null;
-
-  @Field(() => Float)
-  factorConversion: number | null;
-
-  @Field(() => Float)
   tasaArancelaria: number;
-
-  @Field(() => Float)
-  valorArancel: number | null;
 
   @Field(() => Float)
   gastoManipulacion: number;
@@ -165,28 +123,13 @@ export class CreateFichaCompraResumanInput {
   oGastosPortuariosAduanales: number;
 
   @Field(() => Float)
-  gastosImportacion: number;
-
-  @Field(() => Float)
   otrosGastos: number;
 
   @Field(() => Float)
   financiamiento: number;
 
   @Field(() => Float)
-  totalGastos: number;
-
-  @Field(() => Float)
-  indicePGasto: number | null;
-
-  @Field(() => Float)
-  indGastoAdquisicion: number | null;
-
-  @Field(() => Float)
   tasaMaxRecargo: number;
-
-  @Field(() => Float)
-  margenComercial: number | null;
 
   @Field(() => Float)
   tasaImpuestoVentas: number;
@@ -196,12 +139,6 @@ export class CreateFichaCompraResumanInput {
 
   @Field(() => Float)
   tasaImpuestoProducto: number;
-
-  @Field(() => Float)
-  totalImpuestoContrib: number;
-
-  @Field(() => Float)
-  pVentaImportador: number | null;
 
   @Field(() => Float)
   tasaCircMayorista: number;
@@ -250,7 +187,4 @@ export class CreateFichaCompraResumanInput {
 
   @Field()
   chkRecepcion: boolean;
-
-  @Field()
-  noFicha: string | null;
 }

@@ -5,6 +5,7 @@ import { BasesGenerales } from "../../models/entities/BasesGenerales.entity";
 import { Contratos } from '../../models/entities/Contratos.entity';
 import { PliegoConcurrenciaResumen } from '../../models/entities/PliegoConcurrenciaResumen.entity';
 import { FacturaDesglose } from '../../models/entities/FacturaDesglose.entity';
+import { TiemposTravesia } from '../../models/entities/TiemposTravesia.entity';
 
 @ObjectType()
 @Index("aaaaaPaises_PK", ["pais"], { unique: true })
@@ -103,4 +104,8 @@ export class Paises {
   @Field(() => [FacturaDesglose], { nullable: true })
   @OneToMany(() => FacturaDesglose,(facturaDesglose) => facturaDesglose.pais)
   facturaDesgloses: FacturaDesglose[];
+
+  @Field(() => [TiemposTravesia], { nullable: true })
+  @OneToMany(() => TiemposTravesia,(tiemposTravesia) => tiemposTravesia.pais)
+  tiemposTravesias: TiemposTravesia[];
 }

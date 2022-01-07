@@ -12,16 +12,16 @@ export class CreateSuplementoDesgloseInput {
   idEmbarque: number;
 
   @Field(() => Int)
-  referencia: number | null;
+  idReferencia: number | null;
 
   @Field(() => Int)
-  codigo: number;
+  idCodigo: number;
 
   @Field()
   descripcionSp: string | null;
 
   @Field(() => Int)
-  unidadMedidaCarton: number;
+  idUnidadMedida: number;
 
   @Field(() => Float)
   cantidadPorCarton: number;

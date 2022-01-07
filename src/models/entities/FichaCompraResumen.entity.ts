@@ -58,9 +58,9 @@ export class FichaCompraResumen {
   @Field(() => Float,{nullable: true})
   pesoNeto: number | null;
 
-  @Column("nvarchar", { name: "Embalaje", nullable: true, length: 50 })
+  @Column("nvarchar", { name: "IdEmbalaje", nullable: true, length: 50 })
   @Field({nullable: true})
-  embalaje: string | null;
+  idEmbalaje: string | null;
 
   @Column("float", { name: "CantidadEmbalaje", nullable: true, precision: 53 })
   @Field(() => Float,{nullable: true})
@@ -69,14 +69,6 @@ export class FichaCompraResumen {
   @Column("float", { name: "Cantidad", nullable: true, precision: 53 })
   @Field(() => Float,{nullable: true})
   cantidad: number | null;
-
-  @Column("nvarchar", { name: "Codigo", nullable: true, length: 13 })
-  @Field({nullable: true})
-  codigo: string | null;
-
-  @Column("nvarchar", { name: "Descripcion", nullable: true, length: 200 })
-  @Field({nullable: true})
-  descripcion: string | null;
 
   @Column("float", {
     name: "ValorContratacion",

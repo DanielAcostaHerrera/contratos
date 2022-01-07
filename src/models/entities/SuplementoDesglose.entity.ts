@@ -9,6 +9,9 @@ import {
 import { SuplementoResumen } from "./SuplementoResumen.entity";
 import { Embarques } from "./Embarques.entity";
 import { Field, Float, Int, ObjectType } from "@nestjs/graphql";
+import { UnidadMedida } from "../../modelsMercurio/entities/UnidadMedida.entity";
+import { CodigosParaLaVenta } from "../../modelsMercurio/entities/CodigosParaLaVenta.entity";
+import { Referencias } from "../../modelsMercurio/entities/Referencias.entity";
 
 @ObjectType()
 @Index("PK_SuplementoDesglose", ["idSuplementoDesglose"], { unique: true })
@@ -28,11 +31,11 @@ export class SuplementoDesglose {
 
   @Column("int", { name: "Referencia", nullable: true })
   @Field(() => Int,{nullable: true})
-  referencia: number | null;
+  idReferencia: number | null;
 
   @Column("int", { name: "Codigo" })
   @Field(() => Int)
-  codigo: number;
+  idCodigo: number;
 
   @Column("nvarchar", { name: "DescripcionSP", nullable: true, length: 200 })
   @Field({nullable: true})
@@ -40,7 +43,7 @@ export class SuplementoDesglose {
 
   @Column("int", { name: "UnidadMedidaCarton" })
   @Field(() => Int)
-  unidadMedidaCarton: number;
+  idUnidadMedida: number;
 
   @Column("real", { name: "CantidadPorCarton", precision: 24 })
   @Field(() => Float)
@@ -79,4 +82,20 @@ export class SuplementoDesglose {
   @ManyToOne(() => Embarques, (embarques) => embarques.suplementoDesgloses)
   @JoinColumn([{ name: "IdEmbarque", referencedColumnName: "idEmbarque" }])
   embarques: Embarques;
+
+  @Field(() => UnidadMedida, {nullable: true})
+  @ManyToOne(() => UnidadMedida, (unidadMedida) => unidadMedida.suplementoDesgloses)
+  @JoinColumn([{ name: "UnidadMedidaCarton", referencedColumnName: "id" }])
+  unidadMedida: UnidadMedida;
+
+  @Field(() => CodigosParaLaVenta, {nullable: true})
+  @ManyToOne(() => CodigosParaLaVenta, (codigo) => codigo.suplementoDesgloses)
+  @JoinColumn([{ name: "Codigo", referencedColumnName: "idCodigo" }])
+  codigo: CodigosParaLaVenta;
+
+  @Field(() => Referencias, {nullable: true})
+  @ManyToOne(() => Referencias, (referencia) => referencia.suplementoDesgloses)
+  @JoinColumn([{ name: "Referencia", referencedColumnName: "referenciaId" }])
+  referencia: Referencias;
+
 }

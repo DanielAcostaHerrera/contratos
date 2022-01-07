@@ -30,22 +30,6 @@ type TipoContrato {
   basesGenerales: [BasesGenerales!]
 }
 
-type UnidadMedida {
-  id: Int!
-  abreviatura: String!
-  nombre: String!
-  actualizacion: DateTime!
-  upsizeTs: DateTime
-  idCircularAct: Int
-  contratoDesgloses: [ContratoDesglose!]
-  fichaCompraDetalles: [FichaCompraDetalle!]
-}
-
-"""
-A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
-"""
-scalar DateTime
-
 type Campanas {
   idCampana: Int!
   campana: String!
@@ -58,6 +42,7 @@ type TiemposTravesia {
   idEtapa: Int!
   tiempo: Int!
   etapaContratacion: EtapasContratacion
+  pais: Paises
 }
 
 type EtapasContratacion {
@@ -103,7 +88,13 @@ type Paises {
   contratos: [Contratos!]
   pliegoConcurrenciaResumen: [PliegoConcurrenciaResumen!]
   facturaDesgloses: [FacturaDesglose!]
+  tiemposTravesias: [TiemposTravesia!]
 }
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
 
 type Contenedores {
   idContenedor: Int!
@@ -183,16 +174,19 @@ type SolicitudOfertasEntradas {
   idOfertasProveedor: Int!
   fechaRecepcionOferta: DateTime!
   detalle: String!
-  referencia: String!
-  codigo: String!
+  idReferencia: Int!
+  idCodigo: Int!
   decripcion: String!
-  um: String!
+  idUm: Int!
   packing: Int!
   cantidad: Float!
   dimension: String
   cubicaje: String
   precioCosto: Float!
   ofertasProveedor: SolicitudOfertasProveedor
+  referencia: Referencias
+  codigo: CodigosParaLaVenta
+  unidadMedida: UnidadMedida
 }
 
 type Proveedores {
@@ -475,6 +469,28 @@ type FacturaDesglose {
   pais: Paises
 }
 
+type SuplementoDesglose {
+  idSuplementoDesglose: Int!
+  idSuplementoResumen: Int!
+  idEmbarque: Int!
+  idReferencia: Int
+  idCodigo: Int!
+  descripcionSp: String
+  idUnidadMedida: Int!
+  cantidadPorCarton: Float!
+  paquete: Int!
+  cantidadCartones: Int!
+  volumen: Float!
+  precio: Float!
+  precioPaquete: Float!
+  packing: Float!
+  suplementoResumen: SuplementoResumen
+  embarques: Embarques
+  unidadMedida: UnidadMedida
+  codigo: CodigosParaLaVenta
+  referencia: Referencias
+}
+
 type Referencias {
   referenciaId: Int!
   idCodigo: Int!
@@ -485,6 +501,43 @@ type Referencias {
   proveedorRef: Int
   contratoDesgloses: [ContratoDesglose!]
   facturaDesgloses: [FacturaDesglose!]
+  suplementoDesgloses: [SuplementoDesglose!]
+  solicitudOfertasEntradas: [SolicitudOfertasEntradas!]
+  solicitudCodificacion: [SolicitudCodificacion!]
+}
+
+type SolicitudCodificacion {
+  idSolicitudCompra: Int!
+  idPliegoResumen: Int!
+  idReferencia: Int!
+  decripcion: String!
+  idUm: Int!
+  marca: String
+  naturaleza: String
+  packing: Int!
+  cantidad: Float!
+  dimension: String
+  cubicaje: String
+  idEmbalaje: Float
+  precioCosto: Float!
+  pliegoResumen: PliegoConcurrenciaResumen
+  embalaje: Embalajes
+  referencia: Referencias
+  unidadMedida: UnidadMedida
+}
+
+type UnidadMedida {
+  id: Int!
+  abreviatura: String!
+  nombre: String!
+  actualizacion: DateTime!
+  upsizeTs: DateTime
+  idCircularAct: Int
+  contratoDesgloses: [ContratoDesglose!]
+  fichaCompraDetalles: [FichaCompraDetalle!]
+  suplementoDesgloses: [SuplementoDesglose!]
+  solicitudOfertasEntradas: [SolicitudOfertasEntradas!]
+  solicitudCodificacion: [SolicitudCodificacion!]
 }
 
 type ContratoDesglose {
@@ -617,6 +670,8 @@ type CodigosParaLaVenta {
   contratoDesgloses: [ContratoDesglose!]
   facturaDesgloses: [FacturaDesglose!]
   fichaCompraDetalles: [FichaCompraDetalle!]
+  suplementoDesgloses: [SuplementoDesglose!]
+  solicitudOfertasEntradas: [SolicitudOfertasEntradas!]
 }
 
 type FichaCompraAtributos {
@@ -697,11 +752,9 @@ type FichaCompraResumen {
   contenedores: Int!
   pesoBruto: Float
   pesoNeto: Float
-  embalaje: String
+  idEmbalaje: String
   cantidadEmbalaje: Float
   cantidad: Float
-  codigo: String
-  descripcion: String
   valorContratacion: Float!
   gastoAlmacenOrigen: Float!
   gastoTranspOrigen: Float!
@@ -1050,24 +1103,6 @@ type FichaCostoResumen {
   contratos: [Contratos!]
 }
 
-type SolicitudCodificacion {
-  idSolicitudCompra: Int!
-  idPliegoResumen: Int!
-  referencia: String!
-  decripcion: String!
-  um: String!
-  marca: String
-  naturaleza: String
-  packing: Int!
-  cantidad: Float!
-  dimension: String
-  cubicaje: String
-  idEmbalaje: Float
-  precioCosto: Float!
-  pliegoResumen: PliegoConcurrenciaResumen
-  embalaje: Embalajes
-}
-
 type Embalajes {
   idEmbalaje: Int!
   descripcion: String
@@ -1160,25 +1195,6 @@ type CompaniasNavieras {
   embarques: [Embarques!]
   suplementoResumen: [SuplementoResumen!]
   pliegoConcurrenciaResumen: [PliegoConcurrenciaResumen!]
-}
-
-type SuplementoDesglose {
-  idSuplementoDesglose: Int!
-  idSuplementoResumen: Int!
-  idEmbarque: Int!
-  referencia: Int
-  codigo: Int!
-  descripcionSp: String
-  unidadMedidaCarton: Int!
-  cantidadPorCarton: Float!
-  paquete: Int!
-  cantidadCartones: Int!
-  volumen: Float!
-  precio: Float!
-  precioPaquete: Float!
-  packing: Float!
-  suplementoResumen: SuplementoResumen
-  embarques: Embarques
 }
 
 type Embarques {
@@ -1554,6 +1570,8 @@ type Query {
   findOnePliegoConcurrenciaResumen(id: Int!): PliegoConcurrenciaResumen!
   findAllSolicitudCodificacion: [SolicitudCodificacion!]!
   findOneSolicitudCodificacion(id: Int!): SolicitudCodificacion!
+  findAllReferencias: [Referencias!]!
+  findOneReferencias(id: Int!): Referencias!
   findAllSolicitudOfertasEntrada: [SolicitudOfertasEntradas!]!
   findOneSolicitudOfertasEntrada(id: Int!): SolicitudOfertasEntradas!
   findAllSolicitudOfertasProveedor: [SolicitudOfertasProveedor!]!
@@ -1564,8 +1582,6 @@ type Query {
   findOneContratoDesglose(id: Int!): ContratoDesglose!
   findAllEmbarques: [Embarques!]!
   findOneEmbarques(id: Int!): Embarques!
-  findAllReferencias: [Referencias!]!
-  findOneReferencias(id: Int!): Referencias!
   findAllFacturaResumen: [FacturaResumen!]!
   findOneFacturaResumen(id: Int!): FacturaResumen!
   findAllFacturaContenedor: [FacturaContenedor!]!
@@ -1818,7 +1834,6 @@ input CreateEjecutivoInput {
   nombre: String!
   idCargo: Int!
   correo: String
-  msreplTranVersion: String!
   activo: Boolean!
   eMail: String
 }
@@ -2299,25 +2314,9 @@ input CreateFichaCompraDetalleInput {
   pack: Int!
   cantidad: Float!
   pCosto: Float!
-  pcProv: Float!
-  pCostoCif: Float!
   partida: String!
   tasaArancel: Float!
-  valorArancel: Float!
-  importeArancel: Float!
-  valorGastos: Float!
   tasaMargenComercial: Float!
-  valorTmc: Float!
-  pCostoImportacion: Float!
-  impPCostoProv: Float!
-  impPCostoCif: Float!
-  impPCostoImp: Float!
-  valorCircMayorista: Float!
-  pCostoMayorista: Float!
-  impMayorista: Float!
-  valorCircMinorista: Float!
-  pCostoMinorista: Float!
-  impMinorista: Float!
 }
 
 input CreateFichaCompraResumanInput {
@@ -2329,13 +2328,11 @@ input CreateFichaCompraResumanInput {
   idNegociacion: Int!
   idPais: Int!
   contenedores: Int!
+  idEmbalaje: String!
   pesoBruto: Float!
   pesoNeto: Float!
-  embalaje: String!
   cantidadEmbalaje: Float!
   cantidad: Float!
-  codigo: String!
-  descripcion: String!
   valorContratacion: Float!
   gastoAlmacenOrigen: Float!
   gastoTranspOrigen: Float!
@@ -2345,26 +2342,14 @@ input CreateFichaCompraResumanInput {
   totalGastoOrigen: Float!
   recargoContratacion: Float!
   descuentoContratacion: Float!
-  totalRecDescContrato: Float!
-  totalAdquisicion: Float!
-  indicePpCosto: Float!
-  difCambioMoneda: Float!
   tasaCambioContratacion: Float!
-  valorMercancia: Float!
   tarifaFlete: Float!
   recargoFlete: Float!
   descuentoFlete: Float!
-  totalFlete: Float!
-  costoFleteUsd: Float!
   seguroContrato: Float!
-  seguro: Float!
   tasaSeguro: Float!
-  costoCifFleteUsd: Float!
   tasaCambioMn: Float!
-  costoFleteSeguroMn: Float!
-  factorConversion: Float!
   tasaArancelaria: Float!
-  valorArancel: Float!
   gastoManipulacion: Float!
   gastoDoc: Float!
   gastoEmisionBl: Float!
@@ -2375,19 +2360,12 @@ input CreateFichaCompraResumanInput {
   gastoSupervisiones: Float!
   gastoFitosanitario: Float!
   oGastosPortuariosAduanales: Float!
-  gastosImportacion: Float!
   otrosGastos: Float!
   financiamiento: Float!
-  totalGastos: Float!
-  indicePGasto: Float!
-  indGastoAdquisicion: Float!
   tasaMaxRecargo: Float!
-  margenComercial: Float!
   tasaImpuestoVentas: Float!
   tasaContibucion: Float!
   tasaImpuestoProducto: Float!
-  totalImpuestoContrib: Float!
-  pVentaImportador: Float!
   tasaCircMayorista: Float!
   tasaCircMinorista: Float!
   tasaImpuestoVentasMin: Float!
@@ -2404,7 +2382,6 @@ input CreateFichaCompraResumanInput {
   canceladoPor: Int!
   fechaCancelacion: DateTime!
   chkRecepcion: Boolean!
-  noFicha: String!
 }
 
 input CreatePliegoConcurrenciaInput {
@@ -2483,9 +2460,9 @@ input CreatePliegoConcurrenciaResumanInput {
 input CreateSolicitudCodificacionInput {
   idSolicitudCompra: Int
   idPliegoResumen: Int!
-  referencia: String!
+  idReferencia: Int!
   decripcion: String!
-  um: String!
+  idUm: Int!
   marca: String!
   naturaleza: String!
   packing: Int!
@@ -2501,10 +2478,10 @@ input CreateSolicitudOfertasEntradaInput {
   idOfertasProveedor: Int!
   fechaRecepcionOferta: DateTime!
   detalle: String!
-  referencia: String!
-  codigo: String!
+  idReferencia: Int!
+  idCodigo: Int!
   decripcion: String!
-  um: String!
+  idUm: Int!
   packing: Int!
   cantidad: Float!
   dimension: String!
@@ -2680,10 +2657,10 @@ input CreateSuplementoDesgloseInput {
   idSuplementoDesglose: Int
   idSuplementoResumen: Int!
   idEmbarque: Int!
-  referencia: Int!
-  codigo: Int!
+  idReferencia: Int!
+  idCodigo: Int!
   descripcionSp: String!
-  unidadMedidaCarton: Int!
+  idUnidadMedida: Int!
   cantidadPorCarton: Float!
   paquete: Int!
   cantidadCartones: Int!

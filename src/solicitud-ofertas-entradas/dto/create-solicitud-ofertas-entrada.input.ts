@@ -14,17 +14,17 @@ export class CreateSolicitudOfertasEntradaInput {
   @Field()
   detalle: string;
 
-  @Field()
-  referencia: string;
+  @Field(()=>Int)
+  idReferencia: number;
 
-  @Field()
-  codigo: string;
+  @Field(()=>Int)
+  idCodigo: number;
 
   @Field()
   decripcion: string;
 
-  @Field()
-  um: string;
+  @Field(()=>Int)
+  idUm: number;
 
   @Field(() => Int)
   packing: number;

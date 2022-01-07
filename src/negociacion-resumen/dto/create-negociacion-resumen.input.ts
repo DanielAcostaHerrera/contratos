@@ -9,9 +9,6 @@ export class CreateNegociacionResumenInput {
   consecutivo: number;
 
   @Field()
-  noNegociacion: string | null;
-
-  @Field()
   fecha: Date;
 
   @Field(() => Int)
@@ -42,7 +39,7 @@ export class CreateNegociacionResumenInput {
   noNeg: string | null;
 
   @Field(() => Int)
-  proveedor: number | null;
+  idProveedor: number | null;
 
   @Field(() => Float)
   importeTrd: number | null;

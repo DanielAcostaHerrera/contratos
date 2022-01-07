@@ -9,6 +9,8 @@ import {
 import { PliegoConcurrenciaResumen } from "./PliegoConcurrenciaResumen.entity";
 import { Embalajes } from "./Embalajes.entity";
 import { Field, Float, Int, ObjectType } from "@nestjs/graphql";
+import { Especificos } from "../../modelsMercurio/entities/Especificos.entity";
+import { UnidadMedida } from "../../modelsMercurio/entities/UnidadMedida.entity";
 
 @ObjectType()
 @Index(
@@ -68,4 +70,14 @@ export class PliegoConcurrenciaDetalle {
   @ManyToOne(() => Embalajes,(embalajes) => embalajes.pliegoConcurrenciaDetalles)
   @JoinColumn([{ name: "IdEmbalaje", referencedColumnName: "idEmbalaje" }])
   embalaje: Embalajes;
+
+  @Field(() => Especificos, {nullable: true})
+  @ManyToOne(() => Especificos,(especifico) => especifico.pliegoConcurrenciaDetalles)
+  @JoinColumn([{ name: "IdEspecifico", referencedColumnName: "id" }])
+  especifico: Especificos;
+
+  @Field(() => UnidadMedida, {nullable: true})
+  @ManyToOne(() => UnidadMedida,(unidadMedida) => unidadMedida.pliegoConcurrenciaDetalles)
+  @JoinColumn([{ name: "IdUnidadMedida", referencedColumnName: "id" }])
+  unidadMedida: UnidadMedida;
 }

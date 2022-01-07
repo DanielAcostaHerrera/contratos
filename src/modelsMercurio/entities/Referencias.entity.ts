@@ -8,6 +8,9 @@ import {
 } from "typeorm";
 import { ContratoDesglose } from "../../models/entities/ContratoDesglose.entity";
 import { FacturaDesglose } from "../../models/entities/FacturaDesglose.entity";
+import { SolicitudCodificacion } from "../../models/entities/SolicitudCodificacion.entity";
+import { SolicitudOfertasEntradas } from "../../models/entities/SolicitudOfertasEntradas.entity";
+import { SuplementoDesglose } from "../../models/entities/SuplementoDesglose.entity";
 
 @ObjectType()
 @Index("aaaaaReferencias_PK", ["referenciaId"], { unique: true })
@@ -52,4 +55,16 @@ export class Referencias {
   @Field(() => [FacturaDesglose], { nullable: true })
   @OneToMany(() => FacturaDesglose,(facturaDesglose) => facturaDesglose.referencia)
   facturaDesgloses: FacturaDesglose[];
+
+  @Field(() => [SuplementoDesglose], { nullable: true })
+  @OneToMany(() => SuplementoDesglose,(suplementoDesgloses) => suplementoDesgloses.referencia)
+  suplementoDesgloses: SuplementoDesglose[];
+
+  @Field(() => [SolicitudOfertasEntradas], { nullable: true })
+  @OneToMany(() => SolicitudOfertasEntradas,(solicitudOfertasEntradas) => solicitudOfertasEntradas.referencia)
+  solicitudOfertasEntradas: SolicitudOfertasEntradas[];
+
+  @Field(() => [SolicitudCodificacion], { nullable: true })
+  @OneToMany(() => SolicitudCodificacion,(solicitudCodificacion) => solicitudCodificacion.referencia)
+  solicitudCodificacion: SolicitudCodificacion[];
 }

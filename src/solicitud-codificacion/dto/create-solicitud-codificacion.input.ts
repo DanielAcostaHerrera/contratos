@@ -8,14 +8,14 @@ export class CreateSolicitudCodificacionInput {
   @Field(() => Int)
   idPliegoResumen: number;
 
-  @Field()
-  referencia: string;
+  @Field(() => Int)
+  idReferencia: number;
 
   @Field()
   decripcion: string;
 
-  @Field()
-  um: string;
+  @Field(() => Int)
+  idUm: number;
 
   @Field()
   marca: string | null;

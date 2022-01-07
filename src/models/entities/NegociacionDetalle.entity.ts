@@ -20,10 +20,6 @@ export class NegociacionDetalle {
   @Field(() => Int)
   idNegociacion: number;
 
-  @Column("int", { name: "IdProveedor" })
-  @Field(() => Int)
-  idProveedor: number;
-
   @Column("float", { name: "ImporteTRD", precision: 53, default: () => "(0)" })
   @Field(() => Float)
   importeTrd: number;

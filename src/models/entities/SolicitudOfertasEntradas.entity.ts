@@ -7,6 +7,9 @@ import {
   ManyToOne,
   PrimaryGeneratedColumn,
 } from "typeorm";
+import { CodigosParaLaVenta } from "../../modelsMercurio/entities/CodigosParaLaVenta.entity";
+import { Referencias } from "../../modelsMercurio/entities/Referencias.entity";
+import { UnidadMedida } from "../../modelsMercurio/entities/UnidadMedida.entity";
 import { SolicitudOfertasProveedor } from "./SolicitudOfertasProveedor.entity";
 
 @ObjectType()
@@ -25,25 +28,25 @@ export class SolicitudOfertasEntradas {
   @Field()
   fechaRecepcionOferta: Date;
 
-  @Column("xml", { name: "Detalle" })
+  @Column("nvarchar", { name: "Detalle", length: 300 })
   @Field()
   detalle: string;
 
-  @Column("nvarchar", { name: "Referencia", length: 20 })
-  @Field()
-  referencia: string;
+  @Column("int", { name: "Referencia" })
+  @Field(()=>Int)
+  idReferencia: number;
 
-  @Column("nvarchar", { name: "Codigo", length: 13 })
-  @Field()
-  codigo: string;
+  @Column("int", { name: "Codigo"})
+  @Field(()=>Int)
+  idCodigo: number;
 
   @Column("nvarchar", { name: "Decripcion", length: 300 })
   @Field()
   decripcion: string;
 
-  @Column("nvarchar", { name: "UM", length: 8 })
-  @Field()
-  um: string;
+  @Column("int", { name: "UM"})
+  @Field(()=>Int)
+  idUm: number;
 
   @Column("int", { name: "Packing" })
   @Field(() => Int)
@@ -69,4 +72,19 @@ export class SolicitudOfertasEntradas {
   @ManyToOne(() => SolicitudOfertasProveedor,(solicitudOfertasProveedor) => solicitudOfertasProveedor.solicitudOfertasEntradas)
   @JoinColumn([{ name: "IdOfertasProveedor", referencedColumnName: "idOfertasProveedor" }])
   ofertasProveedor: SolicitudOfertasProveedor;
+
+  @Field(() => Referencias, {nullable: true})
+  @ManyToOne(() => Referencias,(referencia) => referencia.solicitudOfertasEntradas)
+  @JoinColumn([{ name: "Referencia", referencedColumnName: "referenciaId" }])
+  referencia: Referencias;
+
+  @Field(() => CodigosParaLaVenta, {nullable: true})
+  @ManyToOne(() => CodigosParaLaVenta,(codigo) => codigo.solicitudOfertasEntradas)
+  @JoinColumn([{ name: "Codigo", referencedColumnName: "idCodigo" }])
+  codigo: CodigosParaLaVenta;
+
+  @Field(() => UnidadMedida, {nullable: true})
+  @ManyToOne(() => UnidadMedida,(unidadMedida) => unidadMedida.solicitudOfertasEntradas)
+  @JoinColumn([{ name: "UM", referencedColumnName: "id" }])
+  unidadMedida: UnidadMedida;
 }

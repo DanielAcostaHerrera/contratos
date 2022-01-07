@@ -3,6 +3,7 @@ import { TiemposTravesiaService } from './tiempos-travesia.service';
 import { CreateTiemposTravesiaInput } from './dto/create-tiempos-travesia.input';
 import { TiemposTravesia } from 'src/models/entities/TiemposTravesia.entity';
 import { EtapasContratacion } from 'src/models/entities/EtapasContratacion.entity';
+import { Paises } from 'src/modelsMercurio/entities/Paises.entity';
 
 @Resolver(() => TiemposTravesia)
 export class TiemposTravesiaResolver {
@@ -36,5 +37,10 @@ export class TiemposTravesiaResolver {
   @ResolveField(() => EtapasContratacion, {nullable: true})
   etapaContratacion(@Parent() tiemposTravesia: TiemposTravesia): Promise<EtapasContratacion> {
     return this.tiemposTravesiaService.getEtapasContratacion(tiemposTravesia.idEtapa);
+  }
+
+  @ResolveField(() => Paises, {nullable: true})
+  pais(@Parent() tiemposTravesia: TiemposTravesia): Promise<Paises> {
+    return this.tiemposTravesiaService.getPais(tiemposTravesia.idPais);
   }
 }

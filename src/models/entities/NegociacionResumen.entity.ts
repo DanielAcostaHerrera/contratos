@@ -77,7 +77,7 @@ export class NegociacionResumen {
 
   @Column("int", { name: "Proveedor", nullable: true })
   @Field(() => Int,{nullable: true})
-  proveedor: number | null;
+  idProveedor: number | null;
 
   @Column("decimal", {
     name: "ImporteTRD",

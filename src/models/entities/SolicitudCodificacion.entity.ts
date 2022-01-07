@@ -7,6 +7,8 @@ import {
   ManyToOne,
   PrimaryGeneratedColumn,
 } from "typeorm";
+import { Referencias } from "../../modelsMercurio/entities/Referencias.entity";
+import { UnidadMedida } from "../../modelsMercurio/entities/UnidadMedida.entity";
 import { Embalajes } from "./Embalajes.entity";
 import { PliegoConcurrenciaResumen } from "./PliegoConcurrenciaResumen.entity";
 
@@ -22,17 +24,17 @@ export class SolicitudCodificacion {
   @Field(() => Int)
   idPliegoResumen: number;
 
-  @Column("nvarchar", { name: "Referencia", length: 20 })
-  @Field()
-  referencia: string;
+  @Column("int", { name: "Referencia" })
+  @Field(() => Int)
+  idReferencia: number;
 
   @Column("nvarchar", { name: "Decripcion", length: 300 })
   @Field()
   decripcion: string;
 
-  @Column("nvarchar", { name: "UM", length: 8 })
-  @Field()
-  um: string;
+  @Column("int", { name: "UM" })
+  @Field(() => Int)
+  idUm: number;
 
   @Column("nvarchar", { name: "Marca", nullable: true, length: 50 })
   @Field({nullable: true})
@@ -75,4 +77,14 @@ export class SolicitudCodificacion {
   @ManyToOne(() => Embalajes,(embalajes) => embalajes.solicitudCodificacion)
   @JoinColumn([{ name: "IdEmbalaje", referencedColumnName: "idEmbalaje" }])
   embalaje: Embalajes;
+
+  @Field(() => Referencias, {nullable: true})
+  @ManyToOne(() => Referencias,(referencia) => referencia.solicitudCodificacion)
+  @JoinColumn([{ name: "Referencia", referencedColumnName: "referenciaId" }])
+  referencia: Referencias;
+
+  @Field(() => UnidadMedida, {nullable: true})
+  @ManyToOne(() => UnidadMedida,(unidadMedida) => unidadMedida.solicitudCodificacion)
+  @JoinColumn([{ name: "UM", referencedColumnName: "id" }])
+  unidadMedida: UnidadMedida;
 }

@@ -4,6 +4,9 @@ import { CreateSuplementoDesgloseInput } from './dto/create-suplemento-desglose.
 import { SuplementoDesglose } from 'src/models/entities/SuplementoDesglose.entity';
 import { SuplementoResumen } from 'src/models/entities/SuplementoResumen.entity';
 import { Embarques } from 'src/models/entities/Embarques.entity';
+import { UnidadMedida } from 'src/modelsMercurio/entities/UnidadMedida.entity';
+import { CodigosParaLaVenta } from 'src/modelsMercurio/entities/CodigosParaLaVenta.entity';
+import { Referencias } from 'src/modelsMercurio/entities/Referencias.entity';
 
 @Resolver(() => SuplementoDesglose)
 export class SuplementoDesgloseResolver {
@@ -42,5 +45,20 @@ export class SuplementoDesgloseResolver {
   @ResolveField(() => Embarques, {nullable: true})
   embarques(@Parent() suplementoDesglose: SuplementoDesglose): Promise<Embarques> {
     return this.suplementoDesgloseService.getEmbarque(suplementoDesglose.idEmbarque);
+  }
+
+  @ResolveField(() => UnidadMedida, {nullable: true})
+  unidadMedida(@Parent() suplementoDesglose: SuplementoDesglose): Promise<UnidadMedida> {
+    return this.suplementoDesgloseService.getUnidadMedida(suplementoDesglose.idUnidadMedida);
+  }
+
+  @ResolveField(() => CodigosParaLaVenta, {nullable: true})
+  codigo(@Parent() suplementoDesglose: SuplementoDesglose): Promise<CodigosParaLaVenta> {
+    return this.suplementoDesgloseService.getCodigo(suplementoDesglose.idCodigo);
+  }
+
+  @ResolveField(() => Referencias, {nullable: true})
+  referencia(@Parent() suplementoDesglose: SuplementoDesglose): Promise<Referencias> {
+    return this.suplementoDesgloseService.getReferencia(suplementoDesglose.idReferencia);
   }
 }

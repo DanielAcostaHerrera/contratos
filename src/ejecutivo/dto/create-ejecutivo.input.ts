@@ -18,11 +18,5 @@ export class CreateEjecutivoInput {
   correo: string | null;
 
   @Field()
-  msreplTranVersion: string;
-
-  @Field()
   activo: boolean;
-
-  @Field({nullable: true})
-  eMail: string | null;
 }

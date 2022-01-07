@@ -4,6 +4,8 @@ import { CreateSolicitudCodificacionInput } from './dto/create-solicitud-codific
 import { SolicitudCodificacion } from 'src/models/entities/SolicitudCodificacion.entity';
 import { PliegoConcurrenciaResumen } from 'src/models/entities/PliegoConcurrenciaResumen.entity';
 import { Embalajes } from 'src/models/entities/Embalajes.entity';
+import { UnidadMedida } from 'src/modelsMercurio/entities/UnidadMedida.entity';
+import { Referencias } from 'src/modelsMercurio/entities/Referencias.entity';
 
 @Resolver(() => SolicitudCodificacion)
 export class SolicitudCodificacionResolver {
@@ -42,5 +44,15 @@ export class SolicitudCodificacionResolver {
   @ResolveField(() => Embalajes, {nullable: true})
   embalaje(@Parent() solicitudCodificacion: SolicitudCodificacion): Promise<Embalajes> {
     return this.solicitudCodificacionService.getEmbalaje(solicitudCodificacion.idEmbalaje);
+  }
+
+  @ResolveField(() => UnidadMedida, {nullable: true})
+  unidadMedida(@Parent() solicitudCodificacion: SolicitudCodificacion): Promise<UnidadMedida> {
+    return this.solicitudCodificacionService.getUnidadMedida(solicitudCodificacion.idUm);
+  }
+
+  @ResolveField(() => Referencias, {nullable: true})
+  referencia(@Parent() solicitudCodificacion: SolicitudCodificacion): Promise<Referencias> {
+    return this.solicitudCodificacionService.getReferencia(solicitudCodificacion.idReferencia);
   }
 }
