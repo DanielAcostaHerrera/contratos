@@ -8,52 +8,52 @@ export class CreateFacturaResumanInput {
   @Field(() => Int)
   idContrato: number;
 
-  @Field(() => Int)
-  idEmbarque: number;
+  @Field(() => Int,{nullable: true})
+  idEmbarque: number | null;
 
-  @Field(() => Int)
-  idEjecutivo: number;
+  @Field(() => Int,{nullable: true})
+  idEjecutivo: number | null;
 
   @Field(() => Int)
   idNegociacion: number;
 
-  @Field(() => Int)
-  idPuertoDestino: number;
+  @Field(() => Int,{nullable: true})
+  idPuertoDestino: number | null;
 
   @Field(() => Int)
   realizadoPor: number;
 
-  @Field()
+  @Field({nullable: true})
   fecha: Date | null;
 
   @Field()
   fechaFactura: Date;
 
-  @Field()
+  @Field({nullable: true})
   numeroBl: string | null;
 
-  @Field()
+  @Field({nullable: true})
   numero: string | null;
 
-  @Field(() => Int)
+  @Field(() => Int,{nullable: true})
   nivel: number | null;
 
-  @Field(() => Int)
+  @Field(() => Int,{nullable: true})
   plazoPuerto: number | null;
 
-  @Field(() => Int)
+  @Field(() => Int,{nullable: true})
   plazoAlmacen: number | null;
 
-  @Field(() => Int)
+  @Field(() => Int,{nullable: true})
   plazoTienda: number | null;
 
-  @Field()
+  @Field({nullable: true})
   fechaPartida: Date | null;
 
-  @Field(() => Float)
+  @Field(() => Float,{nullable: true})
   descuento: number | null;
 
-  @Field()
+  @Field({nullable: true})
   nota: string | null;
 
   @Field()
@@ -65,7 +65,7 @@ export class CreateFacturaResumanInput {
   @Field()
   cancelado: boolean;
 
-  @Field()
+  @Field({nullable: true})
   fechaTerminada: Date | null;
 
   @Field(()=> Float)

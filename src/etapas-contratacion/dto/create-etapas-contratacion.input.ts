@@ -8,7 +8,7 @@ export class CreateEtapasContratacionInput {
   @Field()
   etapa: string;
 
-  @Field()
+  @Field({nullable: true})
   calculos: string | null;
 
   @Field(() => Int)

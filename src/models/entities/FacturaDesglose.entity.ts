@@ -17,7 +17,7 @@ export class FacturaDesglose {
   @Field(() => Int,{nullable: true})
   idReferencia: number | null;
   
-  @Column("int", { name: "IdFactura", nullable: true })
+  @Column("int", { name: "IdFactura" })
   @Field(() => Int)
   idFactura: number;
 

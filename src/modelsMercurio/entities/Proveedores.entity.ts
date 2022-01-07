@@ -7,6 +7,7 @@ import { SolicitudOfertasProveedor } from '../../models/entities/SolicitudOferta
 import { PliegoConcurrenciaResumen } from '../../models/entities/PliegoConcurrenciaResumen.entity';
 import { NegociacionResumen } from '../../models/entities/NegociacionResumen.entity';
 import { FichaCompraResumen } from '../../models/entities/FichaCompraResumen.entity';
+import { FichaCostoResumen } from '../../models/entities/FichaCostoResumen.entity';
 
 @ObjectType()
 @Index("Actualizacion", ["actualizacion"], {})
@@ -295,4 +296,8 @@ export class Proveedores {
   @Field(() => [FichaCompraResumen], { nullable: true })
   @OneToMany(() => FichaCompraResumen,(fichaCompraResumen) => fichaCompraResumen.proveedor)
   fichaCompraResumen: FichaCompraResumen[];
+
+  @Field(() => [FichaCostoResumen], { nullable: true })
+  @OneToMany(() => FichaCostoResumen,(fichaCostoResumen) => fichaCostoResumen.proveedor)
+  fichaCostoResumen: FichaCostoResumen[];
 }

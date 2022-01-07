@@ -14,7 +14,7 @@ export class CreateConfiguracionInput {
   @Field(() => Int)
   vigenciaContrato: number;
 
-  @Field()
+  @Field({nullable: true})
   pathContratosPdf: string | null;
 
   @Field(() => Int)

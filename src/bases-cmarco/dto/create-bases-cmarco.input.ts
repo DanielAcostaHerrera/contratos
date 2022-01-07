@@ -5,7 +5,7 @@ export class CreateBasesCmarcoInput {
   @Field(() => Int, { nullable: true})
   idBaseCMarco?: number;
 
-  @Field(() => Int)
+  @Field(() => Int, { nullable: true})
   idBasesGenerales: number | null;
 
   @Field(() => Int)
@@ -14,10 +14,10 @@ export class CreateBasesCmarcoInput {
   @Field(() => Int)
   consecutivo: number;
 
-  @Field()
+  @Field({ nullable: true})
   directivaTrd: string | null;
 
-  @Field()
+  @Field({ nullable: true})
   directivaGae: string | null;
 
   @Field()
@@ -41,9 +41,6 @@ export class CreateBasesCmarcoInput {
   @Field(() => Float)
   importeFinanciamiento: number;
 
-  @Field(() => Float)
-  importeConFinanciamiento: number;
-
   @Field(() => Int)
   idPuerto: number;
 
@@ -59,27 +56,18 @@ export class CreateBasesCmarcoInput {
   @Field()
   actualizado: Date;
 
-  @Field()
-  importeTotalLetras: string | null;
-
-  @Field()
-  importeFinanciamientoLetras: string | null;
-
-  @Field()
-  importeTotalFinanciamientoLetras: string | null;
-
-  @Field()
+  @Field({ nullable: true})
   periodoInicV: Date | null;
 
-  @Field()
+  @Field({ nullable: true})
   periodoFinV: Date | null;
 
-  @Field(() => Int)
+  @Field(() => Int,{ nullable: true})
   idComprador: number | null;
 
-  @Field()
+  @Field({ nullable: true})
   noCMarco: string | null;
 
-  @Field()
+  @Field({ nullable: true})
   nProveedor: string | null;
 }

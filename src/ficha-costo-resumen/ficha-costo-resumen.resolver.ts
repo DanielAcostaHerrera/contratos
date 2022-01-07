@@ -8,6 +8,9 @@ import { BasesCMarco } from 'src/models/entities/BasesCMarco.entity';
 import { FormasPago } from 'src/models/entities/FormasPago.entity';
 import { Puertos } from 'src/models/entities/Puertos.entity';
 import { Embalajes } from 'src/models/entities/Embalajes.entity';
+import { Proveedores } from 'src/modelsMercurio/entities/Proveedores.entity';
+import { Paises } from 'src/modelsMercurio/entities/Paises.entity';
+import { CodigosParaLaVenta } from 'src/modelsMercurio/entities/CodigosParaLaVenta.entity';
 
 @Resolver(() => FichaCostoResumen)
 export class FichaCostoResumenResolver {
@@ -66,5 +69,20 @@ export class FichaCostoResumenResolver {
   @ResolveField(() => Embalajes, {nullable: true})
   embalaje(@Parent() fichaCostoResumen: FichaCostoResumen): Promise<Embalajes> {
     return this.fichaCostoResumenService.getEmbalaje(fichaCostoResumen.idEmbalaje);
+  }
+
+  @ResolveField(() => Proveedores, {nullable: true})
+  proveedor(@Parent() fichaCostoResumen: FichaCostoResumen): Promise<Proveedores> {
+    return this.fichaCostoResumenService.getProveedor(fichaCostoResumen.idProveedor);
+  }
+
+  @ResolveField(() => Paises, {nullable: true})
+  pais(@Parent() fichaCostoResumen: FichaCostoResumen): Promise<Paises> {
+    return this.fichaCostoResumenService.getPais(fichaCostoResumen.idPais);
+  }
+
+  @ResolveField(() => CodigosParaLaVenta, {nullable: true})
+  codigo(@Parent() fichaCostoResumen: FichaCostoResumen): Promise<CodigosParaLaVenta> {
+    return this.fichaCostoResumenService.getCodigo(fichaCostoResumen.idCodigo);
   }
 }

@@ -8,19 +8,19 @@ export class CreateEmbarqueInput {
   @Field()
   fechaEntrega: Date;
 
-  @Field(() => Int)
-  idContrato: number;
+  @Field(() => Int,{nullable: true})
+  idContrato: number | null;
   
-  @Field(() => Int)
-  idEjecutivo: number;
+  @Field(() => Int,{nullable: true})
+  idEjecutivo: number | null;
 
   @Field(() => Int)
   numero: number;
 
-  @Field(() => Int)
+  @Field(() => Int,{nullable: true})
   destino: number | null;
 
-  @Field(() => Float)
+  @Field(() => Float,{nullable: true})
   descuento: number | null;
 
   @Field()
@@ -44,7 +44,7 @@ export class CreateEmbarqueInput {
   @Field(() => Float)
   financiamiento: number;
 
-  @Field()
+  @Field({nullable: true})
   maquina: string | null;
 
   @Field(() => Int)

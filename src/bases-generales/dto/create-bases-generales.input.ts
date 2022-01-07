@@ -50,9 +50,6 @@ export class CreateBasesGeneralesInput {
   @Field(() => Int)
   vigencia: number;
 
-  @Field({nullable: true})
-  fechaVencimiento: Date | null;
-
   @Field()
   aprobado: boolean;
 
@@ -64,7 +61,4 @@ export class CreateBasesGeneralesInput {
 
   @Field()
   actualizado: Date;
-
-  @Field({nullable: true})
-  noContrato: string | null;
 }

@@ -5,42 +5,42 @@ export class CreateDatosEntidadInput {
   @Field(() => Int)
   codigo: number;
 
-  @Field()
+  @Field({nullable: true})
   cuentaUsd: string | null;
 
-  @Field()
+  @Field({nullable: true})
   codAgenciaUsd: string | null;
 
-  @Field()
+  @Field({nullable: true})
   agenciaUsd: string | null;
 
-  @Field()
+  @Field({nullable: true})
   faxAgenciaUsd: string | null;
 
-  @Field()
+  @Field({nullable: true})
   cuentaMn: string | null;
 
-  @Field()
+  @Field({nullable: true})
   codAgenciaMn: string | null;
 
-  @Field()
+  @Field({nullable: true})
   agenciaMn: string | null;
 
-  @Field()
+  @Field({nullable: true})
   faxAgenciaMn: string | null;
 
-  @Field()
+  @Field({nullable: true})
   codigoEnt: string | null;
 
-  @Field()
+  @Field({nullable: true})
   codigoMincex: string | null;
 
-  @Field()
+  @Field({nullable: true})
   licCComercio: string | null;
 
-  @Field()
+  @Field({nullable: true})
   nombre: string | null;
 
-  @Field()
+  @Field({nullable: true})
   compaIa: string | null;
 }

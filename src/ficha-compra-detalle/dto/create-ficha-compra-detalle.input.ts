@@ -23,7 +23,7 @@ export class CreateFichaCompraDetalleInput {
   @Field(() => Float)
   pCosto: number;
 
-  @Field()
+  @Field({nullable: true})
   partida: string | null;
 
   @Field(() => Float)

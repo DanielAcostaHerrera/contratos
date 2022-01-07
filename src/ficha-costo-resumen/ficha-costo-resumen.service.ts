@@ -15,12 +15,19 @@ import { BasesCMarco } from 'src/models/entities/BasesCMarco.entity';
 import { FormasPago } from 'src/models/entities/FormasPago.entity';
 import { Puertos } from 'src/models/entities/Puertos.entity';
 import { Embalajes } from 'src/models/entities/Embalajes.entity';
+import { ProveedoresService } from 'src/proveedores/proveedores.service';
+import { PaisesService } from 'src/paises/paises.service';
+import { CodigosParaLaVentaService } from 'src/codigos-para-la-venta/codigos-para-la-venta.service';
+import { Proveedores } from 'src/modelsMercurio/entities/Proveedores.entity';
+import { Paises } from 'src/modelsMercurio/entities/Paises.entity';
+import { CodigosParaLaVenta } from 'src/modelsMercurio/entities/CodigosParaLaVenta.entity';
 
 @Injectable()
 export class FichaCostoResumenService {
   constructor(@InjectRepository(FichaCostoResumen) public readonly fichaCostoResumenRepository: Repository<FichaCostoResumen>,private basesCmarcoService: BasesCmarcoService,
   private monedaService: MonedaService,private FormasPagoService: FormasPagoService,private incotermService: IncotermService,
-  private puertosService: PuertosService,private embalajesService: EmbalajesService) {}
+  private puertosService: PuertosService,private embalajesService: EmbalajesService,
+  private proveedoresService: ProveedoresService,private paisesService: PaisesService,private codigosParaLaVentaService: CodigosParaLaVentaService,) {}
 
 
   async save(createFichaCostoResumenInput: CreateFichaCostoResumenInput) : Promise<FichaCostoResumen> {
@@ -67,5 +74,17 @@ export class FichaCostoResumenService {
 
   async getEmbalaje (embalajeId: number) : Promise<Embalajes>{
     return this.embalajesService.findOne(embalajeId);
+  }
+
+  async getProveedor (Id: number) : Promise<Proveedores>{
+    return this.proveedoresService.findOne(Id);
+  }
+
+  async getPais (Id: number) : Promise<Paises>{
+    return this.paisesService.findOne(Id);
+  }
+
+  async getCodigo (Id: number) : Promise<CodigosParaLaVenta>{
+    return this.codigosParaLaVentaService.findOne(Id);
   }
 }

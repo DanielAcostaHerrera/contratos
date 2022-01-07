@@ -24,27 +24,27 @@ export class FacturaResumen {
   @Field(() => Int)
   idFactura: number;
 
-  @Column("int", { name: "IdContrato", nullable: true })
+  @Column("int", { name: "IdContrato"})
   @Field(() => Int)
   idContrato: number;
 
   @Column("int", { name: "IdEmbarque", nullable: true })
-  @Field(() => Int)
-  idEmbarque: number;
+  @Field(() => Int,{nullable: true})
+  idEmbarque: number | null;
 
   @Column("int", { name: "IdEjecutivo", nullable: true })
-  @Field(() => Int)
-  idEjecutivo: number;
+  @Field(() => Int,{nullable: true})
+  idEjecutivo: number | null;
 
-  @Column("int", { name: "IdNegociacion", nullable: true })
+  @Column("int", { name: "IdNegociacion" })
   @Field(() => Int)
   idNegociacion: number;
 
   @Column("int", { name: "IdPuertoDestino", nullable: true })
-  @Field(() => Int)
-  idPuertoDestino: number;
+  @Field(() => Int,{nullable: true})
+  idPuertoDestino: number | null;
 
-  @Column("int", { name: "RealizadoPor", nullable: true })
+  @Column("int", { name: "RealizadoPor" })
   @Field(() => Int)
   realizadoPor: number;
 

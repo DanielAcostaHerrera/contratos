@@ -15,6 +15,9 @@ import { Puertos } from "./Puertos.entity";
 import { Embalajes } from "./Embalajes.entity";
 import { Field, Float, Int, ObjectType } from "@nestjs/graphql";
 import { Contratos } from "./Contratos.entity";
+import { Proveedores } from "../../modelsMercurio/entities/Proveedores.entity";
+import { Paises } from "../../modelsMercurio/entities/Paises.entity";
+import { CodigosParaLaVenta } from "../../modelsMercurio/entities/CodigosParaLaVenta.entity";
 
 @ObjectType()
 @Index("IX_FichaCostoResumen", ["fecha"], {})
@@ -99,9 +102,9 @@ export class FichaCostoResumen {
   @Field(() => Float,{nullable: true})
   cantidad: number | null;
 
-  @Column("nvarchar", { name: "Codigo", nullable: true, length: 13 })
+  @Column("int", { name: "Codigo", nullable: true })
   @Field({nullable: true})
-  codigo: string | null;
+  idCodigo: number | null;
 
   @Column("nvarchar", { name: "Descripcion", nullable: true, length: 200 })
   @Field({nullable: true})
@@ -416,4 +419,19 @@ export class FichaCostoResumen {
   @Field(() => [Contratos], {nullable: true})
   @OneToMany(() => Contratos, (contratos) => contratos.fichaCostoResumen)
   contratos: Contratos[];
+
+  @Field(() => Proveedores, {nullable: true})
+  @ManyToOne(() => Proveedores, (proveedor) => proveedor.fichaCostoResumen)
+  @JoinColumn([{ name: "IdProveedor", referencedColumnName: "codigo" }])
+  proveedor: Proveedores;
+
+  @Field(() => Paises, {nullable: true})
+  @ManyToOne(() => Paises, (paises) => paises.fichaCostoResumen)
+  @JoinColumn([{ name: "IdPais", referencedColumnName: "pais" }])
+  pais: Paises;
+
+  @Field(() => CodigosParaLaVenta, {nullable: true})
+  @ManyToOne(() => CodigosParaLaVenta, (codigo) => codigo.fichaCostoResumen)
+  @JoinColumn([{ name: "Codigo", referencedColumnName: "idCodigo" }])
+  codigo: CodigosParaLaVenta;
 }

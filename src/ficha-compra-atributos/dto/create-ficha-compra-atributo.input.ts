@@ -8,87 +8,87 @@ export class CreateFichaCompraAtributoInput {
   @Field(() => Int)
   idFichaCompraDetalle: number;
 
-  @Field()
+  @Field({nullable: true})
   descripcion: string | null;
 
-  @Field()
+  @Field({nullable: true})
   marca: string | null;
 
-  @Field()
+  @Field({nullable: true})
   naturaleza: string | null;
 
-  @Field()
+  @Field({nullable: true})
   colores: string | null;
 
-  @Field()
+  @Field({nullable: true})
   corte: string | null;
 
-  @Field()
+  @Field({nullable: true})
   suela: string | null;
 
-  @Field()
+  @Field({nullable: true})
   tallas: string | null;
 
-  @Field(() => Int)
+  @Field(() => Int,{nullable: true})
   pack: number | null;
 
-  @Field(() => Int)
+  @Field(() => Int,{nullable: true})
   blts: number | null;
 
-  @Field()
+  @Field({nullable: true})
   umbto: string | null;
 
-  @Field(() => Float)
+  @Field(() => Float,{nullable: true})
   cubbtopies: number | null;
 
-  @Field(() => Float)
+  @Field(() => Float,{nullable: true})
   cubbtom3: number | null;
 
-  @Field(() => Float)
+  @Field(() => Float,{nullable: true})
   pc: number | null;
 
-  @Field(() => Float)
+  @Field(() => Float,{nullable: true})
   flete: number | null;
 
-  @Field(() => Float)
+  @Field(() => Float,{nullable: true})
   seguro: number | null;
 
-  @Field(() => Float)
+  @Field(() => Float,{nullable: true})
   pv: number | null;
 
-  @Field(() => Float)
+  @Field(() => Float,{nullable: true})
   um: number | null;
 
-  @Field()
+  @Field({nullable: true})
   embalaje: string | null;
 
-  @Field()
+  @Field({nullable: true})
   paisorigen: string | null;
 
-  @Field()
+  @Field({nullable: true})
   partida: string | null;
 
-  @Field(() => Float)
+  @Field(() => Float,{nullable: true})
   pesombkg: number | null;
 
-  @Field(() => Float)
+  @Field(() => Float,{nullable: true})
   volemb: number | null;
 
-  @Field()
+  @Field({nullable: true})
   ean: string | null;
 
-  @Field()
+  @Field({nullable: true})
   descripEan: string | null;
 
-  @Field(() => Float)
+  @Field(() => Float,{nullable: true})
   gastaduan: number | null;
 
-  @Field(() => Float)
+  @Field(() => Float,{nullable: true})
   gastbanc: number | null;
 
-  @Field(() => Float)
+  @Field(() => Float,{nullable: true})
   mcmn: number | null;
 
-  @Field(() => Float)
+  @Field(() => Float,{nullable: true})
   mccuc: number | null;
 }

@@ -11,16 +11,16 @@ export class CreateBasesCmarcoEspecificoInput {
   @Field(() => Int)
   idEspecifico: number;
 
-  @Field(() => Float)
+  @Field(() => Float,{ nullable: true})
   pDisponible: number | null;
 
-  @Field(() => Float)
+  @Field(() => Float,{ nullable: true})
   pReservado: number | null;
 
-  @Field(() => Float)
+  @Field(() => Float,{ nullable: true})
   pEjecutado: number | null;
 
-  @Field(() => Float)
+  @Field(() => Float,{ nullable: true})
   pPendiente: number | null;
 
   @Field(() => Int)

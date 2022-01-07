@@ -5,16 +5,16 @@ export class CreateContratoDesgloseInput {
   @Field(() => Int,{nullable:true})
   idContratoDesglose?: number;
 
-  @Field(() => Int)
+  @Field(() => Int,{nullable: true})
   idEmbarque: number | null;
   
-  @Field(() => Int)
+  @Field(() => Int,{nullable: true})
   idReferencia: number | null;
 
   @Field(() => Int)
   idCodigo: number;
 
-  @Field()
+  @Field({nullable: true})
   descripcionAx: string | null;
 
   @Field(() => Int)

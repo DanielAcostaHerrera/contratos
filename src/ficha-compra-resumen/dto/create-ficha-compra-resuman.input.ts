@@ -26,19 +26,19 @@ export class CreateFichaCompraResumanInput {
   @Field(() => Int)
   contenedores: number;
 
-  @Field()
+  @Field({nullable: true})
   idEmbalaje: string | null;
 
-  @Field(() => Float)
+  @Field(() => Float,{nullable: true})
   pesoBruto: number | null;
 
-  @Field(() => Float)
+  @Field(() => Float,{nullable: true})
   pesoNeto: number | null;
 
-  @Field(() => Float)
+  @Field(() => Float,{nullable: true})
   cantidadEmbalaje: number | null;
 
-  @Field(() => Float)
+  @Field(() => Float,{nullable: true})
   cantidad: number | null;
 
   @Field(() => Float)
@@ -83,7 +83,7 @@ export class CreateFichaCompraResumanInput {
   @Field(() => Float)
   seguroContrato: number;
 
-  @Field(() => Float)
+  @Field(() => Float,{nullable: true})
   tasaSeguro: number | null;
 
   @Field(() => Float)
@@ -161,10 +161,10 @@ export class CreateFichaCompraResumanInput {
   @Field()
   fecha: Date;
 
-  @Field()
+  @Field({nullable: true})
   nota: string | null;
 
-  @Field(() => Int)
+  @Field(() => Int,{nullable: true})
   realizadoPor: number | null;
 
   @Field()
@@ -173,16 +173,16 @@ export class CreateFichaCompraResumanInput {
   @Field()
   terminado: boolean;
 
-  @Field()
+  @Field({nullable: true})
   fechaAprobado: Date | null;
 
   @Field()
   cancelado: boolean;
 
-  @Field(() => Int)
+  @Field(() => Int,{nullable: true})
   canceladoPor: number | null;
 
-  @Field()
+  @Field({nullable: true})
   fechaCancelacion: Date | null;
 
   @Field()

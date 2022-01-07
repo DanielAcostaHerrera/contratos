@@ -62,22 +62,22 @@ export class CreateContratoInput {
   @Field(() => Int)
   idProveedor: number;
 
-  @Field()
+  @Field({nullable: true})
   idEmpresaSeguro: number | null;
 
-  @Field(() => Int)
+  @Field(() => Int,{nullable: true})
   idEmpresaNaviera: number | null;
 
-  @Field()
+  @Field({nullable: true})
   lugarEntrega: string | null;
 
-  @Field()
+  @Field({nullable: true})
   notas: string | null;
 
   @Field()
   permitirEmbarquesParciales: boolean;
 
-  @Field(() => Int)
+  @Field(() => Int,{nullable: true})
   cantidadEp: number | null;
 
   @Field()
@@ -86,31 +86,31 @@ export class CreateContratoInput {
   @Field()
   permitirTrasbordos: boolean;
 
-  @Field()
+  @Field({nullable: true})
   producto: string | null;
 
-  @Field(() => Int)
+  @Field(() => Int,{nullable: true})
   noEntregasParciales: number | null;
 
   @Field()
   fechaElaboracion: Date;
 
-  @Field()
+  @Field({nullable: true})
   fechaInicial: Date | null;
 
-  @Field()
+  @Field({nullable: true})
   fechaFinal: Date | null;
 
-  @Field()
+  @Field({nullable: true})
   fechaFirma: Date | null;
 
-  @Field()
+  @Field({nullable: true})
   fechaRecepcion: Date | null;
 
-  @Field()
+  @Field({nullable: true})
   fechaArribo: Date | null;
 
-  @Field()
+  @Field({nullable: true})
   fechaPFirma: Date | null;
 
   @Field(() => Float)
@@ -119,7 +119,7 @@ export class CreateContratoInput {
   @Field(() => Float)
   tasaMoneda: number;
 
-  @Field()
+  @Field({nullable: true})
   fechaTasa: Date | null;
 
   @Field(() => Float)

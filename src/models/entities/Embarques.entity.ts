@@ -31,13 +31,13 @@ export class Embarques {
   @Field()
   fechaEntrega: Date;
 
-  @Column("int", { name: "IdContrato" })
-  @Field(() => Int)
-  idContrato: number;
+  @Column("int", { name: "IdContrato" ,nullable: true})
+  @Field(() => Int,{nullable: true})
+  idContrato: number | null;
   
-  @Column("int", { name: "IdEjecutivo" })
-  @Field(() => Int)
-  idEjecutivo: number;
+  @Column("int", { name: "IdEjecutivo",nullable: true})
+  @Field(() => Int,{nullable: true})
+  idEjecutivo: number | null;
 
   @Column("int", { name: "Numero" })
   @Field(() => Int)

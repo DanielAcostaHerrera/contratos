@@ -9,11 +9,14 @@ import { FormasPagoModule } from 'src/formas-pago/formas-pago.module';
 import { IncotermModule } from 'src/incoterm/incoterm.module';
 import { PuertosModule } from 'src/puertos/puertos.module';
 import { EmbalajesModule } from 'src/embalajes/embalajes.module';
+import { ProveedoresModule } from 'src/proveedores/proveedores.module';
+import { PaisesModule } from 'src/paises/paises.module';
+import { CodigosParaLaVentaModule } from 'src/codigos-para-la-venta/codigos-para-la-venta.module';
 
 @Module({
   imports:[TypeOrmModule.forFeature([
     FichaCostoResumen
-  ]),BasesCmarcoModule,MonedaModule,FormasPagoModule,IncotermModule,PuertosModule,EmbalajesModule],
+  ]),BasesCmarcoModule,MonedaModule,FormasPagoModule,IncotermModule,PuertosModule,EmbalajesModule,ProveedoresModule,PaisesModule,CodigosParaLaVentaModule],
   providers: [FichaCostoResumenResolver, FichaCostoResumenService],
   exports: [FichaCostoResumenService]
 })

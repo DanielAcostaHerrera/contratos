@@ -5,21 +5,21 @@ export class CreateCompradoresInput {
   @Field(() => Int, {nullable: true})
   idComprador?: number;
 
-  @Field()
+  @Field({nullable: true})
   nombre: string | null;
 
-  @Field()
+  @Field({nullable: true})
   representante: string | null;
 
-  @Field()
+  @Field({nullable: true})
   domicilio: string | null;
 
-  @Field()
+  @Field({nullable: true})
   cargo: string | null;
 
-  @Field()
+  @Field({nullable: true})
   doble: boolean | null;
 
-  @Field()
+  @Field({nullable: true})
   activo: boolean | null;
 }

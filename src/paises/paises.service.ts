@@ -9,11 +9,11 @@ export class PaisesService {
 
   async findAll(): Promise<Paises[]> {
     return await this.paisesRepository.find({relations: ['basesGenerales','campanaEtapasContratacion','contratos','pliegoConcurrenciaResumen','facturaDesgloses',
-  'tiemposTravesias','fichaCompraResumen']});
+  'tiemposTravesias','fichaCompraResumen','fichaCostoResumen']});
   }
 
   async findOne(id: number) : Promise<Paises> {
     return await this.paisesRepository.findOne(id,{relations: ['basesGenerales','campanaEtapasContratacion','contratos','pliegoConcurrenciaResumen','facturaDesgloses',
-  'tiemposTravesias','fichaCompraResumen']});
+  'tiemposTravesias','fichaCompraResumen','fichaCostoResumen']});
   }
 }
