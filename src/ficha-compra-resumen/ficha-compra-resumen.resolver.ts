@@ -6,6 +6,8 @@ import { Monedas } from 'src/models/entities/Monedas.entity';
 import { Incoterm } from 'src/models/entities/Incoterm.entity';
 import { Contratos } from 'src/models/entities/Contratos.entity';
 import { NegociacionResumen } from 'src/models/entities/NegociacionResumen.entity';
+import { Paises } from 'src/modelsMercurio/entities/Paises.entity';
+import { Proveedores } from 'src/modelsMercurio/entities/Proveedores.entity';
 
 @Resolver(() => FichaCompraResumen)
 export class FichaCompraResumenResolver {
@@ -54,5 +56,15 @@ export class FichaCompraResumenResolver {
   @ResolveField(() => NegociacionResumen, {nullable: true})
   negociacionResumen(@Parent() fichaCompraResumen: FichaCompraResumen): Promise<NegociacionResumen> {
     return this.fichaCompraResumenService.getNegociacionResumen(fichaCompraResumen.idNegociacion);
+  }
+
+  @ResolveField(() => Paises, {nullable: true})
+  pais(@Parent() fichaCompraResumen: FichaCompraResumen): Promise<Paises> {
+    return this.fichaCompraResumenService.getPais(fichaCompraResumen.idPais);
+  }
+
+  @ResolveField(() => Proveedores, {nullable: true})
+  proveedor(@Parent() fichaCompraResumen: FichaCompraResumen): Promise<Proveedores> {
+    return this.fichaCompraResumenService.getProveedor(fichaCompraResumen.idProveedor);
   }
 }

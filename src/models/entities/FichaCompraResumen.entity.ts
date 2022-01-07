@@ -13,6 +13,8 @@ import { Incoterm } from "./Incoterm.entity";
 import { Contratos } from "./Contratos.entity";
 import { NegociacionResumen } from "./NegociacionResumen.entity";
 import { Field, Float, Int, ObjectType } from "@nestjs/graphql";
+import { Paises } from "../../modelsMercurio/entities/Paises.entity";
+import { Proveedores } from "../../modelsMercurio/entities/Proveedores.entity";
 
 @ObjectType()
 @Index("PK_FichaCompraResumen", ["idFicha"], { unique: true })
@@ -509,4 +511,14 @@ export class FichaCompraResumen {
   @ManyToOne(() => NegociacionResumen,(negociacionResumen) => negociacionResumen.fichaCompraResumen)
   @JoinColumn([{ name: "IdNegociacion", referencedColumnName: "idNegociacion" }])
   negociacionResumen: NegociacionResumen;
+
+  @Field(() => Paises, {nullable: true})
+  @ManyToOne(() => Paises,(pais) => pais.fichaCompraResumen)
+  @JoinColumn([{ name: "IdPais", referencedColumnName: "pais" }])
+  pais: Paises;
+
+  @Field(() => Proveedores, {nullable: true})
+  @ManyToOne(() => Proveedores,(proveedor) => proveedor.fichaCompraResumen)
+  @JoinColumn([{ name: "IdProveedor", referencedColumnName: "codigo" }])
+  proveedor: Proveedores;
 }

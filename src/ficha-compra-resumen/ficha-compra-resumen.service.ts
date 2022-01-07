@@ -7,15 +7,20 @@ import { FichaCompraResumen } from 'src/models/entities/FichaCompraResumen.entit
 import { Incoterm } from 'src/models/entities/Incoterm.entity';
 import { Monedas } from 'src/models/entities/Monedas.entity';
 import { NegociacionResumen } from 'src/models/entities/NegociacionResumen.entity';
+import { Paises } from 'src/modelsMercurio/entities/Paises.entity';
+import { Proveedores } from 'src/modelsMercurio/entities/Proveedores.entity';
 import { MonedaService } from 'src/moneda/moneda.service';
 import { NegociacionResumenService } from 'src/negociacion-resumen/negociacion-resumen.service';
+import { PaisesService } from 'src/paises/paises.service';
+import { ProveedoresService } from 'src/proveedores/proveedores.service';
 import { Repository } from 'typeorm';
 import { CreateFichaCompraResumanInput } from './dto/create-ficha-compra-resuman.input';
 
 @Injectable()
 export class FichaCompraResumenService {
   constructor(@InjectRepository(FichaCompraResumen) public readonly fichaCompraResumenRepository: Repository<FichaCompraResumen>,private monedaService: MonedaService,
-  private incotermService: IncotermService,private contratosService: ContratosService,private negociacionResumenService: NegociacionResumenService) {}
+  private incotermService: IncotermService,private contratosService: ContratosService,private negociacionResumenService: NegociacionResumenService,
+  private paisesService: PaisesService,private proveedoresService: ProveedoresService) {}
 
 
   async save(createFichaCompraResumanInput: CreateFichaCompraResumanInput) : Promise<FichaCompraResumen> {
@@ -54,5 +59,13 @@ export class FichaCompraResumenService {
 
   async getNegociacionResumen (negociacionId: number) : Promise<NegociacionResumen>{
     return this.negociacionResumenService.findOne(negociacionId);
+  }
+
+  async getPais (Id: number) : Promise<Paises>{
+    return this.paisesService.findOne(Id);
+  }
+
+  async getProveedor (Id: number) : Promise<Proveedores>{
+    return this.proveedoresService.findOne(Id);
   }
 }

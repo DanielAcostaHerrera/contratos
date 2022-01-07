@@ -7,11 +7,13 @@ import { MonedaModule } from 'src/moneda/moneda.module';
 import { IncotermModule } from 'src/incoterm/incoterm.module';
 import { ContratosModule } from 'src/contratos/contratos.module';
 import { NegociacionResumenModule } from 'src/negociacion-resumen/negociacion-resumen.module';
+import { PaisesModule } from 'src/paises/paises.module';
+import { ProveedoresModule } from 'src/proveedores/proveedores.module';
 
 @Module({
   imports:[TypeOrmModule.forFeature([
     FichaCompraResumen
-  ]),MonedaModule,IncotermModule,ContratosModule,NegociacionResumenModule],
+  ]),MonedaModule,IncotermModule,ContratosModule,NegociacionResumenModule,PaisesModule,ProveedoresModule],
   providers: [FichaCompraResumenResolver, FichaCompraResumenService],
   exports: [FichaCompraResumenService]
 })
