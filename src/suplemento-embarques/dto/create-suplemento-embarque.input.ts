@@ -23,7 +23,7 @@ export class CreateSuplementoEmbarqueInput {
   @Field(() => Int)
   numero: number;
 
-  @Field(() => Float)
+  @Field(() => Float,{nullable: true})
   descuento: number | null;
 
   @Field()

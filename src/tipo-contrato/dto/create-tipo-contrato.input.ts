@@ -8,10 +8,10 @@ export class CreateTipoContratoInput {
   @Field()
   tipoContrato: string;
 
-  @Field()
+  @Field({nullable: true})
   encabezado: string | null;
 
-  @Field()
+  @Field({nullable: true})
   ambasPartes: string | null;
 
   @Field()

@@ -35,7 +35,7 @@ export class CreatePliegoConcurrenciaResumanInput {
   @Field()
   fechaOfertaRecibida: Date;
 
-  @Field()
+  @Field({nullable: true})
   fechaEntregaOferta: Date | null;
 
   @Field(() => Int)

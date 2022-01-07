@@ -17,6 +17,6 @@ export class CreateSolicitudContratacionInput {
   @Field()
   fecha: Date;
 
-  @Field()
+  @Field({nullable: true})
   nota: string | null;
 }

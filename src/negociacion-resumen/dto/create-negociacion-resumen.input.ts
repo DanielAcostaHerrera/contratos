@@ -32,33 +32,33 @@ export class CreateNegociacionResumenInput {
   @Field()
   cancelada: boolean;
 
-  @Field()
+  @Field({nullable: true})
   nota: string | null;
 
-  @Field()
+  @Field({nullable: true})
   noNeg: string | null;
 
-  @Field(() => Int)
+  @Field(() => Int,{nullable: true})
   idProveedor: number | null;
 
-  @Field(() => Float)
+  @Field(() => Float,{nullable: true})
   importeTrd: number | null;
 
-  @Field(() => Float)
+  @Field(() => Float,{nullable: true})
   importeGae: number | null;
 
-  @Field(() => Float)
+  @Field(() => Float,{nullable: true})
   importeCuc: number | null;
 
-  @Field()
+  @Field({nullable: true})
   comentarios: string | null;
 
-  @Field()
+  @Field({nullable: true})
   operacion: boolean | null;
 
-  @Field(() => Float)
+  @Field(() => Float,{nullable: true})
   tasa: number | null;
 
-  @Field()
+  @Field({nullable: true})
   terminado: boolean | null;
 }

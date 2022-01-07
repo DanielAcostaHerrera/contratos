@@ -11,12 +11,12 @@ export class CreateNegociacionDetallesInput {
   @Field(() => Int)
   consecutivo: number;
 
-  @Field()
+  @Field({nullable: true})
   fecha: Date | null;
 
-  @Field(() => Int)
+  @Field(() => Int,{nullable: true})
   acuerdo: number | null;
 
-  @Field()
+  @Field({nullable: true})
   detalles: string | null;
 }

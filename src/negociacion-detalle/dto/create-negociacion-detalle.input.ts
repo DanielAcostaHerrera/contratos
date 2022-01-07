@@ -23,7 +23,7 @@ export class CreateNegociacionDetalleInput {
   @Field(() => Float)
   tasa: number;
 
-  @Field(() => Int)
+  @Field(() => Int,{nullable: true})
   idAcuerdo: number | null;
 
   @Field()

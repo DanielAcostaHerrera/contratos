@@ -32,10 +32,10 @@ export class CreateSolicitudOfertasEntradaInput {
   @Field(() => Float)
   cantidad: number;
 
-  @Field()
+  @Field({nullable: true})
   dimension: string | null;
 
-  @Field()
+  @Field({nullable: true})
   cubicaje: string | null;
 
   @Field(() => Float)

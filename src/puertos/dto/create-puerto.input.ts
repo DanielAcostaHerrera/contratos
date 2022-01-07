@@ -11,6 +11,6 @@ export class CreatePuertoInput {
   @Field(() => Int)
   pais: number;
 
-  @Field()
+  @Field({nullable: true})
   deposito: string | null;
 }

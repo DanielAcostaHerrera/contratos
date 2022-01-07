@@ -11,13 +11,13 @@ export class CreateSuplementoDesgloseInput {
   @Field(() => Int)
   idEmbarque: number;
 
-  @Field(() => Int)
+  @Field(() => Int,{nullable: true})
   idReferencia: number | null;
 
   @Field(() => Int)
   idCodigo: number;
 
-  @Field()
+  @Field({nullable: true})
   descripcionSp: string | null;
 
   @Field(() => Int)

@@ -17,10 +17,10 @@ export class CreateSolicitudCodificacionInput {
   @Field(() => Int)
   idUm: number;
 
-  @Field()
+  @Field({nullable: true})
   marca: string | null;
 
-  @Field()
+  @Field({nullable: true})
   naturaleza: string | null;
 
   @Field(() => Int)
@@ -29,13 +29,13 @@ export class CreateSolicitudCodificacionInput {
   @Field(() => Float)
   cantidad: number;
 
-  @Field()
+  @Field({nullable: true})
   dimension: string | null;
 
-  @Field()
+  @Field({nullable: true})
   cubicaje: string | null;
 
-  @Field()
+  @Field({nullable: true})
   idEmbalaje: number | null;
 
   @Field(() => Float)

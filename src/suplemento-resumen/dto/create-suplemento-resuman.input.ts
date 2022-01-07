@@ -38,25 +38,25 @@ export class CreateSuplementoResumanInput {
   @Field()
   fecha: Date;
 
-  @Field()
+  @Field(() => Int,{nullable: true})
   idEmpSeguro: number | null;
 
-  @Field(() => Int)
+  @Field(() => Int,{nullable: true})
   idEmpNaviera: number | null;
 
-  @Field()
+  @Field({nullable: true})
   lugarEntrega: string | null;
 
   @Field()
   cancelado: boolean;
 
-  @Field()
+  @Field({nullable: true})
   notas: string | null;
 
   @Field()
   permitirEmbarquesParciales: boolean;
 
-  @Field(() => Int)
+  @Field(() => Int,{nullable: true})
   cantidadEp: number | null;
 
   @Field()
@@ -68,7 +68,7 @@ export class CreateSuplementoResumanInput {
   @Field()
   producto: string;
 
-  @Field(() => Int)
+  @Field(() => Int,{nullable: true})
   noEntregasParciales: number | null;
 
   @Field()
@@ -77,13 +77,13 @@ export class CreateSuplementoResumanInput {
   @Field()
   fFinal: Date;
 
-  @Field()
+  @Field({nullable: true})
   fFirma: Date | null;
 
-  @Field()
+  @Field({nullable: true})
   fRecepcion: Date | null;
 
-  @Field()
+  @Field({nullable: true})
   fArribo: Date | null;
 
   @Field(() => Float)
@@ -92,7 +92,7 @@ export class CreateSuplementoResumanInput {
   @Field()
   terminadoS: boolean;
 
-  @Field()
+  @Field({nullable: true})
   notaSuple: string | null;
 
   @Field()
