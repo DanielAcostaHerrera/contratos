@@ -6,12 +6,12 @@ import { ContratoDesglose } from 'src/models/entities/ContratoDesglose.entity';
 import { EmbarquesModule } from 'src/embarques/embarques.module';
 import { ReferenciasModule } from 'src/referencias/referencias.module';
 import { UnidadMedidaModule } from 'src/unidad-medida/unidad-medida.module';
-import { DetalleDeCircularesAltasModule } from 'src/detalle-de-circulares-altas/detalle-de-circulares-altas.module';
+import { CodigosParaLaVentaModule } from 'src/codigos-para-la-venta/codigos-para-la-venta.module';
 
 @Module({
   imports: [TypeOrmModule.forFeature(
     [ContratoDesglose]
-  ),EmbarquesModule,ReferenciasModule,UnidadMedidaModule,DetalleDeCircularesAltasModule],
+  ),EmbarquesModule,ReferenciasModule,UnidadMedidaModule,CodigosParaLaVentaModule],
   providers: [ContratoDesgloseResolver, ContratoDesgloseService],
   exports: [ContratoDesgloseService]
 })

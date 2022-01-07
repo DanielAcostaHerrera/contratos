@@ -4,6 +4,7 @@ import { Column, Entity, Index, OneToMany } from "typeorm";
 import { BasesGenerales } from "../../models/entities/BasesGenerales.entity";
 import { Contratos } from '../../models/entities/Contratos.entity';
 import { PliegoConcurrenciaResumen } from '../../models/entities/PliegoConcurrenciaResumen.entity';
+import { FacturaDesglose } from '../../models/entities/FacturaDesglose.entity';
 
 @ObjectType()
 @Index("aaaaaPaises_PK", ["pais"], { unique: true })
@@ -98,4 +99,8 @@ export class Paises {
   @Field(() => [PliegoConcurrenciaResumen], { nullable: true })
   @OneToMany(() => PliegoConcurrenciaResumen,(pliegoConcurrenciaResumen) => pliegoConcurrenciaResumen.paisOrigenMercancia)
   pliegoConcurrenciaResumen: PliegoConcurrenciaResumen[];
+
+  @Field(() => [FacturaDesglose], { nullable: true })
+  @OneToMany(() => FacturaDesglose,(facturaDesglose) => facturaDesglose.pais)
+  facturaDesgloses: FacturaDesglose[];
 }

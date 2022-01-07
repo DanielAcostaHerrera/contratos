@@ -9,13 +9,10 @@ export class CreateFichaCompraDetalleInput {
   idFicha: number;
 
   @Field()
-  idProducto: string;
+  producto: string;
 
   @Field()
   codigo: string | null;
-
-  @Field()
-  descripcion: string;
 
   @Field(() => Int)
   idUm: number;

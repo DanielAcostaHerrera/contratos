@@ -1,5 +1,8 @@
 import { Field, Float, Int, ObjectType } from "@nestjs/graphql";
 import { Column, Entity, Index, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { CodigosParaLaVenta } from "../../modelsMercurio/entities/CodigosParaLaVenta.entity";
+import { Paises } from "../../modelsMercurio/entities/Paises.entity";
+import { Referencias } from "../../modelsMercurio/entities/Referencias.entity";
 import { FacturaResumen } from "./FacturaResumen.entity";
 
 @ObjectType()
@@ -12,7 +15,7 @@ export class FacturaDesglose {
 
   @Column("int", { name: "Referencia", nullable: true })
   @Field(() => Int,{nullable: true})
-  referencia: number | null;
+  idReferencia: number | null;
   
   @Column("int", { name: "IdFactura", nullable: true })
   @Field(() => Int)
@@ -20,7 +23,7 @@ export class FacturaDesglose {
 
   @Column("int", { name: "Codigo" })
   @Field(() => Int)
-  codigo: number;
+  idCodigo: number;
 
   @Column("int", { name: "Paquete" })
   @Field(() => Int)
@@ -44,7 +47,7 @@ export class FacturaDesglose {
 
   @Column("int", { name: "PaisOrigen", nullable: true })
   @Field(() => Int,{nullable: true})
-  paisOrigen: number | null;
+  idPaisOrigen: number | null;
 
   @Column("float", { name: "Suplemento", precision: 53, default: () => "(0)" })
   @Field(() => Float)
@@ -62,4 +65,19 @@ export class FacturaDesglose {
   @ManyToOne(() => FacturaResumen,(facturaResumen) => facturaResumen.facturaDesgloses)
   @JoinColumn([{ name: "IdFactura", referencedColumnName: "idFactura" }])
   facturaResumen: FacturaResumen;
+
+  @Field(() => Referencias, {nullable: true})
+  @ManyToOne(() => Referencias,(referencias) => referencias.facturaDesgloses)
+  @JoinColumn([{ name: "Referencia", referencedColumnName: "referenciaId" }])
+  referencia: Referencias;
+
+  @Field(() => CodigosParaLaVenta, {nullable: true})
+  @ManyToOne(() => CodigosParaLaVenta,(codigosParaLaVenta) => codigosParaLaVenta.facturaDesgloses)
+  @JoinColumn([{ name: "Codigo", referencedColumnName: "idCodigo" }])
+  codigo: CodigosParaLaVenta;
+
+  @Field(() => Paises, {nullable: true})
+  @ManyToOne(() => Paises,(paises) => paises.facturaDesgloses)
+  @JoinColumn([{ name: "PaisOrigen", referencedColumnName: "pais" }])
+  pais: Paises;
 }

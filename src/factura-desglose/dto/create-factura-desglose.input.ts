@@ -6,13 +6,13 @@ export class CreateFacturaDesgloseInput {
   idFacturaDesglose?: number;
 
   @Field(() => Int)
-  referencia: number | null;
+  idReferencia: number | null;
   
   @Field(() => Int)
   idFactura: number;
 
   @Field(() => Int)
-  codigo: number;
+  idCodigo: number;
 
   @Field(() => Int)
   paquete: number;
@@ -30,7 +30,7 @@ export class CreateFacturaDesgloseInput {
   precio: number;
 
   @Field(() => Int)
-  paisOrigen: number | null;
+  idPaisOrigen: number | null;
 
   @Field(() => Float)
   suplemento: number;

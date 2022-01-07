@@ -12,7 +12,7 @@ import { FichaCompraAtributos } from "./FichaCompraAtributos.entity";
 import { FichaCompraResumen } from "./FichaCompraResumen.entity";
 
 @ObjectType()
-@Index("IX_FichaCompraDetalle", ["idFicha", "idProducto"], { unique: true })
+@Index("IX_FichaCompraDetalle", ["idFicha", "producto"], { unique: true })
 @Index("PK_FichaCompraDetalle", ["idFichaCompraDetalle"], { unique: true })
 @Entity("FichaCompraDetalle", { schema: "CONTRATO.dbo" })
 export class FichaCompraDetalle {
@@ -24,17 +24,13 @@ export class FichaCompraDetalle {
   @Field(() => Int)
   idFicha: number;
 
-  @Column("nvarchar", { name: "IdProducto", length: 30 })
+  @Column("nvarchar", { name: "Producto" , length: 200})
   @Field()
-  idProducto: string;
+  producto: string;
 
   @Column("nvarchar", { name: "Codigo", nullable: true, length: 13 })
   @Field({nullable: true})
   codigo: string | null;
-
-  @Column("nvarchar", { name: "Descripcion", length: 200 })
-  @Field()
-  descripcion: string;
 
   @Column("int", { name: "IdUM" })
   @Field(() => Int)

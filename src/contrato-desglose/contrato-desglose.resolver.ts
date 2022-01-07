@@ -1,7 +1,7 @@
 import { Resolver, Query, Mutation, Args, Int, ResolveField, Parent } from '@nestjs/graphql';
 import { ContratoDesglose } from 'src/models/entities/ContratoDesglose.entity';
 import { Embarques } from 'src/models/entities/Embarques.entity';
-import { DetalleDeCircularesAltas } from 'src/modelsMercurio/entities/DetalleDeCircularesAltas.entity';
+import { CodigosParaLaVenta } from 'src/modelsMercurio/entities/CodigosParaLaVenta.entity';
 import { Referencias } from 'src/modelsMercurio/entities/Referencias.entity';
 import { UnidadMedida } from 'src/modelsMercurio/entities/UnidadMedida.entity';
 import { ContratoDesgloseService } from './contrato-desglose.service';
@@ -46,9 +46,9 @@ export class ContratoDesgloseResolver {
     return this.contratoDesgloseService.getReferencia(contratoDesglose.idReferencia);
   }
 
-  @ResolveField(() => DetalleDeCircularesAltas, {nullable: true})
-  detalleDeCircularesAltas(@Parent() contratoDesglose: ContratoDesglose): Promise<DetalleDeCircularesAltas> {
-    return this.contratoDesgloseService.getDetalleDeCircularesAltas(contratoDesglose.idCodigo);
+  @ResolveField(() => CodigosParaLaVenta, {nullable: true})
+  codigo(@Parent() contratoDesglose: ContratoDesglose): Promise<CodigosParaLaVenta> {
+    return this.contratoDesgloseService.getCodigo(contratoDesglose.idCodigo);
   }
 
   @ResolveField(() => UnidadMedida, {nullable: true})

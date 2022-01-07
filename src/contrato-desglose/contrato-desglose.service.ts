@@ -1,12 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { DetalleDeCircularesAltasService } from 'src/detalle-de-circulares-altas/detalle-de-circulares-altas.service';
+import { CodigosParaLaVentaService } from 'src/codigos-para-la-venta/codigos-para-la-venta.service';
 import { EmbarquesService } from 'src/embarques/embarques.service';
 import { ContratoDesglose } from 'src/models/entities/ContratoDesglose.entity';
 import { Embarques } from 'src/models/entities/Embarques.entity';
-import { DetalleDeCircularesAltas } from 'src/modelsMercurio/entities/DetalleDeCircularesAltas.entity';
 import { Referencias } from 'src/modelsMercurio/entities/Referencias.entity';
 import { UnidadMedida } from 'src/modelsMercurio/entities/UnidadMedida.entity';
+import { CodigosParaLaVenta } from 'src/modelsMercurio/entities/CodigosParaLaVenta.entity';
 import { ReferenciasService } from 'src/referencias/referencias.service';
 import { UnidadMedidaService } from 'src/unidad-medida/unidad-medida.service';
 import { Repository } from 'typeorm';
@@ -15,7 +15,7 @@ import { CreateContratoDesgloseInput } from './dto/create-contrato-desglose.inpu
 @Injectable()
 export class ContratoDesgloseService {
   constructor(@InjectRepository(ContratoDesglose) public readonly contratoDesgloseRepository: Repository<ContratoDesglose>,private embarquesService: EmbarquesService,
-  private referenciasService: ReferenciasService,private unidadMedidaService: UnidadMedidaService,private detalleDeCircularesAltasService: DetalleDeCircularesAltasService) {}
+  private referenciasService: ReferenciasService,private unidadMedidaService: UnidadMedidaService,private codigosParaLaVentaService: CodigosParaLaVentaService) {}
 
 
   async save(createContratoDesgloseInput: CreateContratoDesgloseInput) : Promise<ContratoDesglose> {
@@ -52,7 +52,7 @@ export class ContratoDesgloseService {
     return this.unidadMedidaService.findOne(Id);
   }
 
-  async getDetalleDeCircularesAltas (Id: number) : Promise<DetalleDeCircularesAltas>{
-    return this.detalleDeCircularesAltasService.findOne(Id);
+  async getCodigo (Id: number) : Promise<CodigosParaLaVenta>{
+    return this.codigosParaLaVentaService.findOne(Id);
   }
 }

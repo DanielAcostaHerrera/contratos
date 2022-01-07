@@ -8,10 +8,10 @@ export class ReferenciasService {
   constructor(@InjectRepository(Referencias) public readonly referenciasRepository: Repository<Referencias>) {}
 
   async findAll(): Promise<Referencias[]> {
-    return await this.referenciasRepository.find({relations:['contratoDesgloses']});
+    return await this.referenciasRepository.find({relations:['contratoDesgloses','facturaDesgloses']});
   }
 
   async findOne(id: number) : Promise<Referencias> {
-    return await this.referenciasRepository.findOne(id,{relations:['contratoDesgloses']});
+    return await this.referenciasRepository.findOne(id,{relations:['contratoDesgloses','facturaDesgloses']});
   }
 }

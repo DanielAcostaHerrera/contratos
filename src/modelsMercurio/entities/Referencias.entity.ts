@@ -7,6 +7,7 @@ import {
   PrimaryGeneratedColumn,
 } from "typeorm";
 import { ContratoDesglose } from "../../models/entities/ContratoDesglose.entity";
+import { FacturaDesglose } from "../../models/entities/FacturaDesglose.entity";
 
 @ObjectType()
 @Index("aaaaaReferencias_PK", ["referenciaId"], { unique: true })
@@ -47,4 +48,8 @@ export class Referencias {
   @Field(() => [ContratoDesglose], { nullable: true })
   @OneToMany(() => ContratoDesglose,(contratoDesglose) => contratoDesglose.referencia)
   contratoDesgloses: ContratoDesglose[];
+
+  @Field(() => [FacturaDesglose], { nullable: true })
+  @OneToMany(() => FacturaDesglose,(facturaDesglose) => facturaDesglose.referencia)
+  facturaDesgloses: FacturaDesglose[];
 }
