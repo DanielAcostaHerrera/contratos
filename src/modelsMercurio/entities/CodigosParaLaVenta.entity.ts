@@ -2,6 +2,7 @@ import { Field, Float, Int, ObjectType } from "@nestjs/graphql";
 import { Column, Entity, Index, OneToMany, OneToOne } from "typeorm";
 import { ContratoDesglose } from "../../models/entities/ContratoDesglose.entity";
 import { FacturaDesglose } from "../../models/entities/FacturaDesglose.entity";
+import { FichaCompraDetalle } from "../../models/entities/FichaCompraDetalle.entity";
 
 @ObjectType()
 @Index("ActualizacionesCODIGOS_para_la_Venta", ["idActualizacion"], {})
@@ -670,4 +671,8 @@ export class CodigosParaLaVenta {
   @Field(() => [FacturaDesglose], { nullable: true })
   @OneToMany(() => FacturaDesglose,(facturaDesglose) => facturaDesglose.codigo)
   facturaDesgloses : FacturaDesglose[];
+
+  @Field(() => [FichaCompraDetalle], { nullable: true })
+  @OneToMany(() => FichaCompraDetalle,(fichaCompraDetalle) => fichaCompraDetalle.codigo)
+  fichaCompraDetalles : FichaCompraDetalle[];
 }

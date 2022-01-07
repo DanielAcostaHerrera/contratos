@@ -8,11 +8,13 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
 } from "typeorm";
+import { CodigosParaLaVenta } from "../../modelsMercurio/entities/CodigosParaLaVenta.entity";
+import { UnidadMedida } from "../../modelsMercurio/entities/UnidadMedida.entity";
 import { FichaCompraAtributos } from "./FichaCompraAtributos.entity";
 import { FichaCompraResumen } from "./FichaCompraResumen.entity";
 
 @ObjectType()
-@Index("IX_FichaCompraDetalle", ["idFicha", "producto"], { unique: true })
+@Index("IX_FichaCompraDetalle", ["idFicha", "idCodigo"], { unique: true })
 @Index("PK_FichaCompraDetalle", ["idFichaCompraDetalle"], { unique: true })
 @Entity("FichaCompraDetalle", { schema: "CONTRATO.dbo" })
 export class FichaCompraDetalle {
@@ -24,13 +26,9 @@ export class FichaCompraDetalle {
   @Field(() => Int)
   idFicha: number;
 
-  @Column("nvarchar", { name: "Producto" , length: 200})
-  @Field()
-  producto: string;
-
-  @Column("nvarchar", { name: "Codigo", nullable: true, length: 13 })
-  @Field({nullable: true})
-  codigo: string | null;
+  @Column("int", { name: "Codigo" })
+  @Field(() => Int)
+  idCodigo: number;
 
   @Column("int", { name: "IdUM" })
   @Field(() => Int)
@@ -144,4 +142,14 @@ export class FichaCompraDetalle {
   @ManyToOne( () => FichaCompraResumen,(fichaCompraResumen) => fichaCompraResumen.fichaCompraDetalles,{ onDelete: "CASCADE" })
   @JoinColumn([{ name: "IdFicha", referencedColumnName: "idFicha" }])
   fichaCompraResumen: FichaCompraResumen;
+
+  @Field(() => CodigosParaLaVenta, {nullable: true})
+  @ManyToOne( () => CodigosParaLaVenta,(codigosParaLaVenta) => codigosParaLaVenta.fichaCompraDetalles)
+  @JoinColumn([{ name: "Codigo", referencedColumnName: "idCodigo" }])
+  codigo: CodigosParaLaVenta;
+
+  @Field(() => UnidadMedida, {nullable: true})
+  @ManyToOne( () => UnidadMedida,(unidadMedida) => unidadMedida.fichaCompraDetalles)
+  @JoinColumn([{ name: "IdUM", referencedColumnName: "id" }])
+  unidadMedida: UnidadMedida;
 }
