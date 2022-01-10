@@ -1,5 +1,5 @@
 import { Field, Int, ObjectType } from "@nestjs/graphql";
-import { Column, Entity, Index, OneToMany } from "typeorm";
+import { Column, Entity, Index, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { Ejecutivos } from "./Ejecutivos.entity";
 import { NegociacionResumen } from "./NegociacionResumen.entity";
 
@@ -7,7 +7,7 @@ import { NegociacionResumen } from "./NegociacionResumen.entity";
 @Index("PK_GruposDeCompras", ["idGrupo"], { unique: true })
 @Entity("GruposDeCompras", { schema: "CONTRATO.dbo" })
 export class GruposDeCompras {
-  @Column("int", { primary: true, name: "IdGrupo" })
+  @PrimaryGeneratedColumn({ type: "int", name: "IdGrupo" })
   @Field(() => Int)
   idGrupo: number;
 

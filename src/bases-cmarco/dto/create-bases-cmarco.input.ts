@@ -5,8 +5,8 @@ export class CreateBasesCmarcoInput {
   @Field(() => Int, { nullable: true})
   idBaseCMarco?: number;
 
-  @Field(() => Int, { nullable: true})
-  idBasesGenerales: number | null;
+  @Field(() => Int)
+  idBasesGenerales: number;
 
   @Field(() => Int)
   idProveedor: number;

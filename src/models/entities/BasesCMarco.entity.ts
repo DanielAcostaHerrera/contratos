@@ -28,9 +28,9 @@ export class BasesCMarco {
   @Field(() => Int)
   idBaseCMarco: number;
 
-  @Column("int", { name: "IdBasesGenerales", nullable: true })
+  @Column("int", { name: "IdBasesGenerales" })
   @Field(() => Int)
-  idBasesGenerales: number | null;
+  idBasesGenerales: number;
 
   @Column("smallint", { name: "IdProveedor", default: () => "(0)" })
   @Field(() => Int)

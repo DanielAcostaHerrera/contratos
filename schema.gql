@@ -1858,7 +1858,7 @@ input CreateGruposDeCompraInput {
 
 input CreateBasesCmarcoInput {
   idBaseCMarco: Int
-  idBasesGenerales: Int
+  idBasesGenerales: Int!
   idProveedor: Int!
   consecutivo: Int!
   directivaTrd: String
@@ -1886,7 +1886,7 @@ input CreatePuertoInput {
   idPuerto: Int
   nombre: String!
   pais: Int!
-  deposito: String!
+  deposito: String
 }
 
 input CreateProformaInput {
@@ -1939,8 +1939,8 @@ input CreateClasificacioneInput {
 input CreateTipoContratoInput {
   idTipoContrato: Int
   tipoContrato: String!
-  encabezado: String!
-  ambasPartes: String!
+  encabezado: String
+  ambasPartes: String
   visible: Boolean!
 }
 
@@ -1948,7 +1948,7 @@ input CreateIncotermInput {
   idIncoterm: Int
   nombre: String!
   abreviatura: String!
-  nota: String!
+  nota: String
   activo: Boolean!
 }
 
@@ -2084,21 +2084,21 @@ input CreateNegociacionResumenInput {
   mercancias: String!
   aprobada: Boolean!
   cancelada: Boolean!
-  nota: String!
-  noNeg: String!
-  idProveedor: Int!
-  importeTrd: Float!
-  importeGae: Float!
-  importeCuc: Float!
-  comentarios: String!
-  operacion: Boolean!
-  tasa: Float!
-  terminado: Boolean!
+  nota: String
+  noNeg: String
+  idProveedor: Int
+  importeTrd: Float
+  importeGae: Float
+  importeCuc: Float
+  comentarios: String
+  operacion: Boolean
+  tasa: Float
+  terminado: Boolean
 }
 
 input CreateTiposDeCompraInput {
   idTipoCompras: Int
-  compras: String!
+  compras: String
 }
 
 input CreateFichaCostoResumenInput {
@@ -2181,7 +2181,7 @@ input CreateNegociacionDetalleInput {
   importeCuc: Float!
   fecha: DateTime!
   tasa: Float!
-  idAcuerdo: Int!
+  idAcuerdo: Int
   detalles: String!
 }
 
@@ -2189,15 +2189,15 @@ input CreateNegociacionDetallesInput {
   idNegociacionDetalles: Int
   idNegociacion: Int!
   consecutivo: Int!
-  fecha: DateTime!
-  acuerdo: Int!
-  detalles: String!
+  fecha: DateTime
+  acuerdo: Int
+  detalles: String
 }
 
 input CreateNegociacionProveedoresInput {
   idNegociacionProveedores: Int
   idNegociacion: Int!
-  importe: Float!
+  importe: Float
   ladi: Boolean!
 }
 
@@ -2397,7 +2397,7 @@ input CreateSolicitudContratacionInput {
   consecutivo: Int!
   idComprador: Int!
   fecha: DateTime!
-  nota: String!
+  nota: String
 }
 
 input CreatePliegoConcurrenciaDetalleInput {
@@ -2425,7 +2425,7 @@ input CreatePliegoConcurrenciaResumanInput {
   idProveedor: Int!
   idPaisOrigenMercancia: Int!
   fechaOfertaRecibida: DateTime!
-  fechaEntregaOferta: DateTime!
+  fechaEntregaOferta: DateTime
   idMonedaOferta: Int!
   idMonedaPago: Int!
   idMonedaCartaCredito: Int!
@@ -2450,13 +2450,13 @@ input CreateSolicitudCodificacionInput {
   idReferencia: Int!
   decripcion: String!
   idUm: Int!
-  marca: String!
-  naturaleza: String!
+  marca: String
+  naturaleza: String
   packing: Int!
   cantidad: Float!
-  dimension: String!
-  cubicaje: String!
-  idEmbalaje: Float!
+  dimension: String
+  cubicaje: String
+  idEmbalaje: Float
   precioCosto: Float!
 }
 
@@ -2471,8 +2471,8 @@ input CreateSolicitudOfertasEntradaInput {
   idUm: Int!
   packing: Int!
   cantidad: Float!
-  dimension: String!
-  cubicaje: String!
+  dimension: String
+  cubicaje: String
   precioCosto: Float!
 }
 
@@ -2480,8 +2480,8 @@ input CreateSolicitudOfertasProveedorInput {
   idOfertasProveedor: Int
   idOferta: Int!
   idProveedor: Int!
-  representante: String!
-  cargo: String!
+  representante: String
+  cargo: String
 }
 
 input CreateContenedoreInput {
@@ -2591,25 +2591,25 @@ input CreateSuplementoResumanInput {
   fechaSup: DateTime!
   numero: Int!
   fecha: DateTime!
-  idEmpSeguro: Float!
-  idEmpNaviera: Int!
-  lugarEntrega: String!
+  idEmpSeguro: Int
+  idEmpNaviera: Int
+  lugarEntrega: String
   cancelado: Boolean!
-  notas: String!
+  notas: String
   permitirEmbarquesParciales: Boolean!
-  cantidadEp: Int!
+  cantidadEp: Int
   permitirEntregas: Boolean!
   permitirTrasbordos: Boolean!
   producto: String!
-  noEntregasParciales: Int!
+  noEntregasParciales: Int
   fInicial: DateTime!
   fFinal: DateTime!
-  fFirma: DateTime!
-  fRecepcion: DateTime!
-  fArribo: DateTime!
+  fFirma: DateTime
+  fRecepcion: DateTime
+  fArribo: DateTime
   financiamiento: Float!
   terminadoS: Boolean!
-  notaSuple: String!
+  notaSuple: String
   canceladoSup: Boolean!
 }
 
@@ -2631,7 +2631,7 @@ input CreateSuplementoEmbarqueInput {
   idPuertoDestino: Int!
   fechaEntrega: DateTime!
   numero: Int!
-  descuento: Float!
+  descuento: Float
   terminado: Boolean!
   cancelado: Boolean!
   porFirmar: Boolean!
@@ -2644,9 +2644,9 @@ input CreateSuplementoDesgloseInput {
   idSuplementoDesglose: Int
   idSuplementoResumen: Int!
   idEmbarque: Int!
-  idReferencia: Int!
+  idReferencia: Int
   idCodigo: Int!
-  descripcionSp: String!
+  descripcionSp: String
   idUnidadMedida: Int!
   cantidadPorCarton: Float!
   paquete: Int!
@@ -2661,7 +2661,7 @@ input CreateSuplementoClausulaInput {
   idSuplementoClausulas: Int
   idSuplementoResumen: Int!
   idContratoClausulas: Int!
-  orden: Int!
+  orden: Int
   modificada: Boolean!
 }
 
@@ -2670,8 +2670,8 @@ input CreateSuplementoChangeInput {
   idSuplementoResumen: Int!
   idEmbarque: Int!
   idContratoClausula: Int!
-  contenidoViejo: String!
-  contenidoNuevo: String!
+  contenidoViejo: String
+  contenidoNuevo: String
 }
 
 input CreateCambiosSuplementoInput {
