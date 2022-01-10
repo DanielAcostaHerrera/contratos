@@ -29,6 +29,10 @@ export class BasesCMarcoEspecificos {
   @Field(() => Int)
   idEspecifico: number;
 
+  @Column("int", { name: "IdPadre" })
+  @Field(() => Int)
+  idPadre: number;
+
   @Column("float", { name: "PDisponible", nullable: true, precision: 53 })
   @Field(() => Float,{nullable: true})
   pDisponible: number | null;
@@ -44,10 +48,6 @@ export class BasesCMarcoEspecificos {
   @Column("float", { name: "PPendiente", nullable: true, precision: 53 })
   @Field(() => Float,{nullable: true})
   pPendiente: number | null;
-
-  @Column("int", { name: "idPadre" })
-  @Field(() => Int)
-  idPadre: number;
 
   @Field(() => BasesCMarco , {nullable: true})
   @ManyToOne(() => BasesCMarco,(basesCMarco) => basesCMarco.basesCMarcoEspecificos,{ onDelete: "CASCADE", onUpdate: "CASCADE" })

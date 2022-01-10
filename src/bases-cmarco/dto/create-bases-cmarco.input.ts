@@ -27,9 +27,6 @@ export class CreateBasesCmarcoInput {
   idProforma: number;
 
   @Field()
-  especificos: string;
-
-  @Field()
   periodoInic: Date;
 
   @Field()

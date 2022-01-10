@@ -11,6 +11,9 @@ export class CreateBasesCmarcoEspecificoInput {
   @Field(() => Int)
   idEspecifico: number;
 
+  @Field(() => Int)
+  idPadre: number;
+
   @Field(() => Float,{ nullable: true})
   pDisponible: number | null;
 
@@ -22,7 +25,4 @@ export class CreateBasesCmarcoEspecificoInput {
 
   @Field(() => Float,{ nullable: true})
   pPendiente: number | null;
-
-  @Field(() => Int)
-  idPadre: number;
 }

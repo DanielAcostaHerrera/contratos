@@ -27,7 +27,7 @@ export class FormasPago {
   dias: number;
 
   @Field(() => [FichaCostoResumen], {nullable: true})
-  @OneToMany(() => FichaCostoResumen,(fichaCostoResumen) => fichaCostoResumen.idFormaPago)
+  @OneToMany(() => FichaCostoResumen,(fichaCostoResumen) => fichaCostoResumen.formaPago)
   fichaCostoResumen: FichaCostoResumen[];
 
   @Field(() => [PliegoConcurrenciaResumen], {nullable: true})

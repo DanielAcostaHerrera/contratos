@@ -56,10 +56,6 @@ export class BasesCMarco {
   @Field(() => Int)
   idProforma: number;
 
-  @Column("nvarchar", { name: "Especificos" })
-  @Field()
-  especificos: string;
-
   @Column("smalldatetime", { name: "PeriodoInic" })
   @Field()
   periodoInic: Date;

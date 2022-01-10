@@ -32,18 +32,6 @@ export class CreateBasesGeneralesInput {
   @Field(() => Int)
   idProveedor: number;
 
-  @Field({nullable: true})
-  nProveedor: string | null;
-
-  @Field()
-  nombreRepresentante: string;
-
-  @Field()
-  cargoRepresentante: string;
-
-  @Field()
-  direccionProveedor: string;
-
   @Field(() => Int)
   idComprador: number;
 

@@ -4,6 +4,7 @@ import { PliegoConcurrenciaResumen } from "./PliegoConcurrenciaResumen.entity";
 
 @ObjectType()
 @Index("PK_CTO_TiposContenedor", ["idTipoContenedor"], { unique: true })
+@Index("IX_TiposContenedor", ["tipoContenedor"], { unique: true })
 @Entity("TiposContenedor", { schema: "CONTRATO.dbo" })
 export class TiposContenedor {
   @PrimaryGeneratedColumn({ type: "int", name: "IdTipoContenedor" })

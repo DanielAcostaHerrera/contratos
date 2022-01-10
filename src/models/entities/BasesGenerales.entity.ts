@@ -70,22 +70,6 @@ export class BasesGenerales {
   @Field(() => Int)
   idProveedor: number;
 
-  @Column("nvarchar", { name: "NProveedor", nullable: true, length: 250 })
-  @Field({nullable: true})
-  nProveedor: string | null;
-
-  @Column("nvarchar", { name: "NombreRepresentante", length: 100 })
-  @Field()
-  nombreRepresentante: string;
-
-  @Column("nvarchar", { name: "CargoRepresentante", length: 100 })
-  @Field()
-  cargoRepresentante: string;
-
-  @Column("nvarchar", { name: "DireccionProveedor", length: 500 })
-  @Field()
-  direccionProveedor: string;
-
   @Column("int", { name: "IdComprador" })
   @Field(() => Int)
   idComprador: number;

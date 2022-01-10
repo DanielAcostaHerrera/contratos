@@ -11,6 +11,7 @@ import { TiemposTravesia } from "./TiemposTravesia.entity";
 
 @ObjectType()
 @Index("PK_CTO_EtapasContratacion", ["idEtapa"], { unique: true })
+@Index("IX_EtapasContratacion", ["etapa"], { unique: true })
 @Entity("EtapasContratacion", { schema: "CONTRATO.dbo" })
 export class EtapasContratacion {
   @PrimaryGeneratedColumn({ type: "int", name: "IdEtapa" })

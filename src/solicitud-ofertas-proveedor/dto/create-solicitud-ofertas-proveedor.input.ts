@@ -10,10 +10,4 @@ export class CreateSolicitudOfertasProveedorInput {
 
   @Field(() => Int)
   idProveedor: number;
-
-  @Field({nullable: true})
-  representante: string | null;
-
-  @Field({nullable: true})
-  cargo: string | null;
 }

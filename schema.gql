@@ -192,8 +192,6 @@ type SolicitudOfertasProveedor {
   idOfertasProveedor: Int!
   idOferta: Int!
   idProveedor: Int!
-  representante: String
-  cargo: String
   solicitudOfertasEntradas: [SolicitudOfertasEntradas!]
   solicitudOfertas: SolicitudOfertas
   proveedor: Proveedores
@@ -874,10 +872,6 @@ type BasesGenerales {
   lugardeFirma: String!
   idPais: Int!
   idProveedor: Int!
-  nProveedor: String
-  nombreRepresentante: String!
-  cargoRepresentante: String!
-  direccionProveedor: String!
   idComprador: Int!
   vigencia: Int!
   fechaVencimiento: DateTime
@@ -958,11 +952,11 @@ type BasesCMarcoEspecificos {
   idBaseCMarcoEspecificos: Int!
   idBaseCMarco: Int!
   idEspecifico: Int!
+  idPadre: Int!
   pDisponible: Float
   pReservado: Float
   pEjecutado: Float
   pPendiente: Float
-  idPadre: Int!
   baseCMarco: BasesCMarco
   especifico: Especificos
 }
@@ -976,7 +970,6 @@ type BasesCMarco {
   directivaGae: String
   fecha: DateTime!
   idProforma: Int!
-  especificos: String!
   periodoInic: DateTime!
   periodoFin: DateTime!
   importeTotal: Float!
@@ -1865,7 +1858,6 @@ input CreateBasesCmarcoInput {
   directivaGae: String
   fecha: DateTime!
   idProforma: Int!
-  especificos: String!
   periodoInic: DateTime!
   periodoFin: DateTime!
   importeTotal: Float!
@@ -1919,10 +1911,6 @@ input CreateBasesGeneralesInput {
   lugardeFirma: String!
   idPais: Int!
   idProveedor: Int!
-  nProveedor: String
-  nombreRepresentante: String!
-  cargoRepresentante: String!
-  direccionProveedor: String!
   idComprador: Int!
   vigencia: Int!
   aprobado: Boolean!
@@ -1984,11 +1972,11 @@ input CreateBasesCmarcoEspecificoInput {
   idBaseCMarcoEspecificos: Int
   idBaseCMarco: Int!
   idEspecifico: Int!
+  idPadre: Int!
   pDisponible: Float
   pReservado: Float
   pEjecutado: Float
   pPendiente: Float
-  idPadre: Int!
 }
 
 input CreateBasesGeneralesClausulaInput {
@@ -2480,8 +2468,6 @@ input CreateSolicitudOfertasProveedorInput {
   idOfertasProveedor: Int
   idOferta: Int!
   idProveedor: Int!
-  representante: String
-  cargo: String
 }
 
 input CreateContenedoreInput {
