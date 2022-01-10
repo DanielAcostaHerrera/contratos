@@ -1,5 +1,6 @@
 import { Field, Int, ObjectType } from "@nestjs/graphql";
-import { Column, Entity, Index, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, Index, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Paises } from "../../modelsMercurio/entities/Paises.entity";
 import { BasesCMarco } from "./BasesCMarco.entity";
 import { Contratos } from "./Contratos.entity";
 import { Embarques } from "./Embarques.entity";
@@ -25,7 +26,7 @@ export class Puertos {
 
   @Column("int", { name: "Pais" })
   @Field(() => Int)
-  pais: number;
+  idPais: number;
 
   @Column("nvarchar", { name: "Deposito", nullable: true, length: 10 })
   @Field({nullable: true})
@@ -74,4 +75,9 @@ export class Puertos {
   @Field(() => [SuplementoResumen], { nullable: true })
   @OneToMany(() => SuplementoResumen,(suplementoResumen) => suplementoResumen.puertoDestino)
   suplementoResumenDestino: SuplementoResumen[];
+
+  @Field(() => Paises , {nullable: true})
+  @ManyToOne(() => Paises, (pais) => pais.puerto)
+  @JoinColumn([{ name: "Pais", referencedColumnName: "pais" }])
+  pais: Paises;
 }

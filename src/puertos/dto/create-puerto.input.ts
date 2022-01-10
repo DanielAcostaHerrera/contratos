@@ -9,7 +9,7 @@ export class CreatePuertoInput {
   nombre: string;
 
   @Field(() => Int)
-  pais: number;
+  idPais: number;
 
   @Field({nullable: true})
   deposito: string | null;

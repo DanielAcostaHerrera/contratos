@@ -1,12 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Puertos } from 'src/models/entities/Puertos.entity';
+import { Paises } from 'src/modelsMercurio/entities/Paises.entity';
+import { PaisesService } from 'src/paises/paises.service';
 import { Repository } from 'typeorm';
 import { CreatePuertoInput } from './dto/create-puerto.input';
 
 @Injectable()
 export class PuertosService {
-  constructor(@InjectRepository(Puertos) public readonly puertoRepository: Repository<Puertos>) {}
+  constructor(@InjectRepository(Puertos) public readonly puertoRepository: Repository<Puertos>,private paisesService: PaisesService) {}
 
   async save(createPuertoInput: CreatePuertoInput) : Promise<Puertos> {
     return await this.puertoRepository.save(createPuertoInput);
@@ -30,5 +32,9 @@ export class PuertosService {
   async removeSeveral(id: number[]) : Promise<any> {
     const puertos = await this.puertoRepository.findByIds(id);
     return await this.puertoRepository.remove(puertos);
+  }
+
+  async getPais (id: number) : Promise<Paises>{
+    return this.paisesService.findOne(id);
   }
 }
