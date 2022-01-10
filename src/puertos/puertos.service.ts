@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Puertos } from 'src/models/entities/Puertos.entity';
 import { Paises } from 'src/modelsMercurio/entities/Paises.entity';
+import { MyLogger } from 'src/MyLogger';
 import { PaisesService } from 'src/paises/paises.service';
 import { Repository } from 'typeorm';
 import { CreatePuertoInput } from './dto/create-puerto.input';
@@ -15,6 +16,7 @@ export class PuertosService {
   }
 
   async findAll(): Promise<Puertos[]> {
+    MyLogger.logger.info('Obtenidos todas las puertos por el usuario '+MyLogger.usuarioLoggeado.ejecutivo.nombre+' en la fecha '+MyLogger.getDate());
     return await this.puertoRepository.find({ relations: ['basesCMarco','fichaCostoResumen','pliegoConcurrenciaResumenEmbarque','pliegoConcurrenciaResumenDestino',
     'contratosOrigen','contratosDestino','facturaResumen','suplementoEmbarques','suplementoResumenOrigen','suplementoResumenDestino','embarques']});
   }

@@ -1,6 +1,6 @@
 import { Proveedores } from './../modelsMercurio/entities/Proveedores.entity';
 import { ProveedoresService } from './../proveedores/proveedores.service';
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { CreateBasesCmarcoInput } from './dto/create-bases-cmarco.input';
 import { BasesCMarco } from 'src/models/entities/BasesCMarco.entity';
 import { Repository } from 'typeorm';
@@ -13,6 +13,7 @@ import { Proformas } from 'src/models/entities/Proformas.entity';
 import { Compradores } from 'src/models/entities/Compradores.entity';
 import { BasesGeneralesService } from 'src/bases-generales/bases-generales.service';
 import { BasesGenerales } from 'src/models/entities/BasesGenerales.entity';
+import { MyLogger } from 'src/MyLogger';
 
 @Injectable()
 export class BasesCmarcoService {
@@ -20,12 +21,12 @@ export class BasesCmarcoService {
   private proformasService:  ProformasService, private compradoresService:  CompradoresService,private basesGeneralesService:  BasesGeneralesService,
   private proveedoresService:  ProveedoresService) {}
 
-
   async save(createBaseCMarcoInput: CreateBasesCmarcoInput) : Promise<BasesCMarco> {
     return await this.basesCMarcoRepository.save(createBaseCMarcoInput);
   }
 
-  async findAll(): Promise<BasesCMarco[]> {
+  async findAll(): Promise<BasesCMarco[]> {    
+    MyLogger.logger.info('Obtenidas todas las BaseCMarco por el usuario '+MyLogger.usuarioLoggeado.ejecutivo.nombre+' en la fecha '+MyLogger.getDate());
     return await this.basesCMarcoRepository.find({ relations: ['basesCMarcoClausulas','basesCMarcoEspecificos','fichaCostoResumen','contratos']});
   }
 

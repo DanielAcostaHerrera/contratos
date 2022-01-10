@@ -7,6 +7,7 @@ import { Usuarios } from 'src/models/entities/Usuarios.entity';
 import { Repository } from 'typeorm';
 import { CreateUsuarioInput } from './dto/create-usuario.input';
 import * as bcrypt from 'bcryptjs';
+import { MyLogger } from 'src/MyLogger';
 
 @Injectable()
 export class UsuariosService {
@@ -35,6 +36,7 @@ export class UsuariosService {
           reject('Usuario o contraseña incorrectos');  
         }
         else{
+          MyLogger.usuarioLoggeado = usuario;
           resolve(usuario);  
         }
       }

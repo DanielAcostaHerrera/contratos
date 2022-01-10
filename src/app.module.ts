@@ -5,6 +5,8 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { TypeOrmModule } from '@nestjs/typeorm'
 import { MonedaModule } from './moneda/moneda.module';
 import { join } from 'path';
+import { WinstonModule } from 'nest-winston';
+import * as winston from 'winston';
 import { EmbalajesModule } from './embalajes/embalajes.module';
 import { CargoModule } from './cargo/cargo.module';
 import { EjecutivoModule } from './ejecutivo/ejecutivo.module';
@@ -189,6 +191,11 @@ import { CodigosParaLaVentaModule } from './codigos-para-la-venta/codigos-para-l
     CompaniasNavierasModule,
     ReferenciasModule,
     CodigosParaLaVentaModule,
+    WinstonModule.forRoot({
+      transports: [
+        new winston.transports.Console(),
+      ],
+    }),
   ],
   controllers: [AppController],
   providers: [AppService],
