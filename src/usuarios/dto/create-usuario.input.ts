@@ -11,6 +11,6 @@ export class CreateUsuarioInput {
   @Field()
   nombreUsuario: string;
 
-  @Field()
+  @Field({nullable: true})
   contrasena: string;
 }

@@ -14,12 +14,12 @@ export class UsuariosService {
   constructor(@InjectRepository(Usuarios) public readonly usuariosRepository: Repository<Usuarios>,private ejecutivoService: EjecutivoService) {}
 
   async save(createUsuarioInput: CreateUsuarioInput) : Promise<Usuarios> {
-    const encryptedPassw = await bcrypt.genSalt(12).then(salt => {
-      return bcrypt.hash(createUsuarioInput.contrasena, salt);
-    });
-
-    createUsuarioInput.contrasena = encryptedPassw.replace('$2a$12$', '');
-
+    if(createUsuarioInput.contrasena){
+        const encryptedPassw = await bcrypt.genSalt(12).then(salt => {
+        return bcrypt.hash(createUsuarioInput.contrasena, salt);
+        createUsuarioInput.contrasena = encryptedPassw.replace('$2a$12$', '');
+      });  
+    }
     return await this.usuariosRepository.save(createUsuarioInput);
   }
 

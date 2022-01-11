@@ -327,7 +327,6 @@ type Usuarios {
   contrasena: String!
   usuarioRoles: [UsuarioRol!]
   ejecutivo: Ejecutivos
-  ejecutivoModifica: Ejecutivos
 }
 
 type Ejecutivos {
@@ -2676,7 +2675,7 @@ input CreateUsuarioInput {
   idUsuario: Int
   idEjecutivo: Int!
   nombreUsuario: String!
-  contrasena: String!
+  contrasena: String
 }
 
 input CreateUsuarioRolInput {

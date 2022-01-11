@@ -42,7 +42,7 @@ export class UsuariosResolver {
   }
 
   @ResolveField(() => Ejecutivos, {nullable: true})
-  ejecutivoModifica(@Parent() usuarios: Usuarios): Promise<Ejecutivos> {
+  ejecutivo(@Parent() usuarios: Usuarios): Promise<Ejecutivos> {
     return this.usuariosService.getEjecutivo(usuarios.idEjecutivo);
   }
 }
