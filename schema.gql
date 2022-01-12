@@ -325,6 +325,7 @@ type Usuarios {
   idEjecutivo: Int!
   nombreUsuario: String!
   contrasena: String!
+  roles: [Int!]!
   usuarioRoles: [UsuarioRol!]
   ejecutivo: Ejecutivos
 }
@@ -1815,6 +1816,7 @@ type Mutation {
   removeSeveralUsuario(id: [Int!]!): [Usuarios!]!
   createUsuarioRol(createUsuarioRolInput: CreateUsuarioRolInput!): UsuarioRol!
   removeUsuarioRol(id: Int!): UsuarioRol!
+  removeUsuarioRolByUserId(idUsuario: Int!): UsuarioRol!
   removeSeveralUsuarioRol(id: [Int!]!): [UsuarioRol!]!
 }
 
@@ -2676,6 +2678,7 @@ input CreateUsuarioInput {
   idEjecutivo: Int!
   nombreUsuario: String!
   contrasena: String
+  roles: [Int!]!
 }
 
 input CreateUsuarioRolInput {

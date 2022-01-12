@@ -13,4 +13,7 @@ export class CreateUsuarioInput {
 
   @Field({nullable: true})
   contrasena: string;
+
+  @Field(() => [Int])
+  roles: number[];
 }

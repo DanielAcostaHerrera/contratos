@@ -2,27 +2,25 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Roles } from 'src/models/entities/Roles.entity';
 import { UsuarioRol } from 'src/models/entities/UsuarioRol.entity';
-import { Usuarios } from 'src/models/entities/Usuarios.entity';
 import { RolesService } from 'src/roles/roles.service';
-import { UsuariosService } from 'src/usuarios/usuarios.service';
 import { Repository } from 'typeorm';
 import { CreateUsuarioRolInput } from './dto/create-usuario-rol.input';
 
 @Injectable()
 export class UsuarioRolService {
   constructor(@InjectRepository(UsuarioRol) public readonly usuarioRolRepository: Repository<UsuarioRol>,
-  private usuariosService: UsuariosService, private rolesService: RolesService) {}
+  private rolesService: RolesService) {}
 
   async save(createUsuarioRolInput: CreateUsuarioRolInput) : Promise<UsuarioRol> {
     return await this.usuarioRolRepository.save(createUsuarioRolInput);
   }
 
   async findAll(): Promise<UsuarioRol[]> {
-    return await this.usuarioRolRepository.find();
+    return await this.usuarioRolRepository.find({relations:['usuario']});
   }
 
   async findOne(id: number) : Promise<UsuarioRol> {
-    return await this.usuarioRolRepository.findOne(id);
+    return await this.usuarioRolRepository.findOne(id,{relations:['usuario']});
   }
 
   async remove(id: number) : Promise<any> {
@@ -30,13 +28,16 @@ export class UsuarioRolService {
     return await this.usuarioRolRepository.remove(usuarioRol);
   }
 
-  async removeSeveral(id: number[]) : Promise<any> {
-    const usuarioRol = await this.usuarioRolRepository.findByIds(id);
+  async removeByUserId(userId: number) : Promise<any> {
+    const usuarioRol = await this.usuarioRolRepository.find({where: {
+      idUsuario: userId
+    }});
     return await this.usuarioRolRepository.remove(usuarioRol);
   }
 
-  async getUsuario (Id: number) : Promise<Usuarios>{
-    return this.usuariosService.findOne(Id);
+  async removeSeveral(id: number[]) : Promise<any> {
+    const usuarioRol = await this.usuarioRolRepository.findByIds(id);
+    return await this.usuarioRolRepository.remove(usuarioRol);
   }
 
   async getRol (Id: number) : Promise<Roles>{
