@@ -19,7 +19,9 @@ export class UsuariosService {
   async save(createUsuarioInput: CreateUsuarioInput) : Promise<Usuarios> {
     var id = createUsuarioInput.idUsuario;
     if(!id){
-      createUsuarioInput.contrasena = createUsuarioInput.nombreUsuario + '*'+ new Date().getFullYear()
+      createUsuarioInput.contrasena = createUsuarioInput.nombreUsuario + '*'+ new Date().getFullYear();
+    }else {
+      this.usuarioRolService.removeByUserId(id);
     }
 
     if(createUsuarioInput.contrasena){
@@ -28,10 +30,6 @@ export class UsuariosService {
     });  
     createUsuarioInput.contrasena = encryptedPassw.replace('$2a$12$', '');
   }
-
-    if(id != null){        
-      this.usuarioRolService.removeByUserId(id);
-    }
 
     const newUsuario = await this.usuariosRepository.save(createUsuarioInput);     
     createUsuarioInput.roles.forEach(rol => {
