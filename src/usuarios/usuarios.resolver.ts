@@ -10,8 +10,12 @@ export class UsuariosResolver {
 
   @Mutation(() => Usuarios)
   createUsuario(@Args('createUsuarioInput') createUsuarioInput: CreateUsuarioInput) {
-    this.usuariosService
     return this.usuariosService.save(createUsuarioInput);
+  }
+
+  @Mutation(() => Usuarios)
+  forcePasswordUsuario(@Args('idUsuario') idUsuario: number) {
+    return this.usuariosService.forcePassword(idUsuario);
   }
 
   @Query(() => [Usuarios])

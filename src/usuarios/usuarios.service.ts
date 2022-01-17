@@ -41,6 +41,12 @@ export class UsuariosService {
     
     return await this.usuariosRepository.findOne(createUsuarioInput.idUsuario);
   }
+
+  async forcePassword(idUsuario: number) : Promise<Usuarios> {
+    const usuario = await this.findOne(idUsuario); 
+    usuario.contrasena = usuario.nombreUsuario + '*'+ new Date().getFullYear();
+    return await this.save(usuario);    
+  }
   
   async autenticar(nombreUsuario: string, contrasena: string) : Promise<Usuarios>{
 
