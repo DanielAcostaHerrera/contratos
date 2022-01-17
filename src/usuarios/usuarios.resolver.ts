@@ -18,6 +18,16 @@ export class UsuariosResolver {
     return this.usuariosService.forcePassword(idUsuario);
   }
 
+  @Mutation(() => Usuarios)
+  modifyPasswordUsuario(
+    @Args('idUsuario', { type: () => Int }) idUsuario: number,
+    @Args('contrasenaVieja', { type: () => String }) contrasenaVieja: string,
+    @Args('contrasenaNueva', { type: () => String }) contrasenaNueva: string,
+    @Args('contrasenaNuevaConfirmar', { type: () => String }) contrasenaNuevaConfirmar: string,
+    ) {
+    return this.usuariosService.modificarContrasena(idUsuario,contrasenaVieja,contrasenaNueva,contrasenaNuevaConfirmar);
+  }
+
   @Query(() => [Usuarios])
   findAllUsuarios() {
     return this.usuariosService.findAll();

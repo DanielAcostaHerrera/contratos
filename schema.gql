@@ -1813,6 +1813,7 @@ type Mutation {
   removeSeveralRoles(id: [Int!]!): [Roles!]!
   createUsuario(createUsuarioInput: CreateUsuarioInput!): Usuarios!
   forcePasswordUsuario(idUsuario: Int!): Usuarios!
+  modifyPasswordUsuario(contrasenaNuevaConfirmar: String!, contrasenaNueva: String!, contrasenaVieja: String!, idUsuario: Int!): Usuarios!
   removeUsuario(id: Int!): Usuarios!
   removeSeveralUsuario(id: [Int!]!): [Usuarios!]!
   createUsuarioRol(createUsuarioRolInput: CreateUsuarioRolInput!): UsuarioRol!

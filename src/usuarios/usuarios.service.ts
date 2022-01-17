@@ -51,6 +51,28 @@ export class UsuariosService {
     usuario.contrasena = usuario.nombreUsuario + '*'+ new Date().getFullYear();
     return await this.save(usuario);    
   }
+
+  async modificarContrasena(idUsuario: number, contrasenaVieja: string, contrasenaNueva: string, contrasenaNuevaConfirmar: string) : Promise<Usuarios>{
+
+    return new Promise<Usuarios>(async (resolve, reject) => {
+      const usuario = await this.findOne(idUsuario);
+      const validPassw = bcrypt.compareSync(contrasenaVieja, '$2a$12$' + usuario.contrasena);
+      if(!validPassw){
+        reject('La contraseña actual es incorrecta');
+      }
+      else if(contrasenaNueva != contrasenaNuevaConfirmar){
+        reject('La contraseña nueva y la contraseña de confirmación no coinciden');
+      }
+      else{ 
+        usuario.roles = [];   
+        usuario.usuarioRoles.forEach(rol =>{
+          usuario.roles.push(rol.idRol)
+        })  
+        usuario.contrasena = contrasenaNueva;  
+        resolve(this.save(usuario)); 
+      }
+    });
+  }
   
   async autenticar(nombreUsuario: string, contrasena: string) : Promise<Usuarios>{
 
