@@ -33,8 +33,11 @@ export class Usuarios {
   @Field()
   contrasena: string;
 
+  @Field(() => [Int])
+  roles: number[];
+
   @Field(() => [UsuarioRol], {nullable: true})
-  @OneToMany(() => UsuarioRol, (usuarioRol) => usuarioRol.usuario)
+  @OneToMany(() => UsuarioRol, (usuarioRol) => usuarioRol.usuario/* , { onDelete: "CASCADE"} */)
   usuarioRoles: UsuarioRol[];
 
   @Field(() => Ejecutivos, {nullable: true})

@@ -10,6 +10,7 @@ export class UsuariosResolver {
 
   @Mutation(() => Usuarios)
   createUsuario(@Args('createUsuarioInput') createUsuarioInput: CreateUsuarioInput) {
+    this.usuariosService
     return this.usuariosService.save(createUsuarioInput);
   }
 

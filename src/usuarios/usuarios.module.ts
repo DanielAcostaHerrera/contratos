@@ -1,3 +1,4 @@
+import { UsuarioRolModule } from './../usuario-rol/usuario-rol.module';
 import { Module } from '@nestjs/common';
 import { UsuariosService } from './usuarios.service';
 import { UsuariosResolver } from './usuarios.resolver';
@@ -8,7 +9,7 @@ import { EjecutivoModule } from 'src/ejecutivo/ejecutivo.module';
 @Module({
   imports: [TypeOrmModule.forFeature([
     Usuarios
-  ]),EjecutivoModule],
+  ]),UsuarioRolModule,EjecutivoModule],
   providers: [UsuariosResolver, UsuariosService],
   exports: [UsuariosService]
 })

@@ -2,7 +2,6 @@ import { Resolver, Query, Mutation, Args, Int, ResolveField, Parent } from '@nes
 import { UsuarioRolService } from './usuario-rol.service';
 import { CreateUsuarioRolInput } from './dto/create-usuario-rol.input';
 import { UsuarioRol } from 'src/models/entities/UsuarioRol.entity';
-import { Usuarios } from 'src/models/entities/Usuarios.entity';
 import { Roles } from 'src/models/entities/Roles.entity';
 
 @Resolver(() => UsuarioRol)
@@ -29,14 +28,14 @@ export class UsuarioRolResolver {
     return this.usuarioRolService.remove(id);
   }
 
+  @Mutation(() => UsuarioRol)
+  removeUsuarioRolByUserId(@Args('idUsuario', { type: () => Int }) idUsuario: number) {
+    return this.usuarioRolService.remove(idUsuario);
+  }
+
   @Mutation(() => [UsuarioRol])
   removeSeveralUsuarioRol(@Args('id', { type: () => [Int] }) id: number[]) {
     return this.usuarioRolService.removeSeveral(id);
-  }
-
-  @ResolveField(() => Usuarios, {nullable: true})
-  usuario(@Parent() usuarioRol: UsuarioRol): Promise<Usuarios> {
-    return this.usuarioRolService.getUsuario(usuarioRol.idUsuario);
   }
 
     @ResolveField(() => Roles, {nullable: true})

@@ -3,13 +3,13 @@ import { UsuarioRolService } from './usuario-rol.service';
 import { UsuarioRolResolver } from './usuario-rol.resolver';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UsuarioRol } from 'src/models/entities/UsuarioRol.entity';
-import { UsuariosModule } from 'src/usuarios/usuarios.module';
 import { RolesModule } from 'src/roles/roles.module';
+import { UsuariosModule } from 'src/usuarios/usuarios.module';
 
 @Module({
   imports: [TypeOrmModule.forFeature([
     UsuarioRol
-  ]),UsuariosModule,RolesModule],
+  ]),RolesModule],
   providers: [UsuarioRolResolver, UsuarioRolService],
   exports: [UsuarioRolService]
 })
