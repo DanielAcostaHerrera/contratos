@@ -44,6 +44,10 @@ export class UsuariosService {
 
   async forcePassword(idUsuario: number) : Promise<Usuarios> {
     const usuario = await this.findOne(idUsuario); 
+    usuario.roles = [];
+    usuario.usuarioRoles.forEach(rol =>{
+      usuario.roles.push(rol.idRol)
+    })
     usuario.contrasena = usuario.nombreUsuario + '*'+ new Date().getFullYear();
     return await this.save(usuario);    
   }
