@@ -14,7 +14,7 @@ export class UsuariosResolver {
   }
 
   @Mutation(() => Usuarios)
-  forcePasswordUsuario(@Args('idUsuario') idUsuario: number) {
+  forcePasswordUsuario(@Args('idUsuario', { type: () => Int }) idUsuario: number) {
     return this.usuariosService.forcePassword(idUsuario);
   }
 
