@@ -103,13 +103,33 @@ export class UsuariosService {
   }
 
   async remove(id: number) : Promise<any> {
-    const usuarios = await this.findOne(id);
-    return await this.usuariosRepository.remove(usuarios);
+    return new Promise<any>(async (resolve, reject) => {
+      const usuario = await this.findOne(id);
+      if(usuario.idUsuario == MyLogger.usuarioLoggeado.idUsuario){
+        reject('No se puede eliminar el usuario que se encuentra autenticado actualmente');
+      }
+      else{
+        resolve(await this.usuariosRepository.remove(usuario));  
+      }
+    });
   }
 
   async removeSeveral(id: number[]) : Promise<any> {
-    const usuarios = await this.usuariosRepository.findByIds(id);
-    return await this.usuariosRepository.remove(usuarios);
+    return new Promise<any>(async (resolve, reject) => {
+      const usuarios = await this.usuariosRepository.findByIds(id);
+      var estaLoggeado = false;
+      usuarios.forEach(usuario =>{
+        if(usuario.idUsuario == MyLogger.usuarioLoggeado.idUsuario){
+          estaLoggeado = true;
+        }
+      })
+      if(estaLoggeado){
+        reject('No se puede eliminar el usuario que se encuentra autenticado actualmente');
+      }
+      else{
+        resolve(await this.usuariosRepository.remove(usuarios));  
+      }
+    });
   }
 
   async getEjecutivo (Id: number) : Promise<Ejecutivos>{
