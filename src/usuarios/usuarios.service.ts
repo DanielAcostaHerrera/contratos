@@ -24,13 +24,13 @@ export class UsuariosService {
       this.usuarioRolService.removeByUserId(id);
     }
 
+
     if(createUsuarioInput.contrasena){
       const encryptedPassw = await bcrypt.genSalt(12).then(salt => {
         return bcrypt.hash(createUsuarioInput.contrasena, salt);     
     });  
     createUsuarioInput.contrasena = encryptedPassw.replace('$2a$12$', '');
   }
-
     const newUsuario = await this.usuariosRepository.save(createUsuarioInput);     
     createUsuarioInput.roles.forEach(rol => {
       var usuarioRolInput = new CreateUsuarioRolInput();
