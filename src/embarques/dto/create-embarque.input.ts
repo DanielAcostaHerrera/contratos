@@ -18,7 +18,10 @@ export class CreateEmbarqueInput {
   numero: number;
 
   @Field(() => Int,{nullable: true})
-  destino: number | null;
+  idPuertoDestino: number | null;
+
+  @Field(() => Int,{nullable: true})
+  idPuertoOrigen: number | null;
 
   @Field(() => Float,{nullable: true})
   descuento: number | null;

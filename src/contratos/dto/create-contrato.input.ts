@@ -12,12 +12,6 @@ export class CreateContratoInput {
   idBaseCMarco: number;
 
   @Field(() => Int)
-  idPuertoOrigen: number;
-
-  @Field(() => Int)
-  idPuertoDestino: number;
-
-  @Field(() => Int)
   idMoneda: number;
 
   @Field(() => Int)
@@ -124,4 +118,7 @@ export class CreateContratoInput {
 
   @Field(() => Float)
   pFin: number;
+
+  @Field(() => Float)
+  gastosLogisticos: number;
 }

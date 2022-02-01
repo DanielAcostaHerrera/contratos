@@ -17,25 +17,23 @@ import { FichaCostoResumen } from 'src/models/entities/FichaCostoResumen.entity'
 import { FormasEntrega } from 'src/models/entities/FormasEntrega.entity';
 import { Monedas } from 'src/models/entities/Monedas.entity';
 import { NegociacionResumen } from 'src/models/entities/NegociacionResumen.entity';
-import { Puertos } from 'src/models/entities/Puertos.entity';
 import { Paises } from 'src/modelsMercurio/entities/Paises.entity';
 import { Proveedores } from 'src/modelsMercurio/entities/Proveedores.entity';
 import { MonedaService } from 'src/moneda/moneda.service';
 import { NegociacionResumenService } from 'src/negociacion-resumen/negociacion-resumen.service';
 import { PaisesService } from 'src/paises/paises.service';
 import { ProveedoresService } from 'src/proveedores/proveedores.service';
-import { PuertosService } from 'src/puertos/puertos.service';
 import { Repository } from 'typeorm';
 import { CreateContratoInput } from './dto/create-contrato.input';
 
 @Injectable()
 export class ContratosService {
-  constructor(@InjectRepository(Contratos) public readonly contratoRepository: Repository<Contratos>,private puertosService: PuertosService,
+  constructor(@InjectRepository(Contratos) public readonly contratoRepository: Repository<Contratos>,private companiasNavierasService: CompaniasNavierasService,
   private basesGeneralesService: BasesGeneralesService,private basesCmarcoService: BasesCmarcoService,private monedaService: MonedaService,
   private formasEntregaService: FormasEntregaService,private negociacionResumenService: NegociacionResumenService,
   private fichaCostoResumenService: FichaCostoResumenService,private ejecutivoService: EjecutivoService,
   private paisesService: PaisesService,private proveedoresService: ProveedoresService,
-  private agenciasAseguradorasService: AgenciasAseguradorasService,private companiasNavierasService: CompaniasNavierasService) {}
+  private agenciasAseguradorasService: AgenciasAseguradorasService) {}
 
 
   async save(createContratoInput: CreateContratoInput) : Promise<Contratos> {
@@ -68,14 +66,6 @@ export class ContratosService {
 
   async getBasesCMarco (Id: number) : Promise<BasesCMarco>{
     return this.basesCmarcoService.findOne(Id);
-  }
-
-  async getPuertoOrigen (Id: number) : Promise<Puertos>{
-    return this.puertosService.findOne(Id);
-  }
-
-  async getPuertoDestino (Id: number) : Promise<Puertos>{
-    return this.puertosService.findOne(Id);
   }
 
   async getMoneda (Id: number) : Promise<Monedas>{

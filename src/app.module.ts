@@ -79,6 +79,8 @@ import { AgenciasAseguradorasModule } from './agencias-aseguradoras/agencias-ase
 import { CompaniasNavierasModule } from './companias-navieras/companias-navieras.module';
 import { ReferenciasModule } from './referencias/referencias.module';
 import { CodigosParaLaVentaModule } from './codigos-para-la-venta/codigos-para-la-venta.module';
+import { LogsModule } from './logs/logs.module';
+
 
 @Module({
   imports: [
@@ -196,6 +198,7 @@ import { CodigosParaLaVentaModule } from './codigos-para-la-venta/codigos-para-l
         new winston.transports.Console(),
       ],
     }),
+    LogsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

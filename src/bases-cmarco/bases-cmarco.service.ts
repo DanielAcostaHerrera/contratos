@@ -26,7 +26,6 @@ export class BasesCmarcoService {
   }
 
   async findAll(): Promise<BasesCMarco[]> {    
-    MyLogger.logger.info('Obtenidas todas las BaseCMarco por el usuario '+MyLogger.usuarioLoggeado.ejecutivo.nombre+' en la fecha '+MyLogger.getDate());
     return await this.basesCMarcoRepository.find({ relations: ['basesCMarcoClausulas','basesCMarcoEspecificos','fichaCostoResumen','contratos']});
   }
 

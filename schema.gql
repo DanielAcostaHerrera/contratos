@@ -411,13 +411,12 @@ type Puertos {
   nombre: String!
   idPais: Int!
   deposito: String
-  embarques: [Embarques!]
+  embarqueDestino: [Embarques!]
+  embarqueOrigen: [Embarques!]
   basesCMarco: [BasesCMarco!]
   fichaCostoResumen: [FichaCostoResumen!]
   pliegoConcurrenciaResumenEmbarque: [PliegoConcurrenciaResumen!]
   pliegoConcurrenciaResumenDestino: [PliegoConcurrenciaResumen!]
-  contratosOrigen: [Contratos!]
-  contratosDestino: [Contratos!]
   facturaResumen: [FacturaResumen!]
   suplementoEmbarques: [SuplementoEmbarques!]
   suplementoResumenOrigen: [SuplementoResumen!]
@@ -1212,7 +1211,8 @@ type Embarques {
   idContrato: Int
   idEjecutivo: Int
   numero: Int!
-  destino: Int
+  idPuertoDestino: Int
+  idPuertoOrigen: Int
   descuento: Float
   terminado: Boolean!
   cancelado: Boolean!
@@ -1232,6 +1232,7 @@ type Embarques {
   contratos: Contratos
   ejecutivos: Ejecutivos
   puertoDestino: Puertos
+  puertoOrigen: Puertos
   facturaResumen: [FacturaResumen!]
   suplementoChanges: [SuplementoChange!]
   suplementoDesgloses: [SuplementoDesglose!]
@@ -1362,8 +1363,6 @@ type Contratos {
   idContrato: Int!
   idBasesGenerales: Int!
   idBaseCMarco: Int!
-  idPuertoOrigen: Int!
-  idPuertoDestino: Int!
   idMoneda: Int!
   idFormaEntrega: Int!
   idNegociacion: Int!
@@ -1400,11 +1399,10 @@ type Contratos {
   tasaMoneda: Float!
   fechaTasa: DateTime
   pFin: Float!
+  gastosLogisticos: Float!
   contratoClausulas: [ContratoClausulas!]
   basesGenerales: BasesGenerales
   baseCMarco: BasesCMarco
-  puertoOrigen: Puertos
-  puertoDestino: Puertos
   moneda: Monedas
   formaEntrega: FormasEntrega
   negociacionResumen: NegociacionResumen
@@ -1436,6 +1434,13 @@ type Monedas {
   pliegoConcurrenciaResumenCredito: [PliegoConcurrenciaResumen!]
   contratos: [Contratos!]
   suplementoResumen: [SuplementoResumen!]
+}
+
+type Logs {
+  idLog: Int!
+  mensaje: String!
+  fecha: String!
+  usuario: String!
 }
 
 type DatosEntidad {
@@ -1488,6 +1493,8 @@ type Query {
   findOnePuertos(id: Int!): Puertos!
   findAllPaises: [Paises!]!
   findOnePaises(id: Int!): Paises!
+  findAllLog: [Logs!]!
+  findOneLog(id: Int!): Logs!
   findAllProforma: [Proformas!]!
   findOneProforma(id: Int!): Proformas!
   findAllCompradores: [Compradores!]!
@@ -1636,13 +1643,15 @@ type Mutation {
   removeSeveralEjecutivo(id: [Int!]!): [Ejecutivos!]!
   createGruposDeCompra(createGruposDeCompraInput: CreateGruposDeCompraInput!): GruposDeCompras!
   removeGruposDeCompra(id: Int!): GruposDeCompras!
-  removeSeveralGruposDeCompra(id: [Int!]!): [GruposDeCompras!]!
+  removeSeveralGruposDeCompra(id: [Int!]!): [Logs!]!
   createBasesCmarco(createBasesCmarcoInput: CreateBasesCmarcoInput!): BasesCMarco!
   removeBasesCmarco(id: Int!): BasesCMarco!
   removeSeveralBasesCmarco(id: [Int!]!): [BasesCMarco!]!
   createPuerto(createPuertoInput: CreatePuertoInput!): Puertos!
   removePuerto(id: Int!): Puertos!
   removeSeveralPuerto(id: [Int!]!): [Puertos!]!
+  createLog(mensajeLog: String!, usuarioLog: String!): Logs!
+  removeLog(id: Int!): Logs!
   createProforma(createProformaInput: CreateProformaInput!): Proformas!
   removeProforma(id: Int!): Proformas!
   removeSeveralProforma(id: [Int!]!): [Proformas!]!
@@ -2020,8 +2029,6 @@ input CreateContratoInput {
   idContrato: Int
   idBasesGenerales: Int!
   idBaseCMarco: Int!
-  idPuertoOrigen: Int!
-  idPuertoDestino: Int!
   idMoneda: Int!
   idFormaEntrega: Int!
   idNegociacion: Int!
@@ -2058,6 +2065,7 @@ input CreateContratoInput {
   tasaMoneda: Float!
   fechaTasa: DateTime
   pFin: Float!
+  gastosLogisticos: Float!
 }
 
 input CreateFormasEntregaInput {
@@ -2503,7 +2511,8 @@ input CreateEmbarqueInput {
   idContrato: Int
   idEjecutivo: Int
   numero: Int!
-  destino: Int
+  idPuertoDestino: Int
+  idPuertoOrigen: Int
   descuento: Float
   terminado: Boolean!
   cancelado: Boolean!

@@ -53,6 +53,10 @@ export class EmbarquesService {
     return this.puertosService.findOne(Id);
   }
 
+  async getPuertoOrigen (Id: number) : Promise<Puertos>{
+    return this.puertosService.findOne(Id);
+  }
+
   async getCompaniaNaviera (Id: number) : Promise<CompaniasNavieras>{
     return this.companiasNavierasService.findOne(Id);
   }

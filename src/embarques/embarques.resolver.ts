@@ -48,7 +48,12 @@ export class EmbarquesResolver {
 
   @ResolveField(() => Puertos, {nullable: true})
   puertoDestino(@Parent() embarques: Embarques): Promise<Puertos> {
-    return this.embarquesService.getPuertoDestino(embarques.destino);
+    return this.embarquesService.getPuertoDestino(embarques.idPuertoDestino);
+  }
+
+  @ResolveField(() => Puertos, {nullable: true})
+  puertoOrigen(@Parent() embarques: Embarques): Promise<Puertos> {
+    return this.embarquesService.getPuertoDestino(embarques.idPuertoOrigen);
   }
 
   @ResolveField(() => CompaniasNavieras, {nullable: true})

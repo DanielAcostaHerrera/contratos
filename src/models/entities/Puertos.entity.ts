@@ -34,7 +34,11 @@ export class Puertos {
 
   @Field(() => [Embarques], { nullable: true })
   @OneToMany(() => Embarques, (embarques) => embarques.puertoDestino)
-  embarques: Embarques[];
+  embarqueDestino: Embarques[];
+
+  @Field(() => [Embarques], { nullable: true })
+  @OneToMany(() => Embarques, (embarques) => embarques.puertoOrigen)
+  embarqueOrigen: Embarques[];
   
   @Field(() => [BasesCMarco], { nullable: true })
   @OneToMany(() => BasesCMarco, (basesCMarco) => basesCMarco.puerto)
@@ -51,14 +55,6 @@ export class Puertos {
   @Field(() => [PliegoConcurrenciaResumen], { nullable: true })
   @OneToMany(() => PliegoConcurrenciaResumen,(pliegoConcurrenciaResumen) => pliegoConcurrenciaResumen.puertoDestino)
   pliegoConcurrenciaResumenDestino: PliegoConcurrenciaResumen[];
-
-  @Field(() => [Contratos], { nullable: true })
-  @OneToMany(() => Contratos, (contratos) => contratos.puertoOrigen)
-  contratosOrigen: Contratos[];
-
-  @Field(() => [Contratos], { nullable: true })
-  @OneToMany(() => Contratos, (contratos) => contratos.puertoDestino)
-  contratosDestino: Contratos[];
 
   @Field(() => [FacturaResumen], { nullable: true })
   @OneToMany(() => FacturaResumen,(facturaResumen) => facturaResumen.puertoDestino)

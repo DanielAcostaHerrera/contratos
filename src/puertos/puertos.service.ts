@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { LogsService } from 'src/logs/logs.service';
 import { Puertos } from 'src/models/entities/Puertos.entity';
 import { Paises } from 'src/modelsMercurio/entities/Paises.entity';
 import { MyLogger } from 'src/MyLogger';
@@ -9,21 +10,22 @@ import { CreatePuertoInput } from './dto/create-puerto.input';
 
 @Injectable()
 export class PuertosService {
-  constructor(@InjectRepository(Puertos) public readonly puertoRepository: Repository<Puertos>,private paisesService: PaisesService) {}
+  constructor(@InjectRepository(Puertos) public readonly puertoRepository: Repository<Puertos>,private paisesService: PaisesService,
+  private logsService: LogsService) {}
 
   async save(createPuertoInput: CreatePuertoInput) : Promise<Puertos> {
     return await this.puertoRepository.save(createPuertoInput);
   }
 
   async findAll(): Promise<Puertos[]> {
-    MyLogger.logger.info('Obtenidos todas las puertos por el usuario '+MyLogger.usuarioLoggeado.ejecutivo.nombre+' en la fecha '+MyLogger.getDate());
+    await this.logsService.save(MyLogger.usuarioLoggeado.ejecutivo.nombre, "Obtenidos todos los puertos")
     return await this.puertoRepository.find({ relations: ['basesCMarco','fichaCostoResumen','pliegoConcurrenciaResumenEmbarque','pliegoConcurrenciaResumenDestino',
-    'contratosOrigen','contratosDestino','facturaResumen','suplementoEmbarques','suplementoResumenOrigen','suplementoResumenDestino','embarques']});
+    'contratosOrigen','contratosDestino','facturaResumen','suplementoEmbarques','suplementoResumenOrigen','suplementoResumenDestino','embarqueDestino','embarqueOrigen']});
   }
 
   async findOne(id: number) : Promise<Puertos> {
     return await this.puertoRepository.findOne(id,{ relations: ['basesCMarco','fichaCostoResumen','pliegoConcurrenciaResumenEmbarque','pliegoConcurrenciaResumenDestino',
-    'contratosOrigen','contratosDestino','facturaResumen','suplementoEmbarques','suplementoResumenOrigen','suplementoResumenDestino','embarques']});
+    'contratosOrigen','contratosDestino','facturaResumen','suplementoEmbarques','suplementoResumenOrigen','suplementoResumenDestino','embarqueDestino','embarqueOrigen']});
   }
 
   async remove(id: number) : Promise<any> {

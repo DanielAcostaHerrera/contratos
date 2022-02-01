@@ -9,7 +9,6 @@ import { FichaCostoResumen } from 'src/models/entities/FichaCostoResumen.entity'
 import { FormasEntrega } from 'src/models/entities/FormasEntrega.entity';
 import { Monedas } from 'src/models/entities/Monedas.entity';
 import { NegociacionResumen } from 'src/models/entities/NegociacionResumen.entity';
-import { Puertos } from 'src/models/entities/Puertos.entity';
 import { Paises } from 'src/modelsMercurio/entities/Paises.entity';
 import { Proveedores } from 'src/modelsMercurio/entities/Proveedores.entity';
 import { ContratosService } from './contratos.service';
@@ -52,16 +51,6 @@ export class ContratosResolver {
   @ResolveField(() => BasesCMarco, {nullable: true})
   baseCMarco(@Parent() contratos: Contratos): Promise<BasesCMarco> {
     return this.contratosService.getBasesCMarco(contratos.idBaseCMarco);
-  }
-
-  @ResolveField(() => Puertos, {nullable: true})
-  puertoOrigen(@Parent() contratos: Contratos): Promise<Puertos> {
-    return this.contratosService.getPuertoOrigen(contratos.idPuertoOrigen);
-  }
-
-  @ResolveField(() => Puertos, {nullable: true})
-  puertoDestino(@Parent() contratos: Contratos): Promise<Puertos> {
-    return this.contratosService.getPuertoDestino(contratos.idPuertoDestino);
   }
 
   @ResolveField(() => Monedas, {nullable: true})

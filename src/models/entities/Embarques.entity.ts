@@ -44,12 +44,19 @@ export class Embarques {
   numero: number;
 
   @Column("int", {
-    name: "Destino",
+    name: "IdPuertoDestino",
     nullable: true,
     default: () => "(100)",
   })
   @Field(() => Int,{nullable: true})
-  destino: number | null;
+  idPuertoDestino: number | null;
+
+  @Column("int", {
+    name: "IdPuertoOrigen",
+    nullable: true,
+  })
+  @Field(() => Int,{nullable: true})
+  idPuertoOrigen: number | null;
 
   @Column("real", {
     name: "Descuento",
@@ -135,9 +142,14 @@ export class Embarques {
   ejecutivos: Ejecutivos;
 
   @Field(() => Puertos, {nullable: true})
-  @ManyToOne(() => Puertos, (puertos) => puertos.embarques)
-  @JoinColumn([{ name: "Destino", referencedColumnName: "idPuerto" }])
+  @ManyToOne(() => Puertos, (puertos) => puertos.embarqueDestino)
+  @JoinColumn([{ name: "IdPuertoDestino", referencedColumnName: "idPuerto" }])
   puertoDestino: Puertos;
+
+  @Field(() => Puertos, {nullable: true})
+  @ManyToOne(() => Puertos, (puertos) => puertos.embarqueOrigen)
+  @JoinColumn([{ name: "IdPuertoOrigen", referencedColumnName: "idPuerto" }])
+  puertoOrigen: Puertos;
 
   @Field(() => [FacturaResumen], {nullable: true})
   @OneToMany(() => FacturaResumen,(facturaResumen) => facturaResumen.embarques)

@@ -44,14 +44,6 @@ export class Contratos {
   @Field(() => Int)
   idBaseCMarco: number;
 
-  @Column("int", { name: "IdPuertoOrigen" })
-  @Field(() => Int)
-  idPuertoOrigen: number;
-
-  @Column("int", { name: "IdPuertoDestino" })
-  @Field(() => Int)
-  idPuertoDestino: number;
-
   @Column("int", { name: "IdMoneda" })
   @Field(() => Int)
   idMoneda: number;
@@ -212,6 +204,10 @@ export class Contratos {
   @Field(() => Float)
   pFin: number;
 
+  @Column("float", { name: "GastosLogisticos", precision: 53 })
+  @Field(() => Float)
+  gastosLogisticos: number;
+
   @Field(() => [ContratoClausulas], {nullable: true})
   @OneToMany(() => ContratoClausulas,(contratoClausulas) => contratoClausulas.contratos)
   contratoClausulas: ContratoClausulas[];
@@ -225,16 +221,6 @@ export class Contratos {
   @ManyToOne(() => BasesCMarco, (basesCMarco) => basesCMarco.contratos)
   @JoinColumn([{ name: "IdBaseCMarco", referencedColumnName: "idBaseCMarco" }])
   baseCMarco: BasesCMarco;
-
-  @Field(() => Puertos, {nullable: true})
-  @ManyToOne(() => Puertos, (puertos) => puertos.contratosOrigen)
-  @JoinColumn([{ name: "IdPuertoOrigen", referencedColumnName: "idPuerto" }])
-  puertoOrigen: Puertos;
-
-  @Field(() => Puertos, {nullable: true})
-  @ManyToOne(() => Puertos, (puertos) => puertos.contratosDestino)
-  @JoinColumn([{ name: "IdPuertoDestino", referencedColumnName: "idPuerto" }])
-  puertoDestino: Puertos;
 
   @Field(() => Monedas, {nullable: true})
   @ManyToOne(() => Monedas, (monedas) => monedas.contratos)
