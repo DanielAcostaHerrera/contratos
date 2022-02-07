@@ -988,7 +988,6 @@ type BasesCMarco {
   periodoFinV: DateTime
   idComprador: Int
   noCMarco: String
-  nProveedor: String
   basesCMarcoClausulas: [BasesCMarcoClausulas!]
   basesCMarcoEspecificos: [BasesCMarcoEspecificos!]
   basesGenerales: BasesGenerales
@@ -1885,7 +1884,6 @@ input CreateBasesCmarcoInput {
   periodoFinV: DateTime
   idComprador: Int
   noCMarco: String
-  nProveedor: String
 }
 
 input CreatePuertoInput {

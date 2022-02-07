@@ -17,15 +17,71 @@ import { CreateBasesGeneralesInput } from './dto/create-bases-generales.input';
 import { ProveedoresService } from 'src/proveedores/proveedores.service';
 import { Paises } from 'src/modelsMercurio/entities/Paises.entity';
 import { Proveedores } from 'src/modelsMercurio/entities/Proveedores.entity';
+import { LogsService } from 'src/logs/logs.service';
+import { MyLogger } from 'src/MyLogger';
 
 @Injectable()
 export class BasesGeneralesService {
   constructor(@InjectRepository(BasesGenerales) public readonly basesGeneralesRepository: Repository<BasesGenerales>, private clasificacionesService: ClasificacionesService,
   private tipoContratoService: TipoContratoService, private incotermService: IncotermService, private proformasService: ProformasService, 
-  private compradoresService: CompradoresService, private paisesService: PaisesService, private proveedoresService: ProveedoresService) {}
+  private compradoresService: CompradoresService, private paisesService: PaisesService, private proveedoresService: ProveedoresService,
+  private logsService: LogsService) {}
 
-  async save(createBasesCmarcoEspecificosInput: CreateBasesGeneralesInput) : Promise<BasesGenerales> {
-    return await this.basesGeneralesRepository.save(createBasesCmarcoEspecificosInput);
+  async save(createBasesGeneralesInput: CreateBasesGeneralesInput) : Promise<BasesGenerales> {
+    if(createBasesGeneralesInput.idBasesGenerales){
+      var baseVieja = await this.findOne(createBasesGeneralesInput.idBasesGenerales)
+    }
+
+    var result = await this.basesGeneralesRepository.save(createBasesGeneralesInput);
+    if(result && !result.idBasesGenerales)
+      await this.logsService.save(MyLogger.usuarioLoggeado.ejecutivo.nombre, "Insertada una nueva base general con número consecutivo "+result.consecutivo+"")
+      if(result && result.idBasesGenerales){
+        var texto = "Modificada la base general con número consecutivo "+result.consecutivo+"";
+        if(baseVieja.fecha != result.fecha){
+          texto += ", cambiada la fecha";
+        }
+        if(baseVieja.idTipoContrato != result.idTipoContrato){
+          texto += ", cambiado el tipo de contato";
+        }
+        if(baseVieja.idIncoterm != result.idIncoterm){
+          texto += ", cambiado el incoterm";
+        }
+        if(baseVieja.idProforma != result.idProforma){
+          texto += ", cambiada la proforma empleada";
+        }
+        if(baseVieja.idClasificacion != result.idClasificacion){
+          texto += ", cambiada la clasificación";
+        }
+        if(baseVieja.lugardeFirma != result.lugardeFirma){
+          texto += ", cambiado el lugar de firma";
+        }
+        if(baseVieja.pais != result.pais){
+          texto += ", cambiado el país";
+        }
+        if(baseVieja.idProveedor != result.idProveedor){
+          texto += ", cambiado el proveedor";
+        }
+        if(baseVieja.idComprador != result.idComprador){
+          texto += ", cambiado el comprador";
+        }
+        if(baseVieja.vigencia != result.vigencia){
+          texto += ", cambiada la vigencia";
+        }
+        if(baseVieja.aprobado != result.aprobado){
+          texto += ", cambiado el estado de aprobado";
+        }
+        if(baseVieja.cancelado != result.cancelado){
+          texto += ", cambiado el estado de cancelado";
+        }
+        if(baseVieja.activo != result.activo){
+          texto += ", cambiado el estado de activo";
+        }
+        if(baseVieja.actualizado != result.actualizado){
+          texto += ", cambiada la fecha de actualización";
+        }
+        await this.logsService.save(MyLogger.usuarioLoggeado.ejecutivo.nombre, texto)
+      }
+    return result;
   }
 
   async findAll(): Promise<BasesGenerales[]> { 
@@ -38,12 +94,23 @@ export class BasesGeneralesService {
 
   async remove(id: number) : Promise<any> {
     const basesGenerales = await this.findOne(id);
-    return await this.basesGeneralesRepository.remove(basesGenerales);
+    var result = await this.basesGeneralesRepository.remove(basesGenerales);
+    await this.logsService.save(MyLogger.usuarioLoggeado.ejecutivo.nombre, "Eliminada la base general con número consecutivo "+result.consecutivo+"")
+    return result;
   }
 
   async removeSeveral(id: number[]) : Promise<any> {
     const basesGenerales = await this.basesGeneralesRepository.findByIds(id);
-    return await this.basesGeneralesRepository.remove(basesGenerales);
+    var result = await this.basesGeneralesRepository.remove(basesGenerales);
+    var texto = "Eliminadas las bases generales con números consecutivos ";
+    for (let index = 0; index < result.length; index++) {
+      if(index != result.length -1)
+        texto += result[index].consecutivo+", "
+      else
+        texto += result[index].consecutivo
+    }
+    await this.logsService.save(MyLogger.usuarioLoggeado.ejecutivo.nombre, texto)
+    return result;
   }
 
   async getClasificacion (clasificacionId: number) : Promise<Clasificaciones>{

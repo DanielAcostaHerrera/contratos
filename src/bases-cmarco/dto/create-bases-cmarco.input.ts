@@ -64,7 +64,4 @@ export class CreateBasesCmarcoInput {
 
   @Field({ nullable: true})
   noCMarco: string | null;
-
-  @Field({ nullable: true})
-  nProveedor: string | null;
 }

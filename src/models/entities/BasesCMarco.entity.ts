@@ -136,10 +136,6 @@ export class BasesCMarco {
   @Field({nullable: true})
   noCMarco: string | null;
 
-  @Column("nvarchar", { name: "NProveedor", nullable: true, length: 500 })
-  @Field({nullable: true})
-  nProveedor: string | null;
-
   @Field(() => [BasesCMarcoClausulas], { nullable: true })
   @OneToMany(() => BasesCMarcoClausulas,(basesCMarcoClausulas) => basesCMarcoClausulas.basesCMarco)
   basesCMarcoClausulas: BasesCMarcoClausulas[];
