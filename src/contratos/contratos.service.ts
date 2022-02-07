@@ -25,6 +25,10 @@ import { PaisesService } from 'src/paises/paises.service';
 import { ProveedoresService } from 'src/proveedores/proveedores.service';
 import { Repository } from 'typeorm';
 import { CreateContratoInput } from './dto/create-contrato.input';
+import { LogsService } from 'src/logs/logs.service';
+import { MyLogger } from 'src/MyLogger';
+import { IncotermService } from 'src/incoterm/incoterm.service';
+import { Incoterm } from 'src/models/entities/Incoterm.entity';
 
 @Injectable()
 export class ContratosService {
@@ -32,12 +36,132 @@ export class ContratosService {
   private basesGeneralesService: BasesGeneralesService,private basesCmarcoService: BasesCmarcoService,private monedaService: MonedaService,
   private formasEntregaService: FormasEntregaService,private negociacionResumenService: NegociacionResumenService,
   private fichaCostoResumenService: FichaCostoResumenService,private ejecutivoService: EjecutivoService,
-  private paisesService: PaisesService,private proveedoresService: ProveedoresService,
-  private agenciasAseguradorasService: AgenciasAseguradorasService) {}
+  private paisesService: PaisesService,private proveedoresService: ProveedoresService,private logsService: LogsService,
+  private agenciasAseguradorasService: AgenciasAseguradorasService, private incotermService: IncotermService) {}
 
 
   async save(createContratoInput: CreateContratoInput) : Promise<Contratos> {
-    return await this.contratoRepository.save(createContratoInput);
+    if(createContratoInput.idContrato){
+      var contratoViejo = await this.findOne(createContratoInput.idContrato)
+    }
+
+    var result = await this.contratoRepository.save(createContratoInput);
+    if(result && !result.idBasesGenerales){
+      await this.logsService.save(MyLogger.usuarioLoggeado.ejecutivo.nombre, "Insertado un nuevo contrato con número consecutivo "+result.consecutivo+"")
+    }
+    if(result && result.idBasesGenerales){
+      var texto = "Modificado el contrato con número consecutivo "+result.consecutivo+"";
+        if(contratoViejo.idBasesGenerales != result.idBasesGenerales){
+          texto += ", cambiada la base general empleada";
+        }
+        if(contratoViejo.idBaseCMarco != result.idBaseCMarco){
+          texto += ", cambiada la base de contrato marco empleada";
+        }
+        if(contratoViejo.idMoneda != result.idMoneda){
+          texto += ", cambiada la moneda";
+        }
+        if(contratoViejo.idFormaEntrega != result.idFormaEntrega){
+          texto += ", cambiada la forma de entrega";
+        }
+        if(contratoViejo.realizadoPor != result.realizadoPor){
+          texto += ", cambiado el ejecutivo que realiza el contrato";
+        }
+        if(contratoViejo.firmadoPor != result.firmadoPor){
+          texto += ", cambiado el ejecutivo que firma el contrato";
+        }
+        if(contratoViejo.modificadoPor != result.modificadoPor){
+          texto += ", cambiado el ejecutivo que modifica el contrato";
+        }
+        if(contratoViejo.lugarFirma != result.lugarFirma){
+          texto += ", cambiado el lugar de firma";
+        }
+        if(contratoViejo.idIncoterm != result.idIncoterm){
+          texto += ", cambiada la condición de compra";
+        }
+        if(contratoViejo.idPais != result.idPais){
+          texto += ", cambiado el pais";
+        }
+        if(contratoViejo.cancelado != result.cancelado){
+          texto += ", cambiado el estado de cancelado";
+        }
+        if(contratoViejo.terminado != result.terminado){
+          texto += ", cambiado el estado de terminado";
+        }
+        if(contratoViejo.modificado != result.modificado){
+          texto += ", cambiada la fecha de modificado";
+        }
+        if(contratoViejo.idProveedor != result.idProveedor){
+          texto += ", cambiado el proveedor";
+        }
+        if(contratoViejo.idEmpresaSeguro != result.idEmpresaSeguro){
+          texto += ", cambiada la empresa de seguros";
+        }
+        if(contratoViejo.idEmpresaNaviera != result.idEmpresaNaviera){
+          texto += ", cambiada la empresa naviera";
+        }
+        if(contratoViejo.lugarEntrega != result.lugarEntrega){
+          texto += ", cambiado el lugar de entrega";
+        }
+        if(contratoViejo.notas != result.notas){
+          texto += ", cambiadas las notas";
+        }
+        if(contratoViejo.permitirEmbarquesParciales != result.permitirEmbarquesParciales){
+          texto += ", cambiada la capacidad de permitir embarques parciales";
+        }
+        if(contratoViejo.cantidadEp != result.cantidadEp){
+          texto += ", cambiada la cantidadEP";
+        }
+        if(contratoViejo.permitirEntregas != result.permitirEntregas){
+          texto += ", cambiada la capacidad de permitir entregas";
+        }
+        if(contratoViejo.permitirTrasbordos != result.permitirTrasbordos){
+          texto += ", cambiada la capacidad de permitir trasbordos";
+        }
+        if(contratoViejo.producto != result.producto){
+          texto += ", cambiados los productos";
+        }
+        if(contratoViejo.noEntregasParciales != result.noEntregasParciales){
+          texto += ", cambiado el número de entregas parciales";
+        }
+        if(contratoViejo.fechaElaboracion != result.fechaElaboracion){
+          texto += ", cambiada la fecha de elaboración";
+        }
+        if(contratoViejo.fechaInicial != result.fechaInicial){
+          texto += ", cambiada la fecha inicial";
+        }
+        if(contratoViejo.fechaFinal != result.fechaFinal){
+          texto += ", cambiada la fecha final";
+        }
+        if(contratoViejo.fechaFirma != result.fechaFirma){
+          texto += ", cambiada la fecha de firma";
+        }
+        if(contratoViejo.fechaRecepcion != result.fechaRecepcion){
+          texto += ", cambiada la fecha de recepción";
+        }
+        if(contratoViejo.fechaArribo != result.fechaArribo){
+          texto += ", cambiada la fecha de arribo";
+        }
+        if(contratoViejo.fechaPFirma != result.fechaPFirma){
+          texto += ", cambiada la fechaPFirma";
+        }
+        if(contratoViejo.financiamiento != result.financiamiento){
+          texto += ", cambiado el financiamiento";
+        }
+        if(contratoViejo.tasaMoneda != result.tasaMoneda){
+          texto += ", cambiada la tasa de la moneda";
+        }
+        if(contratoViejo.fechaTasa != result.fechaTasa){
+          texto += ", cambiada la fecha de la tasa";
+        }
+        if(contratoViejo.pFin != result.pFin){
+          texto += ", cambiado el precio final";
+        }
+        if(contratoViejo.gastosLogisticos != result.gastosLogisticos){
+          texto += ", cambiados los gastos logísticos";
+        }
+        await this.logsService.save(MyLogger.usuarioLoggeado.ejecutivo.nombre, texto)
+    }
+    return result;
   }
 
   async findAll(): Promise<Contratos[]> {
@@ -52,12 +176,23 @@ export class ContratosService {
 
   async remove(id: number) : Promise<any> {
     const contratos = await this.findOne(id);
-    return await this.contratoRepository.remove(contratos);
+    var result = await this.contratoRepository.remove(contratos);
+    await this.logsService.save(MyLogger.usuarioLoggeado.ejecutivo.nombre, "Eliminado el contrato con número consecutivo "+result.consecutivo+"")
+    return result;
   }
 
   async removeSeveral(id: number[]) : Promise<any> {
     const contratos = await this.contratoRepository.findByIds(id);
-    return await this.contratoRepository.remove(contratos);
+    var result = await this.contratoRepository.remove(contratos);
+    var texto = "Eliminados los contratos con números consecutivos ";
+    for (let index = 0; index < result.length; index++) {
+      if(index != result.length -1)
+        texto += result[index].consecutivo+", "
+      else
+        texto += result[index].consecutivo
+    }
+    await this.logsService.save(MyLogger.usuarioLoggeado.ejecutivo.nombre, texto)
+    return result;
   }
 
   async getBasesGenerales (Id: number) : Promise<BasesGenerales>{
@@ -110,5 +245,9 @@ export class ContratosService {
 
   async getEmpresaNaviera (Id: number) : Promise<CompaniasNavieras>{
     return this.companiasNavierasService.findOne(Id);
+  }
+
+  async getIncoterm (Id: number) : Promise<Incoterm>{
+    return this.incotermService.findOne(Id);
   }
 }

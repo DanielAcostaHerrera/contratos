@@ -42,7 +42,7 @@ export class NegociacionResumen {
 
   @Column("int", { name: "Comite", default: () => "(0)" })
   @Field(() => Int)
-  comite: number;
+  idComite: number;
 
   @Column("int", { name: "IdTipoCompras", default: () => "(0)" })
   @Field(() => Int)
@@ -71,10 +71,6 @@ export class NegociacionResumen {
   @Column("nvarchar", { name: "Nota", nullable: true })
   @Field({nullable: true})
   nota: string | null;
-
-  @Column("nvarchar", { name: "NoNegociacion", nullable: true, length: 4000 })
-  @Field({nullable: true})
-  noNeg: string | null;
 
   @Column("int", { name: "Proveedor", nullable: true })
   @Field(() => Int,{nullable: true})

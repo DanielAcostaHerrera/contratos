@@ -13,6 +13,7 @@ import { Paises } from 'src/modelsMercurio/entities/Paises.entity';
 import { Proveedores } from 'src/modelsMercurio/entities/Proveedores.entity';
 import { ContratosService } from './contratos.service';
 import { CreateContratoInput } from './dto/create-contrato.input';
+import { Incoterm } from 'src/models/entities/Incoterm.entity';
 
 @Resolver(() => Contratos)
 export class ContratosResolver {
@@ -106,5 +107,10 @@ export class ContratosResolver {
   @ResolveField(() => AgenciasAseguradoras, {nullable: true})
   agenciaAseguradora(@Parent() contratos: Contratos): Promise<AgenciasAseguradoras> {
     return this.contratosService.getEmpresaAseguradora(contratos.idEmpresaSeguro);
+  }
+
+  @ResolveField(() => Incoterm, {nullable: true})
+  incoterm(@Parent() contratos: Contratos): Promise<Incoterm> {
+    return this.contratosService.getIncoterm(contratos.idIncoterm);
   }
 }

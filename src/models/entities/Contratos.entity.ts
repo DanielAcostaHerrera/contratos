@@ -27,6 +27,7 @@ import { Field, Float, Int, ObjectType } from "@nestjs/graphql";
 import { Paises } from "../../modelsMercurio/entities/Paises.entity";
 import { Proveedores } from "../../modelsMercurio/entities/Proveedores.entity";
 import { ContratoClausulas } from "./ContratoClausulas.entity";
+import { Incoterm } from './Incoterm.entity';
 
 @ObjectType()
 @Index("PK_Contratos", ["idContrato"], { unique: true })
@@ -80,9 +81,9 @@ export class Contratos {
   @Field(() => Int)
   consecutivo: number;
 
-  @Column("int", { name: "CondicionCompra" })
+  @Column("int", { name: "IdIncoterm" })
   @Field(() => Int)
-  condicionCompra: number;
+  idIncoterm: number;
 
   @Column("int", { name: "País" })
   @Field(() => Int)
@@ -300,4 +301,9 @@ export class Contratos {
   @ManyToOne(() => AgenciasAseguradoras, (agenciasAseguradoras) => agenciasAseguradoras.contratos)
   @JoinColumn([{ name: "EmpresaSeguro", referencedColumnName: "idAgenciaS" }])
   agenciaAseguradora: AgenciasAseguradoras;
+
+  @Field(() => Incoterm, {nullable: true})
+  @ManyToOne(() => Incoterm, (incoterm) => incoterm.contratos)
+  @JoinColumn([{ name: "IdIncoterm", referencedColumnName: "idIncoterm" }])
+  incoterm: Incoterm;
 }

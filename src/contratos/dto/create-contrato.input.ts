@@ -39,7 +39,7 @@ export class CreateContratoInput {
   consecutivo: number;
 
   @Field(() => Int)
-  condicionCompra: number;
+  idIncoterm: number;
 
   @Field(() => Int)
   idPais: number;

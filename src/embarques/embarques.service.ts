@@ -24,11 +24,13 @@ export class EmbarquesService {
   }
 
   async findAll(): Promise<Embarques[]> {
-    return await this.embarquesRepository.find({relations:['contratoDesgloses', 'facturaResumen','suplementoChanges','suplementoDesgloses','suplementoEmbarques','suplementoPagos']});
+    return await this.embarquesRepository.find({relations:['contratoDesgloses', 'facturaResumen','suplementoChanges','suplementoDesgloses','suplementoEmbarques',
+    'suplementoPagos']});
   }
 
   async findOne(id: number) : Promise<Embarques> {
-    return await this.embarquesRepository.findOne(id,{relations:['contratoDesgloses', 'facturaResumen','suplementoChanges','suplementoDesgloses','suplementoEmbarques','suplementoPagos']});
+    return await this.embarquesRepository.findOne(id,{relations:['contratoDesgloses', 'facturaResumen','suplementoChanges','suplementoDesgloses',
+    'suplementoEmbarques','suplementoPagos']});
   }
 
   async remove(id: number) : Promise<any> {

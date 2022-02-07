@@ -268,7 +268,7 @@ type NegociacionResumen {
   consecutivo: Int!
   noNegociacion: String
   fecha: DateTime!
-  comite: Int!
+  idComite: Int!
   idTipoCompras: Int!
   idGrupo: Int!
   idMoneda: Int!
@@ -276,7 +276,6 @@ type NegociacionResumen {
   aprobada: Boolean!
   cancelada: Boolean!
   nota: String
-  noNeg: String
   idProveedor: Int
   importeTrd: Float
   importeGae: Float
@@ -848,6 +847,7 @@ type Incoterm {
   fichaCompraResumen: [FichaCompraResumen!]
   fichaCostoResumen: [FichaCostoResumen!]
   pliegoConcurrenciaResumen: [PliegoConcurrenciaResumen!]
+  contratos: [Contratos!]
 }
 
 type Proformas {
@@ -1371,7 +1371,7 @@ type Contratos {
   modificadoPor: Int!
   lugarFirma: String
   consecutivo: Int!
-  condicionCompra: Int!
+  idIncoterm: Int!
   idPais: Int!
   cancelado: Boolean!
   terminado: Boolean!
@@ -1419,6 +1419,7 @@ type Contratos {
   proveedor: Proveedores
   companiaNaviera: CompaniasNavieras
   agenciaAseguradora: AgenciasAseguradoras
+  incoterm: Incoterm
 }
 
 type Monedas {
@@ -2036,7 +2037,7 @@ input CreateContratoInput {
   modificadoPor: Int!
   lugarFirma: String!
   consecutivo: Int!
-  condicionCompra: Int!
+  idIncoterm: Int!
   idPais: Int!
   cancelado: Boolean!
   terminado: Boolean!
@@ -2076,7 +2077,7 @@ input CreateNegociacionResumenInput {
   idNegociacion: Int
   consecutivo: Int!
   fecha: DateTime!
-  comite: Int!
+  idComite: Int!
   idTipoCompras: Int!
   idGrupo: Int!
   idMoneda: Int!
@@ -2084,7 +2085,6 @@ input CreateNegociacionResumenInput {
   aprobada: Boolean!
   cancelada: Boolean!
   nota: String
-  noNeg: String
   idProveedor: Int
   importeTrd: Float
   importeGae: Float

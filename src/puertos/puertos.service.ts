@@ -18,14 +18,13 @@ export class PuertosService {
   }
 
   async findAll(): Promise<Puertos[]> {
-    await this.logsService.save(MyLogger.usuarioLoggeado.ejecutivo.nombre, "Obtenidos todos los puertos")
     return await this.puertoRepository.find({ relations: ['basesCMarco','fichaCostoResumen','pliegoConcurrenciaResumenEmbarque','pliegoConcurrenciaResumenDestino',
-    'contratosOrigen','contratosDestino','facturaResumen','suplementoEmbarques','suplementoResumenOrigen','suplementoResumenDestino','embarqueDestino','embarqueOrigen']});
+    'facturaResumen','suplementoEmbarques','suplementoResumenOrigen','suplementoResumenDestino','embarqueDestino','embarqueOrigen']});
   }
 
   async findOne(id: number) : Promise<Puertos> {
     return await this.puertoRepository.findOne(id,{ relations: ['basesCMarco','fichaCostoResumen','pliegoConcurrenciaResumenEmbarque','pliegoConcurrenciaResumenDestino',
-    'contratosOrigen','contratosDestino','facturaResumen','suplementoEmbarques','suplementoResumenOrigen','suplementoResumenDestino','embarqueDestino','embarqueOrigen']});
+    'facturaResumen','suplementoEmbarques','suplementoResumenOrigen','suplementoResumenDestino','embarqueDestino','embarqueOrigen']});
   }
 
   async remove(id: number) : Promise<any> {

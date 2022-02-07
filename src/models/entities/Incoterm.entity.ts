@@ -7,6 +7,7 @@ import {
   PrimaryGeneratedColumn,
 } from "typeorm";
 import { BasesGenerales } from "./BasesGenerales.entity";
+import { Contratos } from "./Contratos.entity";
 import { FichaCompraResumen } from "./FichaCompraResumen.entity";
 import { FichaCostoResumen } from "./FichaCostoResumen.entity";
 import { PliegoConcurrenciaResumen } from "./PliegoConcurrenciaResumen.entity";
@@ -51,5 +52,9 @@ export class Incoterm {
   @Field(() => [PliegoConcurrenciaResumen] , {nullable: true})
   @OneToMany(() => PliegoConcurrenciaResumen,(pliegoConcurrenciaResumen) => pliegoConcurrenciaResumen.incoterm)
   pliegoConcurrenciaResumen: PliegoConcurrenciaResumen[];
+
+  @Field(() => [Contratos] , {nullable: true})
+  @OneToMany(() => Contratos,(contratos) => contratos.incoterm)
+  contratos: Contratos[];
 }
 

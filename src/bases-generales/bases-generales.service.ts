@@ -33,10 +33,11 @@ export class BasesGeneralesService {
     }
 
     var result = await this.basesGeneralesRepository.save(createBasesGeneralesInput);
-    if(result && !result.idBasesGenerales)
+    if(result && !result.idBasesGenerales){
       await this.logsService.save(MyLogger.usuarioLoggeado.ejecutivo.nombre, "Insertada una nueva base general con número consecutivo "+result.consecutivo+"")
-      if(result && result.idBasesGenerales){
-        var texto = "Modificada la base general con número consecutivo "+result.consecutivo+"";
+    } 
+    if(result && result.idBasesGenerales){
+      var texto = "Modificada la base general con número consecutivo "+result.consecutivo+"";
         if(baseVieja.fecha != result.fecha){
           texto += ", cambiada la fecha";
         }
@@ -55,7 +56,7 @@ export class BasesGeneralesService {
         if(baseVieja.lugardeFirma != result.lugardeFirma){
           texto += ", cambiado el lugar de firma";
         }
-        if(baseVieja.pais != result.pais){
+        if(baseVieja.idPais != result.idPais){
           texto += ", cambiado el país";
         }
         if(baseVieja.idProveedor != result.idProveedor){
@@ -80,7 +81,7 @@ export class BasesGeneralesService {
           texto += ", cambiada la fecha de actualización";
         }
         await this.logsService.save(MyLogger.usuarioLoggeado.ejecutivo.nombre, texto)
-      }
+    }
     return result;
   }
 

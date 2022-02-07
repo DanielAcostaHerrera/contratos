@@ -14,12 +14,14 @@ import { PaisesModule } from 'src/paises/paises.module';
 import { ProveedoresModule } from 'src/proveedores/proveedores.module';
 import { AgenciasAseguradorasModule } from 'src/agencias-aseguradoras/agencias-aseguradoras.module';
 import { CompaniasNavierasModule } from 'src/companias-navieras/companias-navieras.module';
+import { LogsModule } from 'src/logs/logs.module';
+import { IncotermModule } from 'src/incoterm/incoterm.module';
 
 @Module({
   imports: [TypeOrmModule.forFeature(
     [Contratos]
   ),BasesGeneralesModule,BasesCmarcoModule,MonedaModule,FormasEntregaModule,NegociacionResumenModule,FichaCostoResumenModule,EjecutivoModule,
-  PaisesModule,ProveedoresModule,AgenciasAseguradorasModule,CompaniasNavierasModule],
+  PaisesModule,ProveedoresModule,AgenciasAseguradorasModule,CompaniasNavierasModule,LogsModule,IncotermModule],
   providers: [ContratosResolver, ContratosService],
   exports: [ContratosService]
 })

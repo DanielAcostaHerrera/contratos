@@ -12,7 +12,7 @@ export class CreateNegociacionResumenInput {
   fecha: Date;
 
   @Field(() => Int)
-  comite: number;
+  idComite: number;
 
   @Field(() => Int)
   idTipoCompras: number;
@@ -34,9 +34,6 @@ export class CreateNegociacionResumenInput {
 
   @Field({nullable: true})
   nota: string | null;
-
-  @Field({nullable: true})
-  noNeg: string | null;
 
   @Field(() => Int,{nullable: true})
   idProveedor: number | null;
