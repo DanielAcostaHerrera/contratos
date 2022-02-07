@@ -8,7 +8,7 @@ export class Logs {
   @Field(() => Int)
   idLog: number;
   
-  @Column("nvarchar", { name: "Mensaje", length: 250 })
+  @Column("nvarchar", { name: "Mensaje"})
   @Field()
   mensaje: string;
 
