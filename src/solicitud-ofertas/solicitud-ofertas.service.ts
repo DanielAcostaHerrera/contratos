@@ -16,12 +16,12 @@ export class SolicitudOfertasService {
 
   async save(createSolicitudOfertaInput: CreateSolicitudOfertaInput) : Promise<SolicitudOfertas> {
     if(createSolicitudOfertaInput.idOferta){
-      var ofertaVieja = await this.findOne(createSolicitudOfertaInput.idOferta)
+      var ofertaVieja = await this.findOne(createSolicitudOfertaInput.idOferta);
     }
 
     var result = await this.solicitudOfertaRepository.save(createSolicitudOfertaInput);
     if(result && !result.idOferta){
-      await this.logsService.save(MyLogger.usuarioLoggeado.ejecutivo.nombre, "Insertada una nueva solicitud de oferta con número consecutivo "+result.consecutivo+"")
+      await this.logsService.save(MyLogger.usuarioLoggeado.ejecutivo.nombre, "Insertada una nueva solicitud de oferta con número consecutivo "+result.consecutivo+"");
     }
     if(result && result.idOferta){
       var texto = "Modificada una solicitud de oferta con número consecutivo "+result.consecutivo+"";
@@ -52,7 +52,7 @@ export class SolicitudOfertasService {
         if(ofertaVieja.aprobadoPor != result.aprobadoPor){
           texto += ", cambiada el ejecutivo que aprueba";
         }
-        await this.logsService.save(MyLogger.usuarioLoggeado.ejecutivo.nombre, texto)
+        await this.logsService.save(MyLogger.usuarioLoggeado.ejecutivo.nombre, texto);
     }
 
     return result;
@@ -69,21 +69,27 @@ export class SolicitudOfertasService {
   async remove(id: number) : Promise<any> {
     const solicitudOfertas = await this.findOne(id);
     var result = await this.solicitudOfertaRepository.remove(solicitudOfertas);
-    await this.logsService.save(MyLogger.usuarioLoggeado.ejecutivo.nombre, "Eliminada la solicitud de oferta con número consecutivo "+result.consecutivo+"")
+    if(result){
+      await this.logsService.save(MyLogger.usuarioLoggeado.ejecutivo.nombre, "Eliminada la solicitud de oferta con número consecutivo "+result.consecutivo+"");
+    }
+    
     return result;
   }
 
   async removeSeveral(id: number[]) : Promise<any> {
     const solicitudOfertas = await this.solicitudOfertaRepository.findByIds(id);
     var result = await this.solicitudOfertaRepository.remove(solicitudOfertas);
-    var texto = "Eliminadas las solicitudes de ofertas con números consecutivos ";
-    for (let index = 0; index < result.length; index++) {
-      if(index != result.length -1)
-        texto += result[index].consecutivo+", "
-      else
-        texto += result[index].consecutivo
+    if(result){
+      var texto = "Eliminadas las solicitudes de ofertas con números consecutivos ";
+      for (let index = 0; index < result.length; index++) {
+        if(index != result.length -1)
+          texto += result[index].consecutivo+", ";
+        else
+          texto += result[index].consecutivo;
+      }
+      await this.logsService.save(MyLogger.usuarioLoggeado.ejecutivo.nombre, texto);  
     }
-    await this.logsService.save(MyLogger.usuarioLoggeado.ejecutivo.nombre, texto)
+    
     return result;
   }
 

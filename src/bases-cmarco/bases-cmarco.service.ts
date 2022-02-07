@@ -24,7 +24,7 @@ export class BasesCmarcoService {
 
   async save(createBaseCMarcoInput: CreateBasesCmarcoInput) : Promise<BasesCMarco> {
     if(createBaseCMarcoInput.idBaseCMarco){
-      var baseVieja = await this.findOne(createBaseCMarcoInput.idBaseCMarco)
+      var baseVieja = await this.findOne(createBaseCMarcoInput.idBaseCMarco);
     }
 
     var result = await this.basesCMarcoRepository.save(createBaseCMarcoInput);
@@ -90,7 +90,7 @@ export class BasesCmarcoService {
       if(baseVieja.noCMarco != result.noCMarco){
         texto += ", cambiado el noCMarco";
       }
-      await this.logsService.save(MyLogger.usuarioLoggeado.ejecutivo.nombre, texto)
+      await this.logsService.save(MyLogger.usuarioLoggeado.ejecutivo.nombre, texto);
     }
     return result;
   }
@@ -107,21 +107,27 @@ export class BasesCmarcoService {
   async remove(id: number) : Promise<any> {
     const basesCMarco = await this.findOne(id);
     var result = await this.basesCMarcoRepository.remove(basesCMarco);
-    await this.logsService.save(MyLogger.usuarioLoggeado.ejecutivo.nombre, "Eliminada la base de contrato marco con número consecutivo "+result.consecutivo+"")
+    if(result){
+      await this.logsService.save(MyLogger.usuarioLoggeado.ejecutivo.nombre, "Eliminada la base de contrato marco con número consecutivo "+result.consecutivo+"");
+    }
+    
     return result;
   }
 
   async removeSeveral(id: number[]) : Promise<any> {
     const basesCMarco = await this.basesCMarcoRepository.findByIds(id);
     var result = await this.basesCMarcoRepository.remove(basesCMarco);
-    var texto = "Eliminadas las bases de contrato marco con números consecutivos ";
-    for (let index = 0; index < result.length; index++) {
-      if(index != result.length -1)
-        texto += result[index].consecutivo+", "
-      else
-        texto += result[index].consecutivo
+    if(result){
+      var texto = "Eliminadas las bases de contrato marco con números consecutivos ";
+      for (let index = 0; index < result.length; index++) {
+        if(index != result.length -1)
+          texto += result[index].consecutivo+", ";
+        else
+          texto += result[index].consecutivo;
+      }
+      await this.logsService.save(MyLogger.usuarioLoggeado.ejecutivo.nombre, texto);
     }
-    await this.logsService.save(MyLogger.usuarioLoggeado.ejecutivo.nombre, texto)
+    
     return result;
   }
 

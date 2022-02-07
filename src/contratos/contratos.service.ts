@@ -42,12 +42,12 @@ export class ContratosService {
 
   async save(createContratoInput: CreateContratoInput) : Promise<Contratos> {
     if(createContratoInput.idContrato){
-      var contratoViejo = await this.findOne(createContratoInput.idContrato)
+      var contratoViejo = await this.findOne(createContratoInput.idContrato);
     }
 
     var result = await this.contratoRepository.save(createContratoInput);
     if(result && !result.idBasesGenerales){
-      await this.logsService.save(MyLogger.usuarioLoggeado.ejecutivo.nombre, "Insertado un nuevo contrato con número consecutivo "+result.consecutivo+"")
+      await this.logsService.save(MyLogger.usuarioLoggeado.ejecutivo.nombre, "Insertado un nuevo contrato con número consecutivo "+result.consecutivo+"");
     }
     if(result && result.idBasesGenerales){
       var texto = "Modificado el contrato con número consecutivo "+result.consecutivo+"";
@@ -159,7 +159,7 @@ export class ContratosService {
         if(contratoViejo.gastosLogisticos != result.gastosLogisticos){
           texto += ", cambiados los gastos logísticos";
         }
-        await this.logsService.save(MyLogger.usuarioLoggeado.ejecutivo.nombre, texto)
+        await this.logsService.save(MyLogger.usuarioLoggeado.ejecutivo.nombre, texto);
     }
     return result;
   }
@@ -177,21 +177,27 @@ export class ContratosService {
   async remove(id: number) : Promise<any> {
     const contratos = await this.findOne(id);
     var result = await this.contratoRepository.remove(contratos);
-    await this.logsService.save(MyLogger.usuarioLoggeado.ejecutivo.nombre, "Eliminado el contrato con número consecutivo "+result.consecutivo+"")
+    if(result){
+      await this.logsService.save(MyLogger.usuarioLoggeado.ejecutivo.nombre, "Eliminado el contrato con número consecutivo "+result.consecutivo+"");
+    }
+    
     return result;
   }
 
   async removeSeveral(id: number[]) : Promise<any> {
     const contratos = await this.contratoRepository.findByIds(id);
     var result = await this.contratoRepository.remove(contratos);
-    var texto = "Eliminados los contratos con números consecutivos ";
-    for (let index = 0; index < result.length; index++) {
-      if(index != result.length -1)
-        texto += result[index].consecutivo+", "
-      else
-        texto += result[index].consecutivo
+    if(result){
+      var texto = "Eliminados los contratos con números consecutivos ";
+      for (let index = 0; index < result.length; index++) {
+        if(index != result.length -1)
+          texto += result[index].consecutivo+", ";
+        else
+          texto += result[index].consecutivo;
+      }
+      await this.logsService.save(MyLogger.usuarioLoggeado.ejecutivo.nombre, texto);
     }
-    await this.logsService.save(MyLogger.usuarioLoggeado.ejecutivo.nombre, texto)
+    
     return result;
   }
 

@@ -29,12 +29,12 @@ export class BasesGeneralesService {
 
   async save(createBasesGeneralesInput: CreateBasesGeneralesInput) : Promise<BasesGenerales> {
     if(createBasesGeneralesInput.idBasesGenerales){
-      var baseVieja = await this.findOne(createBasesGeneralesInput.idBasesGenerales)
+      var baseVieja = await this.findOne(createBasesGeneralesInput.idBasesGenerales);
     }
 
     var result = await this.basesGeneralesRepository.save(createBasesGeneralesInput);
     if(result && !result.idBasesGenerales){
-      await this.logsService.save(MyLogger.usuarioLoggeado.ejecutivo.nombre, "Insertada una nueva base general con número consecutivo "+result.consecutivo+"")
+      await this.logsService.save(MyLogger.usuarioLoggeado.ejecutivo.nombre, "Insertada una nueva base general con número consecutivo "+result.consecutivo+"");
     } 
     if(result && result.idBasesGenerales){
       var texto = "Modificada la base general con número consecutivo "+result.consecutivo+"";
@@ -80,7 +80,7 @@ export class BasesGeneralesService {
         if(baseVieja.actualizado != result.actualizado){
           texto += ", cambiada la fecha de actualización";
         }
-        await this.logsService.save(MyLogger.usuarioLoggeado.ejecutivo.nombre, texto)
+        await this.logsService.save(MyLogger.usuarioLoggeado.ejecutivo.nombre, texto);
     }
     return result;
   }
@@ -96,21 +96,27 @@ export class BasesGeneralesService {
   async remove(id: number) : Promise<any> {
     const basesGenerales = await this.findOne(id);
     var result = await this.basesGeneralesRepository.remove(basesGenerales);
-    await this.logsService.save(MyLogger.usuarioLoggeado.ejecutivo.nombre, "Eliminada la base general con número consecutivo "+result.consecutivo+"")
+    if(result){
+      await this.logsService.save(MyLogger.usuarioLoggeado.ejecutivo.nombre, "Eliminada la base general con número consecutivo "+result.consecutivo+"");
+    }
+    
     return result;
   }
 
   async removeSeveral(id: number[]) : Promise<any> {
     const basesGenerales = await this.basesGeneralesRepository.findByIds(id);
     var result = await this.basesGeneralesRepository.remove(basesGenerales);
-    var texto = "Eliminadas las bases generales con números consecutivos ";
-    for (let index = 0; index < result.length; index++) {
-      if(index != result.length -1)
-        texto += result[index].consecutivo+", "
-      else
-        texto += result[index].consecutivo
+    if(result){
+      var texto = "Eliminadas las bases generales con números consecutivos ";
+      for (let index = 0; index < result.length; index++) {
+        if(index != result.length -1)
+          texto += result[index].consecutivo+", ";
+        else
+          texto += result[index].consecutivo;
+      }
+      await this.logsService.save(MyLogger.usuarioLoggeado.ejecutivo.nombre, texto);
     }
-    await this.logsService.save(MyLogger.usuarioLoggeado.ejecutivo.nombre, texto)
+    
     return result;
   }
 

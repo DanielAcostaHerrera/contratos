@@ -23,12 +23,12 @@ export class NegociacionResumenService {
 
   async save(createNegociacionResumenInput: CreateNegociacionResumenInput) : Promise<NegociacionResumen> {
     if(createNegociacionResumenInput.idNegociacion){
-      var negociacionVieja = await this.findOne(createNegociacionResumenInput.idNegociacion)
+      var negociacionVieja = await this.findOne(createNegociacionResumenInput.idNegociacion);
     }
 
     var result = await this.negociacionResumenRepository.save(createNegociacionResumenInput);
     if(result && !result.idNegociacion){
-      await this.logsService.save(MyLogger.usuarioLoggeado.ejecutivo.nombre, "Insertada una nueva negociación con número "+result.noNegociacion+"")
+      await this.logsService.save(MyLogger.usuarioLoggeado.ejecutivo.nombre, "Insertada una nueva negociación con número "+result.noNegociacion+"");
     }
     if(result && result.idNegociacion){
       var texto = "Modificada la negociación con número "+result.noNegociacion+"";
@@ -83,7 +83,7 @@ export class NegociacionResumenService {
         if(negociacionVieja.terminado != result.terminado){
           texto += ", cambiado el estado de terminado";
         }
-        await this.logsService.save(MyLogger.usuarioLoggeado.ejecutivo.nombre, texto)
+        await this.logsService.save(MyLogger.usuarioLoggeado.ejecutivo.nombre, texto);
     }
     return result;
   }
@@ -101,21 +101,27 @@ export class NegociacionResumenService {
   async remove(id: number) : Promise<any> {
     const negociacionResumen = await this.findOne(id);
     var result = await this.negociacionResumenRepository.remove(negociacionResumen);
-    await this.logsService.save(MyLogger.usuarioLoggeado.ejecutivo.nombre, "Eliminada la negociación con número "+result.noNegociacion+"")
+    if(result){
+      await this.logsService.save(MyLogger.usuarioLoggeado.ejecutivo.nombre, "Eliminada la negociación con número "+result.noNegociacion+"");
+    }
+    
     return result;
   }
 
   async removeSeveral(id: number[]) : Promise<any> {
     const negociacionResumen = await this.negociacionResumenRepository.findByIds(id);
     var result = await this.negociacionResumenRepository.remove(negociacionResumen);
-    var texto = "Eliminados las negociaciones con números ";
-    for (let index = 0; index < result.length; index++) {
-      if(index != result.length -1)
-        texto += result[index].noNegociacion+", "
-      else
-        texto += result[index].noNegociacion
+    if(result){
+      var texto = "Eliminados las negociaciones con números ";
+      for (let index = 0; index < result.length; index++) {
+        if(index != result.length -1)
+          texto += result[index].noNegociacion+", ";
+        else
+          texto += result[index].noNegociacion;
+      }
+      await this.logsService.save(MyLogger.usuarioLoggeado.ejecutivo.nombre, texto);
     }
-    await this.logsService.save(MyLogger.usuarioLoggeado.ejecutivo.nombre, texto)
+    
     return result;
   }
 

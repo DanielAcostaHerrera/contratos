@@ -10,11 +10,12 @@ import * as bcrypt from 'bcryptjs';
 import { MyLogger } from 'src/MyLogger';
 import { CreateUsuarioRolInput } from 'src/usuario-rol/dto/create-usuario-rol.input';
 import { UsuarioRolService } from 'src/usuario-rol/usuario-rol.service';
+import { LogsService } from 'src/logs/logs.service';
 
 @Injectable()
 export class UsuariosService {
   constructor(@InjectRepository(Usuarios) public readonly usuariosRepository: Repository<Usuarios>,private ejecutivoService: EjecutivoService,
-  private usuarioRolService: UsuarioRolService) {}
+  private usuarioRolService: UsuarioRolService,private logsService: LogsService) {}
 
   async save(createUsuarioInput: CreateUsuarioInput) : Promise<Usuarios> {
     var id = createUsuarioInput.idUsuario;
@@ -31,12 +32,17 @@ export class UsuariosService {
     });  
     createUsuarioInput.contrasena = encryptedPassw.replace('$2a$12$', '');
   }
-    const newUsuario = await this.usuariosRepository.save(createUsuarioInput);     
+    const newUsuario = await this.usuariosRepository.save(createUsuarioInput);
+    
+    if(newUsuario && !id){
+      await this.logsService.save(MyLogger.usuarioLoggeado.ejecutivo.nombre, "Insertado el usuario "+newUsuario.nombreUsuario+"");
+    }
+    
     createUsuarioInput.roles.forEach(rol => {
       var usuarioRolInput = new CreateUsuarioRolInput();
       usuarioRolInput.idUsuario = newUsuario.idUsuario;
       usuarioRolInput.idRol = rol;
-      this.usuarioRolService.save(usuarioRolInput)
+      this.usuarioRolService.save(usuarioRolInput);
     });
     
     return await this.usuariosRepository.findOne(createUsuarioInput.idUsuario);
@@ -49,6 +55,7 @@ export class UsuariosService {
       usuario.roles.push(rol.idRol)
     })
     usuario.contrasena = usuario.nombreUsuario + '*'+ new Date().getFullYear();
+    await this.logsService.save(MyLogger.usuarioLoggeado.ejecutivo.nombre, "Forzada la contraseña del usuario "+usuario.nombreUsuario+"");
     return await this.save(usuario);    
   }
 
@@ -69,6 +76,7 @@ export class UsuariosService {
           usuario.roles.push(rol.idRol)
         })  
         usuario.contrasena = contrasenaNueva;  
+        await this.logsService.save(MyLogger.usuarioLoggeado.ejecutivo.nombre, "Modificada la contraseña del usuario "+usuario.nombreUsuario+"");
         resolve(this.save(usuario)); 
       }
     });
@@ -88,6 +96,7 @@ export class UsuariosService {
         }
         else{
           MyLogger.usuarioLoggeado = usuario;
+          await this.logsService.save(MyLogger.usuarioLoggeado.ejecutivo.nombre, "El usuario "+usuario.nombreUsuario+" se ha autenticado en el sistema");
           resolve(usuario);  
         }
       }
@@ -109,7 +118,12 @@ export class UsuariosService {
         reject('No se puede eliminar el usuario que se encuentra autenticado actualmente');
       }
       else{
-        resolve(await this.usuariosRepository.remove(usuario));  
+        var result = await this.usuariosRepository.remove(usuario);
+        if(result){
+          await this.logsService.save(MyLogger.usuarioLoggeado.ejecutivo.nombre, "Eliminado el usuario "+result.nombreUsuario+"");
+        }
+        
+        resolve(result);  
       }
     });
   }
@@ -127,7 +141,18 @@ export class UsuariosService {
         reject('No se puede eliminar el usuario que se encuentra autenticado actualmente');
       }
       else{
-        resolve(await this.usuariosRepository.remove(usuarios));  
+        var result = await this.usuariosRepository.remove(usuarios);
+        if(result){
+          var texto = "Eliminados los usuarios ";
+          for (let index = 0; index < result.length; index++) {
+            if(index != result.length -1)
+              texto += result[index].nombreUsuario+", ";
+            else
+              texto += result[index].nombreUsuario;
+          }
+          await this.logsService.save(MyLogger.usuarioLoggeado.ejecutivo.nombre, texto);
+        }  
+        resolve(result);  
       }
     });
   }
