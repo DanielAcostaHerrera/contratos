@@ -80,6 +80,7 @@ import { CompaniasNavierasModule } from './companias-navieras/companias-navieras
 import { ReferenciasModule } from './referencias/referencias.module';
 import { CodigosParaLaVentaModule } from './codigos-para-la-venta/codigos-para-la-venta.module';
 import { LogsModule } from './logs/logs.module';
+import { PuertoEmbarqueModule } from './puerto-embarque/puerto-embarque.module';
 
 
 @Module({
@@ -199,6 +200,7 @@ import { LogsModule } from './logs/logs.module';
       ],
     }),
     LogsModule,
+    PuertoEmbarqueModule,
   ],
   controllers: [AppController],
   providers: [AppService],

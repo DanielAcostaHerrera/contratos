@@ -35,7 +35,7 @@ export class NegociacionResumenService {
         if(negociacionVieja.fecha != result.fecha){
           texto += ", cambiada la fecha";
         }
-        if(negociacionVieja.idComite != result.idComite){
+        if(negociacionVieja.comite != result.comite){
           texto += ", cambiado el comite de contratacion";
         }
         if(negociacionVieja.idMoneda != result.idMoneda){

@@ -7,6 +7,7 @@ import { Embarques } from "./Embarques.entity";
 import { FacturaResumen } from "./FacturaResumen.entity";
 import { FichaCostoResumen } from "./FichaCostoResumen.entity";
 import { PliegoConcurrenciaResumen } from "./PliegoConcurrenciaResumen.entity";
+import { PuertoEmbarque } from "./PuertoEmbarque.entity";
 import { SuplementoEmbarques } from "./SuplementoEmbarques.entity";
 import { SuplementoResumen } from "./SuplementoResumen.entity";
 
@@ -31,14 +32,6 @@ export class Puertos {
   @Column("nvarchar", { name: "Deposito", nullable: true, length: 10 })
   @Field({nullable: true})
   deposito: string | null;
-
-  @Field(() => [Embarques], { nullable: true })
-  @OneToMany(() => Embarques, (embarques) => embarques.puertoDestino)
-  embarqueDestino: Embarques[];
-
-  @Field(() => [Embarques], { nullable: true })
-  @OneToMany(() => Embarques, (embarques) => embarques.puertoOrigen)
-  embarqueOrigen: Embarques[];
   
   @Field(() => [BasesCMarco], { nullable: true })
   @OneToMany(() => BasesCMarco, (basesCMarco) => basesCMarco.puerto)
@@ -76,4 +69,12 @@ export class Puertos {
   @ManyToOne(() => Paises, (pais) => pais.puerto)
   @JoinColumn([{ name: "Pais", referencedColumnName: "pais" }])
   pais: Paises;
+
+  @Field(() => [PuertoEmbarque], { nullable: true })
+  @OneToMany(() => PuertoEmbarque,(puertoEmbarque) => puertoEmbarque.puertoOrigen)
+  puertoEmbarquesOrigen: PuertoEmbarque[];
+
+  @Field(() => [PuertoEmbarque], { nullable: true })
+  @OneToMany(() => PuertoEmbarque,(puertoEmbarque) => puertoEmbarque.puertoDestino)
+  puertoEmbarquesDestino: PuertoEmbarque[];
 }

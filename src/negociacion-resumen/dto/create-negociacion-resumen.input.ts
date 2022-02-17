@@ -12,7 +12,7 @@ export class CreateNegociacionResumenInput {
   fecha: Date;
 
   @Field(() => Int)
-  idComite: number;
+  comite: number;
 
   @Field(() => Int)
   idTipoCompras: number;

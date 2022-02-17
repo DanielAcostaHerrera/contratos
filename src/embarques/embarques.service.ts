@@ -6,9 +6,7 @@ import { EjecutivoService } from 'src/ejecutivo/ejecutivo.service';
 import { Contratos } from 'src/models/entities/Contratos.entity';
 import { Ejecutivos } from 'src/models/entities/Ejecutivos.entity';
 import { Embarques } from 'src/models/entities/Embarques.entity';
-import { Puertos } from 'src/models/entities/Puertos.entity';
 import { CompaniasNavieras } from 'src/modelsNomgen/entities/CompaniasNavieras.entity';
-import { PuertosService } from 'src/puertos/puertos.service';
 import { Repository } from 'typeorm';
 import { CreateEmbarqueInput } from './dto/create-embarque.input';
 
@@ -16,7 +14,7 @@ import { CreateEmbarqueInput } from './dto/create-embarque.input';
 export class EmbarquesService {
   constructor(@InjectRepository(Embarques) public readonly embarquesRepository: Repository<Embarques>,
   private contratosService: ContratosService,private ejecutivoService: EjecutivoService,
-  private puertosService: PuertosService,private companiasNavierasService: CompaniasNavierasService) {}
+  private companiasNavierasService: CompaniasNavierasService) {}
 
 
   async save(createEmbarqueInput: CreateEmbarqueInput) : Promise<Embarques> {
@@ -25,12 +23,12 @@ export class EmbarquesService {
 
   async findAll(): Promise<Embarques[]> {
     return await this.embarquesRepository.find({relations:['contratoDesgloses', 'facturaResumen','suplementoChanges','suplementoDesgloses','suplementoEmbarques',
-    'suplementoPagos']});
+    'suplementoPagos','puertoEmbarques']});
   }
 
   async findOne(id: number) : Promise<Embarques> {
     return await this.embarquesRepository.findOne(id,{relations:['contratoDesgloses', 'facturaResumen','suplementoChanges','suplementoDesgloses',
-    'suplementoEmbarques','suplementoPagos']});
+    'suplementoEmbarques','suplementoPagos','puertoEmbarques']});
   }
 
   async remove(id: number) : Promise<any> {
@@ -49,14 +47,6 @@ export class EmbarquesService {
 
   async getEjecutivo (Id: number) : Promise<Ejecutivos>{
     return this.ejecutivoService.findOne(Id);
-  }
-
-  async getPuertoDestino (Id: number) : Promise<Puertos>{
-    return this.puertosService.findOne(Id);
-  }
-
-  async getPuertoOrigen (Id: number) : Promise<Puertos>{
-    return this.puertosService.findOne(Id);
   }
 
   async getCompaniaNaviera (Id: number) : Promise<CompaniasNavieras>{

@@ -268,7 +268,7 @@ type NegociacionResumen {
   consecutivo: Int!
   noNegociacion: String
   fecha: DateTime!
-  idComite: Int!
+  comite: Int!
   idTipoCompras: Int!
   idGrupo: Int!
   idMoneda: Int!
@@ -384,6 +384,16 @@ type FacturaResumen {
   ejecutivoRealiza: Ejecutivos
 }
 
+type PuertoEmbarque {
+  idPuertoEmbarque: Int!
+  idEmbarque: Int!
+  idPuertoOrigen: Int!
+  idPuertoDestino: Int!
+  embarques: Embarques
+  puertoOrigen: Puertos
+  puertoDestino: Puertos
+}
+
 type SuplementoEmbarques {
   idSuplementoEmbarques: Int!
   idSuplementoResumen: Int!
@@ -410,8 +420,6 @@ type Puertos {
   nombre: String!
   idPais: Int!
   deposito: String
-  embarqueDestino: [Embarques!]
-  embarqueOrigen: [Embarques!]
   basesCMarco: [BasesCMarco!]
   fichaCostoResumen: [FichaCostoResumen!]
   pliegoConcurrenciaResumenEmbarque: [PliegoConcurrenciaResumen!]
@@ -421,6 +429,8 @@ type Puertos {
   suplementoResumenOrigen: [SuplementoResumen!]
   suplementoResumenDestino: [SuplementoResumen!]
   pais: Paises
+  puertoEmbarquesOrigen: [PuertoEmbarque!]
+  puertoEmbarquesDestino: [PuertoEmbarque!]
 }
 
 type Paises {
@@ -1210,8 +1220,6 @@ type Embarques {
   idContrato: Int
   idEjecutivo: Int
   numero: Int!
-  idPuertoDestino: Int
-  idPuertoOrigen: Int
   descuento: Float
   terminado: Boolean!
   cancelado: Boolean!
@@ -1230,14 +1238,13 @@ type Embarques {
   contratoDesgloses: [ContratoDesglose!]
   contratos: Contratos
   ejecutivos: Ejecutivos
-  puertoDestino: Puertos
-  puertoOrigen: Puertos
   facturaResumen: [FacturaResumen!]
   suplementoChanges: [SuplementoChange!]
   suplementoDesgloses: [SuplementoDesglose!]
   suplementoEmbarques: [SuplementoEmbarques!]
   suplementoPagos: [SuplementoPagos!]
   companiaNaviera: CompaniasNavieras
+  puertoEmbarques: [PuertoEmbarque!]
 }
 
 type SuplementoClausulas {
@@ -1625,6 +1632,8 @@ type Query {
   autenticarUsuarios(contrasena: String!, nombreUsuario: String!): Usuarios!
   findAllUsuarioRol: [UsuarioRol!]!
   findOneUsuarioRol(id: Int!): UsuarioRol!
+  findAllPuertoEmbarque: [PuertoEmbarque!]!
+  findOnePuertoEmbarque(id: Int!): PuertoEmbarque!
 }
 
 type Mutation {
@@ -1829,6 +1838,9 @@ type Mutation {
   removeUsuarioRol(id: Int!): UsuarioRol!
   removeUsuarioRolByUserId(idUsuario: Int!): UsuarioRol!
   removeSeveralUsuarioRol(id: [Int!]!): [UsuarioRol!]!
+  createPuertoEmbarque(createPuertoEmbarqueInput: CreatePuertoEmbarqueInput!): PuertoEmbarque!
+  removePuertoEmbarque(id: Int!): PuertoEmbarque!
+  removeSeveralPuertoEmbarque(id: [Int!]!): [PuertoEmbarque!]!
 }
 
 input CreateMonedaInput {
@@ -2077,7 +2089,7 @@ input CreateNegociacionResumenInput {
   idNegociacion: Int
   consecutivo: Int!
   fecha: DateTime!
-  idComite: Int!
+  comite: Int!
   idTipoCompras: Int!
   idGrupo: Int!
   idMoneda: Int!
@@ -2509,8 +2521,6 @@ input CreateEmbarqueInput {
   idContrato: Int
   idEjecutivo: Int
   numero: Int!
-  idPuertoDestino: Int
-  idPuertoOrigen: Int
   descuento: Float
   terminado: Boolean!
   cancelado: Boolean!
@@ -2694,4 +2704,11 @@ input CreateUsuarioRolInput {
   idUsuarioRol: Int
   idUsuario: Int!
   idRol: Int!
+}
+
+input CreatePuertoEmbarqueInput {
+  idPuertoEmbarque: Int
+  idEmbarque: Int!
+  idPuertoOrigen: Int!
+  idPuertoDestino: Int!
 }

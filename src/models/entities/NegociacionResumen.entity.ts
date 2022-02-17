@@ -42,7 +42,7 @@ export class NegociacionResumen {
 
   @Column("int", { name: "Comite", default: () => "(0)" })
   @Field(() => Int)
-  idComite: number;
+  comite: number;
 
   @Column("int", { name: "IdTipoCompras", default: () => "(0)" })
   @Field(() => Int)

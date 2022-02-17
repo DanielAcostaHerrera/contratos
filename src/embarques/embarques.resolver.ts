@@ -4,7 +4,6 @@ import { CreateEmbarqueInput } from './dto/create-embarque.input';
 import { Embarques } from 'src/models/entities/Embarques.entity';
 import { Contratos } from 'src/models/entities/Contratos.entity';
 import { Ejecutivos } from 'src/models/entities/Ejecutivos.entity';
-import { Puertos } from 'src/models/entities/Puertos.entity';
 import { CompaniasNavieras } from 'src/modelsNomgen/entities/CompaniasNavieras.entity';
 
 @Resolver(() => Embarques)
@@ -44,16 +43,6 @@ export class EmbarquesResolver {
   @ResolveField(() => Ejecutivos, {nullable: true})
   ejecutivos(@Parent() embarques: Embarques): Promise<Ejecutivos> {
     return this.embarquesService.getEjecutivo(embarques.idEjecutivo);
-  }
-
-  @ResolveField(() => Puertos, {nullable: true})
-  puertoDestino(@Parent() embarques: Embarques): Promise<Puertos> {
-    return this.embarquesService.getPuertoDestino(embarques.idPuertoDestino);
-  }
-
-  @ResolveField(() => Puertos, {nullable: true})
-  puertoOrigen(@Parent() embarques: Embarques): Promise<Puertos> {
-    return this.embarquesService.getPuertoDestino(embarques.idPuertoOrigen);
   }
 
   @ResolveField(() => CompaniasNavieras, {nullable: true})

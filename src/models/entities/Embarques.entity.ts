@@ -13,11 +13,11 @@ import { ContratoDesglose } from "./ContratoDesglose.entity";
 import { Contratos } from "./Contratos.entity";
 import { Ejecutivos } from "./Ejecutivos.entity";
 import { FacturaResumen } from "./FacturaResumen.entity";
-import { Puertos } from "./Puertos.entity";
 import { SuplementoChange } from "./SuplementoChange.entity";
 import { SuplementoDesglose } from "./SuplementoDesglose.entity";
 import { SuplementoEmbarques } from "./SuplementoEmbarques.entity";
 import { SuplementoPagos } from "./SuplementoPagos.entity";
+import { PuertoEmbarque } from './PuertoEmbarque.entity';
 
 @ObjectType()
 @Index("PK_Embarques", ["idEmbarque"], { unique: true })
@@ -42,21 +42,6 @@ export class Embarques {
   @Column("int", { name: "Numero" })
   @Field(() => Int)
   numero: number;
-
-  @Column("int", {
-    name: "IdPuertoDestino",
-    nullable: true,
-    default: () => "(100)",
-  })
-  @Field(() => Int,{nullable: true})
-  idPuertoDestino: number | null;
-
-  @Column("int", {
-    name: "IdPuertoOrigen",
-    nullable: true,
-  })
-  @Field(() => Int,{nullable: true})
-  idPuertoOrigen: number | null;
 
   @Column("real", {
     name: "Descuento",
@@ -141,16 +126,6 @@ export class Embarques {
   @JoinColumn([{ name: "IdEjecutivo", referencedColumnName: "idEjecutivo" }])
   ejecutivos: Ejecutivos;
 
-  @Field(() => Puertos, {nullable: true})
-  @ManyToOne(() => Puertos, (puertos) => puertos.embarqueDestino)
-  @JoinColumn([{ name: "IdPuertoDestino", referencedColumnName: "idPuerto" }])
-  puertoDestino: Puertos;
-
-  @Field(() => Puertos, {nullable: true})
-  @ManyToOne(() => Puertos, (puertos) => puertos.embarqueOrigen)
-  @JoinColumn([{ name: "IdPuertoOrigen", referencedColumnName: "idPuerto" }])
-  puertoOrigen: Puertos;
-
   @Field(() => [FacturaResumen], {nullable: true})
   @OneToMany(() => FacturaResumen,(facturaResumen) => facturaResumen.embarques)
   facturaResumen: FacturaResumen[];
@@ -175,4 +150,8 @@ export class Embarques {
   @ManyToOne(() => CompaniasNavieras, (companiasNavieras) => companiasNavieras.embarques)
   @JoinColumn([{ name: "EmpNaviera", referencedColumnName: "id" }])
   companiaNaviera: CompaniasNavieras;
+
+  @Field(() => [PuertoEmbarque], { nullable: true })
+  @OneToMany(() => PuertoEmbarque,(puertoEmbarque) => puertoEmbarque.embarques)
+  puertoEmbarques: PuertoEmbarque[];
 }

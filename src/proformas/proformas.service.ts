@@ -8,7 +8,6 @@ import { CreateProformaInput } from './dto/create-proforma.input';
 export class ProformasService {
   constructor(@InjectRepository(Proformas) public readonly proformaRepository: Repository<Proformas>) {}
 
-
   async save(createProformaInput: CreateProformaInput) : Promise<Proformas> {
     return await this.proformaRepository.save(createProformaInput);
   }
