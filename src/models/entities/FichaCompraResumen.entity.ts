@@ -120,7 +120,7 @@ export class FichaCompraResumen {
   @Field(() => Float)
   otrosGastosOrigen: number;
 
-  @Column("float", { name: "TotalGastoOrigen", precision: 53 })
+  @Column({ name: "TotalGastoOrigen", precision: 53, insert: false, update: false })
   @Field(() => Float)
   totalGastoOrigen: number;
 
@@ -140,19 +140,19 @@ export class FichaCompraResumen {
   @Field(() => Float)
   descuentoContratacion: number;
 
-  @Column("float", { name: "TotalRecDescContrato", precision: 53 })
+  @Column({ name: "TotalRecDescContrato", precision: 53, insert: false, update: false })
   @Field(() => Float)
   totalRecDescContrato: number;
 
-  @Column("float", { name: "TotalAdquisicion", precision: 53 })
+  @Column({ name: "TotalAdquisicion", precision: 53, insert: false, update: false })
   @Field(() => Float)
   totalAdquisicion: number;
 
-  @Column("float", { name: "IndicePPCosto", precision: 53 })
+  @Column({ name: "IndicePPCosto", precision: 53, insert: false, update: false })
   @Field(() => Float)
   indicePpCosto: number;
 
-  @Column("float", { name: "DifCambioMoneda", precision: 53 })
+  @Column({ name: "DifCambioMoneda", precision: 53, insert: false, update: false })
   @Field(() => Float)
   difCambioMoneda: number;
 
@@ -164,7 +164,7 @@ export class FichaCompraResumen {
   @Field(() => Float)
   tasaCambioContratacion: number;
 
-  @Column("float", { name: "ValorMercancia", precision: 53 })
+  @Column({ name: "ValorMercancia", precision: 53, insert: false, update: false })
   @Field(() => Float)
   valorMercancia: number;
 
@@ -188,11 +188,11 @@ export class FichaCompraResumen {
   @Field(() => Float)
   descuentoFlete: number;
 
-  @Column("float", { name: "TotalFlete", precision: 53 })
+  @Column({ name: "TotalFlete", precision: 53, insert: false, update: false })
   @Field(() => Float)
   totalFlete: number;
 
-  @Column("float", { name: "CostoFleteUSD", precision: 53 })
+  @Column({ name: "CostoFleteUSD", precision: 53, insert: false, update: false })
   @Field(() => Float)
   costoFleteUsd: number;
 
@@ -204,7 +204,7 @@ export class FichaCompraResumen {
   @Field(() => Float)
   seguroContrato: number;
 
-  @Column("float", { name: "Seguro", nullable: true, precision: 53 })
+  @Column({ name: "Seguro", nullable: true, precision: 53, insert: false, update: false })
   @Field(() => Float,{nullable: true})
   seguro: number | null;
 
@@ -212,7 +212,7 @@ export class FichaCompraResumen {
   @Field(() => Float,{nullable: true})
   tasaSeguro: number | null;
 
-  @Column("float", { name: "CostoCIFFleteUSD", nullable: true, precision: 53 })
+  @Column({ name: "CostoCIFFleteUSD", nullable: true, precision: 53, insert: false, update: false })
   @Field(() => Float,{nullable: true})
   costoCifFleteUsd: number | null;
 
@@ -224,15 +224,17 @@ export class FichaCompraResumen {
   @Field(() => Float)
   tasaCambioMn: number;
 
-  @Column("float", {
+  @Column({
     name: "CostoFleteSeguroMN",
     nullable: true,
-    precision: 53,
+    precision: 53, 
+    insert: false, 
+    update: false
   })
   @Field(() => Float,{nullable: true})
   costoFleteSeguroMn: number | null;
 
-  @Column("float", { name: "FactorConversion", nullable: true, precision: 53 })
+  @Column({ name: "FactorConversion", nullable: true, precision: 53, insert: false, update: false })
   @Field(() => Float,{nullable: true})
   factorConversion: number | null;
 
@@ -244,7 +246,7 @@ export class FichaCompraResumen {
   @Field(() => Float)
   tasaArancelaria: number;
 
-  @Column("float", { name: "ValorArancel", nullable: true, precision: 53 })
+  @Column({ name: "ValorArancel", nullable: true, precision: 53, insert: false, update: false })
   @Field(() => Float,{nullable: true})
   valorArancel: number | null;
 
@@ -324,7 +326,7 @@ export class FichaCompraResumen {
   @Field(() => Float)
   oGastosPortuariosAduanales: number;
 
-  @Column("float", { name: "GastosImportacion", precision: 53 })
+  @Column({ name: "GastosImportacion", precision: 53, insert: false, update: false })
   @Field(() => Float)
   gastosImportacion: number;
 
@@ -340,18 +342,20 @@ export class FichaCompraResumen {
   @Field(() => Float)
   financiamiento: number;
 
-  @Column("float", { name: "TotalGastos", precision: 53 })
+  @Column({ name: "TotalGastos", precision: 53, insert: false, update: false })
   @Field(() => Float)
   totalGastos: number;
 
-  @Column("float", { name: "IndicePGasto", nullable: true, precision: 53 })
+  @Column({ name: "IndicePGasto", nullable: true, precision: 53, insert: false, update: false })
   @Field(() => Float,{nullable: true})
   indicePGasto: number | null;
 
-  @Column("float", {
+  @Column({
     name: "IndGastoAdquisicion",
     nullable: true,
-    precision: 53,
+    precision: 53, 
+    insert: false, 
+    update: false
   })
   @Field(() => Float,{nullable: true})
   indGastoAdquisicion: number | null;
@@ -364,7 +368,7 @@ export class FichaCompraResumen {
   @Field(() => Float)
   tasaMaxRecargo: number;
 
-  @Column("float", { name: "MargenComercial", nullable: true, precision: 53 })
+  @Column({ name: "MargenComercial", nullable: true, precision: 53, insert: false, update: false })
   @Field(() => Float,{nullable: true})
   margenComercial: number | null;
 
@@ -392,11 +396,11 @@ export class FichaCompraResumen {
   @Field(() => Float)
   tasaImpuestoProducto: number;
 
-  @Column("float", { name: "TotalImpuestoContrib", precision: 53 })
+  @Column({ name: "TotalImpuestoContrib", precision: 53, insert: false, update: false })
   @Field(() => Float)
   totalImpuestoContrib: number;
 
-  @Column("float", { name: "PVentaImportador", nullable: true, precision: 53 })
+  @Column({ name: "PVentaImportador", nullable: true, precision: 53, insert: false, update: false })
   @Field(() => Float,{nullable: true})
   pVentaImportador: number | null;
 
@@ -440,7 +444,7 @@ export class FichaCompraResumen {
   @Field(() => Float)
   tasaImpuestoProductoMin: number;
 
-  @Column("float", { name: "TotalImpuestoContribMin", precision: 53 })
+  @Column({ name: "TotalImpuestoContribMin", precision: 53, insert: false, update: false })
   @Field(() => Float)
   totalImpuestoContribMin: number;
 
@@ -484,7 +488,7 @@ export class FichaCompraResumen {
   @Field()
   chkRecepcion: boolean;
 
-  @Column("nvarchar", { name: "NoFicha", nullable: true, length: 4000 })
+  @Column({ name: "NoFicha", nullable: true, length: 4000, insert: false, update: false })
   @Field({nullable: true})
   noFicha: string | null;
 

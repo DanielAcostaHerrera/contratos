@@ -46,11 +46,11 @@ export class FichaCompraDetalle {
   @Field(() => Float)
   pCosto: number;
 
-  @Column("float", { name: "PCProv", nullable: true, precision: 53 })
+  @Column({ name: "PCProv", nullable: true, precision: 53, insert: false, update: false })
   @Field(() => Float,{nullable: true})
   pcProv: number | null;
 
-  @Column("float", { name: "PCostoCIF", nullable: true, precision: 53 })
+  @Column({ name: "PCostoCIF", nullable: true, precision: 53, insert: false, update: false })
   @Field(() => Float,{nullable: true})
   pCostoCif: number | null;
 
@@ -62,15 +62,15 @@ export class FichaCompraDetalle {
   @Field(() => Float)
   tasaArancel: number;
 
-  @Column("float", { name: "ValorArancel", nullable: true, precision: 53 })
+  @Column({ name: "ValorArancel", nullable: true, precision: 53, insert: false, update: false })
   @Field(() => Float,{nullable: true})
   valorArancel: number | null;
 
-  @Column("float", { name: "ImporteArancel", nullable: true, precision: 53 })
+  @Column({ name: "ImporteArancel", nullable: true, precision: 53, insert: false, update: false })
   @Field(() => Float,{nullable: true})
   importeArancel: number | null;
 
-  @Column("float", { name: "ValorGastos", nullable: true, precision: 53 })
+  @Column({ name: "ValorGastos", nullable: true, precision: 53, insert: false, update: false })
   @Field(() => Float,{nullable: true})
   valorGastos: number | null;
 
@@ -82,55 +82,59 @@ export class FichaCompraDetalle {
   @Field(() => Float)
   tasaMargenComercial: number;
 
-  @Column("float", { name: "ValorTMC", nullable: true, precision: 53 })
+  @Column({ name: "ValorTMC", nullable: true, precision: 53, insert: false, update: false })
   @Field(() => Float,{nullable: true})
   valorTmc: number | null;
 
-  @Column("float", { name: "PCostoImportacion", nullable: true, precision: 53 })
+  @Column({ name: "PCostoImportacion", nullable: true, precision: 53, insert: false, update: false })
   @Field(() => Float,{nullable: true})
   pCostoImportacion: number | null;
 
-  @Column("float", { name: "ImpPCostoProv", nullable: true, precision: 53 })
+  @Column({ name: "ImpPCostoProv", nullable: true, precision: 53, insert: false, update: false })
   @Field(() => Float,{nullable: true})
   impPCostoProv: number | null;
 
-  @Column("float", { name: "ImpPCostoCIF", nullable: true, precision: 53 })
+  @Column({ name: "ImpPCostoCIF", nullable: true, precision: 53, insert: false, update: false })
   @Field(() => Float,{nullable: true})
   impPCostoCif: number | null;
 
-  @Column("float", { name: "ImpPCostoImp", nullable: true, precision: 53 })
+  @Column({ name: "ImpPCostoImp", nullable: true, precision: 53, insert: false, update: false })
   @Field(() => Float,{nullable: true})
   impPCostoImp: number | null;
 
-  @Column("float", {
+  @Column({
     name: "ValorCircMayorista",
     nullable: true,
-    precision: 53,
+    precision: 53, 
+    insert: false, 
+    update: false
   })
   @Field(() => Float,{nullable: true})
   valorCircMayorista: number | null;
 
-  @Column("float", { name: "PCostoMayorista", nullable: true, precision: 53 })
+  @Column({ name: "PCostoMayorista", nullable: true, precision: 53, insert: false, update: false })
   @Field(() => Float,{nullable: true})
   pCostoMayorista: number | null;
 
-  @Column("float", { name: "ImpMayorista", nullable: true, precision: 53 })
+  @Column({ name: "ImpMayorista", nullable: true, precision: 53, insert: false, update: false })
   @Field(() => Float,{nullable: true})
   impMayorista: number | null;
 
-  @Column("float", {
+  @Column({
     name: "ValorCircMinorista",
     nullable: true,
-    precision: 53,
+    precision: 53, 
+    insert: false, 
+    update: false
   })
   @Field(() => Float,{nullable: true})
   valorCircMinorista: number | null;
 
-  @Column("float", { name: "PCostoMinorista", nullable: true, precision: 53 })
+  @Column({ name: "PCostoMinorista", nullable: true, precision: 53, insert: false, update: false })
   @Field(() => Float,{nullable: true})
   pCostoMinorista: number | null;
 
-  @Column("float", { name: "ImpMinorista", nullable: true, precision: 53 })
+  @Column({ name: "ImpMinorista", nullable: true, precision: 53, insert: false, update: false })
   @Field(() => Float,{nullable: true})
   impMinorista: number | null;
 
