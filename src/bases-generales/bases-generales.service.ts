@@ -28,8 +28,20 @@ export class BasesGeneralesService {
   private logsService: LogsService) {}
 
   async save(createBasesGeneralesInput: CreateBasesGeneralesInput) : Promise<BasesGenerales> {
+    var today = new Date();
     if(createBasesGeneralesInput.idBasesGenerales){
       var baseVieja = await this.findOne(createBasesGeneralesInput.idBasesGenerales);
+    }
+
+    if(!createBasesGeneralesInput.idBasesGenerales){
+      var basesAnteriores = await this.findAll();
+      var ultimaBase = basesAnteriores[basesAnteriores.length-1];
+      if(ultimaBase.fecha.getFullYear == today.getFullYear){
+        createBasesGeneralesInput.consecutivo = ultimaBase.consecutivo+1;
+      }
+      else{
+        createBasesGeneralesInput.consecutivo = 1;
+      }
     }
 
     var result = await this.basesGeneralesRepository.save(createBasesGeneralesInput);
@@ -49,9 +61,6 @@ export class BasesGeneralesService {
         }
         if(baseVieja.idProforma != result.idProforma){
           texto += ", cambiada la proforma empleada";
-        }
-        if(baseVieja.idClasificacion != result.idClasificacion){
-          texto += ", cambiada la clasificación";
         }
         if(baseVieja.lugardeFirma != result.lugardeFirma){
           texto += ", cambiado el lugar de firma";
@@ -86,7 +95,9 @@ export class BasesGeneralesService {
   }
 
   async findAll(): Promise<BasesGenerales[]> { 
-    return await this.basesGeneralesRepository.find({ relations: ['basesGeneralesClausulas','contratos']});
+    return await this.basesGeneralesRepository.find({order: {
+        fecha : "DESC"
+      }, relations: ['basesGeneralesClausulas','contratos']});
   }
 
   async findOne(id: number) : Promise<BasesGenerales> {

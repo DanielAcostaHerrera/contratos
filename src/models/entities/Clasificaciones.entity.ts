@@ -20,7 +20,4 @@ export class Clasificaciones {
   @Field()
   clasificacion: string;
 
-  @Field(() => [BasesGenerales] , {nullable: true})
-  @OneToMany(() => BasesGenerales,(basesGenerales) => basesGenerales.clasificaciones)
-  basesGenerales: BasesGenerales[];
 }

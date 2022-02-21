@@ -14,11 +14,11 @@ export class ClasificacionesService {
   }
 
   async findAll(): Promise<Clasificaciones[]> {
-    return await this.clasificacionesRepository.find({ relations: ['basesGenerales']});
+    return await this.clasificacionesRepository.find();
   }
 
   async findOne(id: number) : Promise<Clasificaciones> {
-    return await this.clasificacionesRepository.findOne(id, { relations: ['basesGenerales']});
+    return await this.clasificacionesRepository.findOne(id);
   }
 
   async remove(id: number) : Promise<any> {

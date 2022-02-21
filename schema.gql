@@ -15,12 +15,6 @@ type TiposDeClausulas {
   proformaClausulas: [ProformaClausulas!]
 }
 
-type Clasificaciones {
-  idClasificacion: Int!
-  clasificacion: String!
-  basesGenerales: [BasesGenerales!]
-}
-
 type TipoContrato {
   idTipoContrato: Int!
   tipoContrato: String!
@@ -879,7 +873,6 @@ type BasesGenerales {
   idTipoContrato: Int!
   idIncoterm: Int!
   idProforma: Int!
-  idClasificacion: Int!
   lugardeFirma: String!
   idPais: Int!
   idProveedor: Int!
@@ -891,7 +884,6 @@ type BasesGenerales {
   activo: Boolean!
   actualizado: DateTime!
   noContrato: String
-  clasificaciones: Clasificaciones
   tipoDeContrato: TipoContrato
   incoterm: Incoterm
   proforma: Proformas
@@ -1450,6 +1442,11 @@ type Logs {
   usuario: String!
 }
 
+type Clasificaciones {
+  idClasificacion: Int!
+  clasificacion: String!
+}
+
 type DatosEntidad {
   codigo: Int!
   cuentaUsd: String
@@ -1927,12 +1924,11 @@ input CreateCompradoresInput {
 
 input CreateBasesGeneralesInput {
   idBasesGenerales: Int
-  consecutivo: Int!
+  consecutivo: Int
   fecha: DateTime!
   idTipoContrato: Int!
   idIncoterm: Int!
   idProforma: Int!
-  idClasificacion: Int!
   lugardeFirma: String!
   idPais: Int!
   idProveedor: Int!

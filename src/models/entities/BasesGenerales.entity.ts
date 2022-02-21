@@ -54,10 +54,6 @@ export class BasesGenerales {
   @Field(() => Int)
   idProforma: number;
 
-  @Column("int", { name: "IdClasificacion" })
-  @Field(() => Int)
-  idClasificacion: number;
-
   @Column("nvarchar", { name: "LugardeFirma", length: 60 })
   @Field()
   lugardeFirma: string;
@@ -101,11 +97,6 @@ export class BasesGenerales {
   @Column("nvarchar", { name: "NoContrato", nullable: true, length: 4000 })
   @Field({nullable: true})
   noContrato: string | null;
-
-  @Field(() => Clasificaciones , {nullable: true})
-  @ManyToOne(() => Clasificaciones,(clasificaciones) => clasificaciones.basesGenerales,{ onUpdate: "CASCADE" })
-  @JoinColumn([{ name: "IdClasificacion", referencedColumnName: "idClasificacion" }])
-  clasificaciones: Clasificaciones;
 
   @Field(() => TipoContrato , {nullable: true})
   @ManyToOne(() => TipoContrato, (tipoContrato) => tipoContrato.basesGenerales)

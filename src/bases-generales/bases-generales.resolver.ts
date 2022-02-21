@@ -39,11 +39,6 @@ export class BasesGeneralesResolver {
     return this.basesGeneralesService.removeSeveral(id);
   }
 
-  @ResolveField(() => Clasificaciones, {nullable: true})
-  clasificaciones(@Parent() basesGenerales: BasesGenerales): Promise<Clasificaciones> {
-    return this.basesGeneralesService.getClasificacion(basesGenerales.idClasificacion);
-  }
-
   @ResolveField(() => TipoContrato, {nullable: true})
   tipoDeContrato(@Parent() basesGenerales: BasesGenerales): Promise<TipoContrato> {
     return this.basesGeneralesService.getTipoContrato(basesGenerales.idTipoContrato);

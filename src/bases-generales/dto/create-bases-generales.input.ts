@@ -5,8 +5,8 @@ export class CreateBasesGeneralesInput {
   @Field(() => Int, { nullable: true})
   idBasesGenerales?: number;
 
-  @Field(() => Int)
-  consecutivo: number;
+  @Field(() => Int, { nullable: true})
+  consecutivo?: number;
 
   @Field()
   fecha: Date;
@@ -19,9 +19,6 @@ export class CreateBasesGeneralesInput {
 
   @Field(() => Int)
   idProforma: number;
-
-  @Field(() => Int)
-  idClasificacion: number;
 
   @Field()
   lugardeFirma: string;
