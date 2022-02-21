@@ -41,15 +41,24 @@ export class ContratosService {
 
 
   async save(createContratoInput: CreateContratoInput) : Promise<Contratos> {
+    var esNuevo = true;
     if(createContratoInput.idContrato){
+      esNuevo = false;
       var contratoViejo = await this.findOne(createContratoInput.idContrato);
     }
 
+    if(!createContratoInput.idContrato){
+      esNuevo = true;
+      var baseGeneral = await this.basesGeneralesService.findOne(createContratoInput.idBasesGenerales);
+      var cantContratos = baseGeneral.contratos.length;
+      createContratoInput.consecutivo = cantContratos+1;
+    }
+
     var result = await this.contratoRepository.save(createContratoInput);
-    if(result && !result.idBasesGenerales){
+    if(result && esNuevo){
       await this.logsService.save(MyLogger.usuarioLoggeado.ejecutivo.nombre, "Insertado un nuevo contrato con número consecutivo "+result.consecutivo+"");
     }
-    if(result && result.idBasesGenerales){
+    if(result && !esNuevo){
       var texto = "Modificado el contrato con número consecutivo "+result.consecutivo+"";
         if(contratoViejo.idBasesGenerales != result.idBasesGenerales){
           texto += ", cambiada la base general empleada";

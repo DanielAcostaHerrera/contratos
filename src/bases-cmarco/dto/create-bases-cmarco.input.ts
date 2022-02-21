@@ -11,8 +11,8 @@ export class CreateBasesCmarcoInput {
   @Field(() => Int)
   idProveedor: number;
 
-  @Field(() => Int)
-  consecutivo: number;
+  @Field(() => Int, { nullable: true})
+  consecutivo: number | null;
 
   @Field({ nullable: true})
   directivaTrd: string | null;

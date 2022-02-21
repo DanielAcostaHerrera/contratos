@@ -35,8 +35,8 @@ export class CreateContratoInput {
   @Field()
   lugarFirma: string | null;
 
-  @Field(() => Int)
-  consecutivo: number;
+  @Field(() => Int, {nullable: true})
+  consecutivo: number | null;
 
   @Field(() => Int)
   idIncoterm: number;
@@ -86,8 +86,8 @@ export class CreateContratoInput {
   @Field(() => Int,{nullable: true})
   noEntregasParciales: number | null;
 
-  @Field()
-  fechaElaboracion: Date;
+  @Field({nullable: true})
+  fechaElaboracion: Date | null;
 
   @Field({nullable: true})
   fechaInicial: Date | null;

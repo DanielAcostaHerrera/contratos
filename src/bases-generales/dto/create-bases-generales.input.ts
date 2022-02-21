@@ -8,8 +8,8 @@ export class CreateBasesGeneralesInput {
   @Field(() => Int, { nullable: true})
   consecutivo?: number;
 
-  @Field()
-  fecha: Date;
+  @Field({ nullable: true})
+  fecha?: Date;
 
   @Field(() => Int)
   idTipoContrato: number;
@@ -44,6 +44,6 @@ export class CreateBasesGeneralesInput {
   @Field()
   activo: boolean;
 
-  @Field()
-  actualizado: Date;
+  @Field({ nullable: true})
+  actualizado?: Date;
 }

@@ -38,7 +38,7 @@ export class BasesGenerales {
   @Field(() => Int)
   consecutivo: number;
 
-  @Column("datetime", { name: "Fecha" })
+  @Column("datetime", { name: "Fecha" , default: () => "getdate()"})
   @Field()
   fecha: Date;
 
@@ -74,9 +74,9 @@ export class BasesGenerales {
   @Field(() => Int)
   vigencia: number;
 
-  @Column("datetime", { name: "FechaVencimiento", nullable: true })
-  @Field({nullable: true})
-  fechaVencimiento: Date | null;
+  @Column({ name: "FechaVencimiento", insert: false, update: false })
+  @Field()
+  fechaVencimiento: Date;
 
   @Column("bit", { name: "Aprobado", default: () => "(0)" })
   @Field()
@@ -94,9 +94,9 @@ export class BasesGenerales {
   @Field()
   actualizado: Date;
 
-  @Column("nvarchar", { name: "NoContrato", nullable: true, length: 4000 })
-  @Field({nullable: true})
-  noContrato: string | null;
+  @Column({ name: "NoContrato", insert: false, update: false })
+  @Field()
+  noContrato: string;
 
   @Field(() => TipoContrato , {nullable: true})
   @ManyToOne(() => TipoContrato, (tipoContrato) => tipoContrato.basesGenerales)

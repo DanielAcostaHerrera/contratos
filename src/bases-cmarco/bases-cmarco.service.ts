@@ -23,15 +23,31 @@ export class BasesCmarcoService {
   private proveedoresService:  ProveedoresService, private logsService: LogsService) {}
 
   async save(createBaseCMarcoInput: CreateBasesCmarcoInput) : Promise<BasesCMarco> {
+    var esNuevo = false;
+    var today = new Date();
     if(createBaseCMarcoInput.idBaseCMarco){
+      esNuevo = false;
       var baseVieja = await this.findOne(createBaseCMarcoInput.idBaseCMarco);
     }
 
+    if(!createBaseCMarcoInput.idBasesGenerales){
+      esNuevo = true;
+      var basesAnteriores = await this.findAll();
+      var ultimaBase = basesAnteriores[0];
+     
+      if(ultimaBase.fecha.getFullYear() === today.getFullYear()){
+        createBaseCMarcoInput.consecutivo = ultimaBase.consecutivo+1;    
+      }
+      else{
+        createBaseCMarcoInput.consecutivo = 1;
+      }
+    }
+
     var result = await this.basesCMarcoRepository.save(createBaseCMarcoInput);
-    if(result && !result.idBaseCMarco){
+    if(result && esNuevo){
       await this.logsService.save(MyLogger.usuarioLoggeado.ejecutivo.nombre, "Insertada una nueva base de contrato marco con número consecutivo "+result.consecutivo+"");
     }  
-    if(result && result.idBaseCMarco){
+    if(result && !esNuevo){
       var texto = "Modificada la base de contrato marco con número consecutivo "+result.consecutivo+"";
       if(baseVieja.idBasesGenerales != result.idBasesGenerales){
         texto += ", cambiada la base general a la cual pertenece";
@@ -96,7 +112,9 @@ export class BasesCmarcoService {
   }
 
   async findAll(): Promise<BasesCMarco[]> {    
-    return await this.basesCMarcoRepository.find({ relations: ['basesCMarcoClausulas','basesCMarcoEspecificos','fichaCostoResumen','contratos']});
+    return await this.basesCMarcoRepository.find({order: {
+      fecha : "DESC"
+    }, relations: ['basesCMarcoClausulas','basesCMarcoEspecificos','fichaCostoResumen','contratos']});
   }
 
   async findOne(id: number) : Promise<BasesCMarco> {

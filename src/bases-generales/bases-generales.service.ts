@@ -29,15 +29,19 @@ export class BasesGeneralesService {
 
   async save(createBasesGeneralesInput: CreateBasesGeneralesInput) : Promise<BasesGenerales> {
     var today = new Date();
+    var esNuevo = false;
     if(createBasesGeneralesInput.idBasesGenerales){
+      esNuevo = false;
       var baseVieja = await this.findOne(createBasesGeneralesInput.idBasesGenerales);
     }
 
     if(!createBasesGeneralesInput.idBasesGenerales){
+      esNuevo = true;
       var basesAnteriores = await this.findAll();
-      var ultimaBase = basesAnteriores[basesAnteriores.length-1];
-      if(ultimaBase.fecha.getFullYear == today.getFullYear){
-        createBasesGeneralesInput.consecutivo = ultimaBase.consecutivo+1;
+      var ultimaBase = basesAnteriores[0];
+     
+      if(ultimaBase.fecha.getFullYear() === today.getFullYear()){
+        createBasesGeneralesInput.consecutivo = ultimaBase.consecutivo+1;    
       }
       else{
         createBasesGeneralesInput.consecutivo = 1;
@@ -45,10 +49,11 @@ export class BasesGeneralesService {
     }
 
     var result = await this.basesGeneralesRepository.save(createBasesGeneralesInput);
-    if(result && !result.idBasesGenerales){
+    
+    if(result && esNuevo){
       await this.logsService.save(MyLogger.usuarioLoggeado.ejecutivo.nombre, "Insertada una nueva base general con número consecutivo "+result.consecutivo+"");
     } 
-    if(result && result.idBasesGenerales){
+    if(result && !esNuevo){
       var texto = "Modificada la base general con número consecutivo "+result.consecutivo+"";
         if(baseVieja.fecha != result.fecha){
           texto += ", cambiada la fecha";

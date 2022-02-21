@@ -72,7 +72,7 @@ export class BasesCMarco {
   @Field(() => Float)
   importeFinanciamiento: number;
 
-  @Column("float", { name: "ImporteConFinanciamiento", precision: 53 })
+  @Column({ name: "ImporteConFinanciamiento", precision: 53 , insert: false, update: false })
   @Field(() => Float)
   importeConFinanciamiento: number;
 
@@ -96,26 +96,32 @@ export class BasesCMarco {
   @Field()
   actualizado: Date;
 
-  @Column("varchar", {
+  @Column({
     name: "ImporteTotalLetras",
     nullable: true,
-    length: 512,
+    length: 512, 
+    insert: false, 
+    update: false
   })
   @Field({nullable: true})
   importeTotalLetras: string | null;
 
-  @Column("varchar", {
+  @Column({
     name: "ImporteFinanciamientoLetras",
     nullable: true,
     length: 512,
+    insert: false, 
+    update: false,
   })
   @Field({nullable: true})
   importeFinanciamientoLetras: string | null;
 
-  @Column("varchar", {
+  @Column({
     name: "ImporteTotalFinanciamientoLetras",
     nullable: true,
-    length: 512,
+    length: 512, 
+    insert: false, 
+    update: false
   })
   @Field({nullable: true})
   importeTotalFinanciamientoLetras: string | null;

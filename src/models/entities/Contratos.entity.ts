@@ -153,7 +153,7 @@ export class Contratos {
   @Field(() => Int,{nullable: true})
   noEntregasParciales: number | null;
 
-  @Column("smalldatetime", { name: "FechaElaboracion" })
+  @Column("smalldatetime", { name: "FechaElaboracion", default: () => "getdate()" })
   @Field()
   fechaElaboracion: Date;
 
