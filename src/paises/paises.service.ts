@@ -8,12 +8,15 @@ export class PaisesService {
   constructor(@InjectRepository(Paises) public readonly paisesRepository: Repository<Paises>) {}
 
   async findAll(): Promise<Paises[]> {
-    return await this.paisesRepository.find(/*{relations: ['basesGenerales','campanaEtapasContratacion','contratos','pliegoConcurrenciaResumen','facturaDesgloses',
-  'tiemposTravesias','fichaCompraResumen','fichaCostoResumen','puerto']}*/);
+    return await this.paisesRepository.find({
+      order: {
+        nomb: "ASC"
+      }
+    });
   }
 
   async findOne(id: number) : Promise<Paises> {
-    return await this.paisesRepository.findOne(id/*,{relations: ['basesGenerales','campanaEtapasContratacion','contratos','pliegoConcurrenciaResumen','facturaDesgloses',
+    return await this.paisesRepository.findOne(id,/*,{relations: ['basesGenerales','campanaEtapasContratacion','contratos','pliegoConcurrenciaResumen','facturaDesgloses',
   'tiemposTravesias','fichaCompraResumen','fichaCostoResumen','puerto']}*/);
   }
 }
