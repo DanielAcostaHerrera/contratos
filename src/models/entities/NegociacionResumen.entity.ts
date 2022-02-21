@@ -32,7 +32,7 @@ export class NegociacionResumen {
   @Field(() => Int)
   consecutivo: number;
 
-  @Column("nvarchar", { name: "NoNegociacion", nullable: true, length: 17 })
+  @Column({ name: "NoNegociacion", nullable: true, length: 17, insert: false, update: false })
   @Field({nullable: true})
   noNegociacion: string | null;
 

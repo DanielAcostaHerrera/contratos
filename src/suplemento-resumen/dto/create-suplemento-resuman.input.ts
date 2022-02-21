@@ -26,8 +26,8 @@ export class CreateSuplementoResumanInput {
   @Field(() => Int)
   idMoneda: number;
 
-  @Field(() => Int)
-  consecutivo: number;
+  @Field(() => Int,{nullable: true})
+  consecutivo: number | null;
 
   @Field()
   fechaSup: Date;
