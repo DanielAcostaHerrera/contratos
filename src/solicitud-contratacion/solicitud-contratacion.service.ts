@@ -17,15 +17,24 @@ export class SolicitudContratacionService {
 
 
   async save(createSolicitudContratacionInput: CreateSolicitudContratacionInput) : Promise<SolicitudContratacion> {
+    var esNuevo = true;
     if(createSolicitudContratacionInput.idSolicitudContrato){
+      esNuevo = false;
       var solicitudContratacionVieja = await this.findOne(createSolicitudContratacionInput.idSolicitudContrato);
     }
 
+    if(!createSolicitudContratacionInput.idSolicitudContrato){
+      esNuevo = true;
+      var negociacion = await this.negociacionResumenService.findOne(createSolicitudContratacionInput.idNegociacion);
+      var cantSolicitudContratacion = negociacion.solicitudContratacion.length;
+      createSolicitudContratacionInput.consecutivo = cantSolicitudContratacion+1;
+    }
+
     var result = await this.solicitudContratacionRepository.save(createSolicitudContratacionInput);
-    if(result && !result.idSolicitudContrato){
+    if(result && esNuevo){
       await this.logsService.save(MyLogger.usuarioLoggeado.ejecutivo.nombre, "Insertada una nueva solicitud de contratación con número consecutivo "+result.consecutivo+"");
     }
-    if(result && result.idSolicitudContrato){
+    if(result && !esNuevo){
       var texto = "Modificada una solicitud de oferta con número consecutivo "+result.consecutivo+"";
         if(solicitudContratacionVieja.idComprador != result.idComprador){
           texto += ", cambiado el comprador";

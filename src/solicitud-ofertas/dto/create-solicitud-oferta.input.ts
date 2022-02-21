@@ -8,8 +8,8 @@ export class CreateSolicitudOfertaInput {
   @Field(() => Int)
   idSolicitudContrato: number;
 
-  @Field(() => Int)
-  consecutivo: number;
+  @Field(() => Int,{nullable: true})
+  consecutivo: number | null;
 
   @Field()
   solicitud: string;

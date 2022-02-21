@@ -18,10 +18,13 @@ export class UsuariosService {
   private usuarioRolService: UsuarioRolService,private logsService: LogsService) {}
 
   async save(createUsuarioInput: CreateUsuarioInput) : Promise<Usuarios> {
+    var esNuevo = false;
     var id = createUsuarioInput.idUsuario;
     if(!id){
+      esNuevo = true;
       createUsuarioInput.contrasena = createUsuarioInput.nombreUsuario + '*'+ new Date().getFullYear();
     }else {
+      esNuevo = false;
       this.usuarioRolService.removeByUserId(id);
     }
 
@@ -34,7 +37,7 @@ export class UsuariosService {
   }
     const newUsuario = await this.usuariosRepository.save(createUsuarioInput);
     
-    if(newUsuario && !id){
+    if(newUsuario && esNuevo){
       await this.logsService.save(MyLogger.usuarioLoggeado.ejecutivo.nombre, "Insertado el usuario "+newUsuario.nombreUsuario+"");
     }
     

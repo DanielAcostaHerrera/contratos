@@ -15,15 +15,24 @@ export class SolicitudOfertasService {
 
 
   async save(createSolicitudOfertaInput: CreateSolicitudOfertaInput) : Promise<SolicitudOfertas> {
+    var esNuevo = true;
     if(createSolicitudOfertaInput.idOferta){
+      esNuevo = false;
       var ofertaVieja = await this.findOne(createSolicitudOfertaInput.idOferta);
     }
 
+    if(!createSolicitudOfertaInput.idOferta){
+      esNuevo = true;
+      var solicitudContratacion = await this.solicitudContratacionService.findOne(createSolicitudOfertaInput.idSolicitudContrato);
+      var cantSolicitudOfertas = solicitudContratacion.solicitudOfertas.length;
+      createSolicitudOfertaInput.consecutivo = cantSolicitudOfertas+1;
+    }
+
     var result = await this.solicitudOfertaRepository.save(createSolicitudOfertaInput);
-    if(result && !result.idOferta){
+    if(result && esNuevo){
       await this.logsService.save(MyLogger.usuarioLoggeado.ejecutivo.nombre, "Insertada una nueva solicitud de oferta con número consecutivo "+result.consecutivo+"");
     }
-    if(result && result.idOferta){
+    if(result && !esNuevo){
       var texto = "Modificada una solicitud de oferta con número consecutivo "+result.consecutivo+"";
         if(ofertaVieja.solicitud != result.solicitud){
           texto += ", cambiada la solicitud";
