@@ -120,7 +120,7 @@ export class BasesGenerales {
 
   @Field(() => [BasesGeneralesClausulas] , {nullable: true})
   @OneToMany(() => BasesGeneralesClausulas,(basesGeneralesClausulas) => basesGeneralesClausulas.basesGenerales)
-  basesGeneralesClausulas: BasesGeneralesClausulas[];
+  basesGeneralesClausulas?: BasesGeneralesClausulas[];
 
   @Field(() => [Contratos] , {nullable: true})
   @OneToMany(() => Contratos, (contratos) => contratos.basesGenerales)

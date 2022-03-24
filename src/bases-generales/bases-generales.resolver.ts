@@ -9,6 +9,7 @@ import { Proformas } from 'src/models/entities/Proformas.entity';
 import { Compradores } from 'src/models/entities/Compradores.entity';
 import { Paises } from 'src/modelsMercurio/entities/Paises.entity';
 import { Proveedores } from 'src/modelsMercurio/entities/Proveedores.entity';
+import { BasesGeneralesClausulas } from 'src/models/entities/BasesGeneralesClausulas.entity';
 
 @Resolver(() => BasesGenerales)
 export class BasesGeneralesResolver {
@@ -32,6 +33,14 @@ export class BasesGeneralesResolver {
   @Mutation(() => BasesGenerales)
   removeBasesGenerales(@Args('id', { type: () => Int }) id: number) {
     return this.basesGeneralesService.remove(id);
+  }
+
+  @Query(() => [BasesGeneralesClausulas])
+  getClausulasFromBaseGeneral(
+    @Args('idIncoterm', { type: () => Int }) idIncoterm: number,
+    @Args('idProveedor', { type: () => Int }) idProveedor: number): Promise<BasesGeneralesClausulas[]>
+    {
+    return this.basesGeneralesService.getClausulasFromBaseGeneral(idIncoterm,idProveedor);
   }
 
   @Mutation(() => [BasesGenerales])

@@ -19,6 +19,7 @@ import { Paises } from 'src/modelsMercurio/entities/Paises.entity';
 import { Proveedores } from 'src/modelsMercurio/entities/Proveedores.entity';
 import { LogsService } from 'src/logs/logs.service';
 import { MyLogger } from 'src/MyLogger';
+import { BasesGeneralesClausulas } from 'src/models/entities/BasesGeneralesClausulas.entity';
 
 @Injectable()
 export class BasesGeneralesService {
@@ -162,6 +163,20 @@ export class BasesGeneralesService {
 
   async getProveedor (proveedorId: number) : Promise<Proveedores>{
     return this.proveedoresService.findOne(proveedorId);
+  }
+
+  async getClausulasFromBaseGeneral(idIncoterm: number,idProveedor: number) : Promise<BasesGeneralesClausulas[]> {
+    return new Promise<BasesGeneralesClausulas[]>(async (resolve, reject) => {
+      const basesGenerales = await this.basesGeneralesRepository.find({ where: {idIncoterm,idProveedor}, relations:['basesGeneralesClausulas','contratos'], order: {
+        fecha: "DESC"
+      }});
+      if(!basesGenerales){
+        reject('No existe una base general anterior para ese proveedor y ese incoterm');
+      }
+      else{ 
+        resolve(basesGenerales[0].basesGeneralesClausulas)  
+      }
+    }); 
   }
 }
 

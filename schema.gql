@@ -1505,6 +1505,7 @@ type Query {
   findOneCompradores(id: Int!): Compradores!
   findAllBasesGenerales: [BasesGenerales!]!
   findOneBasesGenerales(id: Int!): BasesGenerales!
+  getClausulasFromBaseGeneral(idProveedor: Int!, idIncoterm: Int!): [BasesGeneralesClausulas!]!
   findAllClasificaciones: [Clasificaciones!]!
   findOneClasificaciones(id: Int!): Clasificaciones!
   findAllTipoContrato: [TipoContrato!]!
@@ -2386,7 +2387,7 @@ input CreatePliegoConcurrenciaInput {
 input CreateSolicitudOfertaInput {
   idOferta: Int
   idSolicitudContrato: Int!
-  consecutivo: Int!
+  consecutivo: Int
   solicitud: String!
   fechaSolicitudOferta: DateTime!
   fechaEnviadaOferta: DateTime!
@@ -2401,7 +2402,7 @@ input CreateSolicitudOfertaInput {
 input CreateSolicitudContratacionInput {
   idSolicitudContrato: Int
   idNegociacion: Int!
-  consecutivo: Int!
+  consecutivo: Int
   idComprador: Int!
   fecha: DateTime!
   nota: String
@@ -2591,7 +2592,7 @@ input CreateSuplementoResumanInput {
   idEjecutivo: Int!
   firma: Int!
   idMoneda: Int!
-  consecutivo: Int!
+  consecutivo: Int
   fechaSup: DateTime!
   numero: Int!
   fecha: DateTime!
