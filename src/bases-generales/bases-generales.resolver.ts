@@ -20,6 +20,11 @@ export class BasesGeneralesResolver {
     return this.basesGeneralesService.save(createBasesGeneraleInput);
   }
 
+  @Mutation(() => BasesGenerales)
+  actualizarClausulasFromBaseGeneral(@Args('idBaseGeneral') idBaseGeneral: number) {
+    return this.basesGeneralesService.actualizarClausulasFromBaseGeneral(idBaseGeneral);
+  }
+
   @Query(() => [BasesGenerales])
   findAllBasesGenerales() {
     return this.basesGeneralesService.findAll();

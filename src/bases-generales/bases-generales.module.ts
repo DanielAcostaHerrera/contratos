@@ -1,3 +1,5 @@
+import { ProformaClausulasModule } from 'src/proforma-clausulas/proforma-clausulas.module';
+import { BasesGeneralesClausulasModule } from './../bases-generales-clausulas/bases-generales-clausulas.module';
 import { Module } from '@nestjs/common';
 import { BasesGeneralesService } from './bases-generales.service';
 import { BasesGeneralesResolver } from './bases-generales.resolver';
@@ -15,7 +17,7 @@ import { LogsModule } from 'src/logs/logs.module';
 @Module({
   imports:[TypeOrmModule.forFeature([
     BasesGenerales
-  ]),ClasificacionesModule,TipoContratoModule,IncotermModule,ProformasModule,CompradoresModule,PaisesModule,ProveedoresModule,LogsModule],
+  ]),ClasificacionesModule,TipoContratoModule,IncotermModule,ProformasModule,CompradoresModule,PaisesModule,ProveedoresModule,LogsModule,ProformaClausulasModule,BasesGeneralesClausulasModule],
   providers: [BasesGeneralesResolver, BasesGeneralesService],
   exports: [BasesGeneralesService]
 })

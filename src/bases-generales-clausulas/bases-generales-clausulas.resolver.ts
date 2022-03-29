@@ -3,7 +3,6 @@ import { BasesGeneralesClausulasService } from './bases-generales-clausulas.serv
 import { CreateBasesGeneralesClausulaInput } from './dto/create-bases-generales-clausula.input';
 import { BasesGeneralesClausulas } from 'src/models/entities/BasesGeneralesClausulas.entity';
 import { TiposDeClausulas } from 'src/models/entities/TiposDeClausulas.entity';
-import { BasesGenerales } from 'src/models/entities/BasesGenerales.entity';
 import { ProformaClausulas } from 'src/models/entities/ProformaClausulas.entity';
 
 @Resolver(() => BasesGeneralesClausulas)
@@ -35,14 +34,14 @@ export class BasesGeneralesClausulasResolver {
     return this.basesGeneralesClausulasService.removeSeveral(id);
   }
 
+  @Mutation(() => [BasesGeneralesClausulas])
+  removeSeveralBasesGeneralesClausulaByBaseGeneralId(@Args('id', { type: () => Int }) id: number) {
+    return this.basesGeneralesClausulasService.removeSeveralByBaseGeneralId(id);
+  }
+
   @ResolveField(() => TiposDeClausulas, {nullable: true})
   tiposDeClausulas(@Parent() basesGeneralesClausulas: BasesGeneralesClausulas): Promise<TiposDeClausulas> {
     return this.basesGeneralesClausulasService.getTipoClausula(basesGeneralesClausulas.idTipoClausula);
-  }
-
-  @ResolveField(() => BasesGenerales, {nullable: true})
-  basesGenerales(@Parent() basesGeneralesClausulas: BasesGeneralesClausulas): Promise<BasesGenerales> {
-    return this.basesGeneralesClausulasService.getBasesGenerales(basesGeneralesClausulas.idBasesGenerales);
   }
 
   @ResolveField(() => ProformaClausulas, {nullable: true})

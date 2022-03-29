@@ -22,6 +22,12 @@ export class ProformaClausulasService {
     return await this.proformaRepository.find({ relations: ['basesCMarcoClausulas','basesGeneralesClausulas']});
   }
 
+  async findAllById(idProforma: number): Promise<ProformaClausulas[]> {
+    return await this.proformaRepository.find({ where: {idProforma}, relations: ['basesCMarcoClausulas','basesGeneralesClausulas'], order: {
+      orden: "ASC"
+    }});
+  }
+
   async findOne(id: number) : Promise<ProformaClausulas> {
     return await this.proformaRepository.findOne(id,{ relations: ['basesCMarcoClausulas','basesGeneralesClausulas']});
   }

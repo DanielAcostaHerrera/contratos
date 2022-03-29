@@ -1,3 +1,4 @@
+import { BasesGeneralesClausulasService } from './../bases-generales-clausulas/bases-generales-clausulas.service';
 import { PaisesService } from './../paises/paises.service';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -20,13 +21,15 @@ import { Proveedores } from 'src/modelsMercurio/entities/Proveedores.entity';
 import { LogsService } from 'src/logs/logs.service';
 import { MyLogger } from 'src/MyLogger';
 import { BasesGeneralesClausulas } from 'src/models/entities/BasesGeneralesClausulas.entity';
+import { ProformaClausulasService } from 'src/proforma-clausulas/proforma-clausulas.service';
+import { CreateBasesGeneralesClausulaInput } from 'src/bases-generales-clausulas/dto/create-bases-generales-clausula.input';
 
 @Injectable()
 export class BasesGeneralesService {
   constructor(@InjectRepository(BasesGenerales) public readonly basesGeneralesRepository: Repository<BasesGenerales>, private clasificacionesService: ClasificacionesService,
   private tipoContratoService: TipoContratoService, private incotermService: IncotermService, private proformasService: ProformasService, 
   private compradoresService: CompradoresService, private paisesService: PaisesService, private proveedoresService: ProveedoresService,
-  private logsService: LogsService) {}
+  private logsService: LogsService,private basesGeneralesClausulasService: BasesGeneralesClausulasService,private proformaClausulasService: ProformaClausulasService) {}
 
   async save(createBasesGeneralesInput: CreateBasesGeneralesInput) : Promise<BasesGenerales> {
     var today = new Date();
@@ -174,7 +177,45 @@ export class BasesGeneralesService {
         reject('No existe una base general anterior para ese proveedor y ese incoterm');
       }
       else{ 
-        resolve(basesGenerales[0].basesGeneralesClausulas)  
+        resolve(basesGenerales[0].basesGeneralesClausulas);
+      }
+    }); 
+  }
+
+  async actualizarClausulasFromBaseGeneral(idBasesGenerales: number)  {
+    return new Promise<BasesGenerales>(async (resolve, reject) => {
+      const basesGenerales = await this.basesGeneralesRepository.findOne({ where: {idBasesGenerales}, relations:['basesGeneralesClausulas','contratos'], order: {
+        fecha: "DESC"
+      }});
+
+      if(!basesGenerales){
+        reject('No existe esa base general');
+      }
+      
+      else{
+        const proformaClausulas = await this.proformaClausulasService.findAllById(basesGenerales.idProforma)
+        if(!proformaClausulas){
+          reject('Esta base general no tiene una proforma predefinida');
+        }
+        else{
+          this.basesGeneralesClausulasService.removeSeveralByBaseGeneralId(basesGenerales.idBasesGenerales);
+        
+
+        proformaClausulas.forEach(proformaClausula => {
+          var basesGeneralesClausula = new CreateBasesGeneralesClausulaInput();
+          basesGeneralesClausula.clausula = proformaClausula.clausula;
+          basesGeneralesClausula.excepcional = false;
+          basesGeneralesClausula.idBasesGenerales = basesGenerales.idBasesGenerales;
+          basesGeneralesClausula.idProformaClausula = proformaClausula.idProformaClausula;
+          basesGeneralesClausula.idTipoClausula = proformaClausula.idTipoClausula;
+          basesGeneralesClausula.orden = proformaClausula.orden;
+          basesGeneralesClausula.modificado = new Date(); 
+          this.basesGeneralesClausulasService.save(basesGeneralesClausula)
+          
+        });
+        resolve(basesGenerales);
+        } 
+
       }
     }); 
   }

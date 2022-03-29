@@ -16,31 +16,31 @@ export class BasesCMarcoClausulas {
 
   @PrimaryGeneratedColumn({ type: "int", name: "IdBasesCMarcoClausulas" })
   @Field(() => Int)
-  idBasesCMarcoClausulas: number;
+  idBasesCMarcoClausulas?: number;
 
   @Column("int", { name: "IdBaseCMarco" })
   @Field(() => Int)
-  idBaseCMarco: number;
+  idBaseCMarco?: number;
 
   @Column("int", { name: "IdProformaClausula" })
   @Field(() => Int)
-  idProformaClausula: number;
+  idProformaClausula?: number;
 
   @Column("int", { name: "IdTipoClausula" })
   @Field(() => Int)
-  idTipoClausula: number;
+  idTipoClausula?: number;
 
   @Column("int", { name: "Orden" })
   @Field(() => Int)
-  orden: number;
+  orden?: number;
 
   @Column("nvarchar", { name: "Clausula" })
   @Field()
-  clausula: string;
+  clausula?: string;
 
   @Column("datetime", { name: "Modificado", default: () => "getdate()" })
   @Field()
-  modificado: Date;
+  modificado?: Date;
 
   @Field(() => ProformaClausulas, {nullable: true})
   @ManyToOne(() => ProformaClausulas, (proformaClausulas) => proformaClausulas.basesCMarcoClausulas)

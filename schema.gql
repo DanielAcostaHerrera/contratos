@@ -1514,18 +1514,18 @@ type Query {
   findOneIncoterm(id: Int!): Incoterm!
   findAllProveedores: [Proveedores!]!
   findOneProveedor(id: Int!): Proveedores!
-  findAllBasesCMarcoClausula: [BasesCMarcoClausulas!]!
-  findOneBasesCMarcoClausula(id: Int!): BasesCMarcoClausulas!
-  findAllTiposDeClausulas: [TiposDeClausulas!]!
-  findOneTiposDeClausulas(id: Int!): TiposDeClausulas!
   findAllProformaClausulas: [ProformaClausulas!]!
   findOneProformaClausulas(id: Int!): ProformaClausulas!
+  findAllTiposDeClausulas: [TiposDeClausulas!]!
+  findOneTiposDeClausulas(id: Int!): TiposDeClausulas!
+  findAllBasesGeneralesClausulas: [BasesGeneralesClausulas!]!
+  findOneBasesGeneralesClausulas(id: Int!): BasesGeneralesClausulas!
+  findAllBasesCMarcoClausula: [BasesCMarcoClausulas!]!
+  findOneBasesCMarcoClausula(id: Int!): BasesCMarcoClausulas!
   findAllBasesCmarcoEspecificos: [BasesCMarcoEspecificos!]!
   findOneBasesCmarcoEspecificos(id: Int!): BasesCMarcoEspecificos!
   findAllEspecificos: [Especificos!]!
   findOneEspecifico(id: Int!): Especificos!
-  findAllBasesGeneralesClausulas: [BasesGeneralesClausulas!]!
-  findOneBasesGeneralesClausulas(id: Int!): BasesGeneralesClausulas!
   documentacion(id: Int!): Documentacion!
   findAllTiposDocumento: [TiposDocumento!]!
   findOneTiposDocumento(id: Int!): TiposDocumento!
@@ -1666,6 +1666,7 @@ type Mutation {
   removeCompradores(id: Int!): Compradores!
   removeSeveralCompradores(id: [Int!]!): [Compradores!]!
   createBasesGenerales(createBasesGeneraleInput: CreateBasesGeneralesInput!): BasesGenerales!
+  actualizarClausulasFromBaseGeneral(idBaseGeneral: Float!): BasesGenerales!
   removeBasesGenerales(id: Int!): BasesGenerales!
   removeSeveralBasesGenerales(id: [Int!]!): [BasesGenerales!]!
   createClasificaciones(createClasificacioneInput: CreateClasificacioneInput!): Clasificaciones!
@@ -1677,21 +1678,22 @@ type Mutation {
   createIncoterm(createIncotermInput: CreateIncotermInput!): Incoterm!
   removeIncoterm(id: Int!): Incoterm!
   removeSeveralIncoterm(id: [Int!]!): [Incoterm!]!
-  createBasesCmarcoClausula(createBasesCmarcoClausulaInput: CreateBasesCmarcoClausulaInput!): BasesCMarcoClausulas!
-  removeBasesCmarcoClausula(id: Int!): BasesCMarcoClausulas!
-  removeSeveralBasesCmarcoClausula(id: [Int!]!): [BasesCMarcoClausulas!]!
-  createTiposDeClausulas(createTiposDeClausulaInput: CreateTiposDeClausulaInput!): TiposDeClausulas!
-  removeTiposDeClausulas(id: Int!): TiposDeClausulas!
-  removeSeveralTiposDeClausulas(id: [Int!]!): [TiposDeClausulas!]!
   createProformaClausula(createProformaClausulaInput: CreateProformaClausulaInput!): ProformaClausulas!
   removeProformaClausula(id: Int!): ProformaClausulas!
   removeSeveralProformaClausula(id: [Int!]!): [ProformaClausulas!]!
-  createBasesCmarcoEspecifico(createBasesCmarcoEspecificoInput: CreateBasesCmarcoEspecificoInput!): BasesCMarcoEspecificos!
-  removeBasesCmarcoEspecifico(id: Int!): BasesCMarcoEspecificos!
-  removeSeveralBasesCmarcoEspecifico(id: [Int!]!): [BasesCMarcoEspecificos!]!
+  createTiposDeClausulas(createTiposDeClausulaInput: CreateTiposDeClausulaInput!): TiposDeClausulas!
+  removeTiposDeClausulas(id: Int!): TiposDeClausulas!
+  removeSeveralTiposDeClausulas(id: [Int!]!): [TiposDeClausulas!]!
   createBasesGeneralesClausula(createBasesGeneralesClausulaInput: CreateBasesGeneralesClausulaInput!): BasesGeneralesClausulas!
   removeBasesGeneralesClausula(id: Int!): BasesGeneralesClausulas!
   removeSeveralBasesGeneralesClausula(id: [Int!]!): [BasesGeneralesClausulas!]!
+  removeSeveralBasesGeneralesClausulaByBaseGeneralId(id: Int!): [BasesGeneralesClausulas!]!
+  createBasesCmarcoClausula(createBasesCmarcoClausulaInput: CreateBasesCmarcoClausulaInput!): BasesCMarcoClausulas!
+  removeBasesCmarcoClausula(id: Int!): BasesCMarcoClausulas!
+  removeSeveralBasesCmarcoClausula(id: [Int!]!): [BasesCMarcoClausulas!]!
+  createBasesCmarcoEspecifico(createBasesCmarcoEspecificoInput: CreateBasesCmarcoEspecificoInput!): BasesCMarcoEspecificos!
+  removeBasesCmarcoEspecifico(id: Int!): BasesCMarcoEspecificos!
+  removeSeveralBasesCmarcoEspecifico(id: [Int!]!): [BasesCMarcoEspecificos!]!
   createDocumentacion(createDocumentacionInput: CreateDocumentacionInput!): Documentacion!
   removeDocumentacion(id: Int!): Documentacion!
   removeSeveralDocumentacion(id: [Int!]!): [Documentacion!]!
@@ -1962,14 +1964,12 @@ input CreateIncotermInput {
   activo: Boolean!
 }
 
-input CreateBasesCmarcoClausulaInput {
-  idBasesCMarcoClausulas: Int
-  idBaseCMarco: Int!
-  idProformaClausula: Int!
+input CreateProformaClausulaInput {
+  idProformaClausula: Int
+  idProforma: Int!
   idTipoClausula: Int!
   orden: Int!
   clausula: String!
-  modificado: DateTime!
 }
 
 input CreateTiposDeClausulaInput {
@@ -1982,12 +1982,25 @@ input CreateTiposDeClausulaInput {
   excepcional: Boolean!
 }
 
-input CreateProformaClausulaInput {
-  idProformaClausula: Int
-  idProforma: Int!
+input CreateBasesGeneralesClausulaInput {
+  idBasesGeneralesClausulas: Int
+  idBasesGenerales: Int!
+  idProformaClausula: Int!
   idTipoClausula: Int!
   orden: Int!
   clausula: String!
+  excepcional: Boolean!
+  modificado: DateTime!
+}
+
+input CreateBasesCmarcoClausulaInput {
+  idBasesCMarcoClausulas: Int
+  idBaseCMarco: Int!
+  idProformaClausula: Int!
+  idTipoClausula: Int!
+  orden: Int!
+  clausula: String!
+  modificado: DateTime!
 }
 
 input CreateBasesCmarcoEspecificoInput {
@@ -1999,17 +2012,6 @@ input CreateBasesCmarcoEspecificoInput {
   pReservado: Float
   pEjecutado: Float
   pPendiente: Float
-}
-
-input CreateBasesGeneralesClausulaInput {
-  idBasesGeneralesClausulas: Int
-  idBasesGenerales: Int!
-  idProformaClausula: Int!
-  idTipoClausula: Int!
-  orden: Int!
-  clausula: String!
-  excepcional: Boolean!
-  modificado: DateTime!
 }
 
 input CreateDocumentacionInput {
