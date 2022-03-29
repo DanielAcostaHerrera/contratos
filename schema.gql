@@ -1666,7 +1666,7 @@ type Mutation {
   removeCompradores(id: Int!): Compradores!
   removeSeveralCompradores(id: [Int!]!): [Compradores!]!
   createBasesGenerales(createBasesGeneraleInput: CreateBasesGeneralesInput!): BasesGenerales!
-  actualizarClausulasFromBaseGeneral(idBaseGeneral: Float!): BasesGenerales!
+  actualizarClausulasFromBaseGeneral(idBaseGeneral: Float!): [BasesGeneralesClausulas!]!
   removeBasesGenerales(id: Int!): BasesGenerales!
   removeSeveralBasesGenerales(id: [Int!]!): [BasesGenerales!]!
   createClasificaciones(createClasificacioneInput: CreateClasificacioneInput!): Clasificaciones!

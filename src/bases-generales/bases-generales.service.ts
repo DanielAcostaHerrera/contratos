@@ -182,8 +182,8 @@ export class BasesGeneralesService {
     }); 
   }
 
-  async actualizarClausulasFromBaseGeneral(idBasesGenerales: number)  {
-    return new Promise<BasesGenerales>(async (resolve, reject) => {
+  async actualizarClausulasFromBaseGeneral(idBasesGenerales: number) : Promise<BasesGeneralesClausulas[]> {
+    return new Promise<BasesGeneralesClausulas[]>(async (resolve, reject) => {
       const basesGenerales = await this.basesGeneralesRepository.findOne({ where: {idBasesGenerales}, relations:['basesGeneralesClausulas','contratos'], order: {
         fecha: "DESC"
       }});
@@ -199,21 +199,25 @@ export class BasesGeneralesService {
         }
         else{
           await this.basesGeneralesClausulasService.removeSeveralByBaseGeneralId(basesGenerales.idBasesGenerales);
-        
 
-        proformaClausulas.forEach(proformaClausula => {
-          var basesGeneralesClausula = new CreateBasesGeneralesClausulaInput();
-          basesGeneralesClausula.clausula = proformaClausula.clausula;
-          basesGeneralesClausula.excepcional = false;
-          basesGeneralesClausula.idBasesGenerales = basesGenerales.idBasesGenerales;
-          basesGeneralesClausula.idProformaClausula = proformaClausula.idProformaClausula;
-          basesGeneralesClausula.idTipoClausula = proformaClausula.idTipoClausula;
-          basesGeneralesClausula.orden = proformaClausula.orden;
-          basesGeneralesClausula.modificado = new Date(); 
-          this.basesGeneralesClausulasService.save(basesGeneralesClausula)
-          
-        });
-        resolve(basesGenerales);
+          var basesGeneralesClausulasArray : BasesGeneralesClausulas[] = []
+
+          for (let index = 0; index < proformaClausulas.length; index++) {
+            const proformaClausula = proformaClausulas[index];
+            
+            var basesGeneralesClausula = new CreateBasesGeneralesClausulaInput();
+            basesGeneralesClausula.clausula = proformaClausula.clausula;
+            basesGeneralesClausula.excepcional = false;
+            basesGeneralesClausula.idBasesGenerales = basesGenerales.idBasesGenerales;
+            basesGeneralesClausula.idProformaClausula = proformaClausula.idProformaClausula;
+            basesGeneralesClausula.idTipoClausula = proformaClausula.idTipoClausula;
+            basesGeneralesClausula.orden = proformaClausula.orden;
+            basesGeneralesClausula.modificado = new Date(); 
+            basesGeneralesClausulasArray.push(await this.basesGeneralesClausulasService.save(basesGeneralesClausula));  
+            
+          }
+
+        resolve(basesGeneralesClausulasArray);
         } 
 
       }
