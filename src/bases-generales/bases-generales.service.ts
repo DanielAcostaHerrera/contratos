@@ -198,7 +198,7 @@ export class BasesGeneralesService {
           reject('Esta base general no tiene una proforma predefinida');
         }
         else{
-          this.basesGeneralesClausulasService.removeSeveralByBaseGeneralId(basesGenerales.idBasesGenerales);
+          await this.basesGeneralesClausulasService.removeSeveralByBaseGeneralId(basesGenerales.idBasesGenerales);
         
 
         proformaClausulas.forEach(proformaClausula => {
