@@ -5,22 +5,27 @@ import { CreateBasesCmarcoClausulaInput } from './dto/create-bases-cmarco-clausu
 import { BasesCMarco } from 'src/models/entities/BasesCMarco.entity';
 import { TiposDeClausulas } from 'src/models/entities/TiposDeClausulas.entity';
 import { ProformaClausulas } from 'src/models/entities/ProformaClausulas.entity';
+import { UseGuards } from '@nestjs/common';
+import { AuthGuard } from 'src/auth.guard';
 
 @Resolver(() => BasesCMarcoClausulas)
 export class BasesCmarcoClausulasResolver {
   constructor(private readonly basesCmarcoClausulasService: BasesCmarcoClausulasService) {}
 
   @Mutation(() => BasesCMarcoClausulas)
+  @UseGuards(new AuthGuard())
   createBasesCmarcoClausula(@Args('createBasesCmarcoClausulaInput') createBasesCmarcoClausulaInput: CreateBasesCmarcoClausulaInput) {
     return this.basesCmarcoClausulasService.save(createBasesCmarcoClausulaInput);
   }
 
   @Query(() => [BasesCMarcoClausulas])
+  @UseGuards(new AuthGuard())
   findAllBasesCMarcoClausula() {
     return this.basesCmarcoClausulasService.findAll();
   }
 
   @Query(() => BasesCMarcoClausulas)
+  @UseGuards(new AuthGuard())
   findOneBasesCMarcoClausula(@Args('id', { type: () => Int }) id: number) {
     return this.basesCmarcoClausulasService.findOne(id);
   }
@@ -41,11 +46,13 @@ export class BasesCmarcoClausulasResolver {
   }
 
   @Mutation(() => BasesCMarcoClausulas)
+  @UseGuards(new AuthGuard())
   removeBasesCmarcoClausula(@Args('id', { type: () => Int }) id: number) {
     return this.basesCmarcoClausulasService.remove(id);
   }
 
   @Mutation(() => [BasesCMarcoClausulas])
+  @UseGuards(new AuthGuard())
   removeSeveralBasesCmarcoClausula(@Args('id', { type: () => [Int] }) id: number[]) {
     return this.basesCmarcoClausulasService.removeSeveral(id);
   }

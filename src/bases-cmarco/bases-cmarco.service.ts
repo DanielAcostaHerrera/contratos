@@ -15,6 +15,7 @@ import { BasesGeneralesService } from 'src/bases-generales/bases-generales.servi
 import { BasesGenerales } from 'src/models/entities/BasesGenerales.entity';
 import { MyLogger } from 'src/MyLogger';
 import { LogsService } from 'src/logs/logs.service';
+import { Usuarios } from 'src/models/entities/Usuarios.entity';
 
 @Injectable()
 export class BasesCmarcoService {
@@ -22,7 +23,7 @@ export class BasesCmarcoService {
   private proformasService:  ProformasService, private compradoresService:  CompradoresService,private basesGeneralesService:  BasesGeneralesService,
   private proveedoresService:  ProveedoresService, private logsService: LogsService) {}
 
-  async save(createBaseCMarcoInput: CreateBasesCmarcoInput) : Promise<BasesCMarco> {
+  async save(usuarioToken: Usuarios, createBaseCMarcoInput: CreateBasesCmarcoInput) : Promise<BasesCMarco> {
     var esNuevo = false;
     var today = new Date();
     if(createBaseCMarcoInput.idBaseCMarco){
@@ -45,7 +46,7 @@ export class BasesCmarcoService {
 
     var result = await this.basesCMarcoRepository.save(createBaseCMarcoInput);
     if(result && esNuevo){
-      await this.logsService.save(MyLogger.usuarioLoggeado.ejecutivo.nombre, "Insertada una nueva base de contrato marco con número consecutivo "+result.consecutivo+"");
+      await this.logsService.save(usuarioToken.ejecutivo.nombre, "Insertada una nueva base de contrato marco con número consecutivo "+result.consecutivo+"");
     }  
     if(result && !esNuevo){
       var texto = "Modificada la base de contrato marco con número consecutivo "+result.consecutivo+"";
@@ -106,7 +107,7 @@ export class BasesCmarcoService {
       if(baseVieja.noCMarco != result.noCMarco){
         texto += ", cambiado el noCMarco";
       }
-      await this.logsService.save(MyLogger.usuarioLoggeado.ejecutivo.nombre, texto);
+      await this.logsService.save(usuarioToken.ejecutivo.nombre, texto);
     }
     return result;
   }
@@ -122,17 +123,17 @@ export class BasesCmarcoService {
   }
 
 
-  async remove(id: number) : Promise<any> {
+  async remove(usuarioToken: Usuarios, id: number) : Promise<any> {
     const basesCMarco = await this.findOne(id);
     var result = await this.basesCMarcoRepository.remove(basesCMarco);
     if(result){
-      await this.logsService.save(MyLogger.usuarioLoggeado.ejecutivo.nombre, "Eliminada la base de contrato marco con número consecutivo "+result.consecutivo+"");
+      await this.logsService.save(usuarioToken.ejecutivo.nombre, "Eliminada la base de contrato marco con número consecutivo "+result.consecutivo+"");
     }
     
     return result;
   }
 
-  async removeSeveral(id: number[]) : Promise<any> {
+  async removeSeveral(usuarioToken: Usuarios, id: number[]) : Promise<any> {
     const basesCMarco = await this.basesCMarcoRepository.findByIds(id);
     var result = await this.basesCMarcoRepository.remove(basesCMarco);
     if(result){
@@ -143,7 +144,7 @@ export class BasesCmarcoService {
         else
           texto += result[index].consecutivo;
       }
-      await this.logsService.save(MyLogger.usuarioLoggeado.ejecutivo.nombre, texto);
+      await this.logsService.save(usuarioToken.ejecutivo.nombre, texto);
     }
     
     return result;

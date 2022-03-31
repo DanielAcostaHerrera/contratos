@@ -1,8 +1,6 @@
 import { Usuarios } from 'src/models/entities/Usuarios.entity';
 
-export class MyLogger { 
-
-  public static usuarioLoggeado: Usuarios
+export class MyLogger {
 
   public static getDate () : string{
     var today = new Date();

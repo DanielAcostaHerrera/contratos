@@ -1,4 +1,6 @@
+import { UseGuards } from '@nestjs/common';
 import { Resolver, Query, Mutation, Args, Int, ResolveField, Parent } from '@nestjs/graphql';
+import { AuthGuard } from 'src/auth.guard';
 import { ContratoDesglose } from 'src/models/entities/ContratoDesglose.entity';
 import { Embarques } from 'src/models/entities/Embarques.entity';
 import { CodigosParaLaVenta } from 'src/modelsMercurio/entities/CodigosParaLaVenta.entity';
@@ -12,26 +14,31 @@ export class ContratoDesgloseResolver {
   constructor(private readonly contratoDesgloseService: ContratoDesgloseService) {}
 
   @Mutation(() => ContratoDesglose)
+  @UseGuards(new AuthGuard())
   createContratoDesglose(@Args('createContratoDesgloseInput') createContratoDesgloseInput: CreateContratoDesgloseInput) {
     return this.contratoDesgloseService.save(createContratoDesgloseInput);
   }
 
   @Query(() => [ContratoDesglose])
+  @UseGuards(new AuthGuard())
   findAllContratoDesglose() {
     return this.contratoDesgloseService.findAll();
   }
 
   @Query(() => ContratoDesglose)
+  @UseGuards(new AuthGuard())
   findOneContratoDesglose(@Args('id', { type: () => Int }) id: number) {
     return this.contratoDesgloseService.findOne(id);
   }
 
   @Mutation(() => ContratoDesglose)
+  @UseGuards(new AuthGuard())
   removeContratoDesglose(@Args('id', { type: () => Int }) id: number) {
     return this.contratoDesgloseService.remove(id);
   }
 
   @Mutation(() => [ContratoDesglose])
+  @UseGuards(new AuthGuard())
   removeSeveralContratoDesglose(@Args('id', { type: () => [Int] }) id: number[]) {
     return this.contratoDesgloseService.removeSeveral(id);
   }

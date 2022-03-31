@@ -23,6 +23,7 @@ import { MyLogger } from 'src/MyLogger';
 import { BasesGeneralesClausulas } from 'src/models/entities/BasesGeneralesClausulas.entity';
 import { ProformaClausulasService } from 'src/proforma-clausulas/proforma-clausulas.service';
 import { CreateBasesGeneralesClausulaInput } from 'src/bases-generales-clausulas/dto/create-bases-generales-clausula.input';
+import { Usuarios } from 'src/models/entities/Usuarios.entity';
 
 @Injectable()
 export class BasesGeneralesService {
@@ -31,12 +32,33 @@ export class BasesGeneralesService {
   private compradoresService: CompradoresService, private paisesService: PaisesService, private proveedoresService: ProveedoresService,
   private logsService: LogsService,private basesGeneralesClausulasService: BasesGeneralesClausulasService,private proformaClausulasService: ProformaClausulasService) {}
 
-  async save(createBasesGeneralesInput: CreateBasesGeneralesInput) : Promise<BasesGenerales> {
+  async save(usuarioToken: Usuarios,createBasesGeneralesInput: CreateBasesGeneralesInput) : Promise<BasesGenerales> {
     var today = new Date();
     var esNuevo = false;
+    var result: BasesGenerales
     if(createBasesGeneralesInput.idBasesGenerales){
       esNuevo = false;
       var baseVieja = await this.findOne(createBasesGeneralesInput.idBasesGenerales);
+      result = await this.basesGeneralesRepository.save(createBasesGeneralesInput);
+
+      if(result){
+        await this.basesGeneralesClausulasService.removeSeveralByBaseGeneralId(result.idBasesGenerales);
+
+        let clausulas = createBasesGeneralesInput.clausulas;
+        for (let index = 0; index < clausulas.length; index++) {
+          const proformaClausula = clausulas[index];
+          
+          var basesGeneralesClausula = new CreateBasesGeneralesClausulaInput();
+          basesGeneralesClausula.clausula = proformaClausula.clausula;
+          basesGeneralesClausula.excepcional = false;
+          basesGeneralesClausula.idBasesGenerales = result.idBasesGenerales;
+          basesGeneralesClausula.idProformaClausula = proformaClausula.idProformaClausula;
+          basesGeneralesClausula.idTipoClausula = proformaClausula.idTipoClausula;
+          basesGeneralesClausula.orden = proformaClausula.orden;
+          basesGeneralesClausula.modificado = new Date();
+          await this.basesGeneralesClausulasService.save(basesGeneralesClausula)        
+        }
+      }
     }
 
     if(!createBasesGeneralesInput.idBasesGenerales){
@@ -50,12 +72,30 @@ export class BasesGeneralesService {
       else{
         createBasesGeneralesInput.consecutivo = 1;
       }
-    }
+      result = await this.basesGeneralesRepository.save(createBasesGeneralesInput);
 
-    var result = await this.basesGeneralesRepository.save(createBasesGeneralesInput);
+      if(result){
+        await this.basesGeneralesClausulasService.removeSeveralByBaseGeneralId(result.idBasesGenerales);
+
+        let clausulas = createBasesGeneralesInput.clausulas;
+        for (let index = 0; index < clausulas.length; index++) {
+          const proformaClausula = clausulas[index];
+          
+          var basesGeneralesClausula = new CreateBasesGeneralesClausulaInput();
+          basesGeneralesClausula.clausula = proformaClausula.clausula;
+          basesGeneralesClausula.excepcional = false;
+          basesGeneralesClausula.idBasesGenerales = result.idBasesGenerales;
+          basesGeneralesClausula.idProformaClausula = proformaClausula.idProformaClausula;
+          basesGeneralesClausula.idTipoClausula = proformaClausula.idTipoClausula;
+          basesGeneralesClausula.orden = proformaClausula.orden;
+          basesGeneralesClausula.modificado = new Date();
+          await this.basesGeneralesClausulasService.save(basesGeneralesClausula)        
+        }
+      }
+    }
     
     if(result && esNuevo){
-      await this.logsService.save(MyLogger.usuarioLoggeado.ejecutivo.nombre, "Insertada una nueva base general con número consecutivo "+result.consecutivo+"");
+      await this.logsService.save(usuarioToken.ejecutivo.nombre, "Insertada una nueva base general con número consecutivo "+result.consecutivo+"");
     } 
     if(result && !esNuevo){
       var texto = "Modificada la base general con número consecutivo "+result.consecutivo+"";
@@ -98,7 +138,7 @@ export class BasesGeneralesService {
         if(baseVieja.actualizado != result.actualizado){
           texto += ", cambiada la fecha de actualización";
         }
-        await this.logsService.save(MyLogger.usuarioLoggeado.ejecutivo.nombre, texto);
+        await this.logsService.save(usuarioToken.ejecutivo.nombre, texto);
     }
     return result;
   }
@@ -113,17 +153,17 @@ export class BasesGeneralesService {
     return await this.basesGeneralesRepository.findOne(id, { relations: ['basesGeneralesClausulas','contratos']});
   }
 
-  async remove(id: number) : Promise<any> {
+  async remove(usuarioToken: Usuarios,id: number) : Promise<any> {
     const basesGenerales = await this.findOne(id);
     var result = await this.basesGeneralesRepository.remove(basesGenerales);
     if(result){
-      await this.logsService.save(MyLogger.usuarioLoggeado.ejecutivo.nombre, "Eliminada la base general con número consecutivo "+result.consecutivo+"");
+      await this.logsService.save(usuarioToken.ejecutivo.nombre, "Eliminada la base general con número consecutivo "+result.consecutivo+"");
     }
     
     return result;
   }
 
-  async removeSeveral(id: number[]) : Promise<any> {
+  async removeSeveral(usuarioToken: Usuarios,id: number[]) : Promise<any> {
     const basesGenerales = await this.basesGeneralesRepository.findByIds(id);
     var result = await this.basesGeneralesRepository.remove(basesGenerales);
     if(result){
@@ -134,7 +174,7 @@ export class BasesGeneralesService {
         else
           texto += result[index].consecutivo;
       }
-      await this.logsService.save(MyLogger.usuarioLoggeado.ejecutivo.nombre, texto);
+      await this.logsService.save(usuarioToken.ejecutivo.nombre, texto);
     }
     
     return result;
@@ -198,14 +238,12 @@ export class BasesGeneralesService {
           reject('Esta base general no tiene una proforma predefinida');
         }
         else{
-          await this.basesGeneralesClausulasService.removeSeveralByBaseGeneralId(basesGenerales.idBasesGenerales);
-
           var basesGeneralesClausulasArray : BasesGeneralesClausulas[] = []
 
           for (let index = 0; index < proformaClausulas.length; index++) {
             const proformaClausula = proformaClausulas[index];
             
-            var basesGeneralesClausula = new CreateBasesGeneralesClausulaInput();
+            var basesGeneralesClausula = new BasesGeneralesClausulas();
             basesGeneralesClausula.clausula = proformaClausula.clausula;
             basesGeneralesClausula.excepcional = false;
             basesGeneralesClausula.idBasesGenerales = basesGenerales.idBasesGenerales;
@@ -213,7 +251,7 @@ export class BasesGeneralesService {
             basesGeneralesClausula.idTipoClausula = proformaClausula.idTipoClausula;
             basesGeneralesClausula.orden = proformaClausula.orden;
             basesGeneralesClausula.modificado = new Date(); 
-            basesGeneralesClausulasArray.push(await this.basesGeneralesClausulasService.save(basesGeneralesClausula));  
+            basesGeneralesClausulasArray.push(basesGeneralesClausula);  
             
           }
 

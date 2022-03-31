@@ -319,6 +319,7 @@ type Usuarios {
   nombreUsuario: String!
   contrasena: String!
   roles: [Int!]!
+  token: String!
   usuarioRoles: [UsuarioRol!]
   ejecutivo: Ejecutivos
 }
@@ -884,6 +885,7 @@ type BasesGenerales {
   activo: Boolean!
   actualizado: DateTime!
   noContrato: String!
+  clausulas: [BasesGeneralesClausulas!]
   tipoDeContrato: TipoContrato
   incoterm: Incoterm
   proforma: Proformas
@@ -1503,6 +1505,7 @@ type Query {
   findOneProforma(id: Int!): Proformas!
   findAllCompradores: [Compradores!]!
   findOneCompradores(id: Int!): Compradores!
+  actualizarClausulasFromBaseGeneral(idBaseGeneral: Float!): [BasesGeneralesClausulas!]!
   findAllBasesGenerales: [BasesGenerales!]!
   findOneBasesGenerales(id: Int!): BasesGenerales!
   getClausulasFromBaseGeneral(idProveedor: Int!, idIncoterm: Int!): [BasesGeneralesClausulas!]!
@@ -1657,7 +1660,6 @@ type Mutation {
   createPuerto(createPuertoInput: CreatePuertoInput!): Puertos!
   removePuerto(id: Int!): Puertos!
   removeSeveralPuerto(id: [Int!]!): [Puertos!]!
-  createLog(mensajeLog: String!, usuarioLog: String!): Logs!
   removeLog(id: Int!): Logs!
   createProforma(createProformaInput: CreateProformaInput!): Proformas!
   removeProforma(id: Int!): Proformas!
@@ -1666,7 +1668,6 @@ type Mutation {
   removeCompradores(id: Int!): Compradores!
   removeSeveralCompradores(id: [Int!]!): [Compradores!]!
   createBasesGenerales(createBasesGeneraleInput: CreateBasesGeneralesInput!): BasesGenerales!
-  actualizarClausulasFromBaseGeneral(idBaseGeneral: Float!): [BasesGeneralesClausulas!]!
   removeBasesGenerales(id: Int!): BasesGenerales!
   removeSeveralBasesGenerales(id: [Int!]!): [BasesGenerales!]!
   createClasificaciones(createClasificacioneInput: CreateClasificacioneInput!): Clasificaciones!
@@ -1834,6 +1835,7 @@ type Mutation {
   modifyPasswordUsuario(contrasenaNuevaConfirmar: String!, contrasenaNueva: String!, contrasenaVieja: String!, idUsuario: Int!): Usuarios!
   removeUsuario(id: Int!): Usuarios!
   removeSeveralUsuario(id: [Int!]!): [Usuarios!]!
+  refreshToken: Usuarios!
   createUsuarioRol(createUsuarioRolInput: CreateUsuarioRolInput!): UsuarioRol!
   removeUsuarioRol(id: Int!): UsuarioRol!
   removeUsuarioRolByUserId(idUsuario: Int!): UsuarioRol!
@@ -1941,6 +1943,18 @@ input CreateBasesGeneralesInput {
   cancelado: Boolean!
   activo: Boolean!
   actualizado: DateTime
+  clausulas: [CreateBasesGeneralesClausulaInput!]
+}
+
+input CreateBasesGeneralesClausulaInput {
+  idBasesGeneralesClausulas: Int
+  idBasesGenerales: Int!
+  idProformaClausula: Int!
+  idTipoClausula: Int!
+  orden: Int!
+  clausula: String!
+  excepcional: Boolean!
+  modificado: DateTime!
 }
 
 input CreateClasificacioneInput {
@@ -1980,17 +1994,6 @@ input CreateTiposDeClausulaInput {
   compras: Boolean!
   cMarco: Boolean!
   excepcional: Boolean!
-}
-
-input CreateBasesGeneralesClausulaInput {
-  idBasesGeneralesClausulas: Int
-  idBasesGenerales: Int!
-  idProformaClausula: Int!
-  idTipoClausula: Int!
-  orden: Int!
-  clausula: String!
-  excepcional: Boolean!
-  modificado: DateTime!
 }
 
 input CreateBasesCmarcoClausulaInput {

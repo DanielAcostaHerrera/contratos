@@ -6,32 +6,39 @@ import { PliegoConcurrenciaResumen } from 'src/models/entities/PliegoConcurrenci
 import { Embalajes } from 'src/models/entities/Embalajes.entity';
 import { UnidadMedida } from 'src/modelsMercurio/entities/UnidadMedida.entity';
 import { Referencias } from 'src/modelsMercurio/entities/Referencias.entity';
+import { UseGuards } from '@nestjs/common';
+import { AuthGuard } from 'src/auth.guard';
 
 @Resolver(() => SolicitudCodificacion)
 export class SolicitudCodificacionResolver {
   constructor(private readonly solicitudCodificacionService: SolicitudCodificacionService) {}
 
   @Mutation(() => SolicitudCodificacion)
+  @UseGuards(new AuthGuard())
   createSolicitudCodificacion(@Args('createSolicitudCodificacionInput') createSolicitudCodificacionInput: CreateSolicitudCodificacionInput) {
     return this.solicitudCodificacionService.save(createSolicitudCodificacionInput);
   }
 
   @Query(() => [SolicitudCodificacion])
+  @UseGuards(new AuthGuard())
   findAllSolicitudCodificacion() {
     return this.solicitudCodificacionService.findAll();
   }
 
   @Query(() => SolicitudCodificacion)
+  @UseGuards(new AuthGuard())
   findOneSolicitudCodificacion(@Args('id', { type: () => Int }) id: number) {
     return this.solicitudCodificacionService.findOne(id);
   }
 
   @Mutation(() => SolicitudCodificacion)
+  @UseGuards(new AuthGuard())
   removeSolicitudCodificacion(@Args('id', { type: () => Int }) id: number) {
     return this.solicitudCodificacionService.remove(id);
   }
 
   @Mutation(() => [SolicitudCodificacion])
+  @UseGuards(new AuthGuard())
   removeSeveralSolicitudCodificacion(@Args('id', { type: () => [Int] }) id: number[]) {
     return this.solicitudCodificacionService.removeSeveral(id);
   }

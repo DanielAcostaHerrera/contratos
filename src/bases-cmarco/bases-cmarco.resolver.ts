@@ -1,5 +1,5 @@
 import { Proveedores } from './../modelsMercurio/entities/Proveedores.entity';
-import { Resolver, Query, Mutation, Args, Int, ResolveField, Parent } from '@nestjs/graphql';
+import { Resolver, Query, Mutation, Args, Int, ResolveField, Parent, Context } from '@nestjs/graphql';
 import { BasesCmarcoService } from './bases-cmarco.service';
 import { CreateBasesCmarcoInput } from './dto/create-bases-cmarco.input';
 import { BasesCMarco } from 'src/models/entities/BasesCMarco.entity';
@@ -7,22 +7,30 @@ import { Puertos } from 'src/models/entities/Puertos.entity';
 import { Proformas } from 'src/models/entities/Proformas.entity';
 import { Compradores } from 'src/models/entities/Compradores.entity';
 import { BasesGenerales } from 'src/models/entities/BasesGenerales.entity';
+import { AuthGuard, DEFAULT_GRAPHQL_CONTEXT } from 'src/auth.guard';
+import { Usuarios } from 'src/models/entities/Usuarios.entity';
+import { UseGuards } from '@nestjs/common';
 
 @Resolver(() => BasesCMarco)
 export class BasesCmarcoResolver {
   constructor(private readonly basesCmarcoService: BasesCmarcoService) {}
 
   @Mutation(() => BasesCMarco)
-  createBasesCmarco(@Args('createBasesCmarcoInput') createBasesCmarcoInput: CreateBasesCmarcoInput) {
-    return this.basesCmarcoService.save(createBasesCmarcoInput);
+  @UseGuards(new AuthGuard())
+  createBasesCmarco(
+    @Context(DEFAULT_GRAPHQL_CONTEXT) usuario: Usuarios,
+    @Args('createBasesCmarcoInput') createBasesCmarcoInput: CreateBasesCmarcoInput) {
+    return this.basesCmarcoService.save(usuario,createBasesCmarcoInput);
   }
 
   @Query(() => [BasesCMarco])
+  @UseGuards(new AuthGuard())
   findAllBaseCMarco() {
     return this.basesCmarcoService.findAll();
   }
 
   @Query(() => BasesCMarco)
+  @UseGuards(new AuthGuard())
   findOneBaseCMarco(@Args('id', { type: () => Int }) id: number) {
     return this.basesCmarcoService.findOne(id);
   }
@@ -53,12 +61,18 @@ export class BasesCmarcoResolver {
   }
 
   @Mutation(() => BasesCMarco)
-  removeBasesCmarco(@Args('id', { type: () => Int }) id: number) {
-    return this.basesCmarcoService.remove(id);
+  @UseGuards(new AuthGuard())
+  removeBasesCmarco(
+    @Context(DEFAULT_GRAPHQL_CONTEXT) usuario: Usuarios,
+    @Args('id', { type: () => Int }) id: number) {
+    return this.basesCmarcoService.remove(usuario,id);
   }
 
   @Mutation(() => [BasesCMarco])
-  removeSeveralBasesCmarco(@Args('id', { type: () => [Int] }) id: number[]) {
-    return this.basesCmarcoService.removeSeveral(id);
+  @UseGuards(new AuthGuard())
+  removeSeveralBasesCmarco(
+    @Context(DEFAULT_GRAPHQL_CONTEXT) usuario: Usuarios,
+    @Args('id', { type: () => [Int] }) id: number[]) {
+    return this.basesCmarcoService.removeSeveral(usuario,id);
   }
 }

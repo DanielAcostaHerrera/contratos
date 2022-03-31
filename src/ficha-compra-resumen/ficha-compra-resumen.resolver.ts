@@ -8,32 +8,39 @@ import { Contratos } from 'src/models/entities/Contratos.entity';
 import { NegociacionResumen } from 'src/models/entities/NegociacionResumen.entity';
 import { Paises } from 'src/modelsMercurio/entities/Paises.entity';
 import { Proveedores } from 'src/modelsMercurio/entities/Proveedores.entity';
+import { UseGuards } from '@nestjs/common';
+import { AuthGuard } from 'src/auth.guard';
 
 @Resolver(() => FichaCompraResumen)
 export class FichaCompraResumenResolver {
   constructor(private readonly fichaCompraResumenService: FichaCompraResumenService) {}
 
   @Mutation(() => FichaCompraResumen)
+  @UseGuards(new AuthGuard())
   createFichaCompraResuman(@Args('createFichaCompraResumanInput') createFichaCompraResumanInput: CreateFichaCompraResumanInput) {
     return this.fichaCompraResumenService.save(createFichaCompraResumanInput);
   }
 
   @Query(() => [FichaCompraResumen])
+  @UseGuards(new AuthGuard())
   findAllFichaCompraResumen() {
     return this.fichaCompraResumenService.findAll();
   }
 
   @Query(() => FichaCompraResumen)
+  @UseGuards(new AuthGuard())
   findOneFichaCompraResumen(@Args('id', { type: () => Int }) id: number) {
     return this.fichaCompraResumenService.findOne(id);
   }
 
   @Mutation(() => FichaCompraResumen)
+  @UseGuards(new AuthGuard())
   removeFichaCompraResuman(@Args('id', { type: () => Int }) id: number) {
     return this.fichaCompraResumenService.remove(id);
   }
 
   @Mutation(() => [FichaCompraResumen])
+  @UseGuards(new AuthGuard())
   removeSeveralFichaCompraResuman(@Args('id', { type: () => [Int] }) id: number[]) {
     return this.fichaCompraResumenService.removeSeveral(id);
   }

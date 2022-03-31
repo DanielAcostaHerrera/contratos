@@ -5,6 +5,7 @@ import { LogsService } from 'src/logs/logs.service';
 import { Compradores } from 'src/models/entities/Compradores.entity';
 import { NegociacionResumen } from 'src/models/entities/NegociacionResumen.entity';
 import { SolicitudContratacion } from 'src/models/entities/SolicitudContratacion.entity';
+import { Usuarios } from 'src/models/entities/Usuarios.entity';
 import { MyLogger } from 'src/MyLogger';
 import { NegociacionResumenService } from 'src/negociacion-resumen/negociacion-resumen.service';
 import { Repository } from 'typeorm';
@@ -16,7 +17,7 @@ export class SolicitudContratacionService {
   private negociacionResumenService: NegociacionResumenService,private compradoresService: CompradoresService,private logsService: LogsService) {}
 
 
-  async save(createSolicitudContratacionInput: CreateSolicitudContratacionInput) : Promise<SolicitudContratacion> {
+  async save(usuarioToken: Usuarios,createSolicitudContratacionInput: CreateSolicitudContratacionInput) : Promise<SolicitudContratacion> {
     var esNuevo = true;
     if(createSolicitudContratacionInput.idSolicitudContrato){
       esNuevo = false;
@@ -32,7 +33,7 @@ export class SolicitudContratacionService {
 
     var result = await this.solicitudContratacionRepository.save(createSolicitudContratacionInput);
     if(result && esNuevo){
-      await this.logsService.save(MyLogger.usuarioLoggeado.ejecutivo.nombre, "Insertada una nueva solicitud de contratación con número consecutivo "+result.consecutivo+"");
+      await this.logsService.save(usuarioToken.ejecutivo.nombre, "Insertada una nueva solicitud de contratación con número consecutivo "+result.consecutivo+"");
     }
     if(result && !esNuevo){
       var texto = "Modificada una solicitud de oferta con número consecutivo "+result.consecutivo+"";
@@ -45,7 +46,7 @@ export class SolicitudContratacionService {
         if(solicitudContratacionVieja.nota != result.nota){
           texto += ", cambiada la nota";
         }
-        await this.logsService.save(MyLogger.usuarioLoggeado.ejecutivo.nombre, texto);
+        await this.logsService.save(usuarioToken.ejecutivo.nombre, texto);
     }
 
     return result;
@@ -59,17 +60,17 @@ export class SolicitudContratacionService {
     return await this.solicitudContratacionRepository.findOne(id,{relations:['solicitudOfertas']});
   }
 
-  async remove(id: number) : Promise<any> {
+  async remove(usuarioToken: Usuarios,id: number) : Promise<any> {
     const solicitudContratacion = await this.findOne(id);
     var result = await this.solicitudContratacionRepository.remove(solicitudContratacion);
     if(result){
-      await this.logsService.save(MyLogger.usuarioLoggeado.ejecutivo.nombre, "Eliminada la solicitud de contratación con número consecutivo "+result.consecutivo+"");
+      await this.logsService.save(usuarioToken.ejecutivo.nombre, "Eliminada la solicitud de contratación con número consecutivo "+result.consecutivo+"");
     }
       
     return result;
   }
 
-  async removeSeveral(id: number[]) : Promise<any> {
+  async removeSeveral(usuarioToken: Usuarios,id: number[]) : Promise<any> {
     const solicitudContratacion = await this.solicitudContratacionRepository.findByIds(id);
     var result = await this.solicitudContratacionRepository.remove(solicitudContratacion);
     if(result){
@@ -80,7 +81,7 @@ export class SolicitudContratacionService {
         else
           texto += result[index].consecutivo;
       }
-      await this.logsService.save(MyLogger.usuarioLoggeado.ejecutivo.nombre, texto);   
+      await this.logsService.save(usuarioToken.ejecutivo.nombre, texto);   
     }
     
     return result;

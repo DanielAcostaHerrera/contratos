@@ -98,6 +98,9 @@ export class BasesGenerales {
   @Field()
   noContrato: string;
 
+  @Field(()=> [BasesGeneralesClausulas],{ nullable: true})
+  clausulas?: BasesGeneralesClausulas[];
+
   @Field(() => TipoContrato , {nullable: true})
   @ManyToOne(() => TipoContrato, (tipoContrato) => tipoContrato.basesGenerales)
   @JoinColumn([{ name: "IdTipoContrato", referencedColumnName: "idTipoContrato" }])
@@ -139,4 +142,6 @@ export class BasesGenerales {
   @ManyToOne(() => Paises, (paises) => paises.basesGenerales)
   @JoinColumn([{ name: "Pais", referencedColumnName: "pais" }])
   pais: Paises;
+
+  
 }

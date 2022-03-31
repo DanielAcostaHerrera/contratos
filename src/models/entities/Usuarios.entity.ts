@@ -36,6 +36,9 @@ export class Usuarios {
   @Field(() => [Int])
   roles: number[];
 
+  @Field()
+  token: string;
+
   @Field(() => [UsuarioRol], {nullable: true})
   @OneToMany(() => UsuarioRol, (usuarioRol) => usuarioRol.usuario/* , { onDelete: "CASCADE"} */)
   usuarioRoles: UsuarioRol[];

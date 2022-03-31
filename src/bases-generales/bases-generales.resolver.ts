@@ -1,4 +1,4 @@
-import { Resolver, Query, Mutation, Args, Int, ResolveField, Parent } from '@nestjs/graphql';
+import { Resolver, Query, Mutation, Args, Int, ResolveField, Parent, Context } from '@nestjs/graphql';
 import { BasesGeneralesService } from './bases-generales.service';
 import { BasesGenerales } from 'src/models/entities/BasesGenerales.entity';
 import { CreateBasesGeneralesInput } from './dto/create-bases-generales.input';
@@ -10,37 +10,50 @@ import { Compradores } from 'src/models/entities/Compradores.entity';
 import { Paises } from 'src/modelsMercurio/entities/Paises.entity';
 import { Proveedores } from 'src/modelsMercurio/entities/Proveedores.entity';
 import { BasesGeneralesClausulas } from 'src/models/entities/BasesGeneralesClausulas.entity';
+import { AuthGuard, DEFAULT_GRAPHQL_CONTEXT } from 'src/auth.guard';
+import { Usuarios } from 'src/models/entities/Usuarios.entity';
+import { UseGuards } from '@nestjs/common';
 
 @Resolver(() => BasesGenerales)
 export class BasesGeneralesResolver {
   constructor(private readonly basesGeneralesService: BasesGeneralesService) {}
 
   @Mutation(() => BasesGenerales)
-  createBasesGenerales(@Args('createBasesGeneraleInput') createBasesGeneraleInput: CreateBasesGeneralesInput) {
-    return this.basesGeneralesService.save(createBasesGeneraleInput);
+  @UseGuards(new AuthGuard())
+  createBasesGenerales(
+    @Context(DEFAULT_GRAPHQL_CONTEXT) usuario: Usuarios,
+    @Args('createBasesGeneraleInput') createBasesGeneraleInput: CreateBasesGeneralesInput) {
+    return this.basesGeneralesService.save(usuario,createBasesGeneraleInput);
   }
 
-  @Mutation(() => [BasesGeneralesClausulas])
+  @Query(() => [BasesGeneralesClausulas])
+  @UseGuards(new AuthGuard())
   actualizarClausulasFromBaseGeneral(@Args('idBaseGeneral') idBaseGeneral: number){
     return this.basesGeneralesService.actualizarClausulasFromBaseGeneral(idBaseGeneral);;
   }
 
   @Query(() => [BasesGenerales])
+  @UseGuards(new AuthGuard())
   findAllBasesGenerales() {
     return this.basesGeneralesService.findAll();
   }
 
   @Query(() => BasesGenerales)
+  @UseGuards(new AuthGuard())
   findOneBasesGenerales(@Args('id', { type: () => Int }) id: number) {
     return this.basesGeneralesService.findOne(id);
   }
 
   @Mutation(() => BasesGenerales)
-  removeBasesGenerales(@Args('id', { type: () => Int }) id: number) {
-    return this.basesGeneralesService.remove(id);
+  @UseGuards(new AuthGuard())
+  removeBasesGenerales(
+    @Context(DEFAULT_GRAPHQL_CONTEXT) usuario: Usuarios,
+    @Args('id', { type: () => Int }) id: number) {
+    return this.basesGeneralesService.remove(usuario,id);
   }
 
   @Query(() => [BasesGeneralesClausulas])
+  @UseGuards(new AuthGuard())
   getClausulasFromBaseGeneral(
     @Args('idIncoterm', { type: () => Int }) idIncoterm: number,
     @Args('idProveedor', { type: () => Int }) idProveedor: number): Promise<BasesGeneralesClausulas[]>
@@ -49,8 +62,11 @@ export class BasesGeneralesResolver {
   }
 
   @Mutation(() => [BasesGenerales])
-  removeSeveralBasesGenerales(@Args('id', { type: () => [Int] }) id: number[]) {
-    return this.basesGeneralesService.removeSeveral(id);
+  @UseGuards(new AuthGuard())
+  removeSeveralBasesGenerales(
+    @Context(DEFAULT_GRAPHQL_CONTEXT) usuario: Usuarios,
+    @Args('id', { type: () => [Int] }) id: number[]) {
+    return this.basesGeneralesService.removeSeveral(usuario,id);
   }
 
   @ResolveField(() => TipoContrato, {nullable: true})

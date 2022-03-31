@@ -6,32 +6,39 @@ import { SuplementoResumen } from 'src/models/entities/SuplementoResumen.entity'
 import { Embarques } from 'src/models/entities/Embarques.entity';
 import { Contratos } from 'src/models/entities/Contratos.entity';
 import { Puertos } from 'src/models/entities/Puertos.entity';
+import { UseGuards } from '@nestjs/common';
+import { AuthGuard } from 'src/auth.guard';
 
 @Resolver(() => SuplementoEmbarques)
 export class SuplementoEmbarquesResolver {
   constructor(private readonly suplementoEmbarquesService: SuplementoEmbarquesService) {}
 
   @Mutation(() => SuplementoEmbarques)
+  @UseGuards(new AuthGuard())
   createSuplementoEmbarque(@Args('createSuplementoEmbarqueInput') createSuplementoEmbarqueInput: CreateSuplementoEmbarqueInput) {
     return this.suplementoEmbarquesService.save(createSuplementoEmbarqueInput);
   }
 
   @Query(() => [SuplementoEmbarques])
+  @UseGuards(new AuthGuard())
   findAllSuplementoEmbarques() {
     return this.suplementoEmbarquesService.findAll();
   }
 
   @Query(() => SuplementoEmbarques)
+  @UseGuards(new AuthGuard())
   findOneSuplementoEmbarques(@Args('id', { type: () => Int }) id: number) {
     return this.suplementoEmbarquesService.findOne(id);
   }
 
   @Mutation(() => SuplementoEmbarques)
+  @UseGuards(new AuthGuard())
   removeSuplementoEmbarque(@Args('id', { type: () => Int }) id: number) {
     return this.suplementoEmbarquesService.remove(id);
   }
 
   @Mutation(() => [SuplementoEmbarques])
+  @UseGuards(new AuthGuard())
   removeSeveralSuplementoEmbarque(@Args('id', { type: () => [Int] }) id: number[]) {
     return this.suplementoEmbarquesService.removeSeveral(id);
   }

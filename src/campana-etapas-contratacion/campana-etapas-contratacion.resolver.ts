@@ -1,4 +1,6 @@
+import { UseGuards } from '@nestjs/common';
 import { Resolver, Query, Mutation, Args, Int, ResolveField, Parent } from '@nestjs/graphql';
+import { AuthGuard } from 'src/auth.guard';
 import { CampanaEtapasContratacion } from 'src/models/entities/CampanaEtapasContratacion.entity';
 import { Campanas } from 'src/models/entities/Campanas.entity';
 import { EtapasContratacion } from 'src/models/entities/EtapasContratacion.entity';
@@ -11,26 +13,31 @@ export class CampanaEtapasContratacionResolver {
   constructor(private readonly campanaEtapasContratacionService: CampanaEtapasContratacionService) {}
 
   @Mutation(() => CampanaEtapasContratacion)
+  @UseGuards(new AuthGuard())
   createCampanaEtapasContratacion(@Args('createCampanaEtapasContratacionInput') createCampanaEtapasContratacionInput: CreateCampanaEtapasContratacionInput) {
     return this.campanaEtapasContratacionService.save(createCampanaEtapasContratacionInput);
   }
 
   @Query(() => [CampanaEtapasContratacion])
+  @UseGuards(new AuthGuard())
   findAllCampanaEtapasContratacion() {
     return this.campanaEtapasContratacionService.findAll();
   }
 
   @Query(() => CampanaEtapasContratacion)
+  @UseGuards(new AuthGuard())
   findOneCampanaEtapasContratacion(@Args('id', { type: () => Int }) id: number) {
     return this.campanaEtapasContratacionService.findOne(id);
   }
 
   @Mutation(() => CampanaEtapasContratacion)
+  @UseGuards(new AuthGuard())
   removeCampanaEtapasContratacion(@Args('id', { type: () => Int }) id: number) {
     return this.campanaEtapasContratacionService.remove(id);
   }
 
   @Mutation(() => [CampanaEtapasContratacion])
+  @UseGuards(new AuthGuard())
   removeSeveralCampanaEtapasContratacion(@Args('id', { type: () => [Int] }) id: number[]) {
     return this.campanaEtapasContratacionService.removeSeveral(id);
   }

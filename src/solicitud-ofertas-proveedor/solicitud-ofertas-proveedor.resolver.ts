@@ -4,32 +4,39 @@ import { CreateSolicitudOfertasProveedorInput } from './dto/create-solicitud-ofe
 import { SolicitudOfertasProveedor } from 'src/models/entities/SolicitudOfertasProveedor.entity';
 import { SolicitudOfertas } from 'src/models/entities/SolicitudOfertas.entity';
 import { Proveedores } from 'src/modelsMercurio/entities/Proveedores.entity';
+import { UseGuards } from '@nestjs/common';
+import { AuthGuard } from 'src/auth.guard';
 
 @Resolver(() => SolicitudOfertasProveedor)
 export class SolicitudOfertasProveedorResolver {
   constructor(private readonly solicitudOfertasProveedorService: SolicitudOfertasProveedorService) {}
 
   @Mutation(() => SolicitudOfertasProveedor)
+  @UseGuards(new AuthGuard())
   createSolicitudOfertasProveedor(@Args('createSolicitudOfertasProveedorInput') createSolicitudOfertasProveedorInput: CreateSolicitudOfertasProveedorInput) {
     return this.solicitudOfertasProveedorService.save(createSolicitudOfertasProveedorInput);
   }
 
   @Query(() => [SolicitudOfertasProveedor])
+  @UseGuards(new AuthGuard())
   findAllSolicitudOfertasProveedor() {
     return this.solicitudOfertasProveedorService.findAll();
   }
 
   @Query(() => SolicitudOfertasProveedor)
+  @UseGuards(new AuthGuard())
   findOneSolicitudOfertasProveedor(@Args('id', { type: () => Int }) id: number) {
     return this.solicitudOfertasProveedorService.findOne(id);
   }
 
   @Mutation(() => SolicitudOfertasProveedor)
+  @UseGuards(new AuthGuard())
   removeSolicitudOfertasProveedor(@Args('id', { type: () => Int }) id: number) {
     return this.solicitudOfertasProveedorService.remove(id);
   }
 
   @Mutation(() => [SolicitudOfertasProveedor])
+  @UseGuards(new AuthGuard())
   removeSeveralSolicitudOfertasProveedor(@Args('id', { type: () => [Int] }) id: number[]) {
     return this.solicitudOfertasProveedorService.removeSeveral(id);
   }

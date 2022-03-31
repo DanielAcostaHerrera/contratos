@@ -6,32 +6,39 @@ import { PliegoConcurrenciaResumen } from 'src/models/entities/PliegoConcurrenci
 import { Embalajes } from 'src/models/entities/Embalajes.entity';
 import { UnidadMedida } from 'src/modelsMercurio/entities/UnidadMedida.entity';
 import { Especificos } from 'src/modelsMercurio/entities/Especificos.entity';
+import { UseGuards } from '@nestjs/common';
+import { AuthGuard } from 'src/auth.guard';
 
 @Resolver(() => PliegoConcurrenciaDetalle)
 export class PliegoConcurrenciaDetalleResolver {
   constructor(private readonly pliegoConcurrenciaDetalleService: PliegoConcurrenciaDetalleService) {}
 
   @Mutation(() => PliegoConcurrenciaDetalle)
+  @UseGuards(new AuthGuard())
   createPliegoConcurrenciaDetalle(@Args('createPliegoConcurrenciaDetalleInput') createPliegoConcurrenciaDetalleInput: CreatePliegoConcurrenciaDetalleInput) {
     return this.pliegoConcurrenciaDetalleService.save(createPliegoConcurrenciaDetalleInput);
   }
 
   @Query(() => [PliegoConcurrenciaDetalle])
+  @UseGuards(new AuthGuard())
   findAllPliegoConcurrenciaDetalle() {
     return this.pliegoConcurrenciaDetalleService.findAll();
   }
 
   @Query(() => PliegoConcurrenciaDetalle)
+  @UseGuards(new AuthGuard())
   findOnePliegoConcurrenciaDetalle(@Args('id', { type: () => Int }) id: number) {
     return this.pliegoConcurrenciaDetalleService.findOne(id);
   }
 
   @Mutation(() => PliegoConcurrenciaDetalle)
+  @UseGuards(new AuthGuard())
   removePliegoConcurrenciaDetalle(@Args('id', { type: () => Int }) id: number) {
     return this.pliegoConcurrenciaDetalleService.remove(id);
   }
 
   @Mutation(() => [PliegoConcurrenciaDetalle])
+  @UseGuards(new AuthGuard())
   removeSeveralPliegoConcurrenciaDetalle(@Args('id', { type: () => [Int] }) id: number[]) {
     return this.pliegoConcurrenciaDetalleService.removeSeveral(id);
   }

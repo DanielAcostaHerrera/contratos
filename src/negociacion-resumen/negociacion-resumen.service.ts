@@ -13,6 +13,7 @@ import { ProveedoresService } from 'src/proveedores/proveedores.service';
 import { Proveedores } from 'src/modelsMercurio/entities/Proveedores.entity';
 import { LogsService } from 'src/logs/logs.service';
 import { MyLogger } from 'src/MyLogger';
+import { Usuarios } from 'src/models/entities/Usuarios.entity';
 
 @Injectable()
 export class NegociacionResumenService {
@@ -21,14 +22,14 @@ export class NegociacionResumenService {
   private proveedoresService: ProveedoresService,private logsService: LogsService) {}
 
 
-  async save(createNegociacionResumenInput: CreateNegociacionResumenInput) : Promise<NegociacionResumen> {
+  async save(usuarioToken: Usuarios,createNegociacionResumenInput: CreateNegociacionResumenInput) : Promise<NegociacionResumen> {
     if(createNegociacionResumenInput.idNegociacion){
       var negociacionVieja = await this.findOne(createNegociacionResumenInput.idNegociacion);
     }
 
     var result = await this.negociacionResumenRepository.save(createNegociacionResumenInput);
     if(result && !result.idNegociacion){
-      await this.logsService.save(MyLogger.usuarioLoggeado.ejecutivo.nombre, "Insertada una nueva negociación con número "+result.noNegociacion+"");
+      await this.logsService.save(usuarioToken.ejecutivo.nombre, "Insertada una nueva negociación con número "+result.noNegociacion+"");
     }
     if(result && result.idNegociacion){
       var texto = "Modificada la negociación con número "+result.noNegociacion+"";
@@ -83,7 +84,7 @@ export class NegociacionResumenService {
         if(negociacionVieja.terminado != result.terminado){
           texto += ", cambiado el estado de terminado";
         }
-        await this.logsService.save(MyLogger.usuarioLoggeado.ejecutivo.nombre, texto);
+        await this.logsService.save(usuarioToken.ejecutivo.nombre, texto);
     }
     return result;
   }
@@ -98,17 +99,17 @@ export class NegociacionResumenService {
     'fichaCompraResumen','solicitudContratacion','contratos','facturaResumen']});
   }
 
-  async remove(id: number) : Promise<any> {
+  async remove(usuarioToken: Usuarios,id: number) : Promise<any> {
     const negociacionResumen = await this.findOne(id);
     var result = await this.negociacionResumenRepository.remove(negociacionResumen);
     if(result){
-      await this.logsService.save(MyLogger.usuarioLoggeado.ejecutivo.nombre, "Eliminada la negociación con número "+result.noNegociacion+"");
+      await this.logsService.save(usuarioToken.ejecutivo.nombre, "Eliminada la negociación con número "+result.noNegociacion+"");
     }
     
     return result;
   }
 
-  async removeSeveral(id: number[]) : Promise<any> {
+  async removeSeveral(usuarioToken: Usuarios,id: number[]) : Promise<any> {
     const negociacionResumen = await this.negociacionResumenRepository.findByIds(id);
     var result = await this.negociacionResumenRepository.remove(negociacionResumen);
     if(result){
@@ -119,7 +120,7 @@ export class NegociacionResumenService {
         else
           texto += result[index].noNegociacion;
       }
-      await this.logsService.save(MyLogger.usuarioLoggeado.ejecutivo.nombre, texto);
+      await this.logsService.save(usuarioToken.ejecutivo.nombre, texto);
     }
     
     return result;

@@ -6,32 +6,39 @@ import { SolicitudOfertasProveedor } from 'src/models/entities/SolicitudOfertasP
 import { UnidadMedida } from 'src/modelsMercurio/entities/UnidadMedida.entity';
 import { CodigosParaLaVenta } from 'src/modelsMercurio/entities/CodigosParaLaVenta.entity';
 import { Referencias } from 'src/modelsMercurio/entities/Referencias.entity';
+import { UseGuards } from '@nestjs/common';
+import { AuthGuard } from 'src/auth.guard';
 
 @Resolver(() => SolicitudOfertasEntradas)
 export class SolicitudOfertasEntradasResolver {
   constructor(private readonly solicitudOfertasEntradasService: SolicitudOfertasEntradasService) {}
 
   @Mutation(() => SolicitudOfertasEntradas)
+  @UseGuards(new AuthGuard())
   createSolicitudOfertasEntrada(@Args('createSolicitudOfertasEntradaInput') createSolicitudOfertasEntradaInput: CreateSolicitudOfertasEntradaInput) {
     return this.solicitudOfertasEntradasService.save(createSolicitudOfertasEntradaInput);
   }
 
   @Query(() => [SolicitudOfertasEntradas])
+  @UseGuards(new AuthGuard())
   findAllSolicitudOfertasEntrada() {
     return this.solicitudOfertasEntradasService.findAll();
   }
 
   @Query(() => SolicitudOfertasEntradas)
+  @UseGuards(new AuthGuard())
   findOneSolicitudOfertasEntrada(@Args('id', { type: () => Int }) id: number) {
     return this.solicitudOfertasEntradasService.findOne(id);
   }
 
   @Mutation(() => SolicitudOfertasEntradas)
+  @UseGuards(new AuthGuard())
   removeSolicitudOfertasEntrada(@Args('id', { type: () => Int }) id: number) {
     return this.solicitudOfertasEntradasService.remove(id);
   }
 
   @Mutation(() => [SolicitudOfertasEntradas])
+  @UseGuards(new AuthGuard())
   removeSeveralSolicitudOfertasEntrada(@Args('id', { type: () => [Int] }) id: number[]) {
     return this.solicitudOfertasEntradasService.removeSeveral(id);
   }

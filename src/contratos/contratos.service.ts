@@ -29,6 +29,7 @@ import { LogsService } from 'src/logs/logs.service';
 import { MyLogger } from 'src/MyLogger';
 import { IncotermService } from 'src/incoterm/incoterm.service';
 import { Incoterm } from 'src/models/entities/Incoterm.entity';
+import { Usuarios } from 'src/models/entities/Usuarios.entity';
 
 @Injectable()
 export class ContratosService {
@@ -40,7 +41,7 @@ export class ContratosService {
   private agenciasAseguradorasService: AgenciasAseguradorasService, private incotermService: IncotermService) {}
 
 
-  async save(createContratoInput: CreateContratoInput) : Promise<Contratos> {
+  async save(usuarioToken: Usuarios,createContratoInput: CreateContratoInput) : Promise<Contratos> {
     var esNuevo = true;
     if(createContratoInput.idContrato){
       esNuevo = false;
@@ -56,7 +57,7 @@ export class ContratosService {
 
     var result = await this.contratoRepository.save(createContratoInput);
     if(result && esNuevo){
-      await this.logsService.save(MyLogger.usuarioLoggeado.ejecutivo.nombre, "Insertado un nuevo contrato con número consecutivo "+result.consecutivo+"");
+      await this.logsService.save(usuarioToken.ejecutivo.nombre, "Insertado un nuevo contrato con número consecutivo "+result.consecutivo+"");
     }
     if(result && !esNuevo){
       var texto = "Modificado el contrato con número consecutivo "+result.consecutivo+"";
@@ -168,7 +169,7 @@ export class ContratosService {
         if(contratoViejo.gastosLogisticos != result.gastosLogisticos){
           texto += ", cambiados los gastos logísticos";
         }
-        await this.logsService.save(MyLogger.usuarioLoggeado.ejecutivo.nombre, texto);
+        await this.logsService.save(usuarioToken.ejecutivo.nombre, texto);
     }
     return result;
   }
@@ -183,17 +184,17 @@ export class ContratosService {
     'suplementoEmbarques','suplementoResumen']});
   }
 
-  async remove(id: number) : Promise<any> {
+  async remove(usuarioToken: Usuarios,id: number) : Promise<any> {
     const contratos = await this.findOne(id);
     var result = await this.contratoRepository.remove(contratos);
     if(result){
-      await this.logsService.save(MyLogger.usuarioLoggeado.ejecutivo.nombre, "Eliminado el contrato con número consecutivo "+result.consecutivo+"");
+      await this.logsService.save(usuarioToken.ejecutivo.nombre, "Eliminado el contrato con número consecutivo "+result.consecutivo+"");
     }
     
     return result;
   }
 
-  async removeSeveral(id: number[]) : Promise<any> {
+  async removeSeveral(usuarioToken: Usuarios,id: number[]) : Promise<any> {
     const contratos = await this.contratoRepository.findByIds(id);
     var result = await this.contratoRepository.remove(contratos);
     if(result){
@@ -204,7 +205,7 @@ export class ContratosService {
         else
           texto += result[index].consecutivo;
       }
-      await this.logsService.save(MyLogger.usuarioLoggeado.ejecutivo.nombre, texto);
+      await this.logsService.save(usuarioToken.ejecutivo.nombre, texto);
     }
     
     return result;

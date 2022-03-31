@@ -11,13 +11,15 @@ import { MyLogger } from 'src/MyLogger';
 import { CreateUsuarioRolInput } from 'src/usuario-rol/dto/create-usuario-rol.input';
 import { UsuarioRolService } from 'src/usuario-rol/usuario-rol.service';
 import { LogsService } from 'src/logs/logs.service';
+import * as jwt from 'jsonwebtoken';
+import { SECRET_KEY } from 'src/auth.guard';
 
 @Injectable()
 export class UsuariosService {
   constructor(@InjectRepository(Usuarios) public readonly usuariosRepository: Repository<Usuarios>,private ejecutivoService: EjecutivoService,
   private usuarioRolService: UsuarioRolService,private logsService: LogsService) {}
 
-  async save(createUsuarioInput: CreateUsuarioInput) : Promise<Usuarios> {
+  async save(usuarioToken: Usuarios, createUsuarioInput: CreateUsuarioInput) : Promise<Usuarios> {
     var esNuevo = false;
     var id = createUsuarioInput.idUsuario;
     if(!id){
@@ -38,7 +40,7 @@ export class UsuariosService {
     const newUsuario = await this.usuariosRepository.save(createUsuarioInput);
     
     if(newUsuario && esNuevo){
-      await this.logsService.save(MyLogger.usuarioLoggeado.ejecutivo.nombre, "Insertado el usuario "+newUsuario.nombreUsuario+"");
+      await this.logsService.save(usuarioToken.ejecutivo.nombre, "Insertado el usuario "+newUsuario.nombreUsuario+"");
     }
     
     createUsuarioInput.roles.forEach(rol => {
@@ -51,18 +53,18 @@ export class UsuariosService {
     return await this.usuariosRepository.findOne(createUsuarioInput.idUsuario);
   }
 
-  async forcePassword(idUsuario: number) : Promise<Usuarios> {
+  async forcePassword(usuarioToken: Usuarios,idUsuario: number) : Promise<Usuarios> {
     const usuario = await this.findOne(idUsuario); 
     usuario.roles = [];
     usuario.usuarioRoles.forEach(rol =>{
       usuario.roles.push(rol.idRol)
     })
     usuario.contrasena = usuario.nombreUsuario + '*'+ new Date().getFullYear();
-    await this.logsService.save(MyLogger.usuarioLoggeado.ejecutivo.nombre, "Forzada la contraseña del usuario "+usuario.nombreUsuario+"");
-    return await this.save(usuario);    
+    await this.logsService.save(usuarioToken.ejecutivo.nombre, "Forzada la contraseña del usuario "+usuario.nombreUsuario+"");
+    return await this.save(usuarioToken,usuario);    
   }
 
-  async modificarContrasena(idUsuario: number, contrasenaVieja: string, contrasenaNueva: string, contrasenaNuevaConfirmar: string) : Promise<Usuarios>{
+  async modificarContrasena(usuarioToken: Usuarios, idUsuario: number, contrasenaVieja: string, contrasenaNueva: string, contrasenaNuevaConfirmar: string) : Promise<Usuarios>{
 
     return new Promise<Usuarios>(async (resolve, reject) => {
       const usuario = await this.findOne(idUsuario);
@@ -79,8 +81,8 @@ export class UsuariosService {
           usuario.roles.push(rol.idRol)
         })  
         usuario.contrasena = contrasenaNueva;  
-        await this.logsService.save(MyLogger.usuarioLoggeado.ejecutivo.nombre, "Modificada la contraseña del usuario "+usuario.nombreUsuario+"");
-        resolve(this.save(usuario)); 
+        await this.logsService.save(usuarioToken.ejecutivo.nombre, "Modificada la contraseña del usuario "+usuario.nombreUsuario+"");
+        resolve(this.save(usuarioToken,usuario)); 
       }
     });
   }
@@ -98,8 +100,8 @@ export class UsuariosService {
           reject('Usuario o contraseña incorrectos');  
         }
         else{
-          MyLogger.usuarioLoggeado = usuario;
-          await this.logsService.save(MyLogger.usuarioLoggeado.ejecutivo.nombre, "El usuario "+usuario.nombreUsuario+" se ha autenticado en el sistema");
+          await this.logsService.save(usuario.ejecutivo.nombre, "El usuario "+usuario.nombreUsuario+" se ha autenticado en el sistema");
+          usuario.token = this.createToken(usuario)
           resolve(usuario);  
         }
       }
@@ -114,16 +116,16 @@ export class UsuariosService {
     return await this.usuariosRepository.findOne(id,{ relations: ['usuarioRoles']});
   }
 
-  async remove(id: number) : Promise<any> {
+  async remove(usuarioToken: Usuarios,id: number) : Promise<any> {
     return new Promise<any>(async (resolve, reject) => {
       const usuario = await this.findOne(id);
-      if(usuario.idUsuario == MyLogger.usuarioLoggeado.idUsuario){
+      if(usuario.idUsuario == usuarioToken.idUsuario){
         reject('No se puede eliminar el usuario que se encuentra autenticado actualmente');
       }
       else{
         var result = await this.usuariosRepository.remove(usuario);
         if(result){
-          await this.logsService.save(MyLogger.usuarioLoggeado.ejecutivo.nombre, "Eliminado el usuario "+result.nombreUsuario+"");
+          await this.logsService.save(usuarioToken.ejecutivo.nombre, "Eliminado el usuario "+result.nombreUsuario+"");
         }
         
         resolve(result);  
@@ -131,12 +133,12 @@ export class UsuariosService {
     });
   }
 
-  async removeSeveral(id: number[]) : Promise<any> {
+  async removeSeveral(usuarioToken: Usuarios,id: number[]) : Promise<any> {
     return new Promise<any>(async (resolve, reject) => {
       const usuarios = await this.usuariosRepository.findByIds(id);
       var estaLoggeado = false;
       usuarios.forEach(usuario =>{
-        if(usuario.idUsuario == MyLogger.usuarioLoggeado.idUsuario){
+        if(usuario.idUsuario == usuarioToken.idUsuario){
           estaLoggeado = true;
         }
       })
@@ -153,7 +155,7 @@ export class UsuariosService {
             else
               texto += result[index].nombreUsuario;
           }
-          await this.logsService.save(MyLogger.usuarioLoggeado.ejecutivo.nombre, texto);
+          await this.logsService.save(usuarioToken.ejecutivo.nombre, texto);
         }  
         resolve(result);  
       }
@@ -162,6 +164,15 @@ export class UsuariosService {
 
   async getEjecutivo (Id: number) : Promise<Ejecutivos>{
     return this.ejecutivoService.findOne(Id);
+  }
+
+  private createToken (usuario: Usuarios){
+    return jwt.sign({usuario},SECRET_KEY, {expiresIn: 900});
+  }
+
+  refreshToken (usuario: Usuarios){
+    usuario.token = jwt.sign({usuario},SECRET_KEY, {expiresIn: 900});
+    return usuario;
   }
 }
 
