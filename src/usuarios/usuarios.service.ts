@@ -102,6 +102,10 @@ export class UsuariosService {
         else{
           await this.logsService.save(usuario.ejecutivo.nombre, "El usuario "+usuario.nombreUsuario+" se ha autenticado en el sistema");
           usuario.token = this.createToken(usuario)
+          usuario.roles = [];
+          usuario.usuarioRoles.forEach(rol =>{
+            usuario.roles.push(rol.idRol)
+          })
           resolve(usuario);  
         }
       }
