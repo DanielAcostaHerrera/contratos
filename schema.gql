@@ -1943,7 +1943,7 @@ input CreateBasesGeneralesInput {
   cancelado: Boolean!
   activo: Boolean!
   actualizado: DateTime
-  clausulas: [CreateBasesGeneralesClausulaInput!]
+  basesGeneralesClausulas: [CreateBasesGeneralesClausulaInput!]
 }
 
 input CreateBasesGeneralesClausulaInput {

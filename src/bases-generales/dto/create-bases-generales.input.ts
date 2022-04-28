@@ -50,5 +50,5 @@ export class CreateBasesGeneralesInput {
   actualizado?: Date;
 
   @Field(()=> [CreateBasesGeneralesClausulaInput],{ nullable: true})
-  clausulas?: CreateBasesGeneralesClausulaInput[];
+  basesGeneralesClausulas?: CreateBasesGeneralesClausulaInput[];
 }

@@ -44,7 +44,7 @@ export class BasesGeneralesService {
       if(result){
         await this.basesGeneralesClausulasService.removeSeveralByBaseGeneralId(result.idBasesGenerales);
 
-        let clausulas = createBasesGeneralesInput.clausulas;
+        let clausulas = createBasesGeneralesInput.basesGeneralesClausulas;
         for (let index = 0; index < clausulas.length; index++) {
           const proformaClausula = clausulas[index];
           
@@ -77,7 +77,7 @@ export class BasesGeneralesService {
       if(result){
         await this.basesGeneralesClausulasService.removeSeveralByBaseGeneralId(result.idBasesGenerales);
 
-        let clausulas = createBasesGeneralesInput.clausulas;
+        let clausulas = createBasesGeneralesInput.basesGeneralesClausulas;
         for (let index = 0; index < clausulas.length; index++) {
           const proformaClausula = clausulas[index];
           

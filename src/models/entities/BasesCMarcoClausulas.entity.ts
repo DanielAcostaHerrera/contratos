@@ -36,7 +36,7 @@ export class BasesCMarcoClausulas {
 
   @Column("nvarchar", { name: "Clausula" })
   @Field()
-  basesGeneralesClausula?: string;
+  clausula?: string;
 
   @Column("datetime", { name: "Modificado", default: () => "getdate()" })
   @Field()

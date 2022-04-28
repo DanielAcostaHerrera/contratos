@@ -18,7 +18,7 @@ export class CreateBasesGeneralesClausulaInput {
   orden: number;
 
   @Field()
-  basesGeneralesClausula: string;
+  clausula: string;
 
   @Field()
   excepcional: boolean;
