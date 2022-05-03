@@ -5,8 +5,8 @@ export class CreateBasesGeneralesClausulaInput {
   @Field(() => Int, { nullable: true})
   idBasesGeneralesClausulas?: number;
 
-  @Field(() => Int)
-  idBasesGenerales: number;
+  @Field(() => Int, { nullable: true})
+  idBasesGenerales?: number;
 
   @Field(() => Int)
   idProformaClausula: number;

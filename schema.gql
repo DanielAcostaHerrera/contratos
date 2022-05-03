@@ -1948,7 +1948,7 @@ input CreateBasesGeneralesInput {
 
 input CreateBasesGeneralesClausulaInput {
   idBasesGeneralesClausulas: Int
-  idBasesGenerales: Int!
+  idBasesGenerales: Int
   idProformaClausula: Int!
   idTipoClausula: Int!
   orden: Int!
