@@ -42,6 +42,8 @@ export class BasesGeneralesService {
 
       await this.basesGeneralesClausulasService.removeSeveralByBaseGeneralId(createBasesGeneralesInput.idBasesGenerales);
 
+      result = await this.basesGeneralesRepository.save(createBasesGeneralesInput);
+
       let clausulas = createBasesGeneralesInput.basesGeneralesClausulas;
         for (let index = 0; index < clausulas.length; index++) {
           const proformaClausula = clausulas[index];
@@ -50,15 +52,13 @@ export class BasesGeneralesService {
           basesGeneralesClausula.idBasesGeneralesClausulas = proformaClausula.idBasesGeneralesClausulas;
           basesGeneralesClausula.clausula = proformaClausula.clausula;
           basesGeneralesClausula.excepcional = false;
-          basesGeneralesClausula.idBasesGenerales = createBasesGeneralesInput.idBasesGenerales;
+          basesGeneralesClausula.idBasesGenerales = result.idBasesGenerales;
           basesGeneralesClausula.idProformaClausula = proformaClausula.idProformaClausula;
           basesGeneralesClausula.idTipoClausula = proformaClausula.idTipoClausula;
           basesGeneralesClausula.orden = proformaClausula.orden;
           basesGeneralesClausula.modificado = new Date();
           await this.basesGeneralesClausulasService.save(basesGeneralesClausula)        
         }
-
-      result = await this.basesGeneralesRepository.save(createBasesGeneralesInput);
     }
 
     if(!createBasesGeneralesInput.idBasesGenerales){
