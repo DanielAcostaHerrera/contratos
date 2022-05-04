@@ -40,8 +40,10 @@ export class BasesGeneralesService {
       esNuevo = false;
       var baseVieja = await this.findOne(createBasesGeneralesInput.idBasesGenerales);
 
-      await this.basesGeneralesClausulasService.removeSeveralByBaseGeneralId(createBasesGeneralesInput.idBasesGenerales);
+      //await this.basesGeneralesClausulasService.removeSeveralByBaseGeneralId(createBasesGeneralesInput.idBasesGenerales);
 
+      createBasesGeneralesInput.actualizado = new Date();
+      createBasesGeneralesInput.fecha = baseVieja.fecha;
       result = await this.basesGeneralesRepository.save(createBasesGeneralesInput);
 
       let clausulas = createBasesGeneralesInput.basesGeneralesClausulas;
@@ -50,8 +52,8 @@ export class BasesGeneralesService {
           
           var basesGeneralesClausula = new CreateBasesGeneralesClausulaInput();
           basesGeneralesClausula.idBasesGeneralesClausulas = proformaClausula.idBasesGeneralesClausulas;
-          basesGeneralesClausula.clausula = proformaClausula.clausula;
-          basesGeneralesClausula.excepcional = false;
+          basesGeneralesClausula.clausula = proformaClausula.clausula; 
+          basesGeneralesClausula.excepcional = proformaClausula.excepcional;
           basesGeneralesClausula.idBasesGenerales = result.idBasesGenerales;
           basesGeneralesClausula.idProformaClausula = proformaClausula.idProformaClausula;
           basesGeneralesClausula.idTipoClausula = proformaClausula.idTipoClausula;
@@ -72,18 +74,21 @@ export class BasesGeneralesService {
       else{
         createBasesGeneralesInput.consecutivo = 1;
       }
+      createBasesGeneralesInput.fecha = new Date();
+      createBasesGeneralesInput.actualizado = new Date();
       result = await this.basesGeneralesRepository.save(createBasesGeneralesInput);
 
       if(result){
-        await this.basesGeneralesClausulasService.removeSeveralByBaseGeneralId(result.idBasesGenerales);
+        //await this.basesGeneralesClausulasService.removeSeveralByBaseGeneralId(result.idBasesGenerales);
 
         let clausulas = createBasesGeneralesInput.basesGeneralesClausulas;
         for (let index = 0; index < clausulas.length; index++) {
           const proformaClausula = clausulas[index];
           
           var basesGeneralesClausula = new CreateBasesGeneralesClausulaInput();
+          basesGeneralesClausula.idBasesGeneralesClausulas = proformaClausula.idBasesGeneralesClausulas;
           basesGeneralesClausula.clausula = proformaClausula.clausula;
-          basesGeneralesClausula.excepcional = false;
+          basesGeneralesClausula.excepcional = proformaClausula.excepcional;
           basesGeneralesClausula.idBasesGenerales = result.idBasesGenerales;
           basesGeneralesClausula.idProformaClausula = proformaClausula.idProformaClausula;
           basesGeneralesClausula.idTipoClausula = proformaClausula.idTipoClausula;

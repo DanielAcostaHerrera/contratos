@@ -1954,7 +1954,7 @@ input CreateBasesGeneralesClausulaInput {
   orden: Int!
   clausula: String!
   excepcional: Boolean!
-  modificado: DateTime!
+  modificado: DateTime
 }
 
 input CreateClasificacioneInput {

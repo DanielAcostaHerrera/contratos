@@ -23,6 +23,6 @@ export class CreateBasesGeneralesClausulaInput {
   @Field()
   excepcional: boolean;
 
-  @Field()
-  modificado: Date;
+  @Field({ nullable: true})
+  modificado?: Date;
 }
