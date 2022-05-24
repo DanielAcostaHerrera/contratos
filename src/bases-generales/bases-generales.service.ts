@@ -40,7 +40,7 @@ export class BasesGeneralesService {
       esNuevo = false;
       var baseVieja = await this.findOne(createBasesGeneralesInput.idBasesGenerales);
 
-      //await this.basesGeneralesClausulasService.removeSeveralByBaseGeneralId(createBasesGeneralesInput.idBasesGenerales);
+      await this.basesGeneralesClausulasService.removeSeveralByBaseGeneralId(createBasesGeneralesInput.idBasesGenerales);
 
       createBasesGeneralesInput.actualizado = new Date();
       createBasesGeneralesInput.fecha = baseVieja.fecha;
