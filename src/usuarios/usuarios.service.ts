@@ -171,11 +171,11 @@ export class UsuariosService {
   }
 
   private createToken (usuario: Usuarios){
-    return jwt.sign({usuario},SECRET_KEY, {expiresIn: 900});
+    return jwt.sign({usuario},SECRET_KEY, {expiresIn: 60});
   }
 
   refreshToken (usuario: Usuarios){
-    usuario.token = jwt.sign({usuario},SECRET_KEY, {expiresIn: 900});
+    usuario.token = jwt.sign({usuario},SECRET_KEY, {expiresIn: 60});
     return usuario;
   }
 }

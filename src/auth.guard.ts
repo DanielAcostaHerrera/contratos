@@ -8,33 +8,25 @@ export const SECRET_KEY = 'Contratos2022';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
-    canActivate(context: ExecutionContext): boolean | Promise<boolean> | Observable<boolean> {
-
-        return new Promise<boolean>(async (resolve, reject) => {
-            const ctx = GqlExecutionContext.create(context).getContext();
-        if (!ctx.req.headers.authorization) {
-            reject('Token Inválido');
-        }
-
-        this.validateToken(ctx.req.headers.authorization).then(token => {
-            ctx[DEFAULT_GRAPHQL_CONTEXT] = token['usuario'];
-        });
-        resolve(true) ;
-        }); 
-    } 
-
-    async validateToken(auth: string): Promise<string> {
-        return new Promise<string>(async (resolve, reject) => {
-            if (auth.split(' ')[0] !== 'Bearer') {
-                reject('Token Inválido');
-            }
-    
-            const token = auth.split(' ')[1];
-            try {
-                resolve(jwt.verify(token, SECRET_KEY));
-            } catch (err) {
-                reject('Token Inválido');
-            }
-        });   
-    }  
-}
+    async canActivate(context: ExecutionContext): Promise<boolean> {
+      const ctx = GqlExecutionContext.create(context).getContext();
+      const auth = ctx.req.headers.authorization;
+  
+      if (!auth) {
+        return false;
+      }
+  
+      if (auth.split(' ')[0] !== 'Bearer') {
+        return false;
+      }
+  
+      const token = auth.split(' ')[1];
+      try {
+        ctx[DEFAULT_GRAPHQL_CONTEXT] = jwt.verify(token, SECRET_KEY)['usuario'];
+        return true;
+      } catch (err) {
+        return false;
+      }
+    }
+  }
+  
