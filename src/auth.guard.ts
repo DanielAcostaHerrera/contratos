@@ -9,16 +9,19 @@ export const SECRET_KEY = 'Contratos2022';
 @Injectable()
 export class AuthGuard implements CanActivate {
     canActivate(context: ExecutionContext): boolean | Promise<boolean> | Observable<boolean> {
-        const ctx = GqlExecutionContext.create(context).getContext();
+
+        return new Promise<boolean>(async (resolve, reject) => {
+            const ctx = GqlExecutionContext.create(context).getContext();
         if (!ctx.req.headers.authorization) {
-            return false;
+            reject('Token Inválido');
         }
 
         this.validateToken(ctx.req.headers.authorization).then(token => {
             ctx[DEFAULT_GRAPHQL_CONTEXT] = token['usuario'];
         });
-        return true;
-    }
+        resolve(true) ;
+        }); 
+    } 
 
     async validateToken(auth: string): Promise<string> {
         return new Promise<string>(async (resolve, reject) => {
