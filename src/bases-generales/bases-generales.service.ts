@@ -43,7 +43,6 @@ export class BasesGeneralesService {
       await this.basesGeneralesClausulasService.removeSeveralByBaseGeneralId(createBasesGeneralesInput.idBasesGenerales);
 
       createBasesGeneralesInput.actualizado = new Date();
-      createBasesGeneralesInput.fecha = baseVieja.fecha;
       result = await this.basesGeneralesRepository.save(createBasesGeneralesInput);
 
       let clausulas = createBasesGeneralesInput.basesGeneralesClausulas;
