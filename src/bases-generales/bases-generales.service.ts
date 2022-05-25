@@ -242,6 +242,8 @@ export class BasesGeneralesService {
           reject('Esta base general no tiene una proforma predefinida');
         }
         else{
+          await this.basesGeneralesClausulasService.removeSeveralByBaseGeneralId(basesGenerales.idBasesGenerales);
+
           var basesGeneralesClausulasArray : BasesGeneralesClausulas[] = []
 
           for (let index = 0; index < proformaClausulas.length; index++) {
@@ -255,7 +257,7 @@ export class BasesGeneralesService {
             basesGeneralesClausula.idTipoClausula = proformaClausula.idTipoClausula;
             basesGeneralesClausula.orden = proformaClausula.orden;
             basesGeneralesClausula.modificado = new Date(); 
-            basesGeneralesClausulasArray.push(basesGeneralesClausula);  
+            basesGeneralesClausulasArray.push(await this.basesGeneralesClausulasService.save(basesGeneralesClausula));  
             
           }
 

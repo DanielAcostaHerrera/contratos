@@ -29,7 +29,7 @@ export class BasesGeneralesResolver {
   @Query(() => [BasesGeneralesClausulas])
   @UseGuards(new AuthGuard())
   actualizarClausulasFromBaseGeneral(@Args('idBaseGeneral') idBaseGeneral: number){
-    return this.basesGeneralesService.actualizarClausulasFromBaseGeneral(idBaseGeneral);;
+    return this.basesGeneralesService.actualizarClausulasFromBaseGeneral(idBaseGeneral);
   }
 
   @Query(() => [BasesGenerales])
