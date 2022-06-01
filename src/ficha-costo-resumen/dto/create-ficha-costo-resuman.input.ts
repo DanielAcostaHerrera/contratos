@@ -9,7 +9,7 @@ export class CreateFichaCostoResumenInput {
   idCCosto: number;
 
   @Field(() => Int)
-  idBaseCMarco: number;
+  idCMarco: number;
 
   @Field(() => Int)
   idMoneda: number;

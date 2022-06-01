@@ -6,7 +6,6 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
 } from "typeorm";
-import { BasesCMarcoClausulas } from "./BasesCMarcoClausulas.entity";
 import { BasesGeneralesClausulas } from "./BasesGeneralesClausulas.entity";
 import { ProformaClausulas } from "./ProformaClausulas.entity";
 
@@ -43,10 +42,6 @@ export class TiposDeClausulas {
   @Column("bit", { name: "Excepcional", default: () => "(0)" })
   @Field()
   excepcional: boolean;
-
-  @Field(() => [BasesCMarcoClausulas], { nullable: true })
-  @OneToMany(() => BasesCMarcoClausulas,(basesCMarcoClausulas) => basesCMarcoClausulas.tipoDeClausula)
-  basesCMarcoClausulas: BasesCMarcoClausulas[];
 
   @Field(() => [BasesGeneralesClausulas], { nullable: true })
   @OneToMany(() => BasesGeneralesClausulas,(basesGeneralesClausulas) => basesGeneralesClausulas.tiposDeClausulas)

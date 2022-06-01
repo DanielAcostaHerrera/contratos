@@ -1,4 +1,3 @@
-import { BasesCmarcoModule } from './../bases-cmarco/bases-cmarco.module';
 import { Module } from '@nestjs/common';
 import { FichaCostoResumenService } from './ficha-costo-resumen.service';
 import { FichaCostoResumenResolver } from './ficha-costo-resumen.resolver';
@@ -12,11 +11,12 @@ import { EmbalajesModule } from 'src/embalajes/embalajes.module';
 import { ProveedoresModule } from 'src/proveedores/proveedores.module';
 import { PaisesModule } from 'src/paises/paises.module';
 import { CodigosParaLaVentaModule } from 'src/codigos-para-la-venta/codigos-para-la-venta.module';
+import { ContratoMarcoModule } from 'src/contrato-marco/contrato-marco.module';
 
 @Module({
   imports:[TypeOrmModule.forFeature([
     FichaCostoResumen
-  ]),BasesCmarcoModule,MonedaModule,FormasPagoModule,IncotermModule,PuertosModule,EmbalajesModule,ProveedoresModule,PaisesModule,CodigosParaLaVentaModule],
+  ]),ContratoMarcoModule,MonedaModule,FormasPagoModule,IncotermModule,PuertosModule,EmbalajesModule,ProveedoresModule,PaisesModule,CodigosParaLaVentaModule],
   providers: [FichaCostoResumenResolver, FichaCostoResumenService],
   exports: [FichaCostoResumenService]
 })

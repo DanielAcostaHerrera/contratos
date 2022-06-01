@@ -1,4 +1,4 @@
-import { BasesCMarco } from './../../models/entities/BasesCMarco.entity';
+
 import { Field, Float, Int, ObjectType } from "@nestjs/graphql";
 import { Column, Entity, Index, JoinColumn, ManyToOne, OneToMany } from "typeorm";
 import { BasesGenerales } from '../../models/entities/BasesGenerales.entity';
@@ -8,6 +8,7 @@ import { PliegoConcurrenciaResumen } from '../../models/entities/PliegoConcurren
 import { NegociacionResumen } from '../../models/entities/NegociacionResumen.entity';
 import { FichaCompraResumen } from '../../models/entities/FichaCompraResumen.entity';
 import { FichaCostoResumen } from '../../models/entities/FichaCostoResumen.entity';
+import { ContratoMarco } from '../../models/entities/ContratoMarco.entity';
 
 @ObjectType()
 @Index("Actualizacion", ["actualizacion"], {})
@@ -269,9 +270,9 @@ export class Proveedores {
   @Field({nullable: true})
   fechaAlta: Date | null;
 
-  @Field(() => [BasesCMarco], { nullable: true })
-  @OneToMany(() => BasesCMarco,(basesCMarco) => basesCMarco.proveedor)
-  basesCMarco: BasesCMarco[];
+  @Field(() => [ContratoMarco], { nullable: true })
+  @OneToMany(() => ContratoMarco,(contratoMarco) => contratoMarco.proveedor)
+  contratoMarco: ContratoMarco[];
 
   @Field(() => [BasesGenerales], { nullable: true })
   @OneToMany(() => BasesGenerales,(basesGenerales) => basesGenerales.proveedor)

@@ -1,4 +1,3 @@
-import { BasesCmarcoService } from 'src/bases-cmarco/bases-cmarco.service';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { FichaCostoResumen } from 'src/models/entities/FichaCostoResumen.entity';
@@ -11,7 +10,6 @@ import { PuertosService } from 'src/puertos/puertos.service';
 import { EmbalajesService } from 'src/embalajes/Embalajes.service';
 import { Monedas } from 'src/models/entities/Monedas.entity';
 import { Incoterm } from 'src/models/entities/Incoterm.entity';
-import { BasesCMarco } from 'src/models/entities/BasesCMarco.entity';
 import { FormasPago } from 'src/models/entities/FormasPago.entity';
 import { Puertos } from 'src/models/entities/Puertos.entity';
 import { Embalajes } from 'src/models/entities/Embalajes.entity';
@@ -21,10 +19,12 @@ import { CodigosParaLaVentaService } from 'src/codigos-para-la-venta/codigos-par
 import { Proveedores } from 'src/modelsMercurio/entities/Proveedores.entity';
 import { Paises } from 'src/modelsMercurio/entities/Paises.entity';
 import { CodigosParaLaVenta } from 'src/modelsMercurio/entities/CodigosParaLaVenta.entity';
+import { ContratoMarco } from 'src/models/entities/ContratoMarco.entity';
+import { ContratoMarcoService } from 'src/contrato-marco/contrato-marco.service';
 
 @Injectable()
 export class FichaCostoResumenService {
-  constructor(@InjectRepository(FichaCostoResumen) public readonly fichaCostoResumenRepository: Repository<FichaCostoResumen>,private basesCmarcoService: BasesCmarcoService,
+  constructor(@InjectRepository(FichaCostoResumen) public readonly fichaCostoResumenRepository: Repository<FichaCostoResumen>,private contratoMarcoService: ContratoMarcoService,
   private monedaService: MonedaService,private FormasPagoService: FormasPagoService,private incotermService: IncotermService,
   private puertosService: PuertosService,private embalajesService: EmbalajesService,
   private proveedoresService: ProveedoresService,private paisesService: PaisesService,private codigosParaLaVentaService: CodigosParaLaVentaService,) {}
@@ -52,8 +52,8 @@ export class FichaCostoResumenService {
     return await this.fichaCostoResumenRepository.remove(fichaCostoResumen);
   }
 
-  async getBaseCMarco (baseCMarcoId: number) : Promise<BasesCMarco>{
-    return this.basesCmarcoService.findOne(baseCMarcoId);
+  async getCMarco (id: number) : Promise<ContratoMarco>{
+    return this.contratoMarcoService.findOne(id);
   }
 
   async getMoneda (monedaId: number) : Promise<Monedas>{

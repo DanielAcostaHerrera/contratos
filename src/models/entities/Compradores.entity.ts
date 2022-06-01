@@ -6,7 +6,6 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
 } from "typeorm";
-import { BasesCMarco } from "./BasesCMarco.entity";
 import { BasesGenerales } from "./BasesGenerales.entity";
 import { SolicitudContratacion } from "./SolicitudContratacion.entity";
 
@@ -41,10 +40,6 @@ export class Compradores {
   @Column("bit", { name: "Activo", nullable: true })
   @Field({nullable: true})
   activo: boolean | null;
-
-  @Field(() => [BasesCMarco], { nullable: true })
-  @OneToMany(() => BasesCMarco, (basesCMarco) => basesCMarco.compradores)
-  basesCMarcos: BasesCMarco[];
 
   @Field(() => [BasesGenerales], { nullable: true })
   @OneToMany(() => BasesGenerales,(basesGenerales) => basesGenerales.compradores)

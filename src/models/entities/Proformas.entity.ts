@@ -6,7 +6,6 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
 } from "typeorm";
-import { BasesCMarco } from "./BasesCMarco.entity";
 import { BasesGenerales } from "./BasesGenerales.entity";
 import { Contratos } from "./Contratos.entity";
 import { ProformaClausulas } from "./ProformaClausulas.entity";
@@ -49,10 +48,6 @@ export class Proformas {
   @Column("bit", { name: "CMarcoF" })
   @Field()
   cMarcoF: boolean;
-
-  @Field(() => [BasesCMarco], { nullable: true })
-  @OneToMany(() => BasesCMarco, (basesCMarco) => basesCMarco.proforma)
-  basesCMarco: BasesCMarco[];
 
   @Field(() => [ProformaClausulas], { nullable: true })
   @OneToMany(() => ProformaClausulas,(proformaClausulas) => proformaClausulas.proformas)

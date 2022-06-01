@@ -7,7 +7,6 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
 } from "typeorm";
-import { BasesCMarcoClausulas } from "./BasesCMarcoClausulas.entity";
 import { BasesGeneralesClausulas } from "./BasesGeneralesClausulas.entity";
 import { TiposDeClausulas } from "./TiposDeClausulas.entity";
 import { Proformas } from "./Proformas.entity";
@@ -42,10 +41,6 @@ export class ProformaClausulas {
   @Column("nvarchar", { name: "Clausula" })
   @Field()
   clausula: string;
-
-  @Field(() => [BasesCMarcoClausulas] , {nullable: true})
-  @OneToMany(() => BasesCMarcoClausulas,(basesCMarcoClausulas) => basesCMarcoClausulas.proformaClausulas)
-  basesCMarcoClausulas: BasesCMarcoClausulas[];
 
   @Field(() => [BasesGeneralesClausulas] , {nullable: true})
   @OneToMany(() => BasesGeneralesClausulas,(basesGeneralesClausulas) => basesGeneralesClausulas.proformaClausula)

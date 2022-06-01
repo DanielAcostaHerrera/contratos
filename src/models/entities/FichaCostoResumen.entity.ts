@@ -7,7 +7,6 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
 } from "typeorm";
-import { BasesCMarco } from "./BasesCMarco.entity";
 import { Monedas } from "./Monedas.entity";
 import { FormasPago } from "./FormasPago.entity";
 import { Incoterm } from "./Incoterm.entity";
@@ -18,6 +17,7 @@ import { Contratos } from "./Contratos.entity";
 import { Proveedores } from "../../modelsMercurio/entities/Proveedores.entity";
 import { Paises } from "../../modelsMercurio/entities/Paises.entity";
 import { CodigosParaLaVenta } from "../../modelsMercurio/entities/CodigosParaLaVenta.entity";
+import { ContratoMarco } from "./ContratoMarco.entity";
 
 @ObjectType()
 @Index("IX_FichaCostoResumen", ["fecha"], {})
@@ -34,9 +34,9 @@ export class FichaCostoResumen {
   @Field(() => Int)
   idCCosto: number;
 
-  @Column("int", { name: "IdBaseCMarco" })
+  @Column("int", { name: "IdCMarco" })
   @Field(() => Int)
-  idBaseCMarco: number;
+  idCMarco: number;
 
   @Column("int", { name: "IdMoneda" })
   @Field(() => Int)
@@ -392,10 +392,10 @@ export class FichaCostoResumen {
   @Field(() => Int,{nullable: true})
   aprobado: number | null;
 
-  @Field(() => BasesCMarco, {nullable: true})
-  @ManyToOne(() => BasesCMarco, (basesCMarco) => basesCMarco.fichaCostoResumen)
-  @JoinColumn([{ name: "IdBaseCMarco", referencedColumnName: "idBaseCMarco" }])
-  baseCMarco: BasesCMarco;
+  @Field(() => ContratoMarco, {nullable: true})
+  @ManyToOne(() => ContratoMarco, (contratoMarco) => contratoMarco.fichaCostoResumen)
+  @JoinColumn([{ name: "IdCMarco", referencedColumnName: "idCMarco" }])
+  contratoMarco: ContratoMarco;
 
   @Field(() => Monedas, {nullable: true})
   @ManyToOne(() => Monedas, (monedas) => monedas.fichaCostoResumen)

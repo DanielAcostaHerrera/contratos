@@ -3,13 +3,11 @@ import { AgenciasAseguradoras } from './../modelsNomgen/entities/AgenciasAsegura
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { AgenciasAseguradorasService } from 'src/agencias-aseguradoras/agencias-aseguradoras.service';
-import { BasesCmarcoService } from 'src/bases-cmarco/bases-cmarco.service';
 import { BasesGeneralesService } from 'src/bases-generales/bases-generales.service';
 import { CompaniasNavierasService } from 'src/companias-navieras/companias-navieras.service';
 import { EjecutivoService } from 'src/ejecutivo/ejecutivo.service';
 import { FichaCostoResumenService } from 'src/ficha-costo-resumen/ficha-costo-resumen.service';
 import { FormasEntregaService } from 'src/formas-entrega/formas-entrega.service';
-import { BasesCMarco } from 'src/models/entities/BasesCMarco.entity';
 import { BasesGenerales } from 'src/models/entities/BasesGenerales.entity';
 import { Contratos } from 'src/models/entities/Contratos.entity';
 import { Ejecutivos } from 'src/models/entities/Ejecutivos.entity';
@@ -30,11 +28,13 @@ import { MyLogger } from 'src/MyLogger';
 import { IncotermService } from 'src/incoterm/incoterm.service';
 import { Incoterm } from 'src/models/entities/Incoterm.entity';
 import { Usuarios } from 'src/models/entities/Usuarios.entity';
+import { ContratoMarcoService } from 'src/contrato-marco/contrato-marco.service';
+import { ContratoMarco } from 'src/models/entities/ContratoMarco.entity';
 
 @Injectable()
 export class ContratosService {
   constructor(@InjectRepository(Contratos) public readonly contratoRepository: Repository<Contratos>,private companiasNavierasService: CompaniasNavierasService,
-  private basesGeneralesService: BasesGeneralesService,private basesCmarcoService: BasesCmarcoService,private monedaService: MonedaService,
+  private basesGeneralesService: BasesGeneralesService,private contratoMarcoService: ContratoMarcoService,private monedaService: MonedaService,
   private formasEntregaService: FormasEntregaService,private negociacionResumenService: NegociacionResumenService,
   private fichaCostoResumenService: FichaCostoResumenService,private ejecutivoService: EjecutivoService,
   private paisesService: PaisesService,private proveedoresService: ProveedoresService,private logsService: LogsService,
@@ -64,7 +64,7 @@ export class ContratosService {
         if(contratoViejo.idBasesGenerales != result.idBasesGenerales){
           texto += ", cambiada la base general empleada";
         }
-        if(contratoViejo.idBaseCMarco != result.idBaseCMarco){
+        if(contratoViejo.idCMarco != result.idCMarco){
           texto += ", cambiada la base de contrato marco empleada";
         }
         if(contratoViejo.idMoneda != result.idMoneda){
@@ -215,8 +215,8 @@ export class ContratosService {
     return this.basesGeneralesService.findOne(Id);
   }
 
-  async getBasesCMarco (Id: number) : Promise<BasesCMarco>{
-    return this.basesCmarcoService.findOne(Id);
+  async getCMarco (Id: number) : Promise<ContratoMarco>{
+    return this.contratoMarcoService.findOne(Id);
   }
 
   async getMoneda (Id: number) : Promise<Monedas>{

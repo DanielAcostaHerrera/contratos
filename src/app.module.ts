@@ -11,9 +11,6 @@ import { EmbalajesModule } from './embalajes/embalajes.module';
 import { CargoModule } from './cargo/cargo.module';
 import { EjecutivoModule } from './ejecutivo/ejecutivo.module';
 import { GruposDeComprasModule } from './grupos-de-compras/grupos-de-compras.module';
-import { BasesCmarcoModule } from './bases-cmarco/bases-cmarco.module';
-import { BasesCmarcoClausulasModule } from './bases-cmarco-clausulas/bases-cmarco-clausulas.module';
-import { BasesCmarcoEspecificosModule } from './bases-cmarco-especificos/bases-cmarco-especificos.module';
 import { BasesGeneralesModule } from './bases-generales/bases-generales.module';
 import { BasesGeneralesClausulasModule } from './bases-generales-clausulas/bases-generales-clausulas.module';
 import { ClasificacionesModule } from './clasificaciones/clasificaciones.module';
@@ -81,6 +78,7 @@ import { ReferenciasModule } from './referencias/referencias.module';
 import { CodigosParaLaVentaModule } from './codigos-para-la-venta/codigos-para-la-venta.module';
 import { LogsModule } from './logs/logs.module';
 import { PuertoEmbarqueModule } from './puerto-embarque/puerto-embarque.module';
+import { ContratoMarcoModule } from './contrato-marco/contrato-marco.module';
 
 
 @Module({
@@ -126,9 +124,6 @@ import { PuertoEmbarqueModule } from './puerto-embarque/puerto-embarque.module';
     CargoModule,
     EjecutivoModule,
     GruposDeComprasModule,
-    BasesCmarcoModule,
-    BasesCmarcoClausulasModule,
-    BasesCmarcoEspecificosModule,
     BasesGeneralesModule,
     BasesGeneralesClausulasModule,
     ClasificacionesModule,
@@ -194,13 +189,14 @@ import { PuertoEmbarqueModule } from './puerto-embarque/puerto-embarque.module';
     CompaniasNavierasModule,
     ReferenciasModule,
     CodigosParaLaVentaModule,
+    LogsModule,
+    PuertoEmbarqueModule,
     WinstonModule.forRoot({
       transports: [
         new winston.transports.Console(),
       ],
     }),
-    LogsModule,
-    PuertoEmbarqueModule,
+    ContratoMarcoModule,
   ],
   controllers: [AppController],
   providers: [AppService],

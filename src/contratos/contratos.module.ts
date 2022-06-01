@@ -1,6 +1,5 @@
 import { EjecutivoModule } from './../ejecutivo/ejecutivo.module';
 import { FichaCostoResumenModule } from './../ficha-costo-resumen/ficha-costo-resumen.module';
-import { BasesCmarcoModule } from './../bases-cmarco/bases-cmarco.module';
 import { Module } from '@nestjs/common';
 import { ContratosService } from './contratos.service';
 import { ContratosResolver } from './contratos.resolver';
@@ -16,11 +15,12 @@ import { AgenciasAseguradorasModule } from 'src/agencias-aseguradoras/agencias-a
 import { CompaniasNavierasModule } from 'src/companias-navieras/companias-navieras.module';
 import { LogsModule } from 'src/logs/logs.module';
 import { IncotermModule } from 'src/incoterm/incoterm.module';
+import { ContratoMarcoModule } from 'src/contrato-marco/contrato-marco.module';
 
 @Module({
   imports: [TypeOrmModule.forFeature(
     [Contratos]
-  ),BasesGeneralesModule,BasesCmarcoModule,MonedaModule,FormasEntregaModule,NegociacionResumenModule,FichaCostoResumenModule,EjecutivoModule,
+  ),BasesGeneralesModule,ContratoMarcoModule,MonedaModule,FormasEntregaModule,NegociacionResumenModule,FichaCostoResumenModule,EjecutivoModule,
   PaisesModule,ProveedoresModule,AgenciasAseguradorasModule,CompaniasNavierasModule,LogsModule,IncotermModule],
   providers: [ContratosResolver, ContratosService],
   exports: [ContratosService]

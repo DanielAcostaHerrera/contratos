@@ -9,7 +9,7 @@ export class CreateContratoInput {
   idBasesGenerales: number;
 
   @Field(() => Int)
-  idBaseCMarco: number;
+  idCMarco: number;
 
   @Field(() => Int)
   idMoneda: number;

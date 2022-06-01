@@ -10,7 +10,6 @@ import {
   PrimaryGeneratedColumn,
 } from "typeorm";
 import { BasesGenerales } from "./BasesGenerales.entity";
-import { BasesCMarco } from "./BasesCMarco.entity";
 import { Puertos } from "./Puertos.entity";
 import { Monedas } from "./Monedas.entity";
 import { FormasEntrega } from "./FormasEntrega.entity";
@@ -28,6 +27,7 @@ import { Paises } from "../../modelsMercurio/entities/Paises.entity";
 import { Proveedores } from "../../modelsMercurio/entities/Proveedores.entity";
 import { ContratoClausulas } from "./ContratoClausulas.entity";
 import { Incoterm } from './Incoterm.entity';
+import { ContratoMarco } from './ContratoMarco.entity';
 
 @ObjectType()
 @Index("PK_Contratos", ["idContrato"], { unique: true })
@@ -41,9 +41,9 @@ export class Contratos {
   @Field(() => Int)
   idBasesGenerales: number;
 
-  @Column("int", { name: "IdBaseCMarco" })
+  @Column("int", { name: "IdCMarco" })
   @Field(() => Int)
-  idBaseCMarco: number;
+  idCMarco: number;
 
   @Column("int", { name: "IdMoneda" })
   @Field(() => Int)
@@ -218,10 +218,10 @@ export class Contratos {
   @JoinColumn([{ name: "IdBasesGenerales", referencedColumnName: "idBasesGenerales" }])
   basesGenerales: BasesGenerales;
 
-  @Field(() => BasesCMarco, {nullable: true})
-  @ManyToOne(() => BasesCMarco, (basesCMarco) => basesCMarco.contratos)
-  @JoinColumn([{ name: "IdBaseCMarco", referencedColumnName: "idBaseCMarco" }])
-  baseCMarco: BasesCMarco;
+  @Field(() => ContratoMarco, {nullable: true})
+  @ManyToOne(() => ContratoMarco, (contratoMarco) => contratoMarco.contratos)
+  @JoinColumn([{ name: "IdCMarco", referencedColumnName: "idCMarco" }])
+  contratoMarco: ContratoMarco;
 
   @Field(() => Monedas, {nullable: true})
   @ManyToOne(() => Monedas, (monedas) => monedas.contratos)

@@ -15,7 +15,6 @@ import { Field, Int, ObjectType } from "@nestjs/graphql";
 import { Proformas } from "./Proformas.entity";
 import { Contratos } from "./Contratos.entity";
 import { Compradores } from "./Compradores.entity";
-import { BasesCMarco } from "./BasesCMarco.entity";
 import { Proveedores } from './../../modelsMercurio/entities/Proveedores.entity';
 import { Paises } from './../../modelsMercurio/entities/Paises.entity';
 
@@ -128,10 +127,6 @@ export class BasesGenerales {
   @Field(() => [Contratos] , {nullable: true})
   @OneToMany(() => Contratos, (contratos) => contratos.basesGenerales)
   contratos: Contratos[];
-
-  @Field(() => [BasesCMarco], { nullable: true })
-  @OneToMany(() => BasesCMarco,(basesCMarco) => basesCMarco.basesGenerales)
-  basesCMarco: BasesCMarco[];
 
   @Field(() => Proveedores , {nullable: true})
   @ManyToOne(() => Proveedores, (proveedores) => proveedores.basesGenerales)

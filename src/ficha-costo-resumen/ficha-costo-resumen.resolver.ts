@@ -4,7 +4,6 @@ import { FichaCostoResumenService } from './ficha-costo-resumen.service';
 import { CreateFichaCostoResumenInput } from './dto/create-ficha-costo-resuman.input';
 import { Monedas } from 'src/models/entities/Monedas.entity';
 import { Incoterm } from 'src/models/entities/Incoterm.entity';
-import { BasesCMarco } from 'src/models/entities/BasesCMarco.entity';
 import { FormasPago } from 'src/models/entities/FormasPago.entity';
 import { Puertos } from 'src/models/entities/Puertos.entity';
 import { Embalajes } from 'src/models/entities/Embalajes.entity';
@@ -13,6 +12,7 @@ import { Paises } from 'src/modelsMercurio/entities/Paises.entity';
 import { CodigosParaLaVenta } from 'src/modelsMercurio/entities/CodigosParaLaVenta.entity';
 import { UseGuards } from '@nestjs/common';
 import { AuthGuard } from 'src/auth.guard';
+import { ContratoMarco } from 'src/models/entities/ContratoMarco.entity';
 
 @Resolver(() => FichaCostoResumen)
 export class FichaCostoResumenResolver {
@@ -48,9 +48,9 @@ export class FichaCostoResumenResolver {
     return this.fichaCostoResumenService.removeSeveral(id);
   }
 
-  @ResolveField(() => BasesCMarco, {nullable: true})
-  baseCMarco(@Parent() fichaCostoResumen: FichaCostoResumen): Promise<BasesCMarco> {
-    return this.fichaCostoResumenService.getBaseCMarco(fichaCostoResumen.idBaseCMarco);
+  @ResolveField(() => ContratoMarco, {nullable: true})
+  baseCMarco(@Parent() fichaCostoResumen: FichaCostoResumen): Promise<ContratoMarco> {
+    return this.fichaCostoResumenService.getCMarco(fichaCostoResumen.idCMarco);
   }
   
   @ResolveField(() => Monedas, {nullable: true})
