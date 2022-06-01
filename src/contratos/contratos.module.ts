@@ -16,12 +16,13 @@ import { CompaniasNavierasModule } from 'src/companias-navieras/companias-navier
 import { LogsModule } from 'src/logs/logs.module';
 import { IncotermModule } from 'src/incoterm/incoterm.module';
 import { ContratoMarcoModule } from 'src/contrato-marco/contrato-marco.module';
+import { ContratoClausulaModule } from 'src/contrato-clausulas/contrato-clausulas.module';
 
 @Module({
   imports: [TypeOrmModule.forFeature(
     [Contratos]
   ),BasesGeneralesModule,ContratoMarcoModule,MonedaModule,FormasEntregaModule,NegociacionResumenModule,FichaCostoResumenModule,EjecutivoModule,
-  PaisesModule,ProveedoresModule,AgenciasAseguradorasModule,CompaniasNavierasModule,LogsModule,IncotermModule],
+  PaisesModule,ProveedoresModule,AgenciasAseguradorasModule,CompaniasNavierasModule,LogsModule,IncotermModule,ContratoClausulaModule],
   providers: [ContratosResolver, ContratosService],
   exports: [ContratosService]
 })

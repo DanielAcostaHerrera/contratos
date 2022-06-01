@@ -1345,6 +1345,7 @@ type Contratos {
   fechaTasa: DateTime
   pFin: Float!
   gastosLogisticos: Float!
+  clausulas: [ContratoClausulas!]
   contratoClausulas: [ContratoClausulas!]
   basesGenerales: BasesGenerales
   contratoMarco: ContratoMarco
@@ -1969,6 +1970,14 @@ input CreateContratoInput {
   fechaTasa: DateTime
   pFin: Float!
   gastosLogisticos: Float!
+  contratoClausulas: [CreateContratoClausulaInput!]
+}
+
+input CreateContratoClausulaInput {
+  idContratoClausulas: Int
+  idContrato: Int!
+  noClausula: Int!
+  contenido: String
 }
 
 input CreateContratoMarcoInput {
@@ -2079,13 +2088,6 @@ input CreateFormasPagoInput {
   idFormaPago: Int
   formaPago: String!
   dias: Int!
-}
-
-input CreateContratoClausulaInput {
-  idContratoClausulas: Int
-  idContrato: Int!
-  noClausula: Int!
-  contenido: String
 }
 
 input CreateNegociacionDetalleInput {

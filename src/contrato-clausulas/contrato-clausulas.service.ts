@@ -1,14 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { ContratosService } from 'src/contratos/contratos.service';
 import { ContratoClausulas } from 'src/models/entities/ContratoClausulas.entity';
-import { Contratos } from 'src/models/entities/Contratos.entity';
 import { Repository } from 'typeorm';
 import { CreateContratoClausulaInput } from './dto/create-contrato-clausulas.input';
 
 @Injectable()
 export class ContratoClausulaService {
-  constructor(@InjectRepository(ContratoClausulas) public readonly contratoClausulasRepository: Repository<ContratoClausulas>,private contratosService: ContratosService) {}
+  constructor(@InjectRepository(ContratoClausulas) public readonly contratoClausulasRepository: Repository<ContratoClausulas>) {}
 
 
   async save(createContratoDesgloseInput: CreateContratoClausulaInput) : Promise<ContratoClausulas> {
@@ -16,11 +14,11 @@ export class ContratoClausulaService {
   }
 
   async findAll(): Promise<ContratoClausulas[]> {
-    return await this.contratoClausulasRepository.find({relations:['suplementoChanges','suplementoClausulas']});
+    return await this.contratoClausulasRepository.find({relations:['suplementoChanges','suplementoClausulas','contratos']});
   }
 
   async findOne(id: number) : Promise<ContratoClausulas> {
-    return await this.contratoClausulasRepository.findOne(id,{relations:['suplementoChanges','suplementoClausulas']});
+    return await this.contratoClausulasRepository.findOne(id,{relations:['suplementoChanges','suplementoClausulas','contratos']});
   }
 
   async remove(id: number) : Promise<any> {
@@ -33,8 +31,9 @@ export class ContratoClausulaService {
     return await this.contratoClausulasRepository.remove(contratoClausulas);
   }
 
-  async getContrato (contratoId: number) : Promise<Contratos>{
-    return this.contratosService.findOne(contratoId);
+  async removeSeveralByContratoId(idContrato: number) : Promise<any> {
+    const contratosClausulas = await this.contratoClausulasRepository.find({where: {idContrato}});
+    return await this.contratoClausulasRepository.remove(contratosClausulas);
   }
 }
 

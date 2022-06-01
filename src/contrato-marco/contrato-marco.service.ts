@@ -12,11 +12,37 @@ export class ContratoMarcoService {
   private proveedoresService: ProveedoresService) {}
 
   async save(createContratoMarcoInput: CreateContratoMarcoInput) : Promise<ContratoMarco> {
-    return await this.contratoMarcoRepository.save(createContratoMarcoInput);
+    var today = new Date();
+    var result: ContratoMarco;
+
+    if(createContratoMarcoInput.idCMarco){
+      createContratoMarcoInput.actualizado = new Date();
+      result = await this.contratoMarcoRepository.save(createContratoMarcoInput);
+    }
+
+    if(!createContratoMarcoInput.idCMarco){
+      var contratosAnteriores = await this.findAll();
+      var ultimaBase = contratosAnteriores[0];
+     
+      if(ultimaBase.fecha.getFullYear() === today.getFullYear() && ultimaBase.idProveedor === createContratoMarcoInput.idProveedor){
+        createContratoMarcoInput.consecutivo = ultimaBase.consecutivo+1;    
+      }
+      else{
+        createContratoMarcoInput.consecutivo = 1;
+      }
+
+      createContratoMarcoInput.creado = new Date();
+      createContratoMarcoInput.actualizado = new Date();
+      result = await this.contratoMarcoRepository.save(createContratoMarcoInput);
+    }
+
+    return result;
   }
 
   async findAll(): Promise<ContratoMarco[]> {
-    return await this.contratoMarcoRepository.find({ relations: ['contratos','FichaCostoResumen']});
+    return await this.contratoMarcoRepository.find({order: {
+      fecha : "DESC"
+    }, relations: ['contratos','FichaCostoResumen']});
   }
 
   async findOne(id: number) : Promise<ContratoMarco> {

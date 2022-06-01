@@ -30,6 +30,8 @@ import { Incoterm } from 'src/models/entities/Incoterm.entity';
 import { Usuarios } from 'src/models/entities/Usuarios.entity';
 import { ContratoMarcoService } from 'src/contrato-marco/contrato-marco.service';
 import { ContratoMarco } from 'src/models/entities/ContratoMarco.entity';
+import { ContratoClausulaService } from 'src/contrato-clausulas/contrato-clausulas.service';
+import { CreateContratoClausulaInput } from 'src/contrato-clausulas/dto/create-contrato-clausulas.input';
 
 @Injectable()
 export class ContratosService {
@@ -38,14 +40,51 @@ export class ContratosService {
   private formasEntregaService: FormasEntregaService,private negociacionResumenService: NegociacionResumenService,
   private fichaCostoResumenService: FichaCostoResumenService,private ejecutivoService: EjecutivoService,
   private paisesService: PaisesService,private proveedoresService: ProveedoresService,private logsService: LogsService,
-  private agenciasAseguradorasService: AgenciasAseguradorasService, private incotermService: IncotermService) {}
+  private agenciasAseguradorasService: AgenciasAseguradorasService, private incotermService: IncotermService,
+  private contratoClausulaService: ContratoClausulaService) {}
 
 
   async save(usuarioToken: Usuarios,createContratoInput: CreateContratoInput) : Promise<Contratos> {
+    return new Promise<Contratos>(async (resolve, reject) => {
     var esNuevo = true;
+    var result: Contratos;
     if(createContratoInput.idContrato){
       esNuevo = false;
       var contratoViejo = await this.findOne(createContratoInput.idContrato);
+
+      await this.contratoClausulaService.removeSeveralByContratoId(createContratoInput.idContrato);
+      createContratoInput.modificado = true;
+
+      if(createContratoInput.idCMarco){
+        var contratoMarco = await this.contratoMarcoService.findOne(createContratoInput.idCMarco);
+        contratoMarco.contratado += createContratoInput.financiamiento*createContratoInput.tasaMoneda;
+        if(createContratoInput.gastosLogisticos){
+          contratoMarco.contratado += createContratoInput.gastosLogisticos;
+        }
+        if(contratoMarco.contratado > contratoMarco.monto){
+          reject("El monto que intenta insertar excede el saldo disponible");
+        }
+        else{
+          this.contratoMarcoService.save(contratoMarco);
+        }
+      }
+
+      result = await this.contratoRepository.save(createContratoInput);
+
+      if(result){
+        let clausulas = createContratoInput.contratoClausulas;
+        for (let index = 0; index < clausulas.length; index++) {
+          const clausula = clausulas[index];
+          
+          var contratoClausula = new CreateContratoClausulaInput();
+          contratoClausula.idContrato = clausula.idContrato;
+          contratoClausula.contenido = clausula.contenido;
+          contratoClausula.noClausula = clausula.noClausula;
+          contratoClausula.idContratoClausulas = clausula.idContratoClausulas;
+          
+          await this.contratoClausulaService.save(contratoClausula)        
+        }
+      }
     }
 
     if(!createContratoInput.idContrato){
@@ -53,9 +92,44 @@ export class ContratosService {
       var baseGeneral = await this.basesGeneralesService.findOne(createContratoInput.idBasesGenerales);
       var cantContratos = baseGeneral.contratos.length;
       createContratoInput.consecutivo = cantContratos+1;
-    }
 
-    var result = await this.contratoRepository.save(createContratoInput);
+      createContratoInput.cancelado = false;
+      createContratoInput.modificado = false;
+      createContratoInput.terminado = false;
+      createContratoInput.fechaElaboracion = new Date();
+
+      if(createContratoInput.idCMarco){
+        var contratoMarco = await this.contratoMarcoService.findOne(createContratoInput.idCMarco);
+        contratoMarco.contratado += createContratoInput.financiamiento*createContratoInput.tasaMoneda;
+        if(createContratoInput.gastosLogisticos){
+          contratoMarco.contratado += createContratoInput.gastosLogisticos;
+        }
+        if(contratoMarco.contratado > contratoMarco.monto){
+          reject("El monto que intenta insertar excede el saldo disponible");
+        }
+        else{
+          this.contratoMarcoService.save(contratoMarco);
+        }
+      }
+
+      result = await this.contratoRepository.save(createContratoInput);
+
+      if(result){
+        let clausulas = createContratoInput.contratoClausulas;
+        for (let index = 0; index < clausulas.length; index++) {
+          const clausula = clausulas[index];
+          
+          var contratoClausula = new CreateContratoClausulaInput();
+          contratoClausula.idContrato = clausula.idContrato;
+          contratoClausula.contenido = clausula.contenido;
+          contratoClausula.noClausula = clausula.noClausula;
+          contratoClausula.idContratoClausulas = clausula.idContratoClausulas;
+          
+          await this.contratoClausulaService.save(contratoClausula)        
+        }
+      }
+    }
+ 
     if(result && esNuevo){
       await this.logsService.save(usuarioToken.ejecutivo.nombre, "Insertado un nuevo contrato con número consecutivo "+result.consecutivo+"");
     }
@@ -171,7 +245,8 @@ export class ContratosService {
         }
         await this.logsService.save(usuarioToken.ejecutivo.nombre, texto);
     }
-    return result;
+     resolve(result);
+  });
   }
 
   async findAll(): Promise<Contratos[]> {

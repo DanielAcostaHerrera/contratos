@@ -1,4 +1,5 @@
 import { InputType, Int, Field, Float } from '@nestjs/graphql';
+import { CreateContratoClausulaInput } from 'src/contrato-clausulas/dto/create-contrato-clausulas.input';
 
 @InputType()
 export class CreateContratoInput {
@@ -121,4 +122,7 @@ export class CreateContratoInput {
 
   @Field(() => Float)
   gastosLogisticos: number;
+
+  @Field(()=> [CreateContratoClausulaInput],{ nullable: true})
+  contratoClausulas?: CreateContratoClausulaInput[];
 }

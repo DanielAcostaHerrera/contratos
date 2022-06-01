@@ -45,20 +45,23 @@ export class BasesGeneralesService {
       createBasesGeneralesInput.actualizado = new Date();
       result = await this.basesGeneralesRepository.save(createBasesGeneralesInput);
 
-      let clausulas = createBasesGeneralesInput.basesGeneralesClausulas;
-        for (let index = 0; index < clausulas.length; index++) {
-          const proformaClausula = clausulas[index];
-          
-          var basesGeneralesClausula = new CreateBasesGeneralesClausulaInput();
-          basesGeneralesClausula.idBasesGeneralesClausulas = proformaClausula.idBasesGeneralesClausulas;
-          basesGeneralesClausula.clausula = proformaClausula.clausula; 
-          basesGeneralesClausula.excepcional = proformaClausula.excepcional;
-          basesGeneralesClausula.idBasesGenerales = result.idBasesGenerales;
-          basesGeneralesClausula.idProformaClausula = proformaClausula.idProformaClausula;
-          basesGeneralesClausula.idTipoClausula = proformaClausula.idTipoClausula;
-          basesGeneralesClausula.orden = proformaClausula.orden;
-          basesGeneralesClausula.modificado = new Date();
-          await this.basesGeneralesClausulasService.save(basesGeneralesClausula)        
+      
+        if(result){
+          let clausulas = createBasesGeneralesInput.basesGeneralesClausulas;
+          for (let index = 0; index < clausulas.length; index++) {
+            const proformaClausula = clausulas[index];
+            
+            var basesGeneralesClausula = new CreateBasesGeneralesClausulaInput();
+            basesGeneralesClausula.idBasesGeneralesClausulas = proformaClausula.idBasesGeneralesClausulas;
+            basesGeneralesClausula.clausula = proformaClausula.clausula; 
+            basesGeneralesClausula.excepcional = proformaClausula.excepcional;
+            basesGeneralesClausula.idBasesGenerales = result.idBasesGenerales;
+            basesGeneralesClausula.idProformaClausula = proformaClausula.idProformaClausula;
+            basesGeneralesClausula.idTipoClausula = proformaClausula.idTipoClausula;
+            basesGeneralesClausula.orden = proformaClausula.orden;
+            basesGeneralesClausula.modificado = new Date();
+            await this.basesGeneralesClausulasService.save(basesGeneralesClausula)        
+          }
         }
     }
 

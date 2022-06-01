@@ -2,7 +2,6 @@ import { UseGuards } from '@nestjs/common';
 import { Resolver, Query, Mutation, Args, Int, ResolveField, Parent } from '@nestjs/graphql';
 import { AuthGuard } from 'src/auth.guard';
 import { ContratoClausulas } from 'src/models/entities/ContratoClausulas.entity';
-import { Contratos } from 'src/models/entities/Contratos.entity';
 import { ContratoClausulaService } from './contrato-clausulas.service';
 import { CreateContratoClausulaInput } from './dto/create-contrato-clausulas.input';
 
@@ -38,10 +37,5 @@ export class ContratoClausulasResolver {
   @UseGuards(new AuthGuard())
   removeSeveralContratoClausulas(@Args('id', { type: () => [Int] }) id: number[]) {
     return this.contratoClausulaService.removeSeveral(id);
-  }
-
-  @ResolveField(() => Contratos, {nullable: true})
-  contratos(@Parent() contratoClausulas: ContratoClausulas): Promise<Contratos> {
-    return this.contratoClausulaService.getContrato(contratoClausulas.idContrato);
   }
 }
