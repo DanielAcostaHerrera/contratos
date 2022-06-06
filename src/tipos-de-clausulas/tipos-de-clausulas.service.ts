@@ -14,11 +14,11 @@ export class TiposDeClausulasService {
   }
 
   async findAll(): Promise<TiposDeClausulas[]> {
-    return await this.tiposDeClausulaRepository.find({ relations: ['basesCMarcoClausulas','basesGeneralesClausulas','proformaClausulas']});
+    return await this.tiposDeClausulaRepository.find({ relations: ['basesGeneralesClausulas','proformaClausulas']});
   }
 
   async findOne(id: number) : Promise<TiposDeClausulas> {
-    return await this.tiposDeClausulaRepository.findOne(id,{ relations: ['basesCMarcoClausulas','basesGeneralesClausulas','proformaClausulas']});
+    return await this.tiposDeClausulaRepository.findOne(id,{ relations: ['basesGeneralesClausulas','proformaClausulas']});
   }
 
   async remove(id: number) : Promise<any> {
