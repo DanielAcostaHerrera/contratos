@@ -1845,6 +1845,7 @@ input CreateBasesGeneralesClausulaInput {
   clausula: String!
   excepcional: Boolean!
   modificado: DateTime
+  numero: Int
 }
 
 input CreateClasificacioneInput {

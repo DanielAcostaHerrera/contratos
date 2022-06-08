@@ -25,4 +25,7 @@ export class CreateBasesGeneralesClausulaInput {
 
   @Field({ nullable: true})
   modificado?: Date;
+
+  @Field(() => Int,{ nullable: true})
+  numero?: number;
 }
