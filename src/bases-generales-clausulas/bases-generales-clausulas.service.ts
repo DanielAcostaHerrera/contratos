@@ -19,7 +19,9 @@ export class BasesGeneralesClausulasService {
   }
 
   async findAll(): Promise<BasesGeneralesClausulas[]> { 
-    return await this.basesGeneralesClausulasRepository.find({relations : ['basesGenerales']});
+    return await this.basesGeneralesClausulasRepository.find({order: {
+      orden : "ASC"
+    }, relations: ['basesGenerales']});
   }
 
   async findOne(id: number) : Promise<BasesGeneralesClausulas> {

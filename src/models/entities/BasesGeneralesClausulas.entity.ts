@@ -46,6 +46,9 @@ export class BasesGeneralesClausulas {
   @Field()
   modificado: Date;
 
+  @Field(() => Int)
+  numero: number;
+
   @Field(() => TiposDeClausulas , {nullable: true})
   @ManyToOne(() => TiposDeClausulas,(tiposDeClausulas) => tiposDeClausulas.basesGeneralesClausulas)
   @JoinColumn([{ name: "IdTipoClausula", referencedColumnName: "idTipoClausula" }])

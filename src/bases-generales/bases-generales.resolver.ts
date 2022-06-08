@@ -69,11 +69,6 @@ export class BasesGeneralesResolver {
     return this.basesGeneralesService.removeSeveral(usuario,id);
   }
 
-  @UseGuards(new AuthGuard())
-  getFileBaseGeneral(){
-    return this.basesGeneralesService.getFile();
-  }
-
   @ResolveField(() => TipoContrato, {nullable: true})
   tipoDeContrato(@Parent() basesGenerales: BasesGenerales): Promise<TipoContrato> {
     return this.basesGeneralesService.getTipoContrato(basesGenerales.idTipoContrato);

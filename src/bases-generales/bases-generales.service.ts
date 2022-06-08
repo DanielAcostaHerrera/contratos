@@ -153,13 +153,27 @@ export class BasesGeneralesService {
   }
 
   async findAll(): Promise<BasesGenerales[]> { 
-    return await this.basesGeneralesRepository.find({order: {
-        fecha : "DESC"
-      }, relations: ['basesGeneralesClausulas','contratos']});
+    let bases = await this.basesGeneralesRepository.find({order: {
+        fecha : "DESC",
+      }, relations: ['basesGeneralesClausulas','contratos'],});
+      bases.forEach(element => {
+        element.basesGeneralesClausulas.sort((a, b) => a.orden - b.orden);
+        let clausulas = element.basesGeneralesClausulas;
+        for (let index = 0; index < clausulas.length; index++) {
+          clausulas[index].numero = index+1; 
+        }
+      });
+      return bases;
   }
 
   async findOne(id: number) : Promise<BasesGenerales> {
-    return await this.basesGeneralesRepository.findOne(id, { relations: ['basesGeneralesClausulas','contratos']});
+    let bases = await this.basesGeneralesRepository.findOne(id, { relations: ['basesGeneralesClausulas','contratos']});
+    bases.basesGeneralesClausulas.sort((a, b) => a.orden - b.orden);
+    let clausulas = bases.basesGeneralesClausulas;
+    for (let index = 0; index < clausulas.length; index++) {
+      clausulas[index].numero = index+1; 
+    }
+    return bases;
   }
 
   async remove(usuarioToken: Usuarios,id: number) : Promise<any> {
@@ -187,11 +201,6 @@ export class BasesGeneralesService {
     }
     
     return result;
-  }
-
-  async getFile(): Promise<StreamableFile> {
-    const file = createReadStream(join(process.cwd(), 'package.json'));
-    return new StreamableFile(file)
   }
 
   async getClasificacion (clasificacionId: number) : Promise<Clasificaciones>{

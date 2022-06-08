@@ -76,6 +76,7 @@ type BasesGeneralesClausulas {
   clausula: String!
   excepcional: Boolean!
   modificado: DateTime!
+  numero: Int!
   tiposDeClausulas: TiposDeClausulas
   basesGenerales: BasesGenerales
   proformaClausula: ProformaClausulas
