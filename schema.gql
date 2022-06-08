@@ -87,6 +87,35 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
+type Configuracion {
+  idConfig: Int!
+  lugarFirma: String!
+  idEntidad: Int!
+  vigenciaContrato: Int!
+  pathContratosPdf: String
+  alertaVencContratos: Int!
+  entidad: DatosEntidad
+}
+
+type DatosEntidad {
+  codigo: Int!
+  cuentaUsd: String
+  codAgenciaUsd: String
+  agenciaUsd: String
+  faxAgenciaUsd: String
+  cuentaMn: String
+  codAgenciaMn: String
+  agenciaMn: String
+  faxAgenciaMn: String
+  codigoEnt: String
+  codigoMincex: String
+  licCComercio: String
+  nombre: String
+  compaIa: String
+  configuracion: [Configuracion!]
+  compradores: [Compradores!]
+}
+
 type FichaCompraAtributos {
   idFichaCompraAtributos: Int!
   idFichaCompraDetalle: Int!
@@ -903,6 +932,7 @@ type SolicitudContratacion {
 
 type Compradores {
   idComprador: Int!
+  idEntidad: Float
   nombre: String
   representante: String
   domicilio: String
@@ -911,6 +941,7 @@ type Compradores {
   activo: Boolean
   basesGenerales: [BasesGenerales!]
   solicitudContratacion: [SolicitudContratacion!]
+  entidad: DatosEntidad
 }
 
 type BasesGenerales {
@@ -1397,34 +1428,6 @@ type Logs {
   usuario: String!
 }
 
-type DatosEntidad {
-  codigo: Int!
-  cuentaUsd: String
-  codAgenciaUsd: String
-  agenciaUsd: String
-  faxAgenciaUsd: String
-  cuentaMn: String
-  codAgenciaMn: String
-  agenciaMn: String
-  faxAgenciaMn: String
-  codigoEnt: String
-  codigoMincex: String
-  licCComercio: String
-  nombre: String
-  compaIa: String
-  configuracion: [Configuracion!]
-}
-
-type Configuracion {
-  idConfig: Int!
-  lugarFirma: String!
-  idEntidad: Int!
-  vigenciaContrato: Int!
-  pathContratosPdf: String
-  alertaVencContratos: Int!
-  entidad: DatosEntidad
-}
-
 type CambiosSuplementos {
   idCambio: Int!
   descripciN: String!
@@ -1455,6 +1458,8 @@ type Query {
   findOneProforma(id: Int!): Proformas!
   findAllCompradores: [Compradores!]!
   findOneCompradores(id: Int!): Compradores!
+  findAllDatosEntidad: [DatosEntidad!]!
+  findOneDatosEntidad(id: Int!): DatosEntidad!
   findAllPaises: [Paises!]!
   findOnePaises(id: Int!): Paises!
   findAllProveedores: [Proveedores!]!
@@ -1513,8 +1518,6 @@ type Query {
   findOneEtapasContratacion(id: Int!): EtapasContratacion!
   findAllTiemposTravesia: [TiemposTravesia!]!
   findOneTiemposTravesia(id: Int!): TiemposTravesia!
-  findAllDatosEntidad: [DatosEntidad!]!
-  findOneDatosEntidad(id: Int!): DatosEntidad!
   findAllFichaCompraAtributos: [FichaCompraAtributos!]!
   findOneFichaCompraAtributos(id: Int!): FichaCompraAtributos!
   findAllFichaCompraDetalle: [FichaCompraDetalle!]!
@@ -1615,6 +1618,9 @@ type Mutation {
   createCompradore(createCompradoreInput: CreateCompradoresInput!): Compradores!
   removeCompradores(id: Int!): Compradores!
   removeSeveralCompradores(id: [Int!]!): [Compradores!]!
+  createDatosEntidad(createDatosEntidadInput: CreateDatosEntidadInput!): DatosEntidad!
+  removeDatosEntidad(id: Int!): DatosEntidad!
+  removeSeveralDatosEntidad(id: [Int!]!): [DatosEntidad!]!
   removeLog(id: Int!): Logs!
   createProformaClausula(createProformaClausulaInput: CreateProformaClausulaInput!): ProformaClausulas!
   removeProformaClausula(id: Int!): ProformaClausulas!
@@ -1689,9 +1695,6 @@ type Mutation {
   createTiemposTravesia(createTiemposTravesiaInput: CreateTiemposTravesiaInput!): TiemposTravesia!
   removeTiemposTravesia(id: Int!): TiemposTravesia!
   removeSeveralTiemposTravesia(id: [Int!]!): [TiemposTravesia!]!
-  createDatosEntidad(createDatosEntidadInput: CreateDatosEntidadInput!): DatosEntidad!
-  removeDatosEntidad(id: Int!): DatosEntidad!
-  removeSeveralDatosEntidad(id: [Int!]!): [DatosEntidad!]!
   createFichaCompraAtributos(createFichaCompraAtributoInput: CreateFichaCompraAtributoInput!): FichaCompraAtributos!
   removeFichaCompraAtributos(id: Int!): FichaCompraAtributos!
   removeSeveralFichaCompraAtributos(id: [Int!]!): [FichaCompraAtributos!]!
@@ -1876,12 +1879,30 @@ input CreateProformaInput {
 
 input CreateCompradoresInput {
   idComprador: Int
+  idEntidad: Float!
   nombre: String
   representante: String
   domicilio: String
   cargo: String
   doble: Boolean
   activo: Boolean
+}
+
+input CreateDatosEntidadInput {
+  codigo: Int!
+  cuentaUsd: String
+  codAgenciaUsd: String
+  agenciaUsd: String
+  faxAgenciaUsd: String
+  cuentaMn: String
+  codAgenciaMn: String
+  agenciaMn: String
+  faxAgenciaMn: String
+  codigoEnt: String
+  codigoMincex: String
+  licCComercio: String
+  nombre: String
+  compaIa: String
 }
 
 input CreateProformaClausulaInput {
@@ -2159,23 +2180,6 @@ input CreateTiemposTravesiaInput {
   idPais: Int!
   idEtapa: Int!
   tiempo: Int!
-}
-
-input CreateDatosEntidadInput {
-  codigo: Int!
-  cuentaUsd: String
-  codAgenciaUsd: String
-  agenciaUsd: String
-  faxAgenciaUsd: String
-  cuentaMn: String
-  codAgenciaMn: String
-  agenciaMn: String
-  faxAgenciaMn: String
-  codigoEnt: String
-  codigoMincex: String
-  licCComercio: String
-  nombre: String
-  compaIa: String
 }
 
 input CreateFichaCompraAtributoInput {

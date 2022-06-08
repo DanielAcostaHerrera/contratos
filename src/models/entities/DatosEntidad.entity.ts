@@ -1,5 +1,6 @@
 import { Field, Int, ObjectType } from "@nestjs/graphql";
-import { Column, Entity, Index, OneToOne } from "typeorm";
+import { Column, Entity, Index, OneToMany, OneToOne } from "typeorm";
+import { Compradores } from "./Compradores.entity";
 import { Configuracion } from "./Configuracion.entity";
 
 @ObjectType()
@@ -65,4 +66,8 @@ export class DatosEntidad {
   @Field(() => [Configuracion], {nullable: true})
   @OneToOne(() => Configuracion,(configuracion) => configuracion.entidad)
   configuracion: Configuracion;
+
+  @Field(() => [Compradores], { nullable: true })
+  @OneToMany(() => Compradores,(compradores) => compradores.entidad)
+  compradores: Compradores[];
 }

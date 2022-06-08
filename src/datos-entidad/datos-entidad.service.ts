@@ -14,11 +14,11 @@ export class DatosEntidadService {
   }
 
   async findAll(): Promise<DatosEntidad[]> {
-    return await this.datosEntidadRepository.find({relations: ['configuracion']});
+    return await this.datosEntidadRepository.find({relations: ['configuracion','compradores']});
   }
 
   async findOne(id: number) : Promise<DatosEntidad> {
-    return await this.datosEntidadRepository.findOne(id,{relations: ['configuracion']});
+    return await this.datosEntidadRepository.findOne(id,{relations: ['configuracion','compradores']});
   }
 
   async remove(id: number) : Promise<any> {

@@ -3,10 +3,13 @@ import {
   Column,
   Entity,
   Index,
+  JoinColumn,
+  ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
 } from "typeorm";
 import { BasesGenerales } from "./BasesGenerales.entity";
+import { DatosEntidad } from "./DatosEntidad.entity";
 import { SolicitudContratacion } from "./SolicitudContratacion.entity";
 
 @ObjectType()
@@ -16,6 +19,10 @@ export class Compradores {
   @PrimaryGeneratedColumn({ type: "int", name: "IdComprador" })
   @Field(() => Int)
   idComprador: number;
+
+  @Column("int", { name: "IdEntidad"})
+  @Field({nullable: true})
+  idEntidad: number;
 
   @Column("nvarchar", { name: "Nombre", nullable: true, length: 100 })
   @Field({nullable: true})
@@ -48,4 +55,9 @@ export class Compradores {
   @Field(() => [SolicitudContratacion], { nullable: true })
   @OneToMany(() => SolicitudContratacion,(solicitudContratacion) => solicitudContratacion.comprador)
   solicitudContratacion: SolicitudContratacion[];
+
+  @Field(() => DatosEntidad, {nullable: true})
+  @ManyToOne(() => DatosEntidad, (datosEntidad) => datosEntidad.compradores)
+  @JoinColumn([{ name: "IdEntidad", referencedColumnName: "codigo" }])
+  entidad: DatosEntidad;
 }
