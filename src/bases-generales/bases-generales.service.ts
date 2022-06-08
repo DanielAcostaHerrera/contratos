@@ -1,6 +1,6 @@
 import { BasesGeneralesClausulasService } from './../bases-generales-clausulas/bases-generales-clausulas.service';
 import { PaisesService } from './../paises/paises.service';
-import { Injectable } from '@nestjs/common';
+import { Injectable, StreamableFile } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ClasificacionesService } from 'src/clasificaciones/clasificaciones.service';
 import { CompradoresService } from 'src/compradores/compradores.service';
@@ -24,6 +24,8 @@ import { BasesGeneralesClausulas } from 'src/models/entities/BasesGeneralesClaus
 import { ProformaClausulasService } from 'src/proforma-clausulas/proforma-clausulas.service';
 import { CreateBasesGeneralesClausulaInput } from 'src/bases-generales-clausulas/dto/create-bases-generales-clausula.input';
 import { Usuarios } from 'src/models/entities/Usuarios.entity';
+import { createReadStream } from 'fs';
+import { join } from 'path';
 
 @Injectable()
 export class BasesGeneralesService {
@@ -185,6 +187,11 @@ export class BasesGeneralesService {
     }
     
     return result;
+  }
+
+  async getFile(): Promise<StreamableFile> {
+    const file = createReadStream(join(process.cwd(), 'package.json'));
+    return new StreamableFile(file)
   }
 
   async getClasificacion (clasificacionId: number) : Promise<Clasificaciones>{

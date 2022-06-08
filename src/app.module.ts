@@ -79,6 +79,7 @@ import { CodigosParaLaVentaModule } from './codigos-para-la-venta/codigos-para-l
 import { LogsModule } from './logs/logs.module';
 import { PuertoEmbarqueModule } from './puerto-embarque/puerto-embarque.module';
 import { ContratoMarcoModule } from './contrato-marco/contrato-marco.module';
+import { StreamingController } from './streaming/streaming.controller';
 
 
 @Module({
@@ -198,7 +199,7 @@ import { ContratoMarcoModule } from './contrato-marco/contrato-marco.module';
     }),
     ContratoMarcoModule,
   ],
-  controllers: [AppController],
+  controllers: [AppController, StreamingController],
   providers: [AppService],
 })
 export class AppModule {}

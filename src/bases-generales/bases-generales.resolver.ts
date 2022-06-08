@@ -12,7 +12,7 @@ import { Proveedores } from 'src/modelsMercurio/entities/Proveedores.entity';
 import { BasesGeneralesClausulas } from 'src/models/entities/BasesGeneralesClausulas.entity';
 import { AuthGuard, DEFAULT_GRAPHQL_CONTEXT } from 'src/auth.guard';
 import { Usuarios } from 'src/models/entities/Usuarios.entity';
-import { UseGuards } from '@nestjs/common';
+import { StreamableFile, UseGuards } from '@nestjs/common';
 
 @Resolver(() => BasesGenerales)
 export class BasesGeneralesResolver {
@@ -67,6 +67,11 @@ export class BasesGeneralesResolver {
     @Context(DEFAULT_GRAPHQL_CONTEXT) usuario: Usuarios,
     @Args('id', { type: () => [Int] }) id: number[]) {
     return this.basesGeneralesService.removeSeveral(usuario,id);
+  }
+
+  @UseGuards(new AuthGuard())
+  getFileBaseGeneral(){
+    return this.basesGeneralesService.getFile();
   }
 
   @ResolveField(() => TipoContrato, {nullable: true})
