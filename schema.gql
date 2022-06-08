@@ -1433,6 +1433,69 @@ type CambiosSuplementos {
   descripciN: String!
 }
 
+type BasesCMarcoClausulas {
+  idBasesCMarcoClausulas: Int!
+  idBaseCMarco: Int!
+  idProformaClausula: Int!
+  idTipoClausula: Int!
+  orden: Int!
+  clausula: String!
+  modificado: DateTime!
+  proformaClausulas: ProformaClausulas
+  basesCMarco: BasesCMarco
+  tipoDeClausula: TiposDeClausulas
+}
+
+type BasesCMarcoEspecificos {
+  idBaseCMarcoEspecificos: Int!
+  idBaseCMarco: Int!
+  idEspecifico: Int!
+  idPadre: Int!
+  pDisponible: Float
+  pReservado: Float
+  pEjecutado: Float
+  pPendiente: Float
+  baseCMarco: BasesCMarco
+  especifico: Especificos
+}
+
+type BasesCMarco {
+  idBaseCMarco: Int!
+  idBasesGenerales: Int!
+  idProveedor: Int!
+  consecutivo: Int!
+  directivaTrd: String
+  directivaGae: String
+  fecha: DateTime!
+  idProforma: Int!
+  periodoInic: DateTime!
+  periodoFin: DateTime!
+  importeTotal: Float!
+  importeFinanciamiento: Float!
+  importeConFinanciamiento: Float!
+  idPuerto: Int!
+  aprobado: Boolean!
+  cancelado: Boolean!
+  activo: Boolean!
+  actualizado: DateTime!
+  importeTotalLetras: String
+  importeFinanciamientoLetras: String
+  importeTotalFinanciamientoLetras: String
+  periodoInicV: DateTime
+  periodoFinV: DateTime
+  idComprador: Int
+  noCMarco: String
+  basesCMarcoClausulas: [BasesCMarcoClausulas!]
+  basesCMarcoEspecificos: [BasesCMarcoEspecificos!]
+  basesGenerales: BasesGenerales
+  puerto: Puertos
+  proveedor: Proveedores
+  proforma: Proformas
+  compradores: Compradores
+  fichaCostoResumen: [FichaCostoResumen!]
+  contratos: [Contratos!]
+}
+
 type Query {
   findAllMoneda: [Monedas!]!
   findOneMoneda(id: Int!): Monedas!
