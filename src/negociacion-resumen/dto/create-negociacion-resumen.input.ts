@@ -35,9 +35,6 @@ export class CreateNegociacionResumenInput {
   @Field({nullable: true})
   nota: string | null;
 
-  @Field(() => Int,{nullable: true})
-  idProveedor: number | null;
-
   @Field(() => Float,{nullable: true})
   importeTrd: number | null;
 

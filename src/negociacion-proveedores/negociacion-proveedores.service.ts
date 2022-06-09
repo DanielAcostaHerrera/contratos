@@ -2,14 +2,16 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { NegociacionProveedores } from 'src/models/entities/NegociacionProveedores.entity';
 import { NegociacionResumen } from 'src/models/entities/NegociacionResumen.entity';
+import { Proveedores } from 'src/modelsMercurio/entities/Proveedores.entity';
 import { NegociacionResumenService } from 'src/negociacion-resumen/negociacion-resumen.service';
+import { ProveedoresService } from 'src/proveedores/proveedores.service';
 import { Repository } from 'typeorm';
 import { CreateNegociacionProveedoresInput } from './dto/create-negociacion-proveedores.input';
 
 @Injectable()
 export class NegociacionProveedoresService {
   constructor(@InjectRepository(NegociacionProveedores) public readonly negociacionProveedoresRepository: Repository<NegociacionProveedores>,
-  private negociacionResumenService: NegociacionResumenService) {}
+  private negociacionResumenService: NegociacionResumenService, private proveedoresService: ProveedoresService,) {}
 
 
   async save(createNegociacionProveedoresInput: CreateNegociacionProveedoresInput) : Promise<NegociacionProveedores> {
@@ -36,5 +38,9 @@ export class NegociacionProveedoresService {
 
   async getNegociacionResumen (negociacionResumenId: number) : Promise<NegociacionResumen>{
     return this.negociacionResumenService.findOne(negociacionResumenId);
+  }
+
+  async getProveedor (Id: number) : Promise<Proveedores>{
+    return this.proveedoresService.findOne(Id);
   }
 }

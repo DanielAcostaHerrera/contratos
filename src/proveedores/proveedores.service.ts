@@ -9,11 +9,11 @@ export class ProveedoresService {
 
   async findAll(): Promise<Proveedores[]> {
     return await this.proveedoresRepository.find({ relations: ['basesGenerales','contratos','solicitudOfertasProveedores','pliegoConcurrenciaResumen',
-  'negociacionResumen','fichaCompraResumen','fichaCostoResumen']});
+  'negociacionProveedores','fichaCompraResumen','fichaCostoResumen']});
   }
 
   async findOne(id: number) : Promise<Proveedores> {
     return await this.proveedoresRepository.findOne(id,{ relations: ['basesGenerales','contratos','solicitudOfertasProveedores','pliegoConcurrenciaResumen',
-  'negociacionResumen','fichaCompraResumen','fichaCostoResumen']});
+  'negociacionProveedores','fichaCompraResumen','fichaCostoResumen']});
   }
 }

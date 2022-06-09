@@ -4,11 +4,12 @@ import { NegociacionProveedoresResolver } from './negociacion-proveedores.resolv
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { NegociacionProveedores } from 'src/models/entities/NegociacionProveedores.entity';
 import { NegociacionResumenModule } from 'src/negociacion-resumen/negociacion-resumen.module';
+import { ProveedoresModule } from 'src/proveedores/proveedores.module';
 
 @Module({
   imports: [TypeOrmModule.forFeature([
     NegociacionProveedores
-  ]),NegociacionResumenModule],
+  ]),NegociacionResumenModule,ProveedoresModule],
   providers: [NegociacionProveedoresResolver, NegociacionProveedoresService],
   exports: [NegociacionProveedoresService]
 })

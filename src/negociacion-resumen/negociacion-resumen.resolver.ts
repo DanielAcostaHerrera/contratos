@@ -5,7 +5,6 @@ import { NegociacionResumen } from 'src/models/entities/NegociacionResumen.entit
 import { GruposDeCompras } from 'src/models/entities/GruposDeCompras.entity';
 import { Monedas } from 'src/models/entities/Monedas.entity';
 import { TiposDeCompras } from 'src/models/entities/TiposDeCompras.entity';
-import { Proveedores } from 'src/modelsMercurio/entities/Proveedores.entity';
 import { AuthGuard, DEFAULT_GRAPHQL_CONTEXT } from 'src/auth.guard';
 import { Usuarios } from 'src/models/entities/Usuarios.entity';
 import { UseGuards } from '@nestjs/common';
@@ -63,10 +62,5 @@ export class NegociacionResumenResolver {
   @ResolveField(() => TiposDeCompras, {nullable: true})
   tiposDeCompras(@Parent() negociacionResumen: NegociacionResumen): Promise<TiposDeCompras> {
     return this.negociacionResumenService.getTipoCompra(negociacionResumen.idTipoCompras);
-  }
-
-  @ResolveField(() => Proveedores, {nullable: true})
-  proveedor(@Parent() negociacionResumen: NegociacionResumen): Promise<Proveedores> {
-    return this.negociacionResumenService.getProveedor(negociacionResumen.idProveedor);
   }
 }

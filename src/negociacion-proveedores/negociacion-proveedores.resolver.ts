@@ -5,6 +5,7 @@ import { NegociacionProveedores } from 'src/models/entities/NegociacionProveedor
 import { NegociacionResumen } from 'src/models/entities/NegociacionResumen.entity';
 import { UseGuards } from '@nestjs/common';
 import { AuthGuard } from 'src/auth.guard';
+import { Proveedores } from 'src/modelsMercurio/entities/Proveedores.entity';
 
 @Resolver(() => NegociacionProveedores)
 export class NegociacionProveedoresResolver {
@@ -43,5 +44,10 @@ export class NegociacionProveedoresResolver {
   @ResolveField(() => NegociacionResumen, {nullable: true})
   negociacionResumen(@Parent() negociacionProveedores: NegociacionProveedores): Promise<NegociacionResumen> {
     return this.negociacionProveedoresService.getNegociacionResumen(negociacionProveedores.idNegociacion);
+  }
+
+  @ResolveField(() => Proveedores, {nullable: true})
+  proveedor(@Parent() negociacionProveedores: NegociacionProveedores): Promise<Proveedores> {
+    return this.negociacionProveedoresService.getProveedor(negociacionProveedores.idProveedor);
   }
 }

@@ -9,17 +9,14 @@ import { GruposDeComprasService } from 'src/grupos-de-compras/grupos-de-compras.
 import { TiposDeCompras } from 'src/models/entities/TiposDeCompras.entity';
 import { Monedas } from 'src/models/entities/Monedas.entity';
 import { GruposDeCompras } from 'src/models/entities/GruposDeCompras.entity';
-import { ProveedoresService } from 'src/proveedores/proveedores.service';
-import { Proveedores } from 'src/modelsMercurio/entities/Proveedores.entity';
 import { LogsService } from 'src/logs/logs.service';
-import { MyLogger } from 'src/MyLogger';
 import { Usuarios } from 'src/models/entities/Usuarios.entity';
 
 @Injectable()
 export class NegociacionResumenService {
   constructor(@InjectRepository(NegociacionResumen) public readonly negociacionResumenRepository: Repository<NegociacionResumen>,
   private tiposDeComprasService: TiposDeComprasService,private monedaService: MonedaService,private gruposDeComprasService: GruposDeComprasService,
-  private proveedoresService: ProveedoresService,private logsService: LogsService) {}
+  private logsService: LogsService) {}
 
 
   async save(usuarioToken: Usuarios,createNegociacionResumenInput: CreateNegociacionResumenInput) : Promise<NegociacionResumen> {
@@ -38,7 +35,7 @@ export class NegociacionResumenService {
       var negociacionesAnteriores = await this.findAll();
       var ultimanegociacion = negociacionesAnteriores[0];
 
-      if(ultimanegociacion.fecha.getFullYear() === today.getFullYear() && createNegociacionResumenInput.idProveedor == ultimanegociacion.idProveedor){
+      if(ultimanegociacion.fecha.getFullYear() === today.getFullYear()){
         createNegociacionResumenInput.consecutivo = ultimanegociacion.consecutivo+1;    
       }
       else{
@@ -80,9 +77,6 @@ export class NegociacionResumenService {
         }
         if(negociacionVieja.nota != result.nota){
           texto += ", cambiada la nota";
-        }
-        if(negociacionVieja.idProveedor != result.idProveedor){
-          texto += ", cambiado el proveedor";
         }
         if(negociacionVieja.importeTrd != result.importeTrd){
           texto += ", cambiado el importe TRD";
@@ -159,9 +153,5 @@ export class NegociacionResumenService {
 
   async getGrupo (grupoId: number) : Promise<GruposDeCompras>{
     return this.gruposDeComprasService.findOne(grupoId);
-  }
-
-  async getProveedor (Id: number) : Promise<Proveedores>{
-    return this.proveedoresService.findOne(Id);
   }
 }

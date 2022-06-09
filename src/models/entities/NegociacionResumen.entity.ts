@@ -70,10 +70,6 @@ export class NegociacionResumen {
   @Field({nullable: true})
   nota: string | null;
 
-  @Column("int", { name: "Proveedor", nullable: true })
-  @Field(() => Int,{nullable: true})
-  idProveedor: number | null;
-
   @Column("decimal", {
     name: "ImporteTRD",
     nullable: true,
@@ -151,9 +147,4 @@ export class NegociacionResumen {
   @Field(() => [FacturaResumen], {nullable: true})
   @OneToMany(() => FacturaResumen,(facturaResumen) => facturaResumen.negociacionResumen)
   facturaResumen: FacturaResumen[];
-
-  @Field(() => Proveedores, {nullable: true})
-  @ManyToOne(() => Proveedores,(proveedor) => proveedor.negociacionResumen)
-  @JoinColumn([{ name: "Proveedor", referencedColumnName: "codigo" },])
-  proveedor: Proveedores;
 }
