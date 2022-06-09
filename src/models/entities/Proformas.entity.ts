@@ -3,12 +3,16 @@ import {
   Column,
   Entity,
   Index,
+  JoinColumn,
+  ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
 } from "typeorm";
 import { BasesGenerales } from "./BasesGenerales.entity";
 import { Contratos } from "./Contratos.entity";
+import { Incoterm } from "./Incoterm.entity";
 import { ProformaClausulas } from "./ProformaClausulas.entity";
+import { TipoContrato } from "./TipoContrato.entity";
 
 @ObjectType()
 @Index("IX_CTO_ProformaResumenIdIncoterm", ["idIncoterm"], {})
@@ -56,4 +60,14 @@ export class Proformas {
   @Field(() => [BasesGenerales], { nullable: true })
   @OneToMany(() => BasesGenerales, (basesGenerales) => basesGenerales.proforma)
   basesGenerales: BasesGenerales[];
+
+  @Field(() => TipoContrato , {nullable: true})
+  @ManyToOne(() => TipoContrato, (tipoContrato) => tipoContrato.basesGenerales)
+  @JoinColumn([{ name: "IdTipoContrato", referencedColumnName: "idTipoContrato" }])
+  tipoDeContrato: TipoContrato;
+
+  @Field(() => Incoterm , {nullable: true})
+  @ManyToOne(() => Incoterm, (incoterm) => incoterm.basesGenerales)
+  @JoinColumn([{ name: "IdIncoterm", referencedColumnName: "idIncoterm" }])
+  incoterm: Incoterm;
 }

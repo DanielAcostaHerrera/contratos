@@ -1,9 +1,11 @@
-import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
+import { Resolver, Query, Mutation, Args, Int, ResolveField, Parent } from '@nestjs/graphql';
 import { ProformasService } from './proformas.service';
 import { CreateProformaInput } from './dto/create-proforma.input';
 import { Proformas } from 'src/models/entities/Proformas.entity';
 import { UseGuards } from '@nestjs/common';
 import { AuthGuard } from 'src/auth.guard';
+import { TipoContrato } from 'src/models/entities/TipoContrato.entity';
+import { Incoterm } from 'src/models/entities/Incoterm.entity';
 
 @Resolver(() => Proformas)
 export class ProformasResolver {
@@ -37,5 +39,15 @@ export class ProformasResolver {
   @UseGuards(new AuthGuard())
   removeSeveralProforma(@Args('id', { type: () => [Int] }) id: number[]) {
     return this.proformasService.removeSeveral(id);
+  }
+
+  @ResolveField(() => TipoContrato, {nullable: true})
+  tipoDeContrato(@Parent() proformas: Proformas): Promise<TipoContrato> {
+    return this.proformasService.getTipoContrato(proformas.idTipoContrato);
+  }
+
+  @ResolveField(() => Incoterm, {nullable: true})
+  incoterm(@Parent() proformas: Proformas): Promise<Incoterm> {
+    return this.proformasService.getIncoterm(proformas.idIncoterm);
   }
 }
