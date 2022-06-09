@@ -21,7 +21,7 @@ export class Compradores {
   idComprador: number;
 
   @Column("int", { name: "IdEntidad"})
-  @Field({nullable: true})
+  @Field(() => Int,{nullable: true})
   idEntidad: number;
 
   @Column("nvarchar", { name: "Nombre", nullable: true, length: 100 })

@@ -903,7 +903,7 @@ type SolicitudContratacion {
 
 type Compradores {
   idComprador: Int!
-  idEntidad: Float
+  idEntidad: Int
   nombre: String
   representante: String
   domicilio: String
@@ -1848,7 +1848,7 @@ input CreateProformaInput {
 
 input CreateCompradoresInput {
   idComprador: Int
-  idEntidad: Float!
+  idEntidad: Int!
   nombre: String
   representante: String
   domicilio: String

@@ -5,7 +5,7 @@ export class CreateCompradoresInput {
   @Field(() => Int, {nullable: true})
   idComprador?: number;
 
-  @Field()
+  @Field(() => Int)
   idEntidad: number;
 
   @Field({nullable: true})
