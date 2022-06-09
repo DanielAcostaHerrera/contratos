@@ -11,7 +11,7 @@ import { CreateFacturaContenedorInput } from './dto/create-factura-contenedor.in
 @Injectable()
 export class FacturaContenedorService {
   constructor(@InjectRepository(FacturaContenedor) public readonly facturaContenedorRepository: Repository<FacturaContenedor>,
-  private facturaResumenService: FacturaResumenService,private contenedoresService: ContenedoresService,) {}
+  private facturaResumenService: FacturaResumenService) {}
 
 
   async save(createFacturaContenedorInput: CreateFacturaContenedorInput) : Promise<FacturaContenedor> {
@@ -38,9 +38,5 @@ export class FacturaContenedorService {
 
   async getFacturaResumen (Id: number) : Promise<FacturaResumen>{
     return this.facturaResumenService.findOne(Id);
-  }
-
-  async getContenedor (Id: number) : Promise<Contenedores>{
-    return this.contenedoresService.findOne(Id);
   }
 }

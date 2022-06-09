@@ -16,11 +16,11 @@ export class Contenedores {
   @Field(() => Int)
   idContenedor: number;
 
+  @Column("int", { name: "IdFactura"})
+  @Field()
+  idFactura: string;
+
   @Column("nvarchar", { name: "NoContenedor", length: 20 })
   @Field()
   noContenedor: string;
-
-  @Field(() => [FacturaContenedor], { nullable: true })
-  @OneToMany(() => FacturaContenedor,(facturaContenedor) => facturaContenedor.idContenedor)
-  facturaContenedores: FacturaContenedor[];
 }

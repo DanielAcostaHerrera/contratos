@@ -4,12 +4,11 @@ import { FacturaContenedorResolver } from './factura-contenedor.resolver';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { FacturaContenedor } from 'src/models/entities/FacturaContenedor.entity';
 import { FacturaResumenModule } from 'src/factura-resumen/factura-resumen.module';
-import { ContenedoresModule } from 'src/contenedores/contenedores.module';
 
 @Module({
   imports:[TypeOrmModule.forFeature([
     FacturaContenedor
-  ]),FacturaResumenModule,ContenedoresModule],
+  ]),FacturaResumenModule],
   providers: [FacturaContenedorResolver, FacturaContenedorService],
   exports: [FacturaContenedorService]
 })

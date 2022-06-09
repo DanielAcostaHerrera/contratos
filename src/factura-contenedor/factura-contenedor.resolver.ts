@@ -2,7 +2,6 @@ import { Resolver, Query, Mutation, Args, Int, ResolveField, Parent } from '@nes
 import { FacturaContenedorService } from './factura-contenedor.service';
 import { CreateFacturaContenedorInput } from './dto/create-factura-contenedor.input';
 import { FacturaContenedor } from 'src/models/entities/FacturaContenedor.entity';
-import { Contenedores } from 'src/models/entities/Contenedores.entity';
 import { FacturaResumen } from 'src/models/entities/FacturaResumen.entity';
 import { UseGuards } from '@nestjs/common';
 import { AuthGuard } from 'src/auth.guard';
@@ -44,10 +43,5 @@ export class FacturaContenedorResolver {
   @ResolveField(() => FacturaResumen, {nullable: true})
   facturaResumen(@Parent() facturaContenedor: FacturaContenedor): Promise<FacturaResumen> {
     return this.facturaContenedorService.getFacturaResumen(facturaContenedor.idFactura);
-  }
-
-  @ResolveField(() => Contenedores, {nullable: true})
-  contenedores(@Parent() facturaContenedor: FacturaContenedor): Promise<Contenedores> {
-    return this.facturaContenedorService.getContenedor(facturaContenedor.idContenedor);
   }
 }

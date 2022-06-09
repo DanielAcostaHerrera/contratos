@@ -14,11 +14,11 @@ export class ContenedoresService {
   }
 
   async findAll(): Promise<Contenedores[]> {
-    return await this.contenedoresRepository.find({relations:['facturaContenedores']});
+    return await this.contenedoresRepository.find();
   }
 
   async findOne(id: number) : Promise<Contenedores> {
-    return await this.contenedoresRepository.findOne(id,{relations:['facturaContenedores']});
+    return await this.contenedoresRepository.findOne(id);
   }
 
   async remove(id: number) : Promise<any> {

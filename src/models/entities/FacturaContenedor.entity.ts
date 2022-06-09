@@ -30,9 +30,4 @@ export class FacturaContenedor {
   @ManyToOne(() => FacturaResumen,(facturaResumen) => facturaResumen.facturaContenedores)
   @JoinColumn([{ name: "IdFactura", referencedColumnName: "idFactura" }])
   facturaResumen: FacturaResumen;
-
-  @Field(() => Contenedores, {nullable: true})
-  @ManyToOne(() => Contenedores,(contenedores) => contenedores.facturaContenedores)
-  @JoinColumn([{ name: "IdContenedor", referencedColumnName: "idContenedor" }])
-  contenedores: Contenedores;
 }

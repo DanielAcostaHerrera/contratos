@@ -6,5 +6,8 @@ export class CreateContenedoreInput {
   idContenedor?: number;
 
   @Field()
+  idFactura: string;
+
+  @Field()
   noContenedor: string;
 }

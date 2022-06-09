@@ -119,18 +119,11 @@ type DatosEntidad {
   compradores: [Compradores!]
 }
 
-type Contenedores {
-  idContenedor: Int!
-  noContenedor: String!
-  facturaContenedores: [FacturaContenedor!]
-}
-
 type FacturaContenedor {
   idFacturaContenedor: Int!
   idFactura: Int!
   idContenedor: Int!
   facturaResumen: FacturaResumen
-  contenedores: Contenedores
 }
 
 type FichaCompraAtributos {
@@ -1407,6 +1400,12 @@ type Logs {
   usuario: String!
 }
 
+type Contenedores {
+  idContenedor: Int!
+  idFactura: String!
+  noContenedor: String!
+}
+
 type CambiosSuplementos {
   idCambio: Int!
   descripciN: String!
@@ -2355,6 +2354,7 @@ input CreateSolicitudOfertasProveedorInput {
 
 input CreateContenedoreInput {
   idContenedor: Int
+  idFactura: String!
   noContenedor: String!
 }
 
