@@ -23,15 +23,36 @@ export class NegociacionResumenService {
 
 
   async save(usuarioToken: Usuarios,createNegociacionResumenInput: CreateNegociacionResumenInput) : Promise<NegociacionResumen> {
+    var today = new Date();
+    var esNuevo = false;
+    var result: NegociacionResumen;
+    
     if(createNegociacionResumenInput.idNegociacion){
+      esNuevo = false;
       var negociacionVieja = await this.findOne(createNegociacionResumenInput.idNegociacion);
+      result = await this.negociacionResumenRepository.save(createNegociacionResumenInput);
     }
 
-    var result = await this.negociacionResumenRepository.save(createNegociacionResumenInput);
-    if(result && !result.idNegociacion){
+    if(!createNegociacionResumenInput.idNegociacion){
+      esNuevo = true;
+      var negociacionesAnteriores = await this.findAll();
+      var ultimanegociacion = negociacionesAnteriores[0];
+
+      if(ultimanegociacion.fecha.getFullYear() === today.getFullYear() && createNegociacionResumenInput.idProveedor == ultimanegociacion.idProveedor){
+        createNegociacionResumenInput.consecutivo = ultimanegociacion.consecutivo+1;    
+      }
+      else{
+        createNegociacionResumenInput.consecutivo = 1;
+      }
+
+      result = await this.negociacionResumenRepository.save(createNegociacionResumenInput);
+    }
+
+    result = await this.negociacionResumenRepository.save(createNegociacionResumenInput);
+    if(result && esNuevo){
       await this.logsService.save(usuarioToken.ejecutivo.nombre, "Insertada una nueva negociación con número "+result.noNegociacion+"");
     }
-    if(result && result.idNegociacion){
+    if(result && !esNuevo){
       var texto = "Modificada la negociación con número "+result.noNegociacion+"";
         if(negociacionVieja.fecha != result.fecha){
           texto += ", cambiada la fecha";
@@ -90,12 +111,14 @@ export class NegociacionResumenService {
   }
 
   async findAll(): Promise<NegociacionResumen[]> {
-    return await this.negociacionResumenRepository.find({ relations: ['negociacionDetalle','negociacionDetalles','negociacionProveedores','fichaCompraResumen',
+    return await this.negociacionResumenRepository.find({order: {
+      fecha : "DESC",
+    }, relations: ['negociacionProveedores','fichaCompraResumen',
     'solicitudContratacion','contratos','facturaResumen']});
   }
 
   async findOne(id: number) : Promise<NegociacionResumen> {
-    return await this.negociacionResumenRepository.findOne(id,{ relations: ['negociacionDetalle','negociacionDetalles','negociacionProveedores',
+    return await this.negociacionResumenRepository.findOne(id,{ relations: ['negociacionProveedores',
     'fichaCompraResumen','solicitudContratacion','contratos','facturaResumen']});
   }
 

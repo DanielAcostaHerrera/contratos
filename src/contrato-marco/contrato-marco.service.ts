@@ -22,10 +22,10 @@ export class ContratoMarcoService {
 
     if(!createContratoMarcoInput.idCMarco){
       var contratosAnteriores = await this.findAll();
-      var ultimaBase = contratosAnteriores[0];
+      var ultimoContrato = contratosAnteriores[0];
      
-      if(ultimaBase.fecha.getFullYear() === today.getFullYear() && ultimaBase.idProveedor === createContratoMarcoInput.idProveedor){
-        createContratoMarcoInput.consecutivo = ultimaBase.consecutivo+1;    
+      if(ultimoContrato.fecha.getFullYear() === today.getFullYear() && ultimoContrato.idProveedor == createContratoMarcoInput.idProveedor){
+        createContratoMarcoInput.consecutivo = ultimoContrato.consecutivo+1;    
       }
       else{
         createContratoMarcoInput.consecutivo = 1;

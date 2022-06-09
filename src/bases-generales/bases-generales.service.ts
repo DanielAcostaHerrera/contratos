@@ -1,6 +1,6 @@
 import { BasesGeneralesClausulasService } from './../bases-generales-clausulas/bases-generales-clausulas.service';
 import { PaisesService } from './../paises/paises.service';
-import { Injectable, StreamableFile } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ClasificacionesService } from 'src/clasificaciones/clasificaciones.service';
 import { CompradoresService } from 'src/compradores/compradores.service';
@@ -19,13 +19,11 @@ import { ProveedoresService } from 'src/proveedores/proveedores.service';
 import { Paises } from 'src/modelsMercurio/entities/Paises.entity';
 import { Proveedores } from 'src/modelsMercurio/entities/Proveedores.entity';
 import { LogsService } from 'src/logs/logs.service';
-import { MyLogger } from 'src/MyLogger';
 import { BasesGeneralesClausulas } from 'src/models/entities/BasesGeneralesClausulas.entity';
 import { ProformaClausulasService } from 'src/proforma-clausulas/proforma-clausulas.service';
 import { CreateBasesGeneralesClausulaInput } from 'src/bases-generales-clausulas/dto/create-bases-generales-clausula.input';
 import { Usuarios } from 'src/models/entities/Usuarios.entity';
-import { createReadStream } from 'fs';
-import { join } from 'path';
+
 
 @Injectable()
 export class BasesGeneralesService {

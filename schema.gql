@@ -846,29 +846,6 @@ type Proveedores {
   fichaCostoResumen: [FichaCostoResumen!]
 }
 
-type NegociacionDetalle {
-  idNegociacionDetalle: Int!
-  idNegociacion: Int!
-  importeTrd: Float!
-  importeGae: Float!
-  importeCuc: Float!
-  fecha: DateTime!
-  tasa: Float!
-  idAcuerdo: Int
-  detalles: String!
-  negociacionResumen: NegociacionResumen
-}
-
-type NegociacionDetalles {
-  idNegociacionDetalles: Int!
-  idNegociacion: Int!
-  consecutivo: Int!
-  fecha: DateTime
-  acuerdo: Int
-  detalles: String
-  negociacionResumen: NegociacionResumen
-}
-
 type NegociacionProveedores {
   idNegociacionProveedores: Int!
   idNegociacion: Int!
@@ -904,8 +881,6 @@ type NegociacionResumen {
   operacion: Boolean
   tasa: Float
   terminado: Boolean
-  negociacionDetalle: [NegociacionDetalle!]
-  negociacionDetalles: [NegociacionDetalles!]
   negociacionProveedores: [NegociacionProveedores!]
   tiposDeCompras: TiposDeCompras
   monedas: Monedas
@@ -1433,69 +1408,6 @@ type CambiosSuplementos {
   descripciN: String!
 }
 
-type BasesCMarcoClausulas {
-  idBasesCMarcoClausulas: Int!
-  idBaseCMarco: Int!
-  idProformaClausula: Int!
-  idTipoClausula: Int!
-  orden: Int!
-  clausula: String!
-  modificado: DateTime!
-  proformaClausulas: ProformaClausulas
-  basesCMarco: BasesCMarco
-  tipoDeClausula: TiposDeClausulas
-}
-
-type BasesCMarcoEspecificos {
-  idBaseCMarcoEspecificos: Int!
-  idBaseCMarco: Int!
-  idEspecifico: Int!
-  idPadre: Int!
-  pDisponible: Float
-  pReservado: Float
-  pEjecutado: Float
-  pPendiente: Float
-  baseCMarco: BasesCMarco
-  especifico: Especificos
-}
-
-type BasesCMarco {
-  idBaseCMarco: Int!
-  idBasesGenerales: Int!
-  idProveedor: Int!
-  consecutivo: Int!
-  directivaTrd: String
-  directivaGae: String
-  fecha: DateTime!
-  idProforma: Int!
-  periodoInic: DateTime!
-  periodoFin: DateTime!
-  importeTotal: Float!
-  importeFinanciamiento: Float!
-  importeConFinanciamiento: Float!
-  idPuerto: Int!
-  aprobado: Boolean!
-  cancelado: Boolean!
-  activo: Boolean!
-  actualizado: DateTime!
-  importeTotalLetras: String
-  importeFinanciamientoLetras: String
-  importeTotalFinanciamientoLetras: String
-  periodoInicV: DateTime
-  periodoFinV: DateTime
-  idComprador: Int
-  noCMarco: String
-  basesCMarcoClausulas: [BasesCMarcoClausulas!]
-  basesCMarcoEspecificos: [BasesCMarcoEspecificos!]
-  basesGenerales: BasesGenerales
-  puerto: Puertos
-  proveedor: Proveedores
-  proforma: Proformas
-  compradores: Compradores
-  fichaCostoResumen: [FichaCostoResumen!]
-  contratos: [Contratos!]
-}
-
 type Query {
   findAllMoneda: [Monedas!]!
   findOneMoneda(id: Int!): Monedas!
@@ -1563,10 +1475,6 @@ type Query {
   findOneCompaniasNavieras(id: Int!): CompaniasNavieras!
   findAllContratoClausulas: [ContratoClausulas!]!
   findOneContratoClausulas(id: Int!): ContratoClausulas!
-  findAllNegociacionDetalle: [NegociacionDetalle!]!
-  findOneNegociacionDetalle(id: Int!): NegociacionDetalle!
-  findAllNegociacionDetalles: [NegociacionDetalles!]!
-  findOneNegociacionDetalles(id: Int!): NegociacionDetalles!
   findAllNegociacionProveedores: [NegociacionProveedores!]!
   findOneNegociacionProveedores(id: Int!): NegociacionProveedores!
   findAllTiposContenedor: [TiposContenedor!]!
@@ -1731,12 +1639,6 @@ type Mutation {
   createContratoClausulas(createContratoClausulaInput: CreateContratoClausulaInput!): ContratoClausulas!
   removeContratoClausulas(id: Int!): ContratoClausulas!
   removeSeveralContratoClausulas(id: [Int!]!): [ContratoClausulas!]!
-  createNegociacionDetalle(createNegociacionDetalleInput: CreateNegociacionDetalleInput!): NegociacionDetalle!
-  removeNegociacionDetalle(id: Int!): NegociacionDetalle!
-  removeSeveralNegociacionDetalle(id: [Int!]!): [NegociacionDetalle!]!
-  createNegociacionDetalles(createNegociacionDetallesInput: CreateNegociacionDetallesInput!): NegociacionDetalles!
-  removeNegociacionDetalles(id: Int!): NegociacionDetalles!
-  removeSeveralNegociacionDetalles(id: [Int!]!): [NegociacionDetalles!]!
   createNegociacionProveedores(createNegociacionProveedoresInput: CreateNegociacionProveedoresInput!): NegociacionProveedores!
   removeNegociacionProveedores(id: Int!): NegociacionProveedores!
   removeSeveralNegociacionProveedores(id: [Int!]!): [NegociacionProveedores!]!
@@ -2174,27 +2076,6 @@ input CreateFormasPagoInput {
   idFormaPago: Int
   formaPago: String!
   dias: Int!
-}
-
-input CreateNegociacionDetalleInput {
-  idNegociacionDetalle: Int
-  idNegociacion: Int!
-  importeTrd: Float!
-  importeGae: Float!
-  importeCuc: Float!
-  fecha: DateTime!
-  tasa: Float!
-  idAcuerdo: Int
-  detalles: String!
-}
-
-input CreateNegociacionDetallesInput {
-  idNegociacionDetalles: Int
-  idNegociacion: Int!
-  consecutivo: Int!
-  fecha: DateTime
-  acuerdo: Int
-  detalles: String
 }
 
 input CreateNegociacionProveedoresInput {

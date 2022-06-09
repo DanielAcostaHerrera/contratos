@@ -14,8 +14,6 @@ import { FacturaResumen } from "./FacturaResumen.entity";
 import { FichaCompraResumen } from "./FichaCompraResumen.entity";
 import { GruposDeCompras } from "./GruposDeCompras.entity";
 import { Monedas } from "./Monedas.entity";
-import { NegociacionDetalle } from "./NegociacionDetalle.entity";
-import { NegociacionDetalles } from "./NegociacionDetalles.entity";
 import { NegociacionProveedores } from "./NegociacionProveedores.entity";
 import { SolicitudContratacion } from "./SolicitudContratacion.entity";
 import { TiposDeCompras } from "./TiposDeCompras.entity";
@@ -118,14 +116,6 @@ export class NegociacionResumen {
   @Column("bit", { name: "Terminado", nullable: true })
   @Field({nullable: true})
   terminado: boolean | null;
-
-  @Field(() => [NegociacionDetalle], {nullable: true})
-  @OneToMany(() => NegociacionDetalle,(negociacionDetalle) => negociacionDetalle.negociacionResumen)
-  negociacionDetalle: NegociacionDetalle[];
-
-  @Field(() => [NegociacionDetalles], {nullable: true})
-  @OneToMany(() => NegociacionDetalles,(negociacionDetalles) => negociacionDetalles.negociacionResumen)
-  negociacionDetalles: NegociacionDetalles[];
 
   @Field(() => [NegociacionProveedores], {nullable: true})
   @OneToMany(() => NegociacionProveedores,(negociacionProveedores) => negociacionProveedores.negociacionResumen)

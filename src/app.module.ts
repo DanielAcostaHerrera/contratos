@@ -23,8 +23,6 @@ import { TiposDeClausulasModule } from './tipos-de-clausulas/tipos-de-clausulas.
 import { DocumentacionModule } from './documentacion/documentacion.module';
 import { DocumentacionContratoModule } from './documentacion-contrato/documentacion-contrato.module';
 import { ContratoClausulaModule } from './contrato-clausulas/contrato-clausulas.module';
-import { NegociacionDetalleModule } from './negociacion-detalle/negociacion-detalle.module';
-import { NegociacionDetallesModule } from './negociacion-detalles/negociacion-detalles.module';
 import { NegociacionProveedoresModule } from './negociacion-proveedores/negociacion-proveedores.module';
 import { NegociacionResumenModule } from './negociacion-resumen/negociacion-resumen.module';
 import { TiposContenedorModule } from './tipos-contenedor/tipos-contenedor.module';
@@ -138,8 +136,6 @@ import { StreamingController } from './streaming/streaming.controller';
     DocumentacionContratoModule,
     ContratosModule,
     ContratoClausulaModule,
-    NegociacionDetalleModule,
-    NegociacionDetallesModule,
     NegociacionProveedoresModule,
     NegociacionResumenModule,
     TiposContenedorModule,
