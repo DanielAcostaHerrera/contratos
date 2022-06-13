@@ -1,4 +1,5 @@
 import { InputType, Int, Field, Float } from '@nestjs/graphql';
+import { CreateNegociacionProveedoresInput } from 'src/negociacion-proveedores/dto/create-negociacion-proveedores.input';
 
 @InputType()
 export class CreateNegociacionResumenInput {
@@ -55,4 +56,7 @@ export class CreateNegociacionResumenInput {
 
   @Field({nullable: true})
   terminado: boolean | null;
+
+  @Field(()=> [CreateNegociacionProveedoresInput],{ nullable: true})
+  negociacionProveedores?: CreateNegociacionProveedoresInput[];
 }

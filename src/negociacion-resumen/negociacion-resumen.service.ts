@@ -11,12 +11,14 @@ import { Monedas } from 'src/models/entities/Monedas.entity';
 import { GruposDeCompras } from 'src/models/entities/GruposDeCompras.entity';
 import { LogsService } from 'src/logs/logs.service';
 import { Usuarios } from 'src/models/entities/Usuarios.entity';
+import { NegociacionProveedoresService } from 'src/negociacion-proveedores/negociacion-proveedores.service';
+import { CreateNegociacionProveedoresInput } from 'src/negociacion-proveedores/dto/create-negociacion-proveedores.input';
 
 @Injectable()
 export class NegociacionResumenService {
   constructor(@InjectRepository(NegociacionResumen) public readonly negociacionResumenRepository: Repository<NegociacionResumen>,
   private tiposDeComprasService: TiposDeComprasService,private monedaService: MonedaService,private gruposDeComprasService: GruposDeComprasService,
-  private logsService: LogsService) {}
+  private logsService: LogsService,private negociacionProveedoresService: NegociacionProveedoresService) {}
 
 
   async save(usuarioToken: Usuarios,createNegociacionResumenInput: CreateNegociacionResumenInput) : Promise<NegociacionResumen> {
@@ -27,7 +29,42 @@ export class NegociacionResumenService {
     if(createNegociacionResumenInput.idNegociacion){
       esNuevo = false;
       var negociacionVieja = await this.findOne(createNegociacionResumenInput.idNegociacion);
+
+      let importeCUC = 0.0;
+      let importeTRD = 0.0;
+      let importeGAE = 0.0;
+      let proveedores = createNegociacionResumenInput.negociacionProveedores;
+
+      for (let index = 0; index < proveedores.length; index++) {
+        importeCUC += proveedores[index].importe;                 
+      }
+      
+      if(importeCUC < 50000.0){
+        importeTRD = importeCUC;
+      }
+      else{
+        importeGAE = importeCUC;
+      }
+
+      createNegociacionResumenInput.importeCuc = importeCUC;
+      createNegociacionResumenInput.importeTrd = importeTRD;
+      createNegociacionResumenInput.importeGae = importeGAE;
+
       result = await this.negociacionResumenRepository.save(createNegociacionResumenInput);
+
+      if(result){
+        let proveedores = createNegociacionResumenInput.negociacionProveedores;
+        for (let index = 0; index < proveedores.length; index++) {
+          const proveedor = proveedores[index];
+          
+          var proveedorNegociacion = new CreateNegociacionProveedoresInput();
+          proveedorNegociacion.idNegociacion = result.idNegociacion;
+          proveedorNegociacion.idProveedor = proveedor.idProveedor;
+          proveedorNegociacion.importe = proveedor.importe;
+          proveedorNegociacion.ladi = proveedor.ladi;
+          await this.negociacionProveedoresService.save(proveedorNegociacion);        
+        }
+      }
     }
 
     if(!createNegociacionResumenInput.idNegociacion){
@@ -42,7 +79,41 @@ export class NegociacionResumenService {
         createNegociacionResumenInput.consecutivo = 1;
       }
 
+      let importeCUC = 0.0;
+      let importeTRD = 0.0;
+      let importeGAE = 0.0;
+      let proveedores = createNegociacionResumenInput.negociacionProveedores;
+      
+      for (let index = 0; index < proveedores.length; index++) {
+        importeCUC += proveedores[index].importe;                 
+      }
+      
+      if(importeCUC < 50000.0){
+        importeTRD = importeCUC;
+      }
+      else{
+        importeGAE = importeCUC;
+      }
+
+      createNegociacionResumenInput.importeCuc = importeCUC;
+      createNegociacionResumenInput.importeTrd = importeTRD;
+      createNegociacionResumenInput.importeGae = importeGAE;
+
       result = await this.negociacionResumenRepository.save(createNegociacionResumenInput);
+
+      if(result){
+        let proveedores = createNegociacionResumenInput.negociacionProveedores;
+        for (let index = 0; index < proveedores.length; index++) {
+          const proveedor = proveedores[index];
+          
+          var proveedorNegociacion = new CreateNegociacionProveedoresInput();
+          proveedorNegociacion.idNegociacion = result.idNegociacion;
+          proveedorNegociacion.idProveedor = proveedor.idProveedor;
+          proveedorNegociacion.importe = proveedor.importe;
+          proveedorNegociacion.ladi = proveedor.ladi;
+          await this.negociacionProveedoresService.save(proveedorNegociacion);        
+        }
+      }
     }
 
     result = await this.negociacionResumenRepository.save(createNegociacionResumenInput);

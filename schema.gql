@@ -1466,6 +1466,8 @@ type Query {
   findOneNegociacionResumen(id: Int!): NegociacionResumen!
   findAllTiposDeCompras: [TiposDeCompras!]!
   findOneTiposDeCompras(id: Int!): TiposDeCompras!
+  findAllNegociacionProveedores: [NegociacionProveedores!]!
+  findOneNegociacionProveedores(id: Int!): NegociacionProveedores!
   findAllFichaCostoResumen: [FichaCostoResumen!]!
   findOneFichaCostoResumen(id: Int!): FichaCostoResumen!
   findAllFormasPago: [FormasPago!]!
@@ -1478,8 +1480,6 @@ type Query {
   findOneCompaniasNavieras(id: Int!): CompaniasNavieras!
   findAllContratoClausulas: [ContratoClausulas!]!
   findOneContratoClausulas(id: Int!): ContratoClausulas!
-  findAllNegociacionProveedores: [NegociacionProveedores!]!
-  findOneNegociacionProveedores(id: Int!): NegociacionProveedores!
   findAllTiposContenedor: [TiposContenedor!]!
   findOneTiposContenedor(id: Int!): TiposContenedor!
   findAllConfiguracion: [Configuracion!]!
@@ -1633,6 +1633,9 @@ type Mutation {
   createTiposDeCompras(createTiposDeCompraInput: CreateTiposDeCompraInput!): TiposDeCompras!
   removeTiposDeCompras(id: Int!): TiposDeCompras!
   removeSeveralTiposDeCompras(id: [Int!]!): [TiposDeCompras!]!
+  createNegociacionProveedores(createNegociacionProveedoresInput: CreateNegociacionProveedoresInput!): NegociacionProveedores!
+  removeNegociacionProveedores(id: Int!): NegociacionProveedores!
+  removeSeveralNegociacionProveedores(id: [Int!]!): [NegociacionProveedores!]!
   createFichaCostoResuman(createFichaCostoResumanInput: CreateFichaCostoResumenInput!): FichaCostoResumen!
   removeFichaCostoResuman(id: Int!): FichaCostoResumen!
   removeSeveralFichaCostoResuman(id: [Int!]!): [FichaCostoResumen!]!
@@ -1642,9 +1645,6 @@ type Mutation {
   createContratoClausulas(createContratoClausulaInput: CreateContratoClausulaInput!): ContratoClausulas!
   removeContratoClausulas(id: Int!): ContratoClausulas!
   removeSeveralContratoClausulas(id: [Int!]!): [ContratoClausulas!]!
-  createNegociacionProveedores(createNegociacionProveedoresInput: CreateNegociacionProveedoresInput!): NegociacionProveedores!
-  removeNegociacionProveedores(id: Int!): NegociacionProveedores!
-  removeSeveralNegociacionProveedores(id: [Int!]!): [NegociacionProveedores!]!
   createTiposContenedor(createTiposContenedorInput: CreateTiposContenedorInput!): TiposContenedor!
   removeTiposContenedor(id: Int!): TiposContenedor!
   removeSeveralTiposContenedor(id: [Int!]!): [TiposContenedor!]!
@@ -1858,7 +1858,7 @@ input CreateCompradoresInput {
 }
 
 input CreateDatosEntidadInput {
-  codigo: Int!
+  codigo: Int
   cuentaUsd: String
   codAgenciaUsd: String
   agenciaUsd: String
@@ -2008,6 +2008,15 @@ input CreateNegociacionResumenInput {
   operacion: Boolean
   tasa: Float
   terminado: Boolean
+  negociacionProveedores: [CreateNegociacionProveedoresInput!]
+}
+
+input CreateNegociacionProveedoresInput {
+  idNegociacionProveedores: Int
+  idNegociacion: Int!
+  idProveedor: Int!
+  importe: Float
+  ladi: Boolean!
 }
 
 input CreateTiposDeCompraInput {
@@ -2078,14 +2087,6 @@ input CreateFormasPagoInput {
   idFormaPago: Int
   formaPago: String!
   dias: Int!
-}
-
-input CreateNegociacionProveedoresInput {
-  idNegociacionProveedores: Int
-  idNegociacion: Int!
-  idProveedor: Int!
-  importe: Float
-  ladi: Boolean!
 }
 
 input CreateTiposContenedorInput {

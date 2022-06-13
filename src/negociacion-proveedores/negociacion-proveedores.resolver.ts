@@ -2,7 +2,6 @@ import { Resolver, Query, Mutation, Args, Int, ResolveField, Parent } from '@nes
 import { NegociacionProveedoresService } from './negociacion-proveedores.service';
 import { CreateNegociacionProveedoresInput } from './dto/create-negociacion-proveedores.input';
 import { NegociacionProveedores } from 'src/models/entities/NegociacionProveedores.entity';
-import { NegociacionResumen } from 'src/models/entities/NegociacionResumen.entity';
 import { UseGuards } from '@nestjs/common';
 import { AuthGuard } from 'src/auth.guard';
 import { Proveedores } from 'src/modelsMercurio/entities/Proveedores.entity';
@@ -39,11 +38,6 @@ export class NegociacionProveedoresResolver {
   @UseGuards(new AuthGuard())
   removeSeveralNegociacionProveedores(@Args('id', { type: () => [Int]}) id: number[]) {
     return this.negociacionProveedoresService.removeSeveral(id);
-  }
-
-  @ResolveField(() => NegociacionResumen, {nullable: true})
-  negociacionResumen(@Parent() negociacionProveedores: NegociacionProveedores): Promise<NegociacionResumen> {
-    return this.negociacionProveedoresService.getNegociacionResumen(negociacionProveedores.idNegociacion);
   }
 
   @ResolveField(() => Proveedores, {nullable: true})
