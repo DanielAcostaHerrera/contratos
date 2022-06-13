@@ -40,10 +40,10 @@ export class NegociacionResumenService {
       }
       
       if(importeCUC < 50000.0){
-        importeTRD = importeCUC;
+        importeTRD = importeCUC / createNegociacionResumenInput.tasa;
       }
       else{
-        importeGAE = importeCUC;
+        importeGAE = importeCUC / createNegociacionResumenInput.tasa;
       }
 
       createNegociacionResumenInput.importeCuc = importeCUC;
@@ -89,10 +89,10 @@ export class NegociacionResumenService {
       }
       
       if(importeCUC < 50000.0){
-        importeTRD = importeCUC;
+        importeTRD = importeCUC / createNegociacionResumenInput.tasa;
       }
       else{
-        importeGAE = importeCUC;
+        importeGAE = importeCUC / createNegociacionResumenInput.tasa;
       }
 
       createNegociacionResumenInput.importeCuc = importeCUC;
