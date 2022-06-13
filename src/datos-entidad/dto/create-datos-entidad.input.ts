@@ -2,8 +2,8 @@ import { InputType, Int, Field } from '@nestjs/graphql';
 
 @InputType()
 export class CreateDatosEntidadInput {
-  @Field(() => Int)
-  codigo: number;
+  @Field(() => Int,{nullable: true})
+  codigo?: number;
 
   @Field({nullable: true})
   cuentaUsd: string | null;
