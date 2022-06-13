@@ -58,6 +58,6 @@ export class Compradores {
 
   @Field(() => DatosEntidad, {nullable: true})
   @ManyToOne(() => DatosEntidad, (datosEntidad) => datosEntidad.compradores)
-  @JoinColumn([{ name: "IdEntidad", referencedColumnName: "codigo" }])
+  @JoinColumn([{ name: "IdEntidad", referencedColumnName: "idEntidad" }])
   entidad: DatosEntidad;
 }

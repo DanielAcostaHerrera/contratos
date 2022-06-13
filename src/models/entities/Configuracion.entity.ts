@@ -37,6 +37,6 @@ export class Configuracion {
 
   @Field(() => DatosEntidad, {nullable: true})
   @OneToOne(() => DatosEntidad, (entidad) => entidad.configuracion)
-  @JoinColumn([{ name: "IdEntidad", referencedColumnName: "codigo" }])
+  @JoinColumn([{ name: "IdEntidad", referencedColumnName: "idEntidad" }])
   entidad: DatosEntidad;
 }

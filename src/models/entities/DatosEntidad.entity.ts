@@ -4,12 +4,12 @@ import { Compradores } from "./Compradores.entity";
 import { Configuracion } from "./Configuracion.entity";
 
 @ObjectType()
-@Index("PK_DatosEntidad", ["codigo"], { unique: true })
+@Index("PK_DatosEntidad", ["idEntidad"], { unique: true })
 @Entity("DatosEntidad", { schema: "CONTRATO.dbo" })
 export class DatosEntidad {
   @PrimaryGeneratedColumn({ type: "int", name: "CODIGO" })
   @Field(() => Int)
-  codigo: number;
+  idEntidad: number;
 
   @Column("varchar", { name: "CuentaUSD", nullable: true, length: 300 })
   @Field({nullable: true})

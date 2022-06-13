@@ -3,7 +3,7 @@ import { InputType, Int, Field } from '@nestjs/graphql';
 @InputType()
 export class CreateDatosEntidadInput {
   @Field(() => Int,{nullable: true})
-  codigo?: number;
+  idEntidad?: number;
 
   @Field({nullable: true})
   cuentaUsd: string | null;

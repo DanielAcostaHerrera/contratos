@@ -101,7 +101,7 @@ type Configuracion {
 }
 
 type DatosEntidad {
-  codigo: Int!
+  idEntidad: Int!
   cuentaUsd: String
   codAgenciaUsd: String
   agenciaUsd: String
@@ -1858,7 +1858,7 @@ input CreateCompradoresInput {
 }
 
 input CreateDatosEntidadInput {
-  codigo: Int
+  idEntidad: Int
   cuentaUsd: String
   codAgenciaUsd: String
   agenciaUsd: String
