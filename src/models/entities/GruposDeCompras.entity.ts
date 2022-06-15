@@ -20,6 +20,6 @@ export class GruposDeCompras {
   ejecutivos: Ejecutivos[];
 
   @Field(() => [NegociacionResumen])
-  @OneToMany(() => NegociacionResumen,(negociacionResumen) => negociacionResumen.grupo)
+  @OneToMany(() => NegociacionResumen,(negociacionResumen) => negociacionResumen.grupos)
   negociacionResumen: NegociacionResumen[];
 }

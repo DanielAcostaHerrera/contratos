@@ -2,7 +2,6 @@ import { Resolver, Query, Mutation, Args, Int, ResolveField, Parent } from '@nes
 import { FacturaDesgloseService } from './factura-desglose.service';
 import { CreateFacturaDesgloseInput } from './dto/create-factura-desglose.input';
 import { FacturaDesglose } from 'src/models/entities/FacturaDesglose.entity';
-import { FacturaResumen } from 'src/models/entities/FacturaResumen.entity';
 import { CodigosParaLaVenta } from 'src/modelsMercurio/entities/CodigosParaLaVenta.entity';
 import { Referencias } from 'src/modelsMercurio/entities/Referencias.entity';
 import { Paises } from 'src/modelsMercurio/entities/Paises.entity';
@@ -41,11 +40,6 @@ export class FacturaDesgloseResolver {
   @UseGuards(new AuthGuard())
   removeSeveralFacturaDesglose(@Args('id', { type: () => [Int] }) id: number[]) {
     return this.facturaDesgloseService.removeSeveral(id);
-  }
-
-  @ResolveField(() => FacturaResumen, {nullable: true})
-  facturaResumen(@Parent() facturaDesglose: FacturaDesglose): Promise<FacturaResumen> {
-    return this.facturaDesgloseService.getFacturaResumen(facturaDesglose.idFactura);
   }
 
   @ResolveField(() => CodigosParaLaVenta, {nullable: true})

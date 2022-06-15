@@ -8,11 +8,13 @@ import { EmbarquesModule } from 'src/embarques/embarques.module';
 import { EjecutivoModule } from 'src/ejecutivo/ejecutivo.module';
 import { NegociacionResumenModule } from 'src/negociacion-resumen/negociacion-resumen.module';
 import { PuertosModule } from 'src/puertos/puertos.module';
+import { FacturaDesgloseModule } from 'src/factura-desglose/factura-desglose.module';
+import { FacturaContenedorModule } from 'src/factura-contenedor/factura-contenedor.module';
 
 @Module({
   imports:[TypeOrmModule.forFeature([
     FacturaResumen
-  ]),ContratosModule,EmbarquesModule,EjecutivoModule,NegociacionResumenModule,PuertosModule],
+  ]),ContratosModule,EmbarquesModule,EjecutivoModule,NegociacionResumenModule,PuertosModule,FacturaDesgloseModule,FacturaContenedorModule],
   providers: [FacturaResumenResolver, FacturaResumenService],
   exports: [FacturaResumenService]
 })

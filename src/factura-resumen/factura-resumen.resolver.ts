@@ -5,7 +5,6 @@ import { FacturaResumen } from 'src/models/entities/FacturaResumen.entity';
 import { Contratos } from 'src/models/entities/Contratos.entity';
 import { Embarques } from 'src/models/entities/Embarques.entity';
 import { Ejecutivos } from 'src/models/entities/Ejecutivos.entity';
-import { NegociacionResumen } from 'src/models/entities/NegociacionResumen.entity';
 import { Puertos } from 'src/models/entities/Puertos.entity';
 import { UseGuards } from '@nestjs/common';
 import { AuthGuard } from 'src/auth.guard';
@@ -62,11 +61,6 @@ export class FacturaResumenResolver {
   @ResolveField(() => Ejecutivos, {nullable: true})
   ejecutivoRealiza(@Parent() facturaResumen: FacturaResumen): Promise<Ejecutivos> {
     return this.facturaResumenService.getEjecutivoRealiza(facturaResumen.realizadoPor);
-  }
-
-  @ResolveField(() => NegociacionResumen, {nullable: true})
-  negociacionResumen(@Parent() facturaResumen: FacturaResumen): Promise<NegociacionResumen> {
-    return this.facturaResumenService.getNegociacionResumen(facturaResumen.idNegociacion);
   }
 
   @ResolveField(() => Puertos, {nullable: true})

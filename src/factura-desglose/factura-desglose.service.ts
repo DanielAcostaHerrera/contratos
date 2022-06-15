@@ -1,9 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CodigosParaLaVentaService } from 'src/codigos-para-la-venta/codigos-para-la-venta.service';
-import { FacturaResumenService } from 'src/factura-resumen/factura-resumen.service';
 import { FacturaDesglose } from 'src/models/entities/FacturaDesglose.entity';
-import { FacturaResumen } from 'src/models/entities/FacturaResumen.entity';
 import { CodigosParaLaVenta } from 'src/modelsMercurio/entities/CodigosParaLaVenta.entity';
 import { Paises } from 'src/modelsMercurio/entities/Paises.entity';
 import { Referencias } from 'src/modelsMercurio/entities/Referencias.entity';
@@ -15,7 +13,7 @@ import { CreateFacturaDesgloseInput } from './dto/create-factura-desglose.input'
 @Injectable()
 export class FacturaDesgloseService {
   constructor(@InjectRepository(FacturaDesglose) public readonly facturaDesgloseRepository: Repository<FacturaDesglose>,
-  private facturaResumenService: FacturaResumenService,private codigosParaLaVentaService: CodigosParaLaVentaService,
+  private codigosParaLaVentaService: CodigosParaLaVentaService,
   private referenciasService: ReferenciasService,private paisesService: PaisesService) {}
 
 
@@ -24,11 +22,11 @@ export class FacturaDesgloseService {
   }
 
   async findAll(): Promise<FacturaDesglose[]> {
-    return await this.facturaDesgloseRepository.find();
+    return await this.facturaDesgloseRepository.find({relations:['facturaResumen']});
   }
 
   async findOne(id: number) : Promise<FacturaDesglose> {
-    return await this.facturaDesgloseRepository.findOne(id);
+    return await this.facturaDesgloseRepository.findOne(id,{relations:['facturaResumen']});
   }
 
   async remove(id: number) : Promise<any> {
@@ -39,10 +37,6 @@ export class FacturaDesgloseService {
   async removeSeveral(id: number[]) : Promise<any> {
     const facturaDesglose = await this.facturaDesgloseRepository.findByIds(id);
     return await this.facturaDesgloseRepository.remove(facturaDesglose);
-  }
-
-  async getFacturaResumen (Id: number) : Promise<FacturaResumen>{
-    return this.facturaResumenService.findOne(Id);
   }
 
   async getCodigo (Id: number) : Promise<CodigosParaLaVenta>{

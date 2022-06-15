@@ -30,6 +30,8 @@ export class NegociacionResumenService {
       esNuevo = false;
       var negociacionVieja = await this.findOne(createNegociacionResumenInput.idNegociacion);
 
+      await this.negociacionProveedoresService.removeSeveralByNegociacionId(createNegociacionResumenInput.idNegociacion);
+
       let importeCUC = 0.0;
       let importeTRD = 0.0;
       let importeGAE = 0.0;
@@ -179,12 +181,12 @@ export class NegociacionResumenService {
     return await this.negociacionResumenRepository.find({order: {
       fecha : "DESC",
     }, relations: ['negociacionProveedores','fichaCompraResumen',
-    'solicitudContratacion','contratos','facturaResumen']});
+    'solicitudContratacion','contratos']});
   }
 
   async findOne(id: number) : Promise<NegociacionResumen> {
     return await this.negociacionResumenRepository.findOne(id,{ relations: ['negociacionProveedores',
-    'fichaCompraResumen','solicitudContratacion','contratos','facturaResumen']});
+    'fichaCompraResumen','solicitudContratacion','contratos']});
   }
 
   async remove(usuarioToken: Usuarios,id: number) : Promise<any> {

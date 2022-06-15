@@ -34,6 +34,12 @@ export class NegociacionProveedoresResolver {
     return this.negociacionProveedoresService.remove(id);
   }
 
+  @Mutation(() => NegociacionProveedores)
+  @UseGuards(new AuthGuard())
+  removeNegociacionProveedoresByNegociacionId(@Args('id', { type: () => Int }) id: number) {
+    return this.negociacionProveedoresService.removeSeveralByNegociacionId(id);
+  }
+
   @Mutation(() => [NegociacionProveedores])
   @UseGuards(new AuthGuard())
   removeSeveralNegociacionProveedores(@Args('id', { type: () => [Int]}) id: number[]) {

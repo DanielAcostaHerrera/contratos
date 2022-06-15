@@ -130,7 +130,7 @@ export class NegociacionResumen {
   @Field(() => GruposDeCompras, {nullable: true})
   @ManyToOne(() => GruposDeCompras,(grupos) => grupos.negociacionResumen)
   @JoinColumn([{ name: "IdGrupo", referencedColumnName: "idGrupo" },])
-  grupo: GruposDeCompras;
+  grupos: GruposDeCompras;
 
   @Field(() => [FichaCompraResumen], {nullable: true})
   @OneToMany(() => FichaCompraResumen,(fichaCompraResumen) => fichaCompraResumen.negociacionResumen)
@@ -144,7 +144,4 @@ export class NegociacionResumen {
   @OneToMany(() => Contratos, (contratos) => contratos.negociacionResumen)
   contratos: Contratos[];
 
-  @Field(() => [FacturaResumen], {nullable: true})
-  @OneToMany(() => FacturaResumen,(facturaResumen) => facturaResumen.negociacionResumen)
-  facturaResumen: FacturaResumen[];
 }

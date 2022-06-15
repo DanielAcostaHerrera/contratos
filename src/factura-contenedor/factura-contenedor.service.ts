@@ -1,17 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { ContenedoresService } from 'src/contenedores/contenedores.service';
-import { FacturaResumenService } from 'src/factura-resumen/factura-resumen.service';
-import { Contenedores } from 'src/models/entities/Contenedores.entity';
 import { FacturaContenedor } from 'src/models/entities/FacturaContenedor.entity';
-import { FacturaResumen } from 'src/models/entities/FacturaResumen.entity';
 import { Repository } from 'typeorm';
 import { CreateFacturaContenedorInput } from './dto/create-factura-contenedor.input';
 
 @Injectable()
 export class FacturaContenedorService {
-  constructor(@InjectRepository(FacturaContenedor) public readonly facturaContenedorRepository: Repository<FacturaContenedor>,
-  private facturaResumenService: FacturaResumenService) {}
+  constructor(@InjectRepository(FacturaContenedor) public readonly facturaContenedorRepository: Repository<FacturaContenedor>) {}
 
 
   async save(createFacturaContenedorInput: CreateFacturaContenedorInput) : Promise<FacturaContenedor> {
@@ -19,11 +14,11 @@ export class FacturaContenedorService {
   }
 
   async findAll(): Promise<FacturaContenedor[]> {
-    return await this.facturaContenedorRepository.find();
+    return await this.facturaContenedorRepository.find({relations:['facturaResumen']});
   }
 
   async findOne(id: number) : Promise<FacturaContenedor> {
-    return await this.facturaContenedorRepository.findOne(id);
+    return await this.facturaContenedorRepository.findOne(id,{relations:['facturaResumen']});
   }
 
   async remove(id: number) : Promise<any> {
@@ -34,9 +29,5 @@ export class FacturaContenedorService {
   async removeSeveral(id: number[]) : Promise<any> {
     const facturaContenedor = await this.facturaContenedorRepository.findByIds(id);
     return await this.facturaContenedorRepository.remove(facturaContenedor);
-  }
-
-  async getFacturaResumen (Id: number) : Promise<FacturaResumen>{
-    return this.facturaResumenService.findOne(Id);
   }
 }

@@ -1,4 +1,6 @@
 import { InputType, Int, Field, Float } from '@nestjs/graphql';
+import { CreateFacturaContenedorInput } from 'src/factura-contenedor/dto/create-factura-contenedor.input';
+import { CreateFacturaDesgloseInput } from 'src/factura-desglose/dto/create-factura-desglose.input';
 
 @InputType()
 export class CreateFacturaResumanInput {
@@ -13,9 +15,6 @@ export class CreateFacturaResumanInput {
 
   @Field(() => Int,{nullable: true})
   idEjecutivo: number | null;
-
-  @Field(() => Int)
-  idNegociacion: number;
 
   @Field(() => Int,{nullable: true})
   idPuertoDestino: number | null;
@@ -70,4 +69,10 @@ export class CreateFacturaResumanInput {
 
   @Field(()=> Float)
   laTasaMn: number;
+
+  @Field(()=> [CreateFacturaDesgloseInput],{ nullable: true})
+  facturaDesgloses?: CreateFacturaDesgloseInput[];
+
+  @Field(()=> [CreateFacturaContenedorInput],{ nullable: true})
+  facturaContenedores?: CreateFacturaContenedorInput[];
 }

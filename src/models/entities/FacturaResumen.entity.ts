@@ -36,10 +36,6 @@ export class FacturaResumen {
   @Field(() => Int,{nullable: true})
   idEjecutivo: number | null;
 
-  @Column("int", { name: "IdNegociacion" })
-  @Field(() => Int)
-  idNegociacion: number;
-
   @Column("int", { name: "IdPuertoDestino", nullable: true })
   @Field(() => Int,{nullable: true})
   idPuertoDestino: number | null;
@@ -148,11 +144,6 @@ export class FacturaResumen {
   @ManyToOne(() => Ejecutivos, (ejecutivos) => ejecutivos.facturaResumen)
   @JoinColumn([{ name: "IdEjecutivo", referencedColumnName: "idEjecutivo" }])
   ejecutivos: Ejecutivos;
-
-  @Field(()=> NegociacionResumen, {nullable: true})
-  @ManyToOne(() => NegociacionResumen,(negociacionResumen) => negociacionResumen.facturaResumen)
-  @JoinColumn([{ name: "IdNegociacion", referencedColumnName: "idNegociacion" }])
-  negociacionResumen: NegociacionResumen;
 
   @Field(()=> Puertos, {nullable: true})
   @ManyToOne(() => Puertos, (puertos) => puertos.facturaResumen)
