@@ -30,4 +30,9 @@ export class FacturaContenedorService {
     const facturaContenedor = await this.facturaContenedorRepository.findByIds(id);
     return await this.facturaContenedorRepository.remove(facturaContenedor);
   }
+
+  async removeSeveralByFacturaId(idFactura: number) : Promise<any> {
+    const facturaContenedores = await this.facturaContenedorRepository.find({where: {idFactura}});
+    return await this.facturaContenedorRepository.remove(facturaContenedores);
+  }
 }

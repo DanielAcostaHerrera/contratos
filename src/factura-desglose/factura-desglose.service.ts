@@ -39,6 +39,11 @@ export class FacturaDesgloseService {
     return await this.facturaDesgloseRepository.remove(facturaDesglose);
   }
 
+  async removeSeveralByFacturaId(idFactura: number) : Promise<any> {
+    const facturaDesgloses = await this.facturaDesgloseRepository.find({where: {idFactura}});
+    return await this.facturaDesgloseRepository.remove(facturaDesgloses);
+  }
+
   async getCodigo (Id: number) : Promise<CodigosParaLaVenta>{
     return this.codigosParaLaVentaService.findOne(Id);
   }

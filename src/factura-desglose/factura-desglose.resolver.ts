@@ -42,6 +42,12 @@ export class FacturaDesgloseResolver {
     return this.facturaDesgloseService.removeSeveral(id);
   }
 
+  @Mutation(() => [FacturaDesglose])
+  @UseGuards(new AuthGuard())
+  removeSeveralFacturaDesgloseByFacturaId(@Args('id', { type: () => Int }) id: number) {
+    return this.facturaDesgloseService.removeSeveralByFacturaId(id);
+  }
+
   @ResolveField(() => CodigosParaLaVenta, {nullable: true})
   codigo(@Parent() facturaDesglose: FacturaDesglose): Promise<CodigosParaLaVenta> {
     return this.facturaDesgloseService.getCodigo(facturaDesglose.idCodigo);

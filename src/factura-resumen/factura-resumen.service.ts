@@ -3,7 +3,9 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { ContratosService } from 'src/contratos/contratos.service';
 import { EjecutivoService } from 'src/ejecutivo/ejecutivo.service';
 import { EmbarquesService } from 'src/embarques/embarques.service';
+import { CreateFacturaContenedorInput } from 'src/factura-contenedor/dto/create-factura-contenedor.input';
 import { FacturaContenedorService } from 'src/factura-contenedor/factura-contenedor.service';
+import { CreateFacturaDesgloseInput } from 'src/factura-desglose/dto/create-factura-desglose.input';
 import { FacturaDesgloseService } from 'src/factura-desglose/factura-desglose.service';
 import { Contratos } from 'src/models/entities/Contratos.entity';
 import { Ejecutivos } from 'src/models/entities/Ejecutivos.entity';
@@ -27,23 +29,87 @@ export class FacturaResumenService {
 
     if(createFacturaResumanInput.idFactura){
 
+      await this.facturaDesgloseService.removeSeveralByFacturaId(createFacturaResumanInput.idFactura);
+      await this.facturaContenedorService.removeSeveralByFacturaId(createFacturaResumanInput.idFactura);
+
       result = await this.facturaResumenRepository.save(createFacturaResumanInput);
       
-    /*  if(result){
-        let proveedores = createNegociacionResumenInput.negociacionProveedores;
-        for (let index = 0; index < proveedores.length; index++) {
-          const proveedor = proveedores[index];
+      if(result){
+        let facturaDesgloses = createFacturaResumanInput.facturaDesgloses;
+        for (let index = 0; index < facturaDesgloses.length; index++) {
+          const desglose = facturaDesgloses[index];
           
-          var proveedorNegociacion = new CreateNegociacionProveedoresInput();
-          proveedorNegociacion.idNegociacion = result.idNegociacion;
-          proveedorNegociacion.idProveedor = proveedor.idProveedor;
-          proveedorNegociacion.importe = proveedor.importe;
-          proveedorNegociacion.ladi = proveedor.ladi;
-          await this.negociacionProveedoresService.save(proveedorNegociacion);        
+          var desgloseFactura = new CreateFacturaDesgloseInput();
+          desgloseFactura.idFactura = result.idFactura;
+          desgloseFactura.idFacturaDesglose = desglose.idFacturaDesglose;
+          desgloseFactura.idReferencia = desglose.idReferencia;
+          desgloseFactura.idCodigo = desglose.idCodigo;
+          desgloseFactura.paquete = desglose.paquete;
+          desgloseFactura.bultos = desglose.bultos;
+          desgloseFactura.cantidad = desglose.cantidad;
+          desgloseFactura.precioPaquete = desglose.precioPaquete;
+          desgloseFactura.precio = desglose.precio;
+          desgloseFactura.idPaisOrigen = desglose.idPaisOrigen;
+          desgloseFactura.suplemento = desglose.suplemento;
+          desgloseFactura.packing = desglose.packing;
+          desgloseFactura.cajas = desglose.cajas;
+          
+          await this.facturaDesgloseService.save(desgloseFactura);        
         }
-      }*/
 
+        let facturaContenedores = createFacturaResumanInput.facturaContenedores;
+        for (let index = 0; index < facturaContenedores.length; index++) {
+          const contenedor = facturaContenedores[index];
+          
+          var contenedorFactura = new CreateFacturaContenedorInput();
+          contenedorFactura.idFactura = result.idFactura;
+          contenedorFactura.idFacturaContenedor = contenedor.idFacturaContenedor;
+          contenedorFactura.idContenedor = contenedor.idContenedor;
+          
+          await this.facturaContenedorService.save(contenedorFactura);        
+        }
+      }
+    }
 
+    if(!createFacturaResumanInput.idFactura){
+
+      result = await this.facturaResumenRepository.save(createFacturaResumanInput);
+      
+      if(result){
+        let facturaDesgloses = createFacturaResumanInput.facturaDesgloses;
+        for (let index = 0; index < facturaDesgloses.length; index++) {
+          const desglose = facturaDesgloses[index];
+          
+          var desgloseFactura = new CreateFacturaDesgloseInput();
+          desgloseFactura.idFactura = result.idFactura;
+          desgloseFactura.idFacturaDesglose = desglose.idFacturaDesglose;
+          desgloseFactura.idReferencia = desglose.idReferencia;
+          desgloseFactura.idCodigo = desglose.idCodigo;
+          desgloseFactura.paquete = desglose.paquete;
+          desgloseFactura.bultos = desglose.bultos;
+          desgloseFactura.cantidad = desglose.cantidad;
+          desgloseFactura.precioPaquete = desglose.precioPaquete;
+          desgloseFactura.precio = desglose.precio;
+          desgloseFactura.idPaisOrigen = desglose.idPaisOrigen;
+          desgloseFactura.suplemento = desglose.suplemento;
+          desgloseFactura.packing = desglose.packing;
+          desgloseFactura.cajas = desglose.cajas;
+          
+          await this.facturaDesgloseService.save(desgloseFactura);        
+        }
+
+        let facturaContenedores = createFacturaResumanInput.facturaContenedores;
+        for (let index = 0; index < facturaContenedores.length; index++) {
+          const contenedor = facturaContenedores[index];
+          
+          var contenedorFactura = new CreateFacturaContenedorInput();
+          contenedorFactura.idFactura = result.idFactura;
+          contenedorFactura.idFacturaContenedor = contenedor.idFacturaContenedor;
+          contenedorFactura.idContenedor = contenedor.idContenedor;
+          
+          await this.facturaContenedorService.save(contenedorFactura);        
+        }
+      }
     }
     return result;
   }

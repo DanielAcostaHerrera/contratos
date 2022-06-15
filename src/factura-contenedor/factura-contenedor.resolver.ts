@@ -38,4 +38,10 @@ export class FacturaContenedorResolver {
   removeSeveralFacturaContenedor(@Args('id', { type: () => [Int]}) id: number[]) {
     return this.facturaContenedorService.removeSeveral(id);
   }
+
+  @Mutation(() => [FacturaContenedor])
+  @UseGuards(new AuthGuard())
+  removeSeveralFacturaContenedorByFacturaId(@Args('id', { type: () => Int}) id: number) {
+    return this.facturaContenedorService.removeSeveralByFacturaId(id);
+  }
 }
