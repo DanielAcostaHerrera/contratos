@@ -1708,9 +1708,11 @@ type Mutation {
   createFacturaDesglose(createFacturaDesgloseInput: CreateFacturaDesgloseInput!): FacturaDesglose!
   removeFacturaDesglose(id: Int!): FacturaDesglose!
   removeSeveralFacturaDesglose(id: [Int!]!): [FacturaDesglose!]!
+  removeSeveralFacturaDesgloseByFacturaId(id: Int!): [FacturaDesglose!]!
   createFacturaContenedor(createFacturaContenedorInput: CreateFacturaContenedorInput!): FacturaContenedor!
   removeFacturaContenedor(id: Int!): FacturaContenedor!
   removeSeveralFacturaContenedor(id: [Int!]!): [FacturaContenedor!]!
+  removeSeveralFacturaContenedorByFacturaId(id: Int!): [FacturaContenedor!]!
   createSuplementoResuman(createSuplementoResumanInput: CreateSuplementoResumanInput!): SuplementoResumen!
   removeSuplementoResuman(id: Int!): SuplementoResumen!
   removeSeveralSuplementoResuman(id: [Int!]!): [SuplementoResumen!]!
