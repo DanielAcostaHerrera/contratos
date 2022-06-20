@@ -51,13 +51,14 @@ export class ContratosService {
     if(createContratoInput.idContrato){
       esNuevo = false;
       var contratoViejo = await this.findOne(createContratoInput.idContrato);
+      var negociacion = await this.negociacionResumenService.findOne(createContratoInput.idNegociacion);
 
       await this.contratoClausulaService.removeSeveralByContratoId(createContratoInput.idContrato);
       createContratoInput.modificado = true;
 
       if(createContratoInput.idCMarco){
         var contratoMarco = await this.contratoMarcoService.findOne(createContratoInput.idCMarco);
-        contratoMarco.contratado += createContratoInput.financiamiento*createContratoInput.tasaMoneda;
+        contratoMarco.contratado += negociacion.importeCuc;
         if(createContratoInput.gastosLogisticos){
           contratoMarco.contratado += createContratoInput.gastosLogisticos;
         }
@@ -90,6 +91,7 @@ export class ContratosService {
     if(!createContratoInput.idContrato){
       esNuevo = true;
       var baseGeneral = await this.basesGeneralesService.findOne(createContratoInput.idBasesGenerales);
+      var negociacion = await this.negociacionResumenService.findOne(createContratoInput.idNegociacion);
       var cantContratos = baseGeneral.contratos.length;
       createContratoInput.consecutivo = cantContratos+1;
 
@@ -100,7 +102,7 @@ export class ContratosService {
 
       if(createContratoInput.idCMarco){
         var contratoMarco = await this.contratoMarcoService.findOne(createContratoInput.idCMarco);
-        contratoMarco.contratado += createContratoInput.financiamiento*createContratoInput.tasaMoneda;
+        contratoMarco.contratado += negociacion.importeCuc;
         if(createContratoInput.gastosLogisticos){
           contratoMarco.contratado += createContratoInput.gastosLogisticos;
         }
