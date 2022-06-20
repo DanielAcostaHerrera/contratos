@@ -118,7 +118,6 @@ export class NegociacionResumenService {
       }
     }
 
-    result = await this.negociacionResumenRepository.save(createNegociacionResumenInput);
     if(result && esNuevo){
       await this.logsService.save(usuarioToken.ejecutivo.nombre, "Insertada una nueva negociación con número "+result.noNegociacion+"");
     }
