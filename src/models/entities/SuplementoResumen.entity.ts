@@ -52,10 +52,6 @@ export class SuplementoResumen {
   @Field(() => Int)
   consecutivo: number;
 
-  @Column("smallint", { name: "Numero" })
-  @Field(() => Int)
-  numero: number;
-
   @Column("smalldatetime", { name: "Fecha" })
   @Field()
   fecha: Date;

@@ -32,6 +32,7 @@ import { ContratoMarco } from 'src/models/entities/ContratoMarco.entity';
 import { ContratoClausulaService } from 'src/contrato-clausulas/contrato-clausulas.service';
 import { CreateContratoClausulaInput } from 'src/contrato-clausulas/dto/create-contrato-clausulas.input';
 import { CreateSuplementoResumanInput } from 'src/suplemento-resumen/dto/create-suplemento-resuman.input';
+import { MyLogger } from 'src/MyLogger';
 
 @Injectable()
 export class ContratosService {
@@ -71,10 +72,40 @@ export class ContratosService {
       }
 
 
-      var suplementoResumen = new CreateSuplementoResumanInput();
+     /* var suplementoResumen = new CreateSuplementoResumanInput();
       suplementoResumen.idContrato = createContratoInput.idContrato;
-      //suplementoResumen.idPuertoOrigen = createContratoInput.idp
-      
+      suplementoResumen.suplementadoPor = usuarioToken.idEjecutivo;
+      suplementoResumen.idEjecutivo = createContratoInput.realizadoPor;
+      suplementoResumen.firma = createContratoInput.firmadoPor;
+      suplementoResumen.idMoneda = createContratoInput.idMoneda;
+      suplementoResumen.fecha = new Date();
+      suplementoResumen.idEmpSeguro = createContratoInput.idEmpresaSeguro;
+      suplementoResumen.idEmpNaviera = createContratoInput.idEmpresaNaviera;
+      suplementoResumen.lugarEntrega = createContratoInput.lugarEntrega;
+      suplementoResumen.cancelado =
+      suplementoResumen.notas =
+      suplementoResumen.permitirEmbarquesParciales =
+      suplementoResumen.cantidadEp =
+      suplementoResumen.permitirEntregas =
+      suplementoResumen.permitirTrasbordos =
+      suplementoResumen.producto =
+      suplementoResumen.noEntregasParciales =
+      suplementoResumen.fInicial =
+      suplementoResumen.fFinal =
+      suplementoResumen.fFirma =
+      suplementoResumen.fRecepcion =
+      suplementoResumen.fArribo =
+      suplementoResumen.financiamiento =
+      suplementoResumen.tasaMoneda =
+      suplementoResumen.fechaTasa =
+      suplementoResumen.fechaPFirma =
+      suplementoResumen.pFin =
+      suplementoResumen.operacion =
+      suplementoResumen.idNegociacion =
+      suplementoResumen.modificado =
+      suplementoResumen.terminadoS =
+      suplementoResumen.origen = */
+
 
 
 

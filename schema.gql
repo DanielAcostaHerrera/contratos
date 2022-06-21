@@ -1234,7 +1234,6 @@ type SuplementoResumen {
   firma: Int!
   idMoneda: Int!
   consecutivo: Int!
-  numero: Int!
   fecha: DateTime!
   idEmpSeguro: Int
   idEmpNaviera: Int
@@ -2471,7 +2470,6 @@ input CreateSuplementoResumanInput {
   firma: Int!
   idMoneda: Int!
   consecutivo: Int
-  numero: Int!
   fecha: DateTime!
   idEmpSeguro: Int
   idEmpNaviera: Int

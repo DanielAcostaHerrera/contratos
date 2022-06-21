@@ -29,9 +29,6 @@ export class CreateSuplementoResumanInput {
   @Field(() => Int,{nullable: true})
   consecutivo: number | null;
 
-  @Field(() => Int)
-  numero: number;
-
   @Field()
   fecha: Date;
 
