@@ -102,10 +102,10 @@ export class CreateSuplementoResumanInput {
   idNegociacion: number;
 
   @Field()
-  modificado: number;
+  modificado: boolean;
 
   @Field()
-  origen: number;
+  origen: string;
 
   @Field()
   terminadoS: boolean;

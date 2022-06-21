@@ -150,11 +150,11 @@ export class SuplementoResumen {
 
   @Column("bit", { name: "Modificado" })
   @Field()
-  modificado: number;
+  modificado: boolean;
 
   @Column("nvarchar", { name: "Origen", length: 7 })
   @Field()
-  origen: number;
+  origen: string;
 
   @Column("bit", { name: "TerminadoS", default: () => "(0)" })
   @Field()

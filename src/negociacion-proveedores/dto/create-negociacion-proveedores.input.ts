@@ -5,8 +5,8 @@ export class CreateNegociacionProveedoresInput {
   @Field(() => Int, {nullable: true})
   idNegociacionProveedores?: number;
 
-  @Field(() => Int)
-  idNegociacion: number;
+  @Field(() => Int, {nullable: true})
+  idNegociacion?: number;
 
   @Field(() => Int)
   idProveedor: number;

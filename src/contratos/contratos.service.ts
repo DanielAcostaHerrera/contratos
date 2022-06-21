@@ -71,8 +71,7 @@ export class ContratosService {
         }
       }
 
-
-     /* var suplementoResumen = new CreateSuplementoResumanInput();
+      var suplementoResumen = new CreateSuplementoResumanInput();
       suplementoResumen.idContrato = createContratoInput.idContrato;
       suplementoResumen.suplementadoPor = usuarioToken.idEjecutivo;
       suplementoResumen.idEjecutivo = createContratoInput.realizadoPor;
@@ -82,29 +81,30 @@ export class ContratosService {
       suplementoResumen.idEmpSeguro = createContratoInput.idEmpresaSeguro;
       suplementoResumen.idEmpNaviera = createContratoInput.idEmpresaNaviera;
       suplementoResumen.lugarEntrega = createContratoInput.lugarEntrega;
-      suplementoResumen.cancelado =
-      suplementoResumen.notas =
-      suplementoResumen.permitirEmbarquesParciales =
-      suplementoResumen.cantidadEp =
-      suplementoResumen.permitirEntregas =
-      suplementoResumen.permitirTrasbordos =
-      suplementoResumen.producto =
-      suplementoResumen.noEntregasParciales =
-      suplementoResumen.fInicial =
-      suplementoResumen.fFinal =
-      suplementoResumen.fFirma =
-      suplementoResumen.fRecepcion =
-      suplementoResumen.fArribo =
-      suplementoResumen.financiamiento =
-      suplementoResumen.tasaMoneda =
-      suplementoResumen.fechaTasa =
-      suplementoResumen.fechaPFirma =
-      suplementoResumen.pFin =
-      suplementoResumen.operacion =
-      suplementoResumen.idNegociacion =
-      suplementoResumen.modificado =
-      suplementoResumen.terminadoS =
-      suplementoResumen.origen = */
+      suplementoResumen.cancelado = createContratoInput.cancelado;
+      suplementoResumen.notas = createContratoInput.notas;
+      suplementoResumen.permitirEmbarquesParciales = createContratoInput.permitirEmbarquesParciales;
+      suplementoResumen.cantidadEp = createContratoInput.cantidadEp;
+      suplementoResumen.permitirEntregas = createContratoInput.permitirEntregas;
+      suplementoResumen.permitirTrasbordos = createContratoInput.permitirTrasbordos;
+      suplementoResumen.producto = createContratoInput.producto;
+      suplementoResumen.noEntregasParciales = createContratoInput.noEntregasParciales;
+      suplementoResumen.fInicial = createContratoInput.fechaInicial;
+      suplementoResumen.fFinal = createContratoInput.fechaFinal;
+      suplementoResumen.fFirma = createContratoInput.fechaFirma;
+      suplementoResumen.fRecepcion = createContratoInput.fechaRecepcion;
+      suplementoResumen.fArribo = createContratoInput.fechaArribo;
+      suplementoResumen.financiamiento = createContratoInput.financiamiento;
+      suplementoResumen.tasaMoneda = createContratoInput.tasaMoneda;
+      suplementoResumen.fechaTasa = createContratoInput.fechaTasa;
+      suplementoResumen.fechaPFirma = createContratoInput.fechaPFirma;
+      suplementoResumen.pFin = createContratoInput.pFin;
+      suplementoResumen.operacion = negociacion.operacion;
+      suplementoResumen.idNegociacion = createContratoInput.idNegociacion;
+      suplementoResumen.modificado = false;
+      suplementoResumen.terminadoS = false;
+     /* if(!contratoViejo.suplementoResumen)
+        suplementoResumen.origen = */
 
 
 

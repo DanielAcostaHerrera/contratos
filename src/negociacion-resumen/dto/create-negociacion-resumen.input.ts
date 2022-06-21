@@ -6,8 +6,8 @@ export class CreateNegociacionResumenInput {
   @Field(() => Int, {nullable: true})
   idNegociacion?: number;
 
-  @Field(() => Int)
-  consecutivo: number;
+  @Field(() => Int, {nullable: true})
+  consecutivo?: number;
 
   @Field()
   fecha: Date;
