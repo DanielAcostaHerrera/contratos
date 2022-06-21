@@ -21,7 +21,7 @@ import { CreateSuplementoResumanInput } from './dto/create-suplemento-resuman.in
 @Injectable()
 export class SuplementoResumenService {
   constructor(@InjectRepository(SuplementoResumen) public readonly suplementoResumenRepository: Repository<SuplementoResumen>,
-  private contratosService: ContratosService,private puertosService: PuertosService,
+  private contratosService: ContratosService,
   private ejecutivoService: EjecutivoService,private monedaService: MonedaService,
   private agenciasAseguradorasService: AgenciasAseguradorasService,private companiasNavierasService: CompaniasNavierasService,
   private negociacionResumenService: NegociacionResumenService) {}
@@ -58,14 +58,6 @@ export class SuplementoResumenService {
 
   async getContrato (id: number) : Promise<Contratos>{
     return this.contratosService.findOne(id);
-  }
-
-  async getPuertoOrigen (id: number) : Promise<Puertos>{
-    return this.puertosService.findOne(id);
-  }
-
-  async getPuertoDestino (id: number) : Promise<Puertos>{
-    return this.puertosService.findOne(id);
   }
 
   async getEjecutivoSuplementa (id: number) : Promise<Ejecutivos>{

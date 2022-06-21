@@ -52,14 +52,6 @@ export class Puertos {
   @OneToMany(() => SuplementoEmbarques,(suplementoEmbarques) => suplementoEmbarques.puertoDestino)
   suplementoEmbarques: SuplementoEmbarques[];
 
-  @Field(() => [SuplementoResumen], { nullable: true })
-  @OneToMany(() => SuplementoResumen,(suplementoResumen) => suplementoResumen.puertoOrigen)
-  suplementoResumenOrigen: SuplementoResumen[];
-
-  @Field(() => [SuplementoResumen], { nullable: true })
-  @OneToMany(() => SuplementoResumen,(suplementoResumen) => suplementoResumen.puertoDestino)
-  suplementoResumenDestino: SuplementoResumen[];
-
   @Field(() => Paises , {nullable: true})
   @ManyToOne(() => Paises, (pais) => pais.puerto)
   @JoinColumn([{ name: "Pais", referencedColumnName: "pais" }])

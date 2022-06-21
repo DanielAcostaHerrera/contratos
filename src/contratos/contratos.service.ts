@@ -24,7 +24,6 @@ import { ProveedoresService } from 'src/proveedores/proveedores.service';
 import { Repository } from 'typeorm';
 import { CreateContratoInput } from './dto/create-contrato.input';
 import { LogsService } from 'src/logs/logs.service';
-import { MyLogger } from 'src/MyLogger';
 import { IncotermService } from 'src/incoterm/incoterm.service';
 import { Incoterm } from 'src/models/entities/Incoterm.entity';
 import { Usuarios } from 'src/models/entities/Usuarios.entity';
@@ -32,6 +31,7 @@ import { ContratoMarcoService } from 'src/contrato-marco/contrato-marco.service'
 import { ContratoMarco } from 'src/models/entities/ContratoMarco.entity';
 import { ContratoClausulaService } from 'src/contrato-clausulas/contrato-clausulas.service';
 import { CreateContratoClausulaInput } from 'src/contrato-clausulas/dto/create-contrato-clausulas.input';
+import { CreateSuplementoResumanInput } from 'src/suplemento-resumen/dto/create-suplemento-resuman.input';
 
 @Injectable()
 export class ContratosService {
@@ -53,8 +53,8 @@ export class ContratosService {
       var contratoViejo = await this.findOne(createContratoInput.idContrato);
       var negociacion = await this.negociacionResumenService.findOne(createContratoInput.idNegociacion);
 
-      await this.contratoClausulaService.removeSeveralByContratoId(createContratoInput.idContrato);
-      createContratoInput.modificado = true;
+      /*await this.contratoClausulaService.removeSeveralByContratoId(createContratoInput.idContrato);
+      createContratoInput.modificado = true;*/
 
       if(createContratoInput.idCMarco){
         var contratoMarco = await this.contratoMarcoService.findOne(createContratoInput.idCMarco);
@@ -70,9 +70,17 @@ export class ContratosService {
         }
       }
 
-      result = await this.contratoRepository.save(createContratoInput);
 
-      if(result){
+      var suplementoResumen = new CreateSuplementoResumanInput();
+      suplementoResumen.idContrato = createContratoInput.idContrato;
+      //suplementoResumen.idPuertoOrigen = createContratoInput.idp
+      
+
+
+
+      //result = await this.contratoRepository.save(createContratoInput);
+
+      /*if(result){
         let clausulas = createContratoInput.contratoClausulas;
         for (let index = 0; index < clausulas.length; index++) {
           const clausula = clausulas[index];
@@ -85,7 +93,7 @@ export class ContratosService {
           
           await this.contratoClausulaService.save(contratoClausula)        
         }
-      }
+      }*/
     }
 
     if(!createContratoInput.idContrato){

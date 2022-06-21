@@ -51,16 +51,6 @@ export class SuplementoResumenResolver {
     return this.suplementoResumenService.getContrato(suplementoResumen.idContrato);
   }
 
-  @ResolveField(() => Puertos, {nullable: true})
-  puertoOrigen(@Parent() suplementoResumen: SuplementoResumen): Promise<Puertos> {
-    return this.suplementoResumenService.getPuertoOrigen(suplementoResumen.idPuertoOrigen);
-  }
-
-  @ResolveField(() => Puertos, {nullable: true})
-  puertoDestino(@Parent() suplementoResumen: SuplementoResumen): Promise<Puertos> {
-    return this.suplementoResumenService.getPuertoDestino(suplementoResumen.idPuertoDestino);
-  }
-
   @ResolveField(() => Ejecutivos, {nullable: true})
   ejecutivoSuplementa(@Parent() suplementoResumen: SuplementoResumen): Promise<Ejecutivos> {
     return this.suplementoResumenService.getEjecutivoSuplementa(suplementoResumen.suplementadoPor);

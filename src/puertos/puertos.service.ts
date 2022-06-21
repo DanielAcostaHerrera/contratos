@@ -3,7 +3,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { LogsService } from 'src/logs/logs.service';
 import { Puertos } from 'src/models/entities/Puertos.entity';
 import { Paises } from 'src/modelsMercurio/entities/Paises.entity';
-import { MyLogger } from 'src/MyLogger';
 import { PaisesService } from 'src/paises/paises.service';
 import { Repository } from 'typeorm';
 import { CreatePuertoInput } from './dto/create-puerto.input';
@@ -19,12 +18,12 @@ export class PuertosService {
 
   async findAll(): Promise<Puertos[]> {
     return await this.puertoRepository.find({ relations: ['fichaCostoResumen','pliegoConcurrenciaResumenEmbarque','pliegoConcurrenciaResumenDestino',
-    'facturaResumen','suplementoEmbarques','suplementoResumenOrigen','suplementoResumenDestino','puertoEmbarquesOrigen','puertoEmbarquesDestino']});
+    'facturaResumen','suplementoEmbarques','puertoEmbarquesOrigen','puertoEmbarquesDestino']});
   }
 
   async findOne(id: number) : Promise<Puertos> {
     return await this.puertoRepository.findOne(id,{ relations: ['fichaCostoResumen','pliegoConcurrenciaResumenEmbarque','pliegoConcurrenciaResumenDestino',
-    'facturaResumen','suplementoEmbarques','suplementoResumenOrigen','suplementoResumenDestino','puertoEmbarquesOrigen','puertoEmbarquesDestino']});
+    'facturaResumen','suplementoEmbarques','puertoEmbarquesOrigen','puertoEmbarquesDestino']});
   }
 
   async remove(id: number) : Promise<any> {

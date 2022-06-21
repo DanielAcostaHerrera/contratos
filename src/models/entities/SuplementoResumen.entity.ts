@@ -15,7 +15,6 @@ import { SuplementoDesglose } from "./SuplementoDesglose.entity";
 import { SuplementoEmbarques } from "./SuplementoEmbarques.entity";
 import { SuplementoPagos } from "./SuplementoPagos.entity";
 import { Contratos } from "./Contratos.entity";
-import { Puertos } from "./Puertos.entity";
 import { Ejecutivos } from "./Ejecutivos.entity";
 import { Monedas } from "./Monedas.entity";
 import { Field, Float, Int, ObjectType } from "@nestjs/graphql";
@@ -32,14 +31,6 @@ export class SuplementoResumen {
   @Column("int", { name: "IdContrato" })
   @Field(() => Int)
   idContrato: number;
-
-  @Column("int", { name: "IdPuertoOrigen" })
-  @Field(() => Int)
-  idPuertoOrigen: number;
-
-  @Column("int", { name: "IdPuertoDestino" })
-  @Field(() => Int)
-  idPuertoDestino: number;
 
   @Column("int", { name: "SuplementadoPor" })
   @Field(() => Int)
@@ -197,16 +188,6 @@ export class SuplementoResumen {
   @ManyToOne(() => Contratos, (contratos) => contratos.suplementoResumen)
   @JoinColumn([{ name: "IdContrato", referencedColumnName: "idContrato" }])
   contrato: Contratos;
-
-  @Field(() => Puertos, {nullable: true})
-  @ManyToOne(() => Puertos, (puertos) => puertos.suplementoResumenOrigen)
-  @JoinColumn([{ name: "IdPuertoOrigen", referencedColumnName: "idPuerto" }])
-  puertoOrigen: Puertos;
-
-  @Field(() => Puertos, {nullable: true})
-  @ManyToOne(() => Puertos, (puertos) => puertos.suplementoResumenDestino)
-  @JoinColumn([{ name: "IdPuertoDestino", referencedColumnName: "idPuerto" }])
-  puertoDestino: Puertos;
 
   @Field(() => Ejecutivos, {nullable: true})
   @ManyToOne(() => Ejecutivos, (ejecutivos) => ejecutivos.suplementoResumenSuplementa)

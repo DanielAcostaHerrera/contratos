@@ -386,8 +386,6 @@ type Puertos {
   pliegoConcurrenciaResumenDestino: [PliegoConcurrenciaResumen!]
   facturaResumen: [FacturaResumen!]
   suplementoEmbarques: [SuplementoEmbarques!]
-  suplementoResumenOrigen: [SuplementoResumen!]
-  suplementoResumenDestino: [SuplementoResumen!]
   pais: Paises
   puertoEmbarquesOrigen: [PuertoEmbarque!]
   puertoEmbarquesDestino: [PuertoEmbarque!]
@@ -1231,8 +1229,6 @@ type SuplementoClausulas {
 type SuplementoResumen {
   idSuplementoResumen: Int!
   idContrato: Int!
-  idPuertoOrigen: Int!
-  idPuertoDestino: Int!
   suplementadoPor: Int!
   idEjecutivo: Int!
   firma: Int!
@@ -1272,8 +1268,6 @@ type SuplementoResumen {
   suplementoEmbarques: [SuplementoEmbarques!]
   suplementoPagos: [SuplementoPagos!]
   contrato: Contratos
-  puertoOrigen: Puertos
-  puertoDestino: Puertos
   ejecutivoSuplementa: Ejecutivos
   ejecutivo: Ejecutivos
   ejecutivoFirma: Ejecutivos
