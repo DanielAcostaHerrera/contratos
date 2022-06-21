@@ -253,12 +253,12 @@ export class ContratosService {
 
   async findAll(): Promise<Contratos[]> {
     return await this.contratoRepository.find({relations:['contratoClausulas','documentacionContratos','embarques','facturaResumen','fichaCompraResumen',
-    'suplementoEmbarques','suplementoResumen']});
+    'suplementoEmbarques','suplementoResumen','suplementoClausulas']});
   }
 
   async findOne(id: number) : Promise<Contratos> {
     return await this.contratoRepository.findOne(id,{relations:['contratoClausulas','documentacionContratos','embarques','facturaResumen','fichaCompraResumen',
-    'suplementoEmbarques','suplementoResumen']});
+    'suplementoEmbarques','suplementoResumen','suplementoClausulas']});
   }
 
   async remove(usuarioToken: Usuarios,id: number) : Promise<any> {

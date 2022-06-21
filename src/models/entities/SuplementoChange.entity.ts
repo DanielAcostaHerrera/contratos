@@ -10,6 +10,7 @@ import { SuplementoResumen } from "./SuplementoResumen.entity";
 import { Embarques } from "./Embarques.entity";
 import { ContratoClausulas } from "./ContratoClausulas.entity";
 import { Field, Int, ObjectType } from "@nestjs/graphql";
+import { CambiosSuplementos } from "./CambiosSuplementos.entity";
 
 @ObjectType()
 @Index("PK_SuplementoChange", ["idClausulaChange"], { unique: true })
@@ -27,9 +28,17 @@ export class SuplementoChange {
   @Field(() => Int)
   idEmbarque: number;
 
-  @Column("int", { name: "IdContratoClausula" })
+  @Column("int", { name: "IdCambio"})
   @Field(() => Int)
-  idContratoClausula: number;
+  idCambio: number;
+
+  @Column("int", { name: "Orden", nullable: true})
+  @Field(() => Int,{nullable: true})
+  orden: number | null;
+
+  @Column("nvarchar", { name: "Clausula", length: 150 })
+  @Field()
+  clausula: string;
 
   @Column("nvarchar", { name: "ContenidoViejo", nullable: true })
   @Field({nullable: true})
@@ -49,8 +58,9 @@ export class SuplementoChange {
   @JoinColumn([{ name: "IdEmbarque", referencedColumnName: "idEmbarque" }])
   embarques: Embarques;
 
-  @Field(() => ContratoClausulas, {nullable: true})
-  @ManyToOne(() => ContratoClausulas,(contratoClausulas) => contratoClausulas.suplementoChanges)
-  @JoinColumn([{ name: "IdContratoClausula", referencedColumnName: "idContratoClausulas" },])
-  contratoClausulas: ContratoClausulas;
+  @Field(() => CambiosSuplementos, {nullable: true})
+  @ManyToOne(() => CambiosSuplementos, (cambiosSuplementos) => cambiosSuplementos.suplementoChanges)
+  @JoinColumn([{ name: "IdCambio", referencedColumnName: "idCambio" }])
+  cambiosSuplementos: CambiosSuplementos;
+  
 }

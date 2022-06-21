@@ -4,12 +4,12 @@ import { SuplementoClausulasResolver } from './suplemento-clausulas.resolver';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { SuplementoClausulas } from 'src/models/entities/SuplementoClausulas.entity';
 import { SuplementoResumenModule } from 'src/suplemento-resumen/suplemento-resumen.module';
-import { ContratoClausulaModule } from 'src/contrato-clausulas/contrato-clausulas.module';
+import { ContratosModule } from 'src/contratos/contratos.module';
 
 @Module({
   imports:[TypeOrmModule.forFeature([
     SuplementoClausulas
-  ]),SuplementoResumenModule,ContratoClausulaModule],
+  ]),SuplementoResumenModule, ContratosModule],
   providers: [SuplementoClausulasResolver, SuplementoClausulasService],
   exports: [SuplementoClausulasService]
 })

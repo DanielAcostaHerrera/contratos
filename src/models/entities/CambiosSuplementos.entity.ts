@@ -1,5 +1,6 @@
 import { Field, Int, ObjectType } from "@nestjs/graphql";
-import { Column, Entity, Index, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, Index, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { SuplementoChange } from "./SuplementoChange.entity";
 
 @ObjectType()
 @Index("PK_CambiosSuplementos", ["idCambio"], { unique: true })
@@ -12,4 +13,8 @@ export class CambiosSuplementos {
   @Column("nvarchar", { name: "Descripción", length: 150 })
   @Field()
   descripciN: string;
+
+  @Field(() => [SuplementoChange], { nullable: true })
+  @OneToMany(() => SuplementoChange,(suplementoChange) => suplementoChange.cambiosSuplementos)
+  suplementoChanges: SuplementoChange[];
 }

@@ -9,7 +9,13 @@ export class CreateSuplementoClausulaInput {
   idSuplementoResumen: number;
 
   @Field(() => Int)
-  idContratoClausulas: number;
+  idContrato: number;
+
+  @Field(() => Int)
+  noClausula: number;
+
+  @Field()
+  txClausula: string;
 
   @Field(() => Int,{nullable: true})
   orden: number | null;

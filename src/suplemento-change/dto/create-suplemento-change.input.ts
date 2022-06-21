@@ -11,8 +11,11 @@ export class CreateSuplementoChangeInput {
   @Field(() => Int)
   idEmbarque: number;
 
-  @Field(() => Int)
-  idContratoClausula: number;
+  @Field(() => Int,{nullable: true})
+  orden: number | null;
+
+  @Field()
+  clausula: string;
 
   @Field({nullable: true})
   contenidoViejo: string | null;

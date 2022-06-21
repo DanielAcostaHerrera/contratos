@@ -7,11 +7,12 @@ import { SuplementoResumenModule } from 'src/suplemento-resumen/suplemento-resum
 import { EmbarquesModule } from 'src/embarques/embarques.module';
 import { ContratosModule } from 'src/contratos/contratos.module';
 import { PuertosModule } from 'src/puertos/puertos.module';
+import { CompaniasNavierasModule } from 'src/companias-navieras/companias-navieras.module';
 
 @Module({
   imports:[TypeOrmModule.forFeature([
     SuplementoEmbarques
-  ]),SuplementoResumenModule,EmbarquesModule,ContratosModule,PuertosModule],
+  ]),SuplementoResumenModule,EmbarquesModule,ContratosModule,PuertosModule,CompaniasNavierasModule],
   providers: [SuplementoEmbarquesResolver, SuplementoEmbarquesService],
   exports: [SuplementoEmbarquesService]
 })

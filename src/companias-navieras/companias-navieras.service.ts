@@ -8,10 +8,10 @@ export class CompaniasNavierasService {
   constructor(@InjectRepository(CompaniasNavieras) public readonly companiasNavierasRepository: Repository<CompaniasNavieras>) {}
 
   async findAll(): Promise<CompaniasNavieras[]> {
-    return await this.companiasNavierasRepository.find({relations:['contratos','embarques','suplementoResumen','pliegoConcurrenciaResumen']});
+    return await this.companiasNavierasRepository.find({relations:['contratos','embarques','suplementoResumen','pliegoConcurrenciaResumen','suplementoEmbarques']});
   }
 
   async findOne(id: number) : Promise<CompaniasNavieras> {
-    return await this.companiasNavierasRepository.findOne(id,{relations:['contratos','embarques','suplementoResumen','pliegoConcurrenciaResumen']});
+    return await this.companiasNavierasRepository.findOne(id,{relations:['contratos','embarques','suplementoResumen','pliegoConcurrenciaResumen','suplementoEmbarques']});
   }
 }

@@ -7,8 +7,8 @@ import {
   PrimaryGeneratedColumn,
 } from "typeorm";
 import { SuplementoResumen } from "./SuplementoResumen.entity";
-import { ContratoClausulas } from "./ContratoClausulas.entity";
 import { Field, Int, ObjectType } from "@nestjs/graphql";
+import { Contratos } from "./Contratos.entity";
 
 @ObjectType()
 @Index("PK_SuplementoClausulas", ["idSuplementoClausulas"], { unique: true })
@@ -22,9 +22,17 @@ export class SuplementoClausulas {
   @Field(() => Int)
   idSuplementoResumen: number;
 
-  @Column("int", { name: "IdContratoClausulas" })
+  @Column("int", { name: "IdContrato" })
   @Field(() => Int)
-  idContratoClausulas: number;
+  idContrato: number;
+
+  @Column("int", { name: "NoClausula" })
+  @Field(() => Int)
+  noClausula: number;
+
+  @Column("nvarchar", { name: "TxClausula" })
+  @Field()
+  txClausula: string;
 
   @Column("smallint", { name: "Orden", nullable: true })
   @Field(() => Int,{nullable: true})
@@ -39,8 +47,8 @@ export class SuplementoClausulas {
   @JoinColumn([{name: "IdSuplementoResumen",referencedColumnName: "idSuplementoResumen"}])
   suplementoResumen: SuplementoResumen;
 
-  @Field(() => ContratoClausulas, {nullable: true})
-  @ManyToOne(() => ContratoClausulas,(contratoClausulas) => contratoClausulas.suplementoClausulas)
-  @JoinColumn([{name: "IdContratoClausulas",referencedColumnName: "idContratoClausulas"}])
-  contratoClausulas: ContratoClausulas;
+  @Field(() => Contratos, {nullable: true})
+  @ManyToOne(() => Contratos,(contrato) => contrato.suplementoClausulas)
+  @JoinColumn([{name: "IdContrato",referencedColumnName: "idContrato"}])
+  contrato: Contratos;
 }

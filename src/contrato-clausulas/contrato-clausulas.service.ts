@@ -14,11 +14,11 @@ export class ContratoClausulaService {
   }
 
   async findAll(): Promise<ContratoClausulas[]> {
-    return await this.contratoClausulasRepository.find({relations:['suplementoChanges','suplementoClausulas','contratos']});
+    return await this.contratoClausulasRepository.find({relations:['contratos']});
   }
 
   async findOne(id: number) : Promise<ContratoClausulas> {
-    return await this.contratoClausulasRepository.findOne(id,{relations:['suplementoChanges','suplementoClausulas','contratos']});
+    return await this.contratoClausulasRepository.findOne(id,{relations:['contratos']});
   }
 
   async remove(id: number) : Promise<any> {

@@ -3,10 +3,10 @@ import { SuplementoChangeService } from './suplemento-change.service';
 import { CreateSuplementoChangeInput } from './dto/create-suplemento-change.input';
 import { SuplementoChange } from 'src/models/entities/SuplementoChange.entity';
 import { Embarques } from 'src/models/entities/Embarques.entity';
-import { ContratoClausulas } from 'src/models/entities/ContratoClausulas.entity';
 import { SuplementoResumen } from 'src/models/entities/SuplementoResumen.entity';
 import { UseGuards } from '@nestjs/common';
 import { AuthGuard } from 'src/auth.guard';
+import { CambiosSuplementos } from 'src/models/entities/CambiosSuplementos.entity';
 
 @Resolver(() => SuplementoChange)
 export class SuplementoChangeResolver {
@@ -47,13 +47,13 @@ export class SuplementoChangeResolver {
     return this.suplementoChangeService.getSuplementoResumen(suplementoChange.idSuplementoResumen);
   }
 
-  @ResolveField(() => ContratoClausulas, {nullable: true})
-  contratoClausulas(@Parent() suplementoChange: SuplementoChange): Promise<ContratoClausulas> {
-    return this.suplementoChangeService.getContratoClausulas(suplementoChange.idContratoClausula);
-  }
-
   @ResolveField(() => Embarques, {nullable: true})
   embarques(@Parent() suplementoChange: SuplementoChange): Promise<Embarques> {
     return this.suplementoChangeService.getEmbarque(suplementoChange.idEmbarque);
+  }
+
+  @ResolveField(() => CambiosSuplementos, {nullable: true})
+  cambiosSuplementos(@Parent() suplementoChange: SuplementoChange): Promise<CambiosSuplementos> {
+    return this.suplementoChangeService.getCambioSuplemento(suplementoChange.idCambio);
   }
 }

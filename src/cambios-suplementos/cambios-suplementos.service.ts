@@ -14,11 +14,11 @@ export class CambiosSuplementosService {
   }
 
   async findAll(): Promise<CambiosSuplementos[]> { 
-    return await this.cambiosSuplementosRepository.find();
+    return await this.cambiosSuplementosRepository.find({relations: ['suplementoChanges']});
   }
 
   async findOne(id: number) : Promise<CambiosSuplementos> {
-    return await this.cambiosSuplementosRepository.findOne(id);
+    return await this.cambiosSuplementosRepository.findOne(id,{relations: ['suplementoChanges']});
   }
 
   async remove(id: number) : Promise<any> {

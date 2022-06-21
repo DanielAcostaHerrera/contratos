@@ -3,6 +3,7 @@ import { Column, Entity, Index, OneToMany } from "typeorm";
 import { Contratos } from "../../models/entities/Contratos.entity";
 import { Embarques } from "../../models/entities/Embarques.entity";
 import { PliegoConcurrenciaResumen } from "../../models/entities/PliegoConcurrenciaResumen.entity";
+import { SuplementoEmbarques } from "../../models/entities/SuplementoEmbarques.entity";
 import { SuplementoResumen } from "../../models/entities/SuplementoResumen.entity";
 
 @ObjectType()
@@ -36,4 +37,8 @@ export class CompaniasNavieras {
   @Field(() => [PliegoConcurrenciaResumen], { nullable: true })
   @OneToMany(() => PliegoConcurrenciaResumen,(pliegoConcurrenciaResumen) => pliegoConcurrenciaResumen.naviera)
   pliegoConcurrenciaResumen: PliegoConcurrenciaResumen[];
+
+  @Field(() => [SuplementoEmbarques], { nullable: true })
+  @OneToMany(() => SuplementoEmbarques,(suplementoEmbarques) => suplementoEmbarques.companiaNaviera)
+  suplementoEmbarques: SuplementoEmbarques[];
 }

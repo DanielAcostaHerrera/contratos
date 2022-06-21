@@ -11,6 +11,7 @@ import { Embarques } from "./Embarques.entity";
 import { Contratos } from "./Contratos.entity";
 import { Puertos } from "./Puertos.entity";
 import { Field, Float, Int, ObjectType } from "@nestjs/graphql";
+import { CompaniasNavieras } from "../../modelsNomgen/entities/CompaniasNavieras.entity";
 
 @ObjectType()
 @Index("PK_SuplementoEmbarques", ["idSuplementoEmbarques"], { unique: true })
@@ -115,4 +116,9 @@ export class SuplementoEmbarques {
   @ManyToOne(() => Puertos, (puertos) => puertos.suplementoEmbarques)
   @JoinColumn([{ name: "IdPuertoDestino", referencedColumnName: "idPuerto" }])
   puertoDestino: Puertos;
+
+  @Field(() => CompaniasNavieras, {nullable: true})
+  @ManyToOne(() => CompaniasNavieras, (companiasNavieras) => companiasNavieras.suplementoEmbarques)
+  @JoinColumn([{ name: "EmpNaviera", referencedColumnName: "id" }])
+  companiaNaviera: CompaniasNavieras;
 }

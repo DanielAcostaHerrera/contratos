@@ -3,9 +3,9 @@ import { SuplementoClausulasService } from './suplemento-clausulas.service';
 import { CreateSuplementoClausulaInput } from './dto/create-suplemento-clausula.input';
 import { SuplementoClausulas } from 'src/models/entities/SuplementoClausulas.entity';
 import { SuplementoResumen } from 'src/models/entities/SuplementoResumen.entity';
-import { ContratoClausulas } from 'src/models/entities/ContratoClausulas.entity';
 import { UseGuards } from '@nestjs/common';
 import { AuthGuard } from 'src/auth.guard';
+import { Contratos } from 'src/models/entities/Contratos.entity';
 
 @Resolver(() => SuplementoClausulas)
 export class SuplementoClausulasResolver {
@@ -46,8 +46,8 @@ export class SuplementoClausulasResolver {
     return this.suplementoClausulasService.getSuplementoResumen(suplementoClausulas.idSuplementoResumen);
   }
 
-  @ResolveField(() => ContratoClausulas, {nullable: true})
-  contratoClausulas(@Parent() suplementoClausulas: SuplementoClausulas): Promise<ContratoClausulas> {
-    return this.suplementoClausulasService.getContratoClausulas(suplementoClausulas.idContratoClausulas);
+  @ResolveField(() => Contratos, {nullable: true})
+  contrato(@Parent() suplementoClausulas: SuplementoClausulas): Promise<Contratos> {
+    return this.suplementoClausulasService.getContrato(suplementoClausulas.idContrato);
   }
 }

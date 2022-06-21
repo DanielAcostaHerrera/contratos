@@ -10,7 +10,6 @@ import {
   PrimaryGeneratedColumn,
 } from "typeorm";
 import { BasesGenerales } from "./BasesGenerales.entity";
-import { Puertos } from "./Puertos.entity";
 import { Monedas } from "./Monedas.entity";
 import { FormasEntrega } from "./FormasEntrega.entity";
 import { NegociacionResumen } from "./NegociacionResumen.entity";
@@ -28,6 +27,7 @@ import { Proveedores } from "../../modelsMercurio/entities/Proveedores.entity";
 import { ContratoClausulas } from "./ContratoClausulas.entity";
 import { Incoterm } from './Incoterm.entity';
 import { ContratoMarco } from './ContratoMarco.entity';
+import { SuplementoClausulas } from './SuplementoClausulas.entity';
 
 @ObjectType()
 @Index("PK_Contratos", ["idContrato"], { unique: true })
@@ -284,6 +284,10 @@ export class Contratos {
   @Field(() => [SuplementoResumen], {nullable: true})
   @OneToMany(() => SuplementoResumen,(suplementoResumen) => suplementoResumen.contrato)
   suplementoResumen: SuplementoResumen[];
+
+  @Field(() => [SuplementoClausulas], {nullable: true})
+  @OneToMany(() => SuplementoClausulas,(suplementoClausulas) => suplementoClausulas.contrato)
+  suplementoClausulas: SuplementoClausulas[];
 
   @Field(() => Paises, {nullable: true})
   @ManyToOne(() => Paises, (paises) => paises.contratos)

@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { CompaniasNavierasService } from 'src/companias-navieras/companias-navieras.service';
 import { ContratosService } from 'src/contratos/contratos.service';
 import { EmbarquesService } from 'src/embarques/embarques.service';
 import { Contratos } from 'src/models/entities/Contratos.entity';
@@ -7,6 +8,7 @@ import { Embarques } from 'src/models/entities/Embarques.entity';
 import { Puertos } from 'src/models/entities/Puertos.entity';
 import { SuplementoEmbarques } from 'src/models/entities/SuplementoEmbarques.entity';
 import { SuplementoResumen } from 'src/models/entities/SuplementoResumen.entity';
+import { CompaniasNavieras } from 'src/modelsNomgen/entities/CompaniasNavieras.entity';
 import { PuertosService } from 'src/puertos/puertos.service';
 import { SuplementoResumenService } from 'src/suplemento-resumen/suplemento-resumen.service';
 import { Repository } from 'typeorm';
@@ -16,7 +18,8 @@ import { CreateSuplementoEmbarqueInput } from './dto/create-suplemento-embarque.
 export class SuplementoEmbarquesService {
   constructor(@InjectRepository(SuplementoEmbarques) public readonly suplementoEmbarqueRepository: Repository<SuplementoEmbarques>,
   private embarquesService: EmbarquesService,private puertosService: PuertosService,
-  private contratosService: ContratosService,private suplementoResumenService: SuplementoResumenService) {}
+  private contratosService: ContratosService,private suplementoResumenService: SuplementoResumenService,
+  private companiaNavieraService: CompaniasNavierasService) {}
 
 
   async save(createSuplementoEmbarqueInput: CreateSuplementoEmbarqueInput) : Promise<SuplementoEmbarques> {
@@ -55,5 +58,9 @@ export class SuplementoEmbarquesService {
 
   async getEmbarque (id: number) : Promise<Embarques>{
     return this.embarquesService.findOne(id);
+  }
+
+  async getNaviera (id: number) : Promise<CompaniasNavieras>{
+    return this.companiaNavieraService.findOne(id);
   }
 }
