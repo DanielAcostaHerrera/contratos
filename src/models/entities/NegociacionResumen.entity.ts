@@ -8,14 +8,13 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
 } from "typeorm";
-import { Proveedores } from "../../modelsMercurio/entities/Proveedores.entity";
 import { Contratos } from "./Contratos.entity";
-import { FacturaResumen } from "./FacturaResumen.entity";
 import { FichaCompraResumen } from "./FichaCompraResumen.entity";
 import { GruposDeCompras } from "./GruposDeCompras.entity";
 import { Monedas } from "./Monedas.entity";
 import { NegociacionProveedores } from "./NegociacionProveedores.entity";
 import { SolicitudContratacion } from "./SolicitudContratacion.entity";
+import { SuplementoResumen } from "./SuplementoResumen.entity";
 import { TiposDeCompras } from "./TiposDeCompras.entity";
 
 @ObjectType()
@@ -143,5 +142,9 @@ export class NegociacionResumen {
   @Field(() => [Contratos], {nullable: true})
   @OneToMany(() => Contratos, (contratos) => contratos.negociacionResumen)
   contratos: Contratos[];
+
+  @Field(() => [SuplementoResumen], {nullable: true})
+  @OneToMany(() => SuplementoResumen, (suplementoResumen) => suplementoResumen.negociacion)
+  suplementoResumen: SuplementoResumen[];
 
 }

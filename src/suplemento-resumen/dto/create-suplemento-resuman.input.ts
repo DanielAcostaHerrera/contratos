@@ -29,9 +29,6 @@ export class CreateSuplementoResumanInput {
   @Field(() => Int,{nullable: true})
   consecutivo: number | null;
 
-  @Field()
-  fechaSup: Date;
-
   @Field(() => Int)
   numero: number;
 
@@ -89,12 +86,30 @@ export class CreateSuplementoResumanInput {
   @Field(() => Float)
   financiamiento: number;
 
+  @Field(() => Float)
+  tasaMoneda: number;
+
+  @Field()
+  fechaTasa: Date;
+
+  @Field()
+  fechaPFirma: Date;
+
+  @Field(() => Float)
+  pFin: number;
+
+  @Field()
+  operacion: boolean;
+
+  @Field(() => Int)
+  idNegociacion: number;
+
+  @Field()
+  modificado: number;
+
+  @Field()
+  origen: number;
+
   @Field()
   terminadoS: boolean;
-
-  @Field({nullable: true})
-  notaSuple: string | null;
-
-  @Field()
-  canceladoSup: boolean;
 }

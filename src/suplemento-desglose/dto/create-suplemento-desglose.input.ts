@@ -43,4 +43,7 @@ export class CreateSuplementoDesgloseInput {
 
   @Field(() => Float)
   packing: number;
+
+  @Field(() => Float)
+  cajas: number;
 }

@@ -9,11 +9,12 @@ import { EjecutivoModule } from 'src/ejecutivo/ejecutivo.module';
 import { MonedaModule } from 'src/moneda/moneda.module';
 import { AgenciasAseguradorasModule } from 'src/agencias-aseguradoras/agencias-aseguradoras.module';
 import { CompaniasNavierasModule } from 'src/companias-navieras/companias-navieras.module';
+import { NegociacionResumenModule } from 'src/negociacion-resumen/negociacion-resumen.module';
 
 @Module({
   imports:[TypeOrmModule.forFeature([
     SuplementoResumen
-  ]),ContratosModule,PuertosModule,EjecutivoModule,MonedaModule,AgenciasAseguradorasModule,CompaniasNavierasModule],
+  ]),ContratosModule,PuertosModule,EjecutivoModule,MonedaModule,AgenciasAseguradorasModule,CompaniasNavierasModule,NegociacionResumenModule],
   providers: [SuplementoResumenResolver, SuplementoResumenService],
   exports: [SuplementoResumenService]
 })

@@ -10,6 +10,7 @@ import { AgenciasAseguradoras } from 'src/modelsNomgen/entities/AgenciasAsegurad
 import { CompaniasNavieras } from 'src/modelsNomgen/entities/CompaniasNavieras.entity';
 import { UseGuards } from '@nestjs/common';
 import { AuthGuard } from 'src/auth.guard';
+import { NegociacionResumen } from 'src/models/entities/NegociacionResumen.entity';
 
 @Resolver(() => SuplementoResumen)
 export class SuplementoResumenResolver {
@@ -88,5 +89,10 @@ export class SuplementoResumenResolver {
   @ResolveField(() => CompaniasNavieras, {nullable: true})
   empresaNaviera(@Parent() suplementoResumen: SuplementoResumen): Promise<CompaniasNavieras> {
     return this.suplementoResumenService.getEmpresaNaviera(suplementoResumen.idEmpNaviera);
+  }
+
+  @ResolveField(() => NegociacionResumen, {nullable: true})
+  negociacion(@Parent() suplementoResumen: SuplementoResumen): Promise<NegociacionResumen> {
+    return this.suplementoResumenService.getNegociacion(suplementoResumen.idNegociacion);
   }
 }

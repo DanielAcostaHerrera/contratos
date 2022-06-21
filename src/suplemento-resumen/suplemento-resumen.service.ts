@@ -7,11 +7,13 @@ import { EjecutivoService } from 'src/ejecutivo/ejecutivo.service';
 import { Contratos } from 'src/models/entities/Contratos.entity';
 import { Ejecutivos } from 'src/models/entities/Ejecutivos.entity';
 import { Monedas } from 'src/models/entities/Monedas.entity';
+import { NegociacionResumen } from 'src/models/entities/NegociacionResumen.entity';
 import { Puertos } from 'src/models/entities/Puertos.entity';
 import { SuplementoResumen } from 'src/models/entities/SuplementoResumen.entity';
 import { AgenciasAseguradoras } from 'src/modelsNomgen/entities/AgenciasAseguradoras.entity';
 import { CompaniasNavieras } from 'src/modelsNomgen/entities/CompaniasNavieras.entity';
 import { MonedaService } from 'src/moneda/moneda.service';
+import { NegociacionResumenService } from 'src/negociacion-resumen/negociacion-resumen.service';
 import { PuertosService } from 'src/puertos/puertos.service';
 import { Repository } from 'typeorm';
 import { CreateSuplementoResumanInput } from './dto/create-suplemento-resuman.input';
@@ -21,7 +23,8 @@ export class SuplementoResumenService {
   constructor(@InjectRepository(SuplementoResumen) public readonly suplementoResumenRepository: Repository<SuplementoResumen>,
   private contratosService: ContratosService,private puertosService: PuertosService,
   private ejecutivoService: EjecutivoService,private monedaService: MonedaService,
-  private agenciasAseguradorasService: AgenciasAseguradorasService,private companiasNavierasService: CompaniasNavierasService) {}
+  private agenciasAseguradorasService: AgenciasAseguradorasService,private companiasNavierasService: CompaniasNavierasService,
+  private negociacionResumenService: NegociacionResumenService) {}
 
 
   async save(createSuplementoResumanInput: CreateSuplementoResumanInput) : Promise<SuplementoResumen> {
@@ -87,5 +90,9 @@ export class SuplementoResumenService {
 
   async getEmpresaNaviera (id: number) : Promise<CompaniasNavieras>{
     return this.companiasNavierasService.findOne(id);
+  }
+
+  async getNegociacion (id: number) : Promise<NegociacionResumen>{
+    return this.negociacionResumenService.findOne(id);
   }
 }

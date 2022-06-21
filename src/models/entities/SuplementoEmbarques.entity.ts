@@ -72,6 +72,30 @@ export class SuplementoEmbarques {
   @Field(() => Float)
   seguro: number;
 
+  @Column("float", { name: "Financiamiento", precision: 53 })
+  @Field(() => Float)
+  financiamiento: number;
+
+  @Column("int", { name: "EmpNaviera" })
+  @Field(() => Int)
+  idEmpresaNaviera: number;
+
+  @Column("float", { name: "Inspeccion", precision: 53 })
+  @Field(() => Float)
+  inspeccion: number;
+
+  @Column("float", { name: "Otros", precision: 53 })
+  @Field(() => Float)
+  otros: number;
+
+  @Column("int", { name: "C40" })
+  @Field(() => Int)
+  c40: number;
+
+  @Column("int", { name: "C20" })
+  @Field(() => Int)
+  c20: number;
+
   @Field(() => SuplementoResumen, {nullable: true})
   @ManyToOne(() => SuplementoResumen,(suplementoResumen) => suplementoResumen.suplementoEmbarques)
   @JoinColumn([{name: "IdSuplementoResumen",referencedColumnName: "idSuplementoResumen"}])

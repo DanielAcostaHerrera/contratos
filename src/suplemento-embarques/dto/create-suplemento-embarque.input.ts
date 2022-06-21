@@ -43,4 +43,22 @@ export class CreateSuplementoEmbarqueInput {
 
   @Field(() => Float)
   seguro: number;
+
+  @Field(() => Float)
+  financiamiento: number;
+
+  @Field(() => Int)
+  idEmpresaNaviera: number;
+
+  @Field(() => Float)
+  inspeccion: number;
+
+  @Field(() => Float)
+  otros: number;
+
+  @Field(() => Int)
+  c40: number;
+
+  @Field(() => Int)
+  c20: number;
 }

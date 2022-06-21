@@ -1,3 +1,4 @@
+import { NegociacionResumen } from './NegociacionResumen.entity';
 import { AgenciasAseguradoras } from './../../modelsNomgen/entities/AgenciasAseguradoras.entity';
 import {
   Column,
@@ -59,10 +60,6 @@ export class SuplementoResumen {
   @Column("int", { name: "Consecutivo", default: () => "(0)" })
   @Field(() => Int)
   consecutivo: number;
-
-  @Column("datetime", { name: "FechaSup", default: () => "getdate()" })
-  @Field()
-  fechaSup: Date;
 
   @Column("smallint", { name: "Numero" })
   @Field(() => Int)
@@ -140,17 +137,41 @@ export class SuplementoResumen {
   @Field(() => Float)
   financiamiento: number;
 
+  @Column("float", { name: "TasaMoneda", precision: 53 })
+  @Field(() => Float)
+  tasaMoneda: number;
+
+  @Column("smalldatetime", { name: "FechaTasa" })
+  @Field()
+  fechaTasa: Date;
+
+  @Column("smalldatetime", { name: "FechaPFirma" })
+  @Field()
+  fechaPFirma: Date;
+
+  @Column("float", { name: "PFin", precision: 53 })
+  @Field(() => Float)
+  pFin: number;
+
+  @Column("bit", { name: "Operacion" })
+  @Field()
+  operacion: boolean;
+
+  @Column("int", { name: "IdNegociacion" })
+  @Field(() => Int)
+  idNegociacion: number;
+
+  @Column("bit", { name: "Modificado" })
+  @Field()
+  modificado: number;
+
+  @Column("nvarchar", { name: "Origen", length: 7 })
+  @Field()
+  origen: number;
+
   @Column("bit", { name: "TerminadoS", default: () => "(0)" })
   @Field()
   terminadoS: boolean;
-
-  @Column("ntext", { name: "NotaSuple", nullable: true })
-  @Field({nullable: true})
-  notaSuple: string | null;
-
-  @Column("bit", { name: "CanceladoSup", default: () => "(0)" })
-  @Field()
-  canceladoSup: boolean;
 
   @Field(() => [SuplementoChange], {nullable: true})
   @OneToMany(() => SuplementoChange,(suplementoChange) => suplementoChange.suplementoResumen)
@@ -217,4 +238,9 @@ export class SuplementoResumen {
   @ManyToOne(() => CompaniasNavieras, (companiasNavieras) => companiasNavieras.suplementoResumen)
   @JoinColumn([{ name: "EmpNaviera", referencedColumnName: "id" }])
   empresaNaviera: CompaniasNavieras;
+
+  @Field(() => NegociacionResumen, {nullable: true})
+  @ManyToOne(() => NegociacionResumen, (negociacionResumen) => negociacionResumen.suplementoResumen)
+  @JoinColumn([{ name: "IdNegociacion", referencedColumnName: "idNegociacion" }])
+  negociacion: NegociacionResumen;
 }

@@ -61,17 +61,21 @@ export class SuplementoDesglose {
   @Field(() => Float)
   volumen: number;
 
-  @Column("real", { name: "Precio", precision: 24 })
+  @Column("float", { name: "Precio", precision: 24 })
   @Field(() => Float)
   precio: number;
 
-  @Column("real", { name: "PrecioPaquete", precision: 24 })
+  @Column("float", { name: "PrecioPaquete", precision: 24 })
   @Field(() => Float)
   precioPaquete: number;
 
   @Column("float", { name: "Packing", precision: 53, default: () => "(1)" })
   @Field(() => Float)
   packing: number;
+
+  @Column("int", { name: "Cajas" })
+  @Field(() => Float)
+  cajas: number;
 
   @Field(() => SuplementoResumen, {nullable: true})
   @ManyToOne(() => SuplementoResumen,(suplementoResumen) => suplementoResumen.suplementoDesgloses)
