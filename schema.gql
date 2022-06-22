@@ -2,6 +2,61 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type SuplementoEmbarques {
+  idSuplementoEmbarques: Int!
+  idSuplementoResumen: Int!
+  idEmbarque: Int!
+  idContrato: Int!
+  fechaEntrega: DateTime!
+  numero: Int!
+  descuento: Float
+  terminado: Boolean!
+  cancelado: Boolean!
+  porFirmar: Boolean!
+  qtyCnt: Int!
+  flete: Float!
+  seguro: Float!
+  financiamiento: Float!
+  idEmpresaNaviera: Int!
+  inspeccion: Float!
+  otros: Float!
+  c40: Int!
+  c20: Int!
+  suplementoResumen: SuplementoResumen
+  embarques: Embarques
+  contrato: Contratos
+  companiaNaviera: CompaniasNavieras
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type CompaniasNavieras {
+  id: Int!
+  nombre: String
+  diasdegracia: Int
+  contratos: [Contratos!]
+  embarques: [Embarques!]
+  suplementoResumen: [SuplementoResumen!]
+  pliegoConcurrenciaResumen: [PliegoConcurrenciaResumen!]
+  suplementoEmbarques: [SuplementoEmbarques!]
+}
+
+type Cargos {
+  idCargo: Int!
+  cargo: String!
+  ejecutivos: [Ejecutivos!]
+}
+
+type FacturaContenedor {
+  idFacturaContenedor: Int!
+  idFactura: Int!
+  idContenedor: Int!
+  facturaResumen: FacturaResumen
+}
+
 type Campanas {
   idCampana: Int!
   campana: String!
@@ -36,6 +91,59 @@ type CampanaEtapasContratacion {
   campana: Campanas
   etapaContratacion: EtapasContratacion
   pais: Paises
+}
+
+type PuertoEmbarque {
+  idPuertoEmbarque: Int!
+  idEmbarque: Int!
+  idPuertoOrigen: Int!
+  idPuertoDestino: Int!
+  embarques: Embarques
+  puertoOrigen: Puertos
+  puertoDestino: Puertos
+}
+
+type Puertos {
+  idPuerto: Int!
+  nombre: String!
+  idPais: Int!
+  deposito: String
+  fichaCostoResumen: [FichaCostoResumen!]
+  pliegoConcurrenciaResumenEmbarque: [PliegoConcurrenciaResumen!]
+  pliegoConcurrenciaResumenDestino: [PliegoConcurrenciaResumen!]
+  facturaResumen: [FacturaResumen!]
+  pais: Paises
+  puertoEmbarquesOrigen: [PuertoEmbarque!]
+  puertoEmbarquesDestino: [PuertoEmbarque!]
+}
+
+type Paises {
+  pais: Int!
+  nomb: String!
+  cmon: Float
+  smon: String
+  tase: Float
+  t2Se: Float
+  area: Float
+  nmf: String!
+  aladi: String!
+  codmon: String
+  codpais: String
+  abreviatur: String
+  actualizacion: DateTime!
+  upsizeTs: DateTime
+  travesia: Int!
+  idCircularAct: Int
+  basesGenerales: [BasesGenerales!]
+  campanaEtapasContratacion: [CampanaEtapasContratacion!]
+  contratos: [Contratos!]
+  suplementoResumen: [SuplementoResumen!]
+  pliegoConcurrenciaResumen: [PliegoConcurrenciaResumen!]
+  facturaDesgloses: [FacturaDesglose!]
+  tiemposTravesias: [TiemposTravesia!]
+  fichaCompraResumen: [FichaCompraResumen!]
+  fichaCostoResumen: [FichaCostoResumen!]
+  puerto: [Puertos!]
 }
 
 type Embalajes {
@@ -81,11 +189,6 @@ type ContratoMarco {
   fichaCostoResumen: [FichaCostoResumen!]
   proveedor: Proveedores
 }
-
-"""
-A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
-"""
-scalar DateTime
 
 type NegociacionProveedores {
   idNegociacionProveedores: Int!
@@ -219,17 +322,56 @@ type Referencias {
   solicitudCodificacion: [SolicitudCodificacion!]
 }
 
-type FacturaContenedor {
-  idFacturaContenedor: Int!
+type FacturaDesglose {
+  idFacturaDesglose: Int!
+  idReferencia: Int
   idFactura: Int!
-  idContenedor: Int!
+  idCodigo: Int!
+  paquete: Int!
+  bultos: Float!
+  cantidad: Float!
+  precioPaquete: Float!
+  precio: Float!
+  idPaisOrigen: Int
+  suplemento: Float!
+  packing: Float!
+  cajas: Int!
   facturaResumen: FacturaResumen
+  referencia: Referencias
+  codigo: CodigosParaLaVenta
+  pais: Paises
 }
 
-type Cargos {
-  idCargo: Int!
-  cargo: String!
-  ejecutivos: [Ejecutivos!]
+type FacturaResumen {
+  idFactura: Int!
+  idContrato: Int!
+  idEmbarque: Int
+  idEjecutivo: Int
+  idPuertoDestino: Int
+  realizadoPor: Int!
+  fecha: DateTime
+  fechaFactura: DateTime!
+  numeroBl: String
+  numero: String
+  nivel: Int
+  plazoPuerto: Int
+  plazoAlmacen: Int
+  plazoTienda: Int
+  fechaPartida: DateTime
+  descuento: Float
+  nota: String
+  terminado: Boolean!
+  tasaMoneda: Float!
+  cancelado: Boolean!
+  fechaTerminada: DateTime
+  laTasaMn: Float!
+  facturaContenedores: [FacturaContenedor!]
+  facturaDesgloses: [FacturaDesglose!]
+  contratos: Contratos
+  embarques: Embarques
+  ejecutivos: Ejecutivos
+  puertoDestino: Puertos
+  ejecutivoRealiza: Ejecutivos
 }
 
 type GruposDeCompras {
@@ -283,157 +425,6 @@ type Ejecutivos {
   suplementoResumen: [SuplementoResumen!]
   suplementoResumenFirma: [SuplementoResumen!]
   usuarios: Usuarios
-}
-
-type FacturaResumen {
-  idFactura: Int!
-  idContrato: Int!
-  idEmbarque: Int
-  idEjecutivo: Int
-  idPuertoDestino: Int
-  realizadoPor: Int!
-  fecha: DateTime
-  fechaFactura: DateTime!
-  numeroBl: String
-  numero: String
-  nivel: Int
-  plazoPuerto: Int
-  plazoAlmacen: Int
-  plazoTienda: Int
-  fechaPartida: DateTime
-  descuento: Float
-  nota: String
-  terminado: Boolean!
-  tasaMoneda: Float!
-  cancelado: Boolean!
-  fechaTerminada: DateTime
-  laTasaMn: Float!
-  facturaContenedores: [FacturaContenedor!]
-  facturaDesgloses: [FacturaDesglose!]
-  contratos: Contratos
-  embarques: Embarques
-  ejecutivos: Ejecutivos
-  puertoDestino: Puertos
-  ejecutivoRealiza: Ejecutivos
-}
-
-type FacturaDesglose {
-  idFacturaDesglose: Int!
-  idReferencia: Int
-  idFactura: Int!
-  idCodigo: Int!
-  paquete: Int!
-  bultos: Float!
-  cantidad: Float!
-  precioPaquete: Float!
-  precio: Float!
-  idPaisOrigen: Int
-  suplemento: Float!
-  packing: Float!
-  cajas: Int!
-  facturaResumen: FacturaResumen
-  referencia: Referencias
-  codigo: CodigosParaLaVenta
-  pais: Paises
-}
-
-type Paises {
-  pais: Int!
-  nomb: String!
-  cmon: Float
-  smon: String
-  tase: Float
-  t2Se: Float
-  area: Float
-  nmf: String!
-  aladi: String!
-  codmon: String
-  codpais: String
-  abreviatur: String
-  actualizacion: DateTime!
-  upsizeTs: DateTime
-  travesia: Int!
-  idCircularAct: Int
-  basesGenerales: [BasesGenerales!]
-  campanaEtapasContratacion: [CampanaEtapasContratacion!]
-  contratos: [Contratos!]
-  suplementoResumen: [SuplementoResumen!]
-  pliegoConcurrenciaResumen: [PliegoConcurrenciaResumen!]
-  facturaDesgloses: [FacturaDesglose!]
-  tiemposTravesias: [TiemposTravesia!]
-  fichaCompraResumen: [FichaCompraResumen!]
-  fichaCostoResumen: [FichaCostoResumen!]
-  puerto: [Puertos!]
-}
-
-type PuertoEmbarque {
-  idPuertoEmbarque: Int!
-  idEmbarque: Int!
-  idPuertoOrigen: Int!
-  idPuertoDestino: Int!
-  embarques: Embarques
-  puertoOrigen: Puertos
-  puertoDestino: Puertos
-  suplementoEmbarques: [SuplementoEmbarques!]
-}
-
-type Puertos {
-  idPuerto: Int!
-  nombre: String!
-  idPais: Int!
-  deposito: String
-  fichaCostoResumen: [FichaCostoResumen!]
-  pliegoConcurrenciaResumenEmbarque: [PliegoConcurrenciaResumen!]
-  pliegoConcurrenciaResumenDestino: [PliegoConcurrenciaResumen!]
-  facturaResumen: [FacturaResumen!]
-  suplementoEmbarquesDestino: [SuplementoEmbarques!]
-  suplementoEmbarquesOrigen: [SuplementoEmbarques!]
-  pais: Paises
-  puertoEmbarquesOrigen: [PuertoEmbarque!]
-  puertoEmbarquesDestino: [PuertoEmbarque!]
-}
-
-type SuplementoEmbarques {
-  idSuplementoEmbarques: Int!
-  idSuplementoResumen: Int!
-  idEmbarque: Int!
-  idContrato: Int!
-  idPuertoDestino: Int!
-  idPuertoOrigen: Int!
-  idPuertoEmbarque: Int!
-  fechaEntrega: DateTime!
-  numero: Int!
-  descuento: Float
-  terminado: Boolean!
-  cancelado: Boolean!
-  porFirmar: Boolean!
-  qtyCnt: Int!
-  flete: Float!
-  seguro: Float!
-  financiamiento: Float!
-  idEmpresaNaviera: Int!
-  inspeccion: Float!
-  otros: Float!
-  c40: Int!
-  c20: Int!
-  suplementoResumen: SuplementoResumen
-  embarques: Embarques
-  contrato: Contratos
-  puertoDestino: Puertos
-  puertoOrigen: Puertos
-  puertoEmbarque: PuertoEmbarque
-  companiaNaviera: CompaniasNavieras
-}
-
-type CompaniasNavieras {
-  id: Int!
-  nombre: String
-  diasdegracia: Int
-  contratos: [Contratos!]
-  embarques: [Embarques!]
-  suplementoResumen: [SuplementoResumen!]
-  pliegoConcurrenciaResumen: [PliegoConcurrenciaResumen!]
-  suplementoEmbarques: [SuplementoEmbarques!]
 }
 
 type CambiosSuplementos {
@@ -1509,8 +1500,6 @@ type Query {
   findOneSuplementoClausulas(id: Int!): SuplementoClausulas!
   findAllSuplementoChange: [SuplementoChange!]!
   findOneSuplementoChange(id: Int!): SuplementoChange!
-  findAllEmbarques: [Embarques!]!
-  findOneEmbarques(id: Int!): Embarques!
   findAllCambiosSuplementos: [CambiosSuplementos!]!
   findOneCambiosSuplementos(id: Int!): CambiosSuplementos!
   findAllTiposContenedor: [TiposContenedor!]!
@@ -1557,6 +1546,12 @@ type Query {
   findOneContenedores(id: Int!): Contenedores!
   findAllContratoDesglose: [ContratoDesglose!]!
   findOneContratoDesglose(id: Int!): ContratoDesglose!
+  findAllEmbarques: [Embarques!]!
+  findOneEmbarques(id: Int!): Embarques!
+  findAllSuplementoEmbarques: [SuplementoEmbarques!]!
+  findOneSuplementoEmbarques(id: Int!): SuplementoEmbarques!
+  findAllSuplementoDesglose: [SuplementoDesglose!]!
+  findOneSuplementoDesglose(id: Int!): SuplementoDesglose!
   findAllFacturaResumen: [FacturaResumen!]!
   findOneFacturaResumen(id: Int!): FacturaResumen!
   findAllFacturaDesglose: [FacturaDesglose!]!
@@ -1565,12 +1560,6 @@ type Query {
   findOneFacturaContenedor(id: Int!): FacturaContenedor!
   findAllSuplementoPagos: [SuplementoPagos!]!
   findOneSuplementoPagos(id: Int!): SuplementoPagos!
-  findAllSuplementoEmbarques: [SuplementoEmbarques!]!
-  findOneSuplementoEmbarques(id: Int!): SuplementoEmbarques!
-  findAllPuertoEmbarque: [PuertoEmbarque!]!
-  findOnePuertoEmbarque(id: Int!): PuertoEmbarque!
-  findAllSuplementoDesglose: [SuplementoDesglose!]!
-  findOneSuplementoDesglose(id: Int!): SuplementoDesglose!
   findAllRoles: [Roles!]!
   findOneRoles(id: Int!): Roles!
   findAllUsuarios: [Usuarios!]!
@@ -1578,6 +1567,8 @@ type Query {
   autenticarUsuarios(contrasena: String!, nombreUsuario: String!): Usuarios!
   findAllUsuarioRol: [UsuarioRol!]!
   findOneUsuarioRol(id: Int!): UsuarioRol!
+  findAllPuertoEmbarque: [PuertoEmbarque!]!
+  findOnePuertoEmbarque(id: Int!): PuertoEmbarque!
 }
 
 type Mutation {
@@ -1678,9 +1669,6 @@ type Mutation {
   createSuplementoChange(createSuplementoChangeInput: CreateSuplementoChangeInput!): SuplementoChange!
   removeSuplementoChange(id: Int!): SuplementoChange!
   removeSeveralSuplementoChange(id: [Int!]!): [SuplementoChange!]!
-  createEmbarque(createEmbarqueInput: CreateEmbarqueInput!): Embarques!
-  removeEmbarque(id: Int!): Embarques!
-  removeSeveralEmbarque(id: [Int!]!): [Embarques!]!
   createCambiosSuplemento(createCambiosSuplementoInput: CreateCambiosSuplementoInput!): CambiosSuplementos!
   removeCambiosSuplemento(id: Int!): CambiosSuplementos!
   removeSeveralCambiosSuplemento(id: [Int!]!): [CambiosSuplementos!]!
@@ -1741,6 +1729,15 @@ type Mutation {
   createContratoDesglose(createContratoDesgloseInput: CreateContratoDesgloseInput!): ContratoDesglose!
   removeContratoDesglose(id: Int!): ContratoDesglose!
   removeSeveralContratoDesglose(id: [Int!]!): [ContratoDesglose!]!
+  createEmbarque(createEmbarqueInput: CreateEmbarqueInput!): Embarques!
+  removeEmbarque(id: Int!): Embarques!
+  removeSeveralEmbarque(id: [Int!]!): [Embarques!]!
+  createSuplementoEmbarque(createSuplementoEmbarqueInput: CreateSuplementoEmbarqueInput!): SuplementoEmbarques!
+  removeSuplementoEmbarque(id: Int!): SuplementoEmbarques!
+  removeSeveralSuplementoEmbarque(id: [Int!]!): [SuplementoEmbarques!]!
+  createSuplementoDesglose(createSuplementoDesgloseInput: CreateSuplementoDesgloseInput!): SuplementoDesglose!
+  removeSuplementoDesglose(id: Int!): SuplementoDesglose!
+  removeSeveralSuplementoDesglose(id: [Int!]!): [SuplementoDesglose!]!
   createFacturaResuman(createFacturaResumanInput: CreateFacturaResumanInput!): FacturaResumen!
   removeFacturaResuman(id: Int!): FacturaResumen!
   removeSeveralFacturaResuman(id: [Int!]!): [FacturaResumen!]!
@@ -1755,15 +1752,6 @@ type Mutation {
   createSuplementoPago(createSuplementoPagoInput: CreateSuplementoPagoInput!): SuplementoPagos!
   removeSuplementoPago(id: Int!): SuplementoPagos!
   removeSeveralSuplementoPago(id: [Int!]!): [SuplementoPagos!]!
-  createSuplementoEmbarque(createSuplementoEmbarqueInput: CreateSuplementoEmbarqueInput!): SuplementoEmbarques!
-  removeSuplementoEmbarque(id: Int!): SuplementoEmbarques!
-  removeSeveralSuplementoEmbarque(id: [Int!]!): [SuplementoEmbarques!]!
-  createPuertoEmbarque(createPuertoEmbarqueInput: CreatePuertoEmbarqueInput!): PuertoEmbarque!
-  removePuertoEmbarque(id: Int!): PuertoEmbarque!
-  removeSeveralPuertoEmbarque(id: [Int!]!): [PuertoEmbarque!]!
-  createSuplementoDesglose(createSuplementoDesgloseInput: CreateSuplementoDesgloseInput!): SuplementoDesglose!
-  removeSuplementoDesglose(id: Int!): SuplementoDesglose!
-  removeSeveralSuplementoDesglose(id: [Int!]!): [SuplementoDesglose!]!
   createRole(createRoleInput: CreateRoleInput!): Roles!
   removeRoles(id: Int!): Roles!
   removeSeveralRoles(id: [Int!]!): [Roles!]!
@@ -1777,6 +1765,9 @@ type Mutation {
   removeUsuarioRol(id: Int!): UsuarioRol!
   removeUsuarioRolByUserId(idUsuario: Int!): UsuarioRol!
   removeSeveralUsuarioRol(id: [Int!]!): [UsuarioRol!]!
+  createPuertoEmbarque(createPuertoEmbarqueInput: CreatePuertoEmbarqueInput!): PuertoEmbarque!
+  removePuertoEmbarque(id: Int!): PuertoEmbarque!
+  removeSeveralPuertoEmbarque(id: [Int!]!): [PuertoEmbarque!]!
 }
 
 input CreateMonedaInput {
@@ -2004,8 +1995,8 @@ input CreateContratoMarcoInput {
   monto: Float!
   contratado: Float!
   pendiente: Float
-  creado: DateTime!
-  actualizado: DateTime!
+  creado: DateTime
+  actualizado: DateTime
 }
 
 input CreateFormasEntregaInput {
@@ -2176,29 +2167,6 @@ input CreateSuplementoChangeInput {
   clausula: String!
   contenidoViejo: String
   contenidoNuevo: String
-}
-
-input CreateEmbarqueInput {
-  idEmbarque: Int
-  fechaEntrega: DateTime!
-  idContrato: Int
-  idEjecutivo: Int
-  numero: Int!
-  descuento: Float
-  terminado: Boolean!
-  cancelado: Boolean!
-  porFirmar: Boolean!
-  qtyCnt: Int!
-  flete: Float!
-  seguro: Float!
-  financiamiento: Float!
-  maquina: String
-  idEmpresaNaviera: Int!
-  inspeccion: Float!
-  otros: Float!
-  c40: Int!
-  c20: Int!
-  actSci: Boolean!
 }
 
 input CreateCambiosSuplementoInput {
@@ -2493,6 +2461,78 @@ input CreateContratoDesgloseInput {
   cajas: Int!
 }
 
+input CreateEmbarqueInput {
+  idEmbarque: Int
+  fechaEntrega: DateTime!
+  idContrato: Int
+  idEjecutivo: Int
+  numero: Int!
+  descuento: Float
+  terminado: Boolean!
+  cancelado: Boolean!
+  porFirmar: Boolean!
+  qtyCnt: Int!
+  flete: Float!
+  seguro: Float!
+  financiamiento: Float!
+  maquina: String
+  idEmpresaNaviera: Int!
+  inspeccion: Float!
+  otros: Float!
+  c40: Int!
+  c20: Int!
+  actSci: Boolean!
+  contratoDesglose: [CreateContratoDesgloseInput!]
+  puertoEmbarque: [CreatePuertoEmbarqueInput!]
+}
+
+input CreatePuertoEmbarqueInput {
+  idPuertoEmbarque: Int
+  idEmbarque: Int!
+  idPuertoOrigen: Int!
+  idPuertoDestino: Int!
+}
+
+input CreateSuplementoEmbarqueInput {
+  idSuplementoEmbarques: Int
+  idSuplementoResumen: Int!
+  idEmbarque: Int!
+  idContrato: Int!
+  fechaEntrega: DateTime!
+  numero: Int!
+  descuento: Float
+  terminado: Boolean!
+  cancelado: Boolean!
+  porFirmar: Boolean!
+  qtyCnt: Int!
+  flete: Float!
+  seguro: Float!
+  financiamiento: Float!
+  idEmpresaNaviera: Int!
+  inspeccion: Float!
+  otros: Float!
+  c40: Int!
+  c20: Int!
+}
+
+input CreateSuplementoDesgloseInput {
+  idSuplementoDesglose: Int
+  idSuplementoResumen: Int!
+  idEmbarque: Int!
+  idReferencia: Int
+  idCodigo: Int!
+  descripcionSp: String
+  idUnidadMedida: Int!
+  cantidadPorCarton: Float!
+  paquete: Int!
+  cantidadCartones: Int!
+  volumen: Float!
+  precio: Float!
+  precioPaquete: Float!
+  packing: Float!
+  cajas: Float!
+}
+
 input CreateFacturaResumanInput {
   idFactura: Int
   idContrato: Int!
@@ -2550,56 +2590,6 @@ input CreateSuplementoPagoInput {
   plazoPago: Int!
   aPartirDe: Int!
   porciento: Float!
-}
-
-input CreateSuplementoEmbarqueInput {
-  idSuplementoEmbarques: Int
-  idSuplementoResumen: Int!
-  idEmbarque: Int!
-  idContrato: Int!
-  idPuertoDestino: Int!
-  idPuertoOrigen: Int!
-  idPuertoEmbarque: Int!
-  fechaEntrega: DateTime!
-  numero: Int!
-  descuento: Float
-  terminado: Boolean!
-  cancelado: Boolean!
-  porFirmar: Boolean!
-  qtyCnt: Int!
-  flete: Float!
-  seguro: Float!
-  financiamiento: Float!
-  idEmpresaNaviera: Int!
-  inspeccion: Float!
-  otros: Float!
-  c40: Int!
-  c20: Int!
-}
-
-input CreatePuertoEmbarqueInput {
-  idPuertoEmbarque: Int
-  idEmbarque: Int!
-  idPuertoOrigen: Int!
-  idPuertoDestino: Int!
-}
-
-input CreateSuplementoDesgloseInput {
-  idSuplementoDesglose: Int
-  idSuplementoResumen: Int!
-  idEmbarque: Int!
-  idReferencia: Int
-  idCodigo: Int!
-  descripcionSp: String
-  idUnidadMedida: Int!
-  cantidadPorCarton: Float!
-  paquete: Int!
-  cantidadCartones: Int!
-  volumen: Float!
-  precio: Float!
-  precioPaquete: Float!
-  packing: Float!
-  cajas: Float!
 }
 
 input CreateRoleInput {

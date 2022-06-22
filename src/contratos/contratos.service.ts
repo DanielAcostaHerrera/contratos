@@ -58,7 +58,7 @@ export class ContratosService {
       var contratoViejo = await this.findOne(createContratoInput.idContrato);
       var negociacion = await this.negociacionResumenService.findOne(createContratoInput.idNegociacion);
 
-      if(createContratoInput.idCMarco){
+     /* if(createContratoInput.idCMarco){
         var contratoMarco = await this.contratoMarcoService.findOne(createContratoInput.idCMarco);
         contratoMarco.contratado += negociacion.importeCuc;
         if(createContratoInput.gastosLogisticos){
@@ -70,10 +70,9 @@ export class ContratosService {
         else{
           this.contratoMarcoService.save(contratoMarco);
         }
-      }
+      }*/
 
       let suplementoChange = new CreateSuplementoChangeInput();
-
       var suplementoResumen = new CreateSuplementoResumanInput();
       suplementoResumen.idContrato = createContratoInput.idContrato;
       suplementoResumen.suplementadoPor = usuarioToken.idEjecutivo;
@@ -443,7 +442,7 @@ export class ContratosService {
       let clausulas = createContratoInput.contratoClausulas;
       for (let index = 0; index < clausulas.length; index++) {
         const clausula = clausulas[index];
-        const clausulaVieja = contratoViejo.contratoClausulas.find(clausula=> clausula.noClausula == clausula.noClausula)
+        const clausulaVieja = contratoViejo.contratoClausulas.find(clausula2=> clausula2.noClausula == clausula.noClausula)
         
         var suplementoClausula = new CreateSuplementoClausulaInput();
         suplementoClausula.idSuplementoResumen = resumenSuplemento.idSuplementoResumen;

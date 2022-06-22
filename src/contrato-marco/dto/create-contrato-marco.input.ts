@@ -23,9 +23,9 @@ export class CreateContratoMarcoInput {
   @Field(() => Float,{nullable: true})
   pendiente?: number;
 
-  @Field()
-  creado: Date;
+  @Field({nullable: true})
+  creado?: Date;
 
-  @Field()
-  actualizado: Date;
+  @Field({nullable: true})
+  actualizado?: Date;
 }

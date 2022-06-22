@@ -18,11 +18,11 @@ export class PuertoEmbarqueService {
   }
 
   async findAll(): Promise<PuertoEmbarque[]> {
-    return await this.puertoEmbarqueRepository.find({relations:['suplementoEmbarques']});
+    return await this.puertoEmbarqueRepository.find();
   }
 
   async findOne(id: number) : Promise<PuertoEmbarque> {
-    return await this.puertoEmbarqueRepository.findOne(id,{relations:['suplementoEmbarques']});
+    return await this.puertoEmbarqueRepository.findOne(id);
   }
 
   async remove(id: number) : Promise<any> {

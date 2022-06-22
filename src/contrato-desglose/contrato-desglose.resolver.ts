@@ -42,11 +42,6 @@ export class ContratoDesgloseResolver {
   removeSeveralContratoDesglose(@Args('id', { type: () => [Int] }) id: number[]) {
     return this.contratoDesgloseService.removeSeveral(id);
   }
-  
-  @ResolveField(() => Embarques, {nullable: true})
-  embarques(@Parent() contratoDesglose: ContratoDesglose): Promise<Embarques> {
-    return this.contratoDesgloseService.getEmbarque(contratoDesglose.idEmbarque);
-  }
 
   @ResolveField(() => Referencias, {nullable: true})
   referencia(@Parent() contratoDesglose: ContratoDesglose): Promise<Referencias> {

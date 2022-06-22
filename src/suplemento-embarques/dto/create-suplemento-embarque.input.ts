@@ -14,15 +14,6 @@ export class CreateSuplementoEmbarqueInput {
   @Field(() => Int)
   idContrato: number;
 
-  @Field(() => Int)
-  idPuertoDestino: number;
-
-  @Field(() => Int)
-  idPuertoOrigen: number;
-
-  @Field(() => Int)
-  idPuertoEmbarque: number;
-
   @Field()
   fechaEntrega: Date;
 
@@ -67,4 +58,7 @@ export class CreateSuplementoEmbarqueInput {
 
   @Field(() => Int)
   c20: number;
+
+  @Field()
+  actSci: boolean;
 }

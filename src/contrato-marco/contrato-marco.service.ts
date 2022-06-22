@@ -33,6 +33,7 @@ export class ContratoMarcoService {
 
       createContratoMarcoInput.creado = new Date();
       createContratoMarcoInput.actualizado = new Date();
+      createContratoMarcoInput.pendiente = createContratoMarcoInput.monto - createContratoMarcoInput.contratado;
       result = await this.contratoMarcoRepository.save(createContratoMarcoInput);
     }
 

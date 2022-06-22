@@ -13,12 +13,14 @@ import { LogsService } from 'src/logs/logs.service';
 import { Usuarios } from 'src/models/entities/Usuarios.entity';
 import { NegociacionProveedoresService } from 'src/negociacion-proveedores/negociacion-proveedores.service';
 import { CreateNegociacionProveedoresInput } from 'src/negociacion-proveedores/dto/create-negociacion-proveedores.input';
+import { CreateContratoMarcoInput } from 'src/contrato-marco/dto/create-contrato-marco.input';
+import { ContratoMarcoService } from 'src/contrato-marco/contrato-marco.service';
 
 @Injectable()
 export class NegociacionResumenService {
   constructor(@InjectRepository(NegociacionResumen) public readonly negociacionResumenRepository: Repository<NegociacionResumen>,
   private tiposDeComprasService: TiposDeComprasService,private monedaService: MonedaService,private gruposDeComprasService: GruposDeComprasService,
-  private logsService: LogsService,private negociacionProveedoresService: NegociacionProveedoresService) {}
+  private logsService: LogsService,private negociacionProveedoresService: NegociacionProveedoresService, private contratoMarcoService: ContratoMarcoService) {}
 
 
   async save(usuarioToken: Usuarios,createNegociacionResumenInput: CreateNegociacionResumenInput) : Promise<NegociacionResumen> {
@@ -29,6 +31,8 @@ export class NegociacionResumenService {
     if(createNegociacionResumenInput.idNegociacion){
       esNuevo = false;
       var negociacionVieja = await this.findOne(createNegociacionResumenInput.idNegociacion);
+      let importeViejo = negociacionVieja.importeCuc;
+      
 
       await this.negociacionProveedoresService.removeSeveralByNegociacionId(createNegociacionResumenInput.idNegociacion);
 
@@ -51,6 +55,24 @@ export class NegociacionResumenService {
       createNegociacionResumenInput.importeCuc = importeCUC;
       createNegociacionResumenInput.importeTrd = importeTRD;
       createNegociacionResumenInput.importeGae = importeGAE;
+
+      let contratoMarco = new CreateContratoMarcoInput();
+
+      if(negociacionVieja.contratos){
+        let contratoMarcoViejo = negociacionVieja.contratos[0].contratoMarco;
+        contratoMarco.idCMarco = contratoMarcoViejo.idCMarco;
+        contratoMarco.idProveedor = contratoMarcoViejo.idProveedor;
+        contratoMarco.fecha = contratoMarcoViejo.fecha;
+        contratoMarco.consecutivo = contratoMarcoViejo.consecutivo;
+        contratoMarco.monto = contratoMarcoViejo.monto;
+        contratoMarco.contratado = contratoMarcoViejo.contratado - importeViejo + importeCUC;
+        contratoMarco.pendiente = contratoMarco.monto - contratoMarco.contratado;
+        contratoMarco.creado = contratoMarcoViejo.creado;
+        contratoMarco.actualizado = new Date();
+
+        this.contratoMarcoService.save(contratoMarco);
+      }
+      
 
       result = await this.negociacionResumenRepository.save(createNegociacionResumenInput);
 

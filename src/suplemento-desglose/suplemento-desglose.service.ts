@@ -3,8 +3,6 @@ import { CodigosParaLaVentaService } from 'src/codigos-para-la-venta/codigos-par
 import { UnidadMedidaService } from 'src/unidad-medida/unidad-medida.service';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { EmbarquesService } from 'src/embarques/embarques.service';
-import { Embarques } from 'src/models/entities/Embarques.entity';
 import { SuplementoDesglose } from 'src/models/entities/SuplementoDesglose.entity';
 import { SuplementoResumen } from 'src/models/entities/SuplementoResumen.entity';
 import { CodigosParaLaVenta } from 'src/modelsMercurio/entities/CodigosParaLaVenta.entity';
@@ -17,7 +15,7 @@ import { CreateSuplementoDesgloseInput } from './dto/create-suplemento-desglose.
 @Injectable()
 export class SuplementoDesgloseService {
   constructor(@InjectRepository(SuplementoDesglose) public readonly suplementoDesgloseRepository: Repository<SuplementoDesglose>,
-  private embarquesService: EmbarquesService, private suplementoResumenService: SuplementoResumenService,
+  private suplementoResumenService: SuplementoResumenService,
   private unidadMedidaService: UnidadMedidaService, private codigosParaLaVentaService: CodigosParaLaVentaService,
   private referenciasService: ReferenciasService) {}
 
@@ -27,11 +25,11 @@ export class SuplementoDesgloseService {
   }
 
   async findAll(): Promise<SuplementoDesglose[]> {
-    return await this.suplementoDesgloseRepository.find();
+    return await this.suplementoDesgloseRepository.find({relations:['embarques']});
   }
 
   async findOne(id: number) : Promise<SuplementoDesglose> {
-    return await this.suplementoDesgloseRepository.findOne(id);
+    return await this.suplementoDesgloseRepository.findOne(id,{relations:['embarques']});
   }
 
   async remove(id: number) : Promise<any> {
@@ -46,10 +44,6 @@ export class SuplementoDesgloseService {
 
   async getSuplementoResumen (id: number) : Promise<SuplementoResumen>{
     return this.suplementoResumenService.findOne(id);
-  }
-
-  async getEmbarque (id: number) : Promise<Embarques>{
-    return this.embarquesService.findOne(id);
   }
 
   async getUnidadMedida (id: number) : Promise<UnidadMedida>{

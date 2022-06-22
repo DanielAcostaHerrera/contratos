@@ -3,7 +3,6 @@ import { SuplementoDesgloseService } from './suplemento-desglose.service';
 import { CreateSuplementoDesgloseInput } from './dto/create-suplemento-desglose.input';
 import { SuplementoDesglose } from 'src/models/entities/SuplementoDesglose.entity';
 import { SuplementoResumen } from 'src/models/entities/SuplementoResumen.entity';
-import { Embarques } from 'src/models/entities/Embarques.entity';
 import { UnidadMedida } from 'src/modelsMercurio/entities/UnidadMedida.entity';
 import { CodigosParaLaVenta } from 'src/modelsMercurio/entities/CodigosParaLaVenta.entity';
 import { Referencias } from 'src/modelsMercurio/entities/Referencias.entity';
@@ -47,11 +46,6 @@ export class SuplementoDesgloseResolver {
   @ResolveField(() => SuplementoResumen, {nullable: true})
   suplementoResumen(@Parent() suplementoDesglose: SuplementoDesglose): Promise<SuplementoResumen> {
     return this.suplementoDesgloseService.getSuplementoResumen(suplementoDesglose.idSuplementoResumen);
-  }
-
-  @ResolveField(() => Embarques, {nullable: true})
-  embarques(@Parent() suplementoDesglose: SuplementoDesglose): Promise<Embarques> {
-    return this.suplementoDesgloseService.getEmbarque(suplementoDesglose.idEmbarque);
   }
 
   @ResolveField(() => UnidadMedida, {nullable: true})

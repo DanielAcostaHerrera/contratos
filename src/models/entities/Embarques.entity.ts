@@ -84,10 +84,6 @@ export class Embarques {
   @Field(() => Float)
   financiamiento: number;
 
-  @Column("nvarchar", { name: "Maquina", nullable: true, length: 100 })
-  @Field({nullable: true})
-  maquina: string | null;
-
   @Column("int", { name: "EmpNaviera", default: () => "(1)" })
   @Field(() => Int)
   idEmpresaNaviera: number;

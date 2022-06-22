@@ -12,7 +12,7 @@ import { CambiosSuplementosService } from 'src/cambios-suplementos/cambios-suple
 
 @Injectable()
 export class SuplementoChangeService {
-  constructor(@InjectRepository(SuplementoChange) public readonly suplementoChangeRepository: Repository<SuplementoChange>,private embarquesService: EmbarquesService,
+  constructor(@InjectRepository(SuplementoChange) public readonly suplementoChangeRepository: Repository<SuplementoChange>,
   private suplementoResumenService: SuplementoResumenService, private cambiosSuplementosService: CambiosSuplementosService) {}
 
 
@@ -21,11 +21,11 @@ export class SuplementoChangeService {
   }
 
   async findAll(): Promise<SuplementoChange[]> {
-    return await this.suplementoChangeRepository.find();
+    return await this.suplementoChangeRepository.find({relations:['embarques']});
   }
 
   async findOne(id: number) : Promise<SuplementoChange> {
-    return await this.suplementoChangeRepository.findOne(id);
+    return await this.suplementoChangeRepository.findOne(id,{relations:['embarques']});
   }
 
   async remove(id: number) : Promise<any> {
@@ -40,10 +40,6 @@ export class SuplementoChangeService {
 
   async getSuplementoResumen (id: number) : Promise<SuplementoResumen>{
     return this.suplementoResumenService.findOne(id);
-  }
-
-  async getEmbarque (id: number) : Promise<Embarques>{
-    return this.embarquesService.findOne(id);
   }
 
   async getCambioSuplemento (id: number) : Promise<CambiosSuplementos>{

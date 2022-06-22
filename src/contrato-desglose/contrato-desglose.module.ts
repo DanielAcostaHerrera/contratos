@@ -3,7 +3,6 @@ import { ContratoDesgloseService } from './contrato-desglose.service';
 import { ContratoDesgloseResolver } from './contrato-desglose.resolver';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ContratoDesglose } from 'src/models/entities/ContratoDesglose.entity';
-import { EmbarquesModule } from 'src/embarques/embarques.module';
 import { ReferenciasModule } from 'src/referencias/referencias.module';
 import { UnidadMedidaModule } from 'src/unidad-medida/unidad-medida.module';
 import { CodigosParaLaVentaModule } from 'src/codigos-para-la-venta/codigos-para-la-venta.module';
@@ -11,7 +10,7 @@ import { CodigosParaLaVentaModule } from 'src/codigos-para-la-venta/codigos-para
 @Module({
   imports: [TypeOrmModule.forFeature(
     [ContratoDesglose]
-  ),EmbarquesModule,ReferenciasModule,UnidadMedidaModule,CodigosParaLaVentaModule],
+  ),ReferenciasModule,UnidadMedidaModule,CodigosParaLaVentaModule],
   providers: [ContratoDesgloseResolver, ContratoDesgloseService],
   exports: [ContratoDesgloseService]
 })

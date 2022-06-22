@@ -1,9 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CodigosParaLaVentaService } from 'src/codigos-para-la-venta/codigos-para-la-venta.service';
-import { EmbarquesService } from 'src/embarques/embarques.service';
 import { ContratoDesglose } from 'src/models/entities/ContratoDesglose.entity';
-import { Embarques } from 'src/models/entities/Embarques.entity';
 import { Referencias } from 'src/modelsMercurio/entities/Referencias.entity';
 import { UnidadMedida } from 'src/modelsMercurio/entities/UnidadMedida.entity';
 import { CodigosParaLaVenta } from 'src/modelsMercurio/entities/CodigosParaLaVenta.entity';
@@ -14,7 +12,7 @@ import { CreateContratoDesgloseInput } from './dto/create-contrato-desglose.inpu
 
 @Injectable()
 export class ContratoDesgloseService {
-  constructor(@InjectRepository(ContratoDesglose) public readonly contratoDesgloseRepository: Repository<ContratoDesglose>,private embarquesService: EmbarquesService,
+  constructor(@InjectRepository(ContratoDesglose) public readonly contratoDesgloseRepository: Repository<ContratoDesglose>,
   private referenciasService: ReferenciasService,private unidadMedidaService: UnidadMedidaService,private codigosParaLaVentaService: CodigosParaLaVentaService) {}
 
 
@@ -23,11 +21,11 @@ export class ContratoDesgloseService {
   }
 
   async findAll(): Promise<ContratoDesglose[]> {
-    return await this.contratoDesgloseRepository.find();
+    return await this.contratoDesgloseRepository.find({relations:['embarques']});
   }
 
   async findOne(id: number) : Promise<ContratoDesglose> {
-    return await this.contratoDesgloseRepository.findOne(id);
+    return await this.contratoDesgloseRepository.findOne(id,{relations:['embarques']});
   }
 
   async remove(id: number) : Promise<any> {
@@ -38,10 +36,6 @@ export class ContratoDesgloseService {
   async removeSeveral(id: number[]) : Promise<any> {
     const contratoDesglose = await this.contratoDesgloseRepository.findByIds(id);
     return await this.contratoDesgloseRepository.remove(contratoDesglose);
-  }
-
-  async getEmbarque (Id: number) : Promise<Embarques>{
-    return this.embarquesService.findOne(Id);
   }
 
   async getReferencia (Id: number) : Promise<Referencias>{

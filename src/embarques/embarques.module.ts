@@ -5,11 +5,15 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Embarques } from 'src/models/entities/Embarques.entity';
 import { EjecutivoModule } from 'src/ejecutivo/ejecutivo.module';
 import { CompaniasNavierasModule } from 'src/companias-navieras/companias-navieras.module';
+import { ContratoDesgloseModule } from 'src/contrato-desglose/contrato-desglose.module';
+import { SuplementoChangeModule } from 'src/suplemento-change/suplemento-change.module';
+import { SuplementoEmbarquesModule } from 'src/suplemento-embarques/suplemento-embarques.module';
+import { SuplementoDesgloseModule } from 'src/suplemento-desglose/suplemento-desglose.module';
 
 @Module({
   imports: [TypeOrmModule.forFeature([
     Embarques
-  ]),EjecutivoModule,CompaniasNavierasModule],
+  ]),EjecutivoModule,CompaniasNavierasModule,ContratoDesgloseModule,SuplementoChangeModule,SuplementoEmbarquesModule,SuplementoDesgloseModule],
   providers: [EmbarquesResolver, EmbarquesService],
   exports: [EmbarquesService]
 })

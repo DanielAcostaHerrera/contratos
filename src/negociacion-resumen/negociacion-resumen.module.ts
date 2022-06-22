@@ -8,11 +8,12 @@ import { MonedaModule } from 'src/moneda/moneda.module';
 import { GruposDeComprasModule } from 'src/grupos-de-compras/grupos-de-compras.module';
 import { LogsModule } from 'src/logs/logs.module';
 import { NegociacionProveedoresModule } from 'src/negociacion-proveedores/negociacion-proveedores.module';
+import { ContratoMarcoModule } from 'src/contrato-marco/contrato-marco.module';
 
 @Module({
   imports: [TypeOrmModule.forFeature([
     NegociacionResumen
-  ]),TiposDeComprasModule,MonedaModule,GruposDeComprasModule,LogsModule,NegociacionProveedoresModule],
+  ]),TiposDeComprasModule,MonedaModule,GruposDeComprasModule,LogsModule,NegociacionProveedoresModule,ContratoMarcoModule],
   providers: [NegociacionResumenResolver, NegociacionResumenService],
   exports: [NegociacionResumenService]
 })

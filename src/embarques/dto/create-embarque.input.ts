@@ -1,4 +1,6 @@
+import { CreatePuertoEmbarqueInput } from './../../puerto-embarque/dto/create-puerto-embarque.input';
 import { InputType, Int, Field, Float } from '@nestjs/graphql';
+import { CreateContratoDesgloseInput } from 'src/contrato-desglose/dto/create-contrato-desglose.input';
 
 @InputType()
 export class CreateEmbarqueInput {
@@ -41,9 +43,6 @@ export class CreateEmbarqueInput {
   @Field(() => Float)
   financiamiento: number;
 
-  @Field({nullable: true})
-  maquina: string | null;
-
   @Field(() => Int)
   idEmpresaNaviera: number;
 
@@ -61,4 +60,10 @@ export class CreateEmbarqueInput {
 
   @Field()
   actSci: boolean;
+
+  @Field(()=> [CreateContratoDesgloseInput],{ nullable: true})
+  contratoDesglose?: CreateContratoDesgloseInput[];
+
+  @Field(()=> [CreatePuertoEmbarqueInput],{ nullable: true})
+  puertoEmbarque?: CreatePuertoEmbarqueInput[];
 }

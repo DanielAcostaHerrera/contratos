@@ -2,7 +2,6 @@ import { Resolver, Query, Mutation, Args, Int, ResolveField, Parent } from '@nes
 import { SuplementoChangeService } from './suplemento-change.service';
 import { CreateSuplementoChangeInput } from './dto/create-suplemento-change.input';
 import { SuplementoChange } from 'src/models/entities/SuplementoChange.entity';
-import { Embarques } from 'src/models/entities/Embarques.entity';
 import { SuplementoResumen } from 'src/models/entities/SuplementoResumen.entity';
 import { UseGuards } from '@nestjs/common';
 import { AuthGuard } from 'src/auth.guard';
@@ -45,11 +44,6 @@ export class SuplementoChangeResolver {
   @ResolveField(() => SuplementoResumen, {nullable: true})
   suplementoResumen(@Parent() suplementoChange: SuplementoChange): Promise<SuplementoResumen> {
     return this.suplementoChangeService.getSuplementoResumen(suplementoChange.idSuplementoResumen);
-  }
-
-  @ResolveField(() => Embarques, {nullable: true})
-  embarques(@Parent() suplementoChange: SuplementoChange): Promise<Embarques> {
-    return this.suplementoChangeService.getEmbarque(suplementoChange.idEmbarque);
   }
 
   @ResolveField(() => CambiosSuplementos, {nullable: true})

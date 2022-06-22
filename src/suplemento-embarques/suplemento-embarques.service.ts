@@ -2,16 +2,10 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CompaniasNavierasService } from 'src/companias-navieras/companias-navieras.service';
 import { ContratosService } from 'src/contratos/contratos.service';
-import { EmbarquesService } from 'src/embarques/embarques.service';
 import { Contratos } from 'src/models/entities/Contratos.entity';
-import { Embarques } from 'src/models/entities/Embarques.entity';
-import { PuertoEmbarque } from 'src/models/entities/PuertoEmbarque.entity';
-import { Puertos } from 'src/models/entities/Puertos.entity';
 import { SuplementoEmbarques } from 'src/models/entities/SuplementoEmbarques.entity';
 import { SuplementoResumen } from 'src/models/entities/SuplementoResumen.entity';
 import { CompaniasNavieras } from 'src/modelsNomgen/entities/CompaniasNavieras.entity';
-import { PuertoEmbarqueService } from 'src/puerto-embarque/puerto-embarque.service';
-import { PuertosService } from 'src/puertos/puertos.service';
 import { SuplementoResumenService } from 'src/suplemento-resumen/suplemento-resumen.service';
 import { Repository } from 'typeorm';
 import { CreateSuplementoEmbarqueInput } from './dto/create-suplemento-embarque.input';
@@ -19,9 +13,8 @@ import { CreateSuplementoEmbarqueInput } from './dto/create-suplemento-embarque.
 @Injectable()
 export class SuplementoEmbarquesService {
   constructor(@InjectRepository(SuplementoEmbarques) public readonly suplementoEmbarqueRepository: Repository<SuplementoEmbarques>,
-  private embarquesService: EmbarquesService,private puertosService: PuertosService,
   private contratosService: ContratosService,private suplementoResumenService: SuplementoResumenService,
-  private companiaNavieraService: CompaniasNavierasService, private puertoEmbarqueService: PuertoEmbarqueService) {}
+  private companiaNavieraService: CompaniasNavierasService) {}
 
 
   async save(createSuplementoEmbarqueInput: CreateSuplementoEmbarqueInput) : Promise<SuplementoEmbarques> {
@@ -29,11 +22,11 @@ export class SuplementoEmbarquesService {
   }
 
   async findAll(): Promise<SuplementoEmbarques[]> {
-    return await this.suplementoEmbarqueRepository.find();
+    return await this.suplementoEmbarqueRepository.find({relations:['embarques']});
   }
 
   async findOne(id: number) : Promise<SuplementoEmbarques> {
-    return await this.suplementoEmbarqueRepository.findOne(id);
+    return await this.suplementoEmbarqueRepository.findOne(id,{relations:['embarques']});
   }
 
   async remove(id: number) : Promise<any> {
@@ -50,24 +43,8 @@ export class SuplementoEmbarquesService {
     return this.contratosService.findOne(id);
   }
 
-  async getPuertoEmbarque (id: number) : Promise<PuertoEmbarque>{
-    return this.puertoEmbarqueService.findOne(id);
-  }
-
-  async getPuertoDestino (id: number) : Promise<Puertos>{
-    return this.puertosService.findOne(id);
-  }
-
-  async getPuertoOrigen (id: number) : Promise<Puertos>{
-    return this.puertosService.findOne(id);
-  }
-
   async getSuplementoResumen (id: number) : Promise<SuplementoResumen>{
     return this.suplementoResumenService.findOne(id);
-  }
-
-  async getEmbarque (id: number) : Promise<Embarques>{
-    return this.embarquesService.findOne(id);
   }
 
   async getNaviera (id: number) : Promise<CompaniasNavieras>{
