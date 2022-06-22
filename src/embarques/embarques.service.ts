@@ -438,7 +438,12 @@ export class EmbarquesService {
       - (a.fecha.getFullYear()+a.fecha.getMonth()+a.fecha.getDate()+a.fecha.getHours()+a.fecha.getMinutes()+a.fecha.getSeconds()));
 
       let ultimoSuplementoResumen = contrato.suplementoResumen[0];
-      let suplementoEmbarque = ultimoSuplementoResumen.suplementoEmbarques.find(embarque2=> embarque2.idEmbarque == embarque.idEmbarque)
+      let suplementoEmbarqueArray = ultimoSuplementoResumen.suplementoEmbarques.filter(embarque2=> embarque2.idEmbarque == embarque.idEmbarque)
+      if(suplementoEmbarqueArray.length > 1){
+        suplementoEmbarqueArray.sort((a, b) => b.idSuplementoEmbarques - a.idSuplementoEmbarques);
+      }
+      let suplementoEmbarque = suplementoEmbarqueArray[0];
+      
 
       embarque.idContrato = suplementoEmbarque.idContrato;
       embarque.idEjecutivo = suplementoEmbarque.suplementoResumen.idEjecutivo;
@@ -459,21 +464,33 @@ export class EmbarquesService {
       embarque.c20 = suplementoEmbarque.c20;
       embarque.actSci = suplementoEmbarque.actSci;
 
-     /* let desgloseContrato: ContratoDesglose[];
-      let desgloseSuplemento = this.suplementoDesgloseService.fin;
+      let desgloseContrato: ContratoDesglose[];
+      let desgloseSuplemento = ultimoSuplementoResumen.suplementoDesgloses.filter(desglose=> desglose.idEmbarque == embarque.idEmbarque);
+      //let idContratoDesgloseTemp = (await this.contratoDesgloseService.findAll()).sort((a, b) => b.idContratoDesglose - a.idContratoDesglose)[0].idContratoDesglose+1
       
-      for (let index = 0; index < clausulasSuplemento.length; index++) {
-        const clausula = clausulasSuplemento[index];
+      for (let index = 0; index < desgloseSuplemento.length; index++) {
+        const desglose = desgloseSuplemento[index];
         
-        var contratoClausula = new ContratoClausulas();
-        contratoClausula.idContrato = clausula.idContrato;
-        contratoClausula.contenido = clausula.txClausula;
-        contratoClausula.noClausula = clausula.noClausula;
-        contratoClausula.idContratoClausulas = null;
+        var contratoDesglose = new ContratoDesglose();
+        contratoDesglose.idContratoDesglose = null;
+        //idContratoDesgloseTemp += 1;
+        contratoDesglose.idEmbarque = desglose.idEmbarque;
+        contratoDesglose.idReferencia = desglose.idReferencia;
+        contratoDesglose.idCodigo = desglose.idCodigo;
+        contratoDesglose.descripcionAx = desglose.descripcionSp;
+        contratoDesglose.idUnidadMedida = desglose.idUnidadMedida;
+        contratoDesglose.cantidadPorCarton = desglose.cantidadPorCarton;
+        contratoDesglose.paquete = desglose.paquete;
+        contratoDesglose.cantidadCartones = desglose.cantidadCartones;
+        contratoDesglose.volumen = desglose.volumen;
+        contratoDesglose.precio = desglose.precio;
+        contratoDesglose.precioPaquete = desglose.precioPaquete;
+        contratoDesglose.packing = desglose.packing;
+        contratoDesglose.cajas = desglose.cajas;
         
-        clausulasContrato.push(contratoClausula)        
+        desgloseContrato.push(contratoDesglose);    
       }
-      contrato.contratoClausulas = clausulasContrato;*/
+      embarque.contratoDesgloses = desgloseContrato;
 
     }
 

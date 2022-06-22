@@ -9,12 +9,6 @@ export class CreateSuplementoResumanInput {
   idContrato: number;
 
   @Field(() => Int)
-  idPuertoOrigen: number;
-
-  @Field(() => Int)
-  idPuertoDestino: number;
-
-  @Field(() => Int)
   suplementadoPor: number;
 
   @Field(() => Int)

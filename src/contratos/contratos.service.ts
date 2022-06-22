@@ -58,20 +58,6 @@ export class ContratosService {
       var contratoViejo = await this.findOne(createContratoInput.idContrato);
       var negociacion = await this.negociacionResumenService.findOne(createContratoInput.idNegociacion);
 
-     /* if(createContratoInput.idCMarco){
-        var contratoMarco = await this.contratoMarcoService.findOne(createContratoInput.idCMarco);
-        contratoMarco.contratado += negociacion.importeCuc;
-        if(createContratoInput.gastosLogisticos){
-          contratoMarco.contratado += createContratoInput.gastosLogisticos;
-        }
-        if(contratoMarco.contratado > contratoMarco.monto){
-          reject("El monto que intenta insertar excede el saldo disponible");
-        }
-        else{
-          this.contratoMarcoService.save(contratoMarco);
-        }
-      }*/
-
       let suplementoChange = new CreateSuplementoChangeInput();
       var suplementoResumen = new CreateSuplementoResumanInput();
       suplementoResumen.idContrato = createContratoInput.idContrato;
@@ -731,6 +717,7 @@ export class ContratosService {
 
       let clausulasContrato: ContratoClausulas[];
       let clausulasSuplemento = ultimoSuplemento.suplementoClausulas;
+      //let idContratoClausulasTemp = (await this.contratoClausulaService.findAll()).sort((a, b) => b.idContratoClausulas - a.idContratoClausulas)[0].idContratoClausulas+1
       
       for (let index = 0; index < clausulasSuplemento.length; index++) {
         const clausula = clausulasSuplemento[index];
@@ -740,6 +727,7 @@ export class ContratosService {
         contratoClausula.contenido = clausula.txClausula;
         contratoClausula.noClausula = clausula.noClausula;
         contratoClausula.idContratoClausulas = null;
+        //idContratoClausulasTemp += 1;
         
         clausulasContrato.push(contratoClausula)        
       }
