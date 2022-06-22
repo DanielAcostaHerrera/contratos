@@ -50,7 +50,11 @@ export class Puertos {
 
   @Field(() => [SuplementoEmbarques], { nullable: true })
   @OneToMany(() => SuplementoEmbarques,(suplementoEmbarques) => suplementoEmbarques.puertoDestino)
-  suplementoEmbarques: SuplementoEmbarques[];
+  suplementoEmbarquesDestino: SuplementoEmbarques[];
+
+  @Field(() => [SuplementoEmbarques], { nullable: true })
+  @OneToMany(() => SuplementoEmbarques,(suplementoEmbarques) => suplementoEmbarques.puertoOrigen)
+  suplementoEmbarquesOrigen: SuplementoEmbarques[];
 
   @Field(() => Paises , {nullable: true})
   @ManyToOne(() => Paises, (pais) => pais.puerto)

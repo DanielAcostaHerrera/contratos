@@ -109,4 +109,19 @@ export class CreateSuplementoResumanInput {
 
   @Field()
   terminadoS: boolean;
+
+  @Field(() => Float)
+  gastosLogisticos: number;
+
+  @Field()
+  lugarFirma: string;
+
+  @Field(() => Int)
+  idPais: number;
+
+  @Field(() => Int)
+  idIncoterm: number;
+  
+  @Field(() => Int)
+  idFormaEntrega: number;
 }

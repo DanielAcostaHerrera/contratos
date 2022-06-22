@@ -9,6 +9,7 @@ import { Puertos } from 'src/models/entities/Puertos.entity';
 import { UseGuards } from '@nestjs/common';
 import { AuthGuard } from 'src/auth.guard';
 import { CompaniasNavieras } from 'src/modelsNomgen/entities/CompaniasNavieras.entity';
+import { PuertoEmbarque } from 'src/models/entities/PuertoEmbarque.entity';
 
 @Resolver(() => SuplementoEmbarques)
 export class SuplementoEmbarquesResolver {
@@ -59,9 +60,19 @@ export class SuplementoEmbarquesResolver {
     return this.suplementoEmbarquesService.getContrato(suplementoEmbarques.idContrato);
   }
 
+  @ResolveField(() => PuertoEmbarque, {nullable: true})
+  puertoEmbarque(@Parent() suplementoEmbarques: SuplementoEmbarques): Promise<PuertoEmbarque> {
+    return this.suplementoEmbarquesService.getPuertoEmbarque(suplementoEmbarques.idPuertoEmbarque);
+  }
+
   @ResolveField(() => Puertos, {nullable: true})
   puertoDestino(@Parent() suplementoEmbarques: SuplementoEmbarques): Promise<Puertos> {
     return this.suplementoEmbarquesService.getPuertoDestino(suplementoEmbarques.idPuertoDestino);
+  }
+
+  @ResolveField(() => Puertos, {nullable: true})
+  puertoOrigen(@Parent() suplementoEmbarques: SuplementoEmbarques): Promise<Puertos> {
+    return this.suplementoEmbarquesService.getPuertoOrigen(suplementoEmbarques.idPuertoOrigen);
   }
 
   @ResolveField(() => CompaniasNavieras, {nullable: true})

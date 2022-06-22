@@ -4,13 +4,14 @@ import { CreateSuplementoResumanInput } from './dto/create-suplemento-resuman.in
 import { SuplementoResumen } from 'src/models/entities/SuplementoResumen.entity';
 import { Monedas } from 'src/models/entities/Monedas.entity';
 import { Ejecutivos } from 'src/models/entities/Ejecutivos.entity';
-import { Puertos } from 'src/models/entities/Puertos.entity';
-import { Contratos } from 'src/models/entities/Contratos.entity';
 import { AgenciasAseguradoras } from 'src/modelsNomgen/entities/AgenciasAseguradoras.entity';
 import { CompaniasNavieras } from 'src/modelsNomgen/entities/CompaniasNavieras.entity';
 import { UseGuards } from '@nestjs/common';
 import { AuthGuard } from 'src/auth.guard';
 import { NegociacionResumen } from 'src/models/entities/NegociacionResumen.entity';
+import { Paises } from 'src/modelsMercurio/entities/Paises.entity';
+import { Incoterm } from 'src/models/entities/Incoterm.entity';
+import { FormasEntrega } from 'src/models/entities/FormasEntrega.entity';
 
 @Resolver(() => SuplementoResumen)
 export class SuplementoResumenResolver {
@@ -46,9 +47,19 @@ export class SuplementoResumenResolver {
     return this.suplementoResumenService.removeSeveral(id);
   }
 
-  @ResolveField(() => Contratos, {nullable: true})
-  contrato(@Parent() suplementoResumen: SuplementoResumen): Promise<Contratos> {
-    return this.suplementoResumenService.getContrato(suplementoResumen.idContrato);
+  @ResolveField(() => FormasEntrega, {nullable: true})
+  formaEntrega(@Parent() suplementoResumen: SuplementoResumen): Promise<FormasEntrega> {
+    return this.suplementoResumenService.getFormaEntrega(suplementoResumen.idFormaEntrega);
+  }
+
+  @ResolveField(() => Incoterm, {nullable: true})
+  incoterm(@Parent() suplementoResumen: SuplementoResumen): Promise<Incoterm> {
+    return this.suplementoResumenService.getIncoterm(suplementoResumen.idIncoterm);
+  }
+
+  @ResolveField(() => Paises, {nullable: true})
+  pais(@Parent() suplementoResumen: SuplementoResumen): Promise<Paises> {
+    return this.suplementoResumenService.getPais(suplementoResumen.idPais);
   }
 
   @ResolveField(() => Ejecutivos, {nullable: true})

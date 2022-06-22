@@ -5,7 +5,6 @@ import { SuplementoClausulas } from 'src/models/entities/SuplementoClausulas.ent
 import { SuplementoResumen } from 'src/models/entities/SuplementoResumen.entity';
 import { UseGuards } from '@nestjs/common';
 import { AuthGuard } from 'src/auth.guard';
-import { Contratos } from 'src/models/entities/Contratos.entity';
 
 @Resolver(() => SuplementoClausulas)
 export class SuplementoClausulasResolver {
@@ -44,10 +43,5 @@ export class SuplementoClausulasResolver {
   @ResolveField(() => SuplementoResumen, {nullable: true})
   suplementoResumen(@Parent() suplementoClausulas: SuplementoClausulas): Promise<SuplementoResumen> {
     return this.suplementoClausulasService.getSuplementoResumen(suplementoClausulas.idSuplementoResumen);
-  }
-
-  @ResolveField(() => Contratos, {nullable: true})
-  contrato(@Parent() suplementoClausulas: SuplementoClausulas): Promise<Contratos> {
-    return this.suplementoClausulasService.getContrato(suplementoClausulas.idContrato);
   }
 }

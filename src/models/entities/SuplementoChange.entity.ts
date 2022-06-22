@@ -24,9 +24,9 @@ export class SuplementoChange {
   @Field(() => Int)
   idSuplementoResumen: number;
 
-  @Column("int", { name: "IdEmbarque" })
-  @Field(() => Int)
-  idEmbarque: number;
+  @Column("int", { name: "IdEmbarque", nullable: true })
+  @Field(() => Int,{nullable: true})
+  idEmbarque: number | null;
 
   @Column("int", { name: "IdCambio"})
   @Field(() => Int)

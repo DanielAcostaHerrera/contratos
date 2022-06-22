@@ -1,7 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { ContratosService } from 'src/contratos/contratos.service';
-import { Contratos } from 'src/models/entities/Contratos.entity';
 import { SuplementoClausulas } from 'src/models/entities/SuplementoClausulas.entity';
 import { SuplementoResumen } from 'src/models/entities/SuplementoResumen.entity';
 import { SuplementoResumenService } from 'src/suplemento-resumen/suplemento-resumen.service';
@@ -11,7 +9,7 @@ import { CreateSuplementoClausulaInput } from './dto/create-suplemento-clausula.
 @Injectable()
 export class SuplementoClausulasService {
   constructor(@InjectRepository(SuplementoClausulas) public readonly suplementoClausulaRepository: Repository<SuplementoClausulas>,
-  private suplementoResumenService: SuplementoResumenService, private contratosService: ContratosService) {}
+  private suplementoResumenService: SuplementoResumenService) {}
 
 
   async save(createSuplementoClausulaInput: CreateSuplementoClausulaInput) : Promise<SuplementoClausulas> {
@@ -19,11 +17,11 @@ export class SuplementoClausulasService {
   }
 
   async findAll(): Promise<SuplementoClausulas[]> {
-    return await this.suplementoClausulaRepository.find();
+    return await this.suplementoClausulaRepository.find({relations:['contrato']});
   }
 
   async findOne(id: number) : Promise<SuplementoClausulas> {
-    return await this.suplementoClausulaRepository.findOne(id);
+    return await this.suplementoClausulaRepository.findOne(id,{relations:['contrato']});
   }
 
   async remove(id: number) : Promise<any> {
@@ -38,9 +36,5 @@ export class SuplementoClausulasService {
 
   async getSuplementoResumen (id: number) : Promise<SuplementoResumen>{
     return this.suplementoResumenService.findOne(id);
-  }
-
-  async getContrato (id: number) : Promise<Contratos>{
-    return this.contratosService.findOne(id);
   }
 }

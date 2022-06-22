@@ -5,10 +5,12 @@ import {
   Index,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from "typeorm";
 import { Embarques } from "./Embarques.entity";
 import { Puertos } from "./Puertos.entity";
+import { SuplementoEmbarques } from "./SuplementoEmbarques.entity";
 
 @ObjectType()
 @Index(
@@ -49,4 +51,8 @@ export class PuertoEmbarque {
   @ManyToOne(() => Puertos, (puertos) => puertos.puertoEmbarquesDestino)
   @JoinColumn([{ name: "IdPuertoDestino", referencedColumnName: "idPuerto" }])
   puertoDestino: Puertos;
+
+  @Field(() => [SuplementoEmbarques], {nullable: true})
+  @OneToMany(() => SuplementoEmbarques,(suplementoEmbarques) => suplementoEmbarques.puertoEmbarque)
+  suplementoEmbarques: SuplementoEmbarques[];
 }

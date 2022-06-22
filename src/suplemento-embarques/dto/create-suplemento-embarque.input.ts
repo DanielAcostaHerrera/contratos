@@ -17,6 +17,12 @@ export class CreateSuplementoEmbarqueInput {
   @Field(() => Int)
   idPuertoDestino: number;
 
+  @Field(() => Int)
+  idPuertoOrigen: number;
+
+  @Field(() => Int)
+  idPuertoEmbarque: number;
+
   @Field()
   fechaEntrega: Date;
 

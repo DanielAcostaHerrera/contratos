@@ -9,6 +9,7 @@ import { TiemposTravesia } from '../../models/entities/TiemposTravesia.entity';
 import { FichaCompraResumen } from '../../models/entities/FichaCompraResumen.entity';
 import { FichaCostoResumen } from '../../models/entities/FichaCostoResumen.entity';
 import { Puertos } from '../../models/entities/Puertos.entity';
+import { SuplementoResumen } from '../../models/entities/SuplementoResumen.entity';
 
 @ObjectType()
 @Index("aaaaaPaises_PK", ["pais"], { unique: true })
@@ -99,6 +100,10 @@ export class Paises {
   @Field(() => [Contratos], { nullable: true })
   @OneToMany(() => Contratos,(contratos) => contratos.pais)
   contratos: Contratos[];
+
+  @Field(() => [SuplementoResumen], { nullable: true })
+  @OneToMany(() => SuplementoResumen,(suplementoResumen) => suplementoResumen.pais)
+  suplementoResumen: SuplementoResumen[];
 
   @Field(() => [PliegoConcurrenciaResumen], { nullable: true })
   @OneToMany(() => PliegoConcurrenciaResumen,(pliegoConcurrenciaResumen) => pliegoConcurrenciaResumen.paisOrigenMercancia)

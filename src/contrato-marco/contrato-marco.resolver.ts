@@ -16,13 +16,13 @@ export class ContratoMarcoResolver {
     return this.contratoMarcoService.save(createContratoMarcoInput);
   }
 
-  @Query(() => [ContratoMarco], { name: 'contratoMarco' })
+  @Query(() => [ContratoMarco])
   @UseGuards(new AuthGuard())
   findAllContratoMarco() {
     return this.contratoMarcoService.findAll();
   }
 
-  @Query(() => ContratoMarco, { name: 'contratoMarco' })
+  @Query(() => ContratoMarco)
   @UseGuards(new AuthGuard())
   findOneContratoMarco(@Args('id', { type: () => Int }) id: number) {
     return this.contratoMarcoService.findOne(id);

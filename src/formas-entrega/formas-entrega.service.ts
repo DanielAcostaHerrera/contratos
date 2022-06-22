@@ -14,11 +14,11 @@ export class FormasEntregaService {
   }
 
   async findAll(): Promise<FormasEntrega[]> { 
-    return await this.formasEntregaRepository.find({relations:['pliegoConcurrenciaResumen','contratos']});
+    return await this.formasEntregaRepository.find({relations:['pliegoConcurrenciaResumen','contratos','suplementoResumen']});
   }
 
   async findOne(id: number) : Promise<FormasEntrega> {
-    return await this.formasEntregaRepository.findOne(id,{relations:['pliegoConcurrenciaResumen','contratos']});
+    return await this.formasEntregaRepository.findOne(id,{relations:['pliegoConcurrenciaResumen','contratos','suplementoResumen']});
   }
 
   async remove(id: number) : Promise<any> {

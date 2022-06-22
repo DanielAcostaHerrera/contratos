@@ -19,6 +19,9 @@ import { Ejecutivos } from "./Ejecutivos.entity";
 import { Monedas } from "./Monedas.entity";
 import { Field, Float, Int, ObjectType } from "@nestjs/graphql";
 import { CompaniasNavieras } from '../../modelsNomgen/entities/CompaniasNavieras.entity';
+import { Paises } from '../../modelsMercurio/entities/Paises.entity';
+import { Incoterm } from './Incoterm.entity';
+import { FormasEntrega } from './FormasEntrega.entity';
 
 @ObjectType()
 @Index("PK_SuplementoResumen", ["idSuplementoResumen"], { unique: true })
@@ -159,6 +162,41 @@ export class SuplementoResumen {
   @Column("bit", { name: "TerminadoS", default: () => "(0)" })
   @Field()
   terminadoS: boolean;
+
+  @Column("float", { name: "GastosLogisticos", precision: 53 })
+  @Field(() => Float)
+  gastosLogisticos: number;
+
+  @Column("nvarchar", { name: "LugarFirma", length: 50 })
+  @Field()
+  lugarFirma: string;
+
+  @Column("int", { name: "Pais" })
+  @Field(() => Int)
+  idPais: number;
+
+  @Column("int", { name: "IdIncoterm" })
+  @Field(() => Int)
+  idIncoterm: number;
+
+  @Column("int", { name: "IdFormaEntrega" })
+  @Field(() => Int)
+  idFormaEntrega: number;
+
+  @Field(() => FormasEntrega, {nullable: true})
+  @ManyToOne(() => FormasEntrega, (formasEntrega) => formasEntrega.suplementoResumen)
+  @JoinColumn([{ name: "IdFormaEntrega", referencedColumnName: "idFormaEntrega" }])
+  formaEntrega: FormasEntrega;
+
+  @Field(() => Incoterm, {nullable: true})
+  @ManyToOne(() => Incoterm, (incoterm) => incoterm.contratos)
+  @JoinColumn([{ name: "IdIncoterm", referencedColumnName: "idIncoterm" }])
+  incoterm: Incoterm;
+
+  @Field(() => Paises, {nullable: true})
+  @ManyToOne(() => Paises, (paises) => paises.suplementoResumen)
+  @JoinColumn([{ name: "Pais", referencedColumnName: "pais" }])
+  pais: Paises;
 
   @Field(() => [SuplementoChange], {nullable: true})
   @OneToMany(() => SuplementoChange,(suplementoChange) => suplementoChange.suplementoResumen)

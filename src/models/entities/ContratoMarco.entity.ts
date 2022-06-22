@@ -61,7 +61,7 @@ export class ContratoMarco {
   fichaCostoResumen: FichaCostoResumen[];
 
   @Field(() => Proveedores, {nullable: true})
-  @ManyToOne(() => Proveedores, (proveedores) => proveedores.contratos)
+  @ManyToOne(() => Proveedores, (proveedores) => proveedores.contratoMarco)
   @JoinColumn([{ name: "IdProveedor", referencedColumnName: "codigo" }])
   proveedor: Proveedores;
 }

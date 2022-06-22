@@ -17,9 +17,6 @@ export class CreateSuplementoClausulaInput {
   @Field()
   txClausula: string;
 
-  @Field(() => Int,{nullable: true})
-  orden: number | null;
-
   @Field()
   modificada: boolean;
 }

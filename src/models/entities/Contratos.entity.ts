@@ -23,7 +23,6 @@ import { SuplementoEmbarques } from "./SuplementoEmbarques.entity";
 import { SuplementoResumen } from "./SuplementoResumen.entity";
 import { Field, Float, Int, ObjectType } from "@nestjs/graphql";
 import { Paises } from "../../modelsMercurio/entities/Paises.entity";
-import { Proveedores } from "../../modelsMercurio/entities/Proveedores.entity";
 import { ContratoClausulas } from "./ContratoClausulas.entity";
 import { Incoterm } from './Incoterm.entity';
 import { ContratoMarco } from './ContratoMarco.entity';
@@ -100,10 +99,6 @@ export class Contratos {
   @Column("bit", { name: "Modificado", default: () => "(0)" })
   @Field()
   modificado: boolean;
-
-  @Column("int", { name: "Proveedor" })
-  @Field(() => Int)
-  idProveedor: number;
 
   @Column("int", {
     name: "EmpresaSeguro",
@@ -293,11 +288,6 @@ export class Contratos {
   @ManyToOne(() => Paises, (paises) => paises.contratos)
   @JoinColumn([{ name: "País", referencedColumnName: "pais" }])
   pais: Paises;
-
-  @Field(() => Proveedores, {nullable: true})
-  @ManyToOne(() => Proveedores, (proveedores) => proveedores.contratos)
-  @JoinColumn([{ name: "Proveedor", referencedColumnName: "codigo" }])
-  proveedor: Proveedores;
 
   @Field(() => CompaniasNavieras, {nullable: true})
   @ManyToOne(() => CompaniasNavieras, (companiasNavieras) => companiasNavieras.contratos)

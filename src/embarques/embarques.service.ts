@@ -1,9 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CompaniasNavierasService } from 'src/companias-navieras/companias-navieras.service';
-import { ContratosService } from 'src/contratos/contratos.service';
 import { EjecutivoService } from 'src/ejecutivo/ejecutivo.service';
-import { Contratos } from 'src/models/entities/Contratos.entity';
 import { Ejecutivos } from 'src/models/entities/Ejecutivos.entity';
 import { Embarques } from 'src/models/entities/Embarques.entity';
 import { CompaniasNavieras } from 'src/modelsNomgen/entities/CompaniasNavieras.entity';
@@ -13,7 +11,7 @@ import { CreateEmbarqueInput } from './dto/create-embarque.input';
 @Injectable()
 export class EmbarquesService {
   constructor(@InjectRepository(Embarques) public readonly embarquesRepository: Repository<Embarques>,
-  private contratosService: ContratosService,private ejecutivoService: EjecutivoService,
+  private ejecutivoService: EjecutivoService,
   private companiasNavierasService: CompaniasNavierasService) {}
 
 
@@ -22,12 +20,12 @@ export class EmbarquesService {
   }
 
   async findAll(): Promise<Embarques[]> {
-    return await this.embarquesRepository.find({relations:['contratoDesgloses', 'facturaResumen','suplementoChanges','suplementoDesgloses','suplementoEmbarques',
+    return await this.embarquesRepository.find({relations:['contratos','contratoDesgloses', 'facturaResumen','suplementoChanges','suplementoDesgloses','suplementoEmbarques',
     'suplementoPagos','puertoEmbarques']});
   }
 
   async findOne(id: number) : Promise<Embarques> {
-    return await this.embarquesRepository.findOne(id,{relations:['contratoDesgloses', 'facturaResumen','suplementoChanges','suplementoDesgloses',
+    return await this.embarquesRepository.findOne(id,{relations:['contratos','contratoDesgloses', 'facturaResumen','suplementoChanges','suplementoDesgloses',
     'suplementoEmbarques','suplementoPagos','puertoEmbarques']});
   }
 
@@ -39,10 +37,6 @@ export class EmbarquesService {
   async removeSeveral(id: number[]) : Promise<any> {
     const embarques = await this.embarquesRepository.findByIds(id);
     return await this.embarquesRepository.remove(embarques);
-  }
-
-  async getContrato (Id: number) : Promise<Contratos>{
-    return this.contratosService.findOne(Id);
   }
 
   async getEjecutivo (Id: number) : Promise<Ejecutivos>{

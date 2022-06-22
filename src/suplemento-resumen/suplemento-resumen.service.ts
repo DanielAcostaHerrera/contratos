@@ -2,48 +2,53 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { AgenciasAseguradorasService } from 'src/agencias-aseguradoras/agencias-aseguradoras.service';
 import { CompaniasNavierasService } from 'src/companias-navieras/companias-navieras.service';
-import { ContratosService } from 'src/contratos/contratos.service';
 import { EjecutivoService } from 'src/ejecutivo/ejecutivo.service';
-import { Contratos } from 'src/models/entities/Contratos.entity';
+import { FormasEntregaService } from 'src/formas-entrega/formas-entrega.service';
+import { IncotermService } from 'src/incoterm/incoterm.service';
 import { Ejecutivos } from 'src/models/entities/Ejecutivos.entity';
+import { FormasEntrega } from 'src/models/entities/FormasEntrega.entity';
+import { Incoterm } from 'src/models/entities/Incoterm.entity';
 import { Monedas } from 'src/models/entities/Monedas.entity';
 import { NegociacionResumen } from 'src/models/entities/NegociacionResumen.entity';
-import { Puertos } from 'src/models/entities/Puertos.entity';
 import { SuplementoResumen } from 'src/models/entities/SuplementoResumen.entity';
+import { Paises } from 'src/modelsMercurio/entities/Paises.entity';
 import { AgenciasAseguradoras } from 'src/modelsNomgen/entities/AgenciasAseguradoras.entity';
 import { CompaniasNavieras } from 'src/modelsNomgen/entities/CompaniasNavieras.entity';
 import { MonedaService } from 'src/moneda/moneda.service';
 import { NegociacionResumenService } from 'src/negociacion-resumen/negociacion-resumen.service';
-import { PuertosService } from 'src/puertos/puertos.service';
+import { PaisesService } from 'src/paises/paises.service';
 import { Repository } from 'typeorm';
 import { CreateSuplementoResumanInput } from './dto/create-suplemento-resuman.input';
 
 @Injectable()
 export class SuplementoResumenService {
   constructor(@InjectRepository(SuplementoResumen) public readonly suplementoResumenRepository: Repository<SuplementoResumen>,
-  private contratosService: ContratosService,
   private ejecutivoService: EjecutivoService,private monedaService: MonedaService,
   private agenciasAseguradorasService: AgenciasAseguradorasService,private companiasNavierasService: CompaniasNavierasService,
-  private negociacionResumenService: NegociacionResumenService) {}
+  private negociacionResumenService: NegociacionResumenService, private paisesService: PaisesService,
+  private incotermService: IncotermService, private formasEntregaService: FormasEntregaService) {}
 
 
   async save(createSuplementoResumanInput: CreateSuplementoResumanInput) : Promise<SuplementoResumen> {
-    if(!createSuplementoResumanInput.idSuplementoResumen){
-      var contrato = await this.contratosService.findOne(createSuplementoResumanInput.idContrato);
-      var cantSuplementos = contrato.suplementoResumen.length;
-      createSuplementoResumanInput.consecutivo = cantSuplementos+1;
-    }
+    let suplementoResumen: SuplementoResumen;
+    suplementoResumen = await this.suplementoResumenRepository.save(createSuplementoResumanInput);
+    
+    var contrato = suplementoResumen.contrato;
+    var cantSuplementos = contrato.suplementoResumen.length;
+    createSuplementoResumanInput.consecutivo = cantSuplementos+1;
+    createSuplementoResumanInput.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
+
     return await this.suplementoResumenRepository.save(createSuplementoResumanInput);
   }
 
   async findAll(): Promise<SuplementoResumen[]> {
     return await this.suplementoResumenRepository.find({ relations: ['suplementoChanges','suplementoClausulas','suplementoDesgloses','suplementoEmbarques',
-    'suplementoPagos']});
+    'suplementoPagos','contrato']});
   }
 
   async findOne(id: number) : Promise<SuplementoResumen> {
     return await this.suplementoResumenRepository.findOne(id,{ relations: ['suplementoChanges','suplementoClausulas','suplementoDesgloses','suplementoEmbarques',
-    'suplementoPagos']});
+    'suplementoPagos','contrato']});
   }
 
   async remove(id: number) : Promise<any> {
@@ -56,8 +61,16 @@ export class SuplementoResumenService {
     return await this.suplementoResumenRepository.remove(suplementoResumen);
   }
 
-  async getContrato (id: number) : Promise<Contratos>{
-    return this.contratosService.findOne(id);
+  async getFormaEntrega (id: number) : Promise<FormasEntrega>{
+    return this.formasEntregaService.findOne(id);
+  }
+
+  async getIncoterm (id: number) : Promise<Incoterm>{
+    return this.incotermService.findOne(id);
+  }
+
+  async getPais (id: number) : Promise<Paises>{
+    return this.paisesService.findOne(id);
   }
 
   async getEjecutivoSuplementa (id: number) : Promise<Ejecutivos>{

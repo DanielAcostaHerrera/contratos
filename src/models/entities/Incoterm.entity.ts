@@ -12,6 +12,7 @@ import { FichaCompraResumen } from "./FichaCompraResumen.entity";
 import { FichaCostoResumen } from "./FichaCostoResumen.entity";
 import { PliegoConcurrenciaResumen } from "./PliegoConcurrenciaResumen.entity";
 import { Proformas } from "./Proformas.entity";
+import { SuplementoResumen } from "./SuplementoResumen.entity";
 
 @ObjectType()
 @Index("IX_Incoterm", ["abreviatura"], { unique: true })
@@ -57,6 +58,10 @@ export class Incoterm {
   @Field(() => [Contratos] , {nullable: true})
   @OneToMany(() => Contratos,(contratos) => contratos.incoterm)
   contratos: Contratos[];
+
+  @Field(() => [SuplementoResumen] , {nullable: true})
+  @OneToMany(() => SuplementoResumen,(suplementoResumen) => suplementoResumen.incoterm)
+  suplementoResumen: SuplementoResumen[];
 
   @Field(() => [Proformas], { nullable: true })
   @OneToMany(() => Proformas, (proformas) => proformas.incoterm)

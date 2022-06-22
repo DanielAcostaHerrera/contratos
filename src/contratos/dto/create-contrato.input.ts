@@ -54,9 +54,6 @@ export class CreateContratoInput {
   @Field()
   modificado: boolean;
 
-  @Field(() => Int)
-  idProveedor: number;
-
   @Field({nullable: true})
   idEmpresaSeguro: number | null;
 

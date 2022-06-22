@@ -9,7 +9,6 @@ import { FormasEntrega } from 'src/models/entities/FormasEntrega.entity';
 import { Monedas } from 'src/models/entities/Monedas.entity';
 import { NegociacionResumen } from 'src/models/entities/NegociacionResumen.entity';
 import { Paises } from 'src/modelsMercurio/entities/Paises.entity';
-import { Proveedores } from 'src/modelsMercurio/entities/Proveedores.entity';
 import { ContratosService } from './contratos.service';
 import { CreateContratoInput } from './dto/create-contrato.input';
 import { Incoterm } from 'src/models/entities/Incoterm.entity';
@@ -106,11 +105,6 @@ export class ContratosResolver {
   @ResolveField(() => Paises, {nullable: true})
   pais(@Parent() contratos: Contratos): Promise<Paises> {
     return this.contratosService.getPais(contratos.idPais);
-  }
-
-  @ResolveField(() => Proveedores, {nullable: true})
-  proveedor(@Parent() contratos: Contratos): Promise<Proveedores> {
-    return this.contratosService.getProveedor(contratos.idProveedor);
   }
 
   @ResolveField(() => CompaniasNavieras, {nullable: true})

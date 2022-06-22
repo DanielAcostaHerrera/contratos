@@ -279,10 +279,6 @@ export class Proveedores {
   @OneToMany(() => BasesGenerales,(basesGenerales) => basesGenerales.proveedor)
   basesGenerales: BasesGenerales[];
 
-  @Field(() => [Contratos], { nullable: true })
-  @OneToMany(() => Contratos,(contratos) => contratos.pais)
-  contratos: Contratos[];
-
   @Field(() => [SolicitudOfertasProveedor], { nullable: true })
   @OneToMany(() => SolicitudOfertasProveedor,(solicitudOfertasProveedor) => solicitudOfertasProveedor.proveedor)
   solicitudOfertasProveedores: SolicitudOfertasProveedor[];

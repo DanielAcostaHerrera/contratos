@@ -34,10 +34,6 @@ export class SuplementoClausulas {
   @Field()
   txClausula: string;
 
-  @Column("smallint", { name: "Orden", nullable: true })
-  @Field(() => Int,{nullable: true})
-  orden: number | null;
-
   @Column("bit", { name: "Modificada", default: () => "(0)" })
   @Field()
   modificada: boolean;

@@ -2,7 +2,6 @@ import { Resolver, Query, Mutation, Args, Int, ResolveField, Parent } from '@nes
 import { EmbarquesService } from './embarques.service';
 import { CreateEmbarqueInput } from './dto/create-embarque.input';
 import { Embarques } from 'src/models/entities/Embarques.entity';
-import { Contratos } from 'src/models/entities/Contratos.entity';
 import { Ejecutivos } from 'src/models/entities/Ejecutivos.entity';
 import { CompaniasNavieras } from 'src/modelsNomgen/entities/CompaniasNavieras.entity';
 import { UseGuards } from '@nestjs/common';
@@ -40,11 +39,6 @@ export class EmbarquesResolver {
   @UseGuards(new AuthGuard())
   removeSeveralEmbarque(@Args('id', { type: () => [Int] }) id: number[]) {
     return this.embarquesService.removeSeveral(id);
-  }
-
-  @ResolveField(() => Contratos, {nullable: true})
-  contratos(@Parent() embarques: Embarques): Promise<Contratos> {
-    return this.embarquesService.getContrato(embarques.idContrato);
   }
 
   @ResolveField(() => Ejecutivos, {nullable: true})

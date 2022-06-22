@@ -8,8 +8,11 @@ export class CreateSuplementoChangeInput {
   @Field(() => Int)
   idSuplementoResumen: number;
 
+  @Field(() => Int,{nullable: true})
+  idEmbarque: number | null;
+
   @Field(() => Int)
-  idEmbarque: number;
+  idCambio: number;
 
   @Field(() => Int,{nullable: true})
   orden: number | null;

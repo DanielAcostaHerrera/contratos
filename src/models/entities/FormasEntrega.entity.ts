@@ -8,6 +8,7 @@ import {
 } from "typeorm";
 import { Contratos } from "./Contratos.entity";
 import { PliegoConcurrenciaResumen } from "./PliegoConcurrenciaResumen.entity";
+import { SuplementoResumen } from "./SuplementoResumen.entity";
 
 @ObjectType()
 @Index("IX_FormasEntrega", ["formaEntrega"], { unique: true })
@@ -33,4 +34,8 @@ export class FormasEntrega {
   @Field(() => [Contratos], {nullable: true})
   @OneToMany(() => Contratos, (contratos) => contratos.formaEntrega)
   contratos: Contratos[];
+
+  @Field(() => [SuplementoResumen], {nullable: true})
+  @OneToMany(() => SuplementoResumen, (suplementoResumen) => suplementoResumen.formaEntrega)
+  suplementoResumen: SuplementoResumen[];
 }
