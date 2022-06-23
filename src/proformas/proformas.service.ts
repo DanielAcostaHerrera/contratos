@@ -37,7 +37,9 @@ export class ProformasService {
             await this.proformaClausulaService.save(proformaClausula)        
           }
       }
-
+    }
+    if(createProformaInput.idProforma){
+      result = await this.proformaRepository.save(createProformaInput);
     }
     return result;
   }
