@@ -1,9 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ProformaClausulas } from 'src/models/entities/ProformaClausulas.entity';
-import { Proformas } from 'src/models/entities/Proformas.entity';
 import { TiposDeClausulas } from 'src/models/entities/TiposDeClausulas.entity';
-import { ProformasService } from 'src/proformas/proformas.service';
 import { TiposDeClausulasService } from 'src/tipos-de-clausulas/tipos-de-clausulas.service';
 import { Repository } from 'typeorm';
 import { CreateProformaClausulaInput } from './dto/create-proforma-clausula.input';
@@ -11,7 +9,7 @@ import { CreateProformaClausulaInput } from './dto/create-proforma-clausula.inpu
 @Injectable()
 export class ProformaClausulasService {
   constructor(@InjectRepository(ProformaClausulas) public readonly proformaRepository: Repository<ProformaClausulas>,
-  private tiposDeClausulasService: TiposDeClausulasService,private proformasService: ProformasService) {}
+  private tiposDeClausulasService: TiposDeClausulasService) {}
 
 
   async save(createProformaClausulaInput: CreateProformaClausulaInput) : Promise<ProformaClausulas> {
@@ -19,11 +17,11 @@ export class ProformaClausulasService {
   }
 
   async findAll(): Promise<ProformaClausulas[]> {
-    return await this.proformaRepository.find({ relations: ['basesGeneralesClausulas']});
+    return await this.proformaRepository.find({ relations: ['basesGeneralesClausulas','proformas']});
   }
 
   async findAllById(idProforma: number): Promise<ProformaClausulas[]> {
-    return await this.proformaRepository.find({ where: {idProforma}, relations: ['basesGeneralesClausulas'], order: {
+    return await this.proformaRepository.find({ where: {idProforma}, relations: ['basesGeneralesClausulas','proformas'], order: {
       orden: "ASC"
     }});
   }
@@ -44,10 +42,6 @@ export class ProformaClausulasService {
 
   async getTipoClausula (tipoClausulaId: number) : Promise<TiposDeClausulas>{
     return this.tiposDeClausulasService.findOne(tipoClausulaId);
-  }
-
-  async getProforma (proformaId: number) : Promise<Proformas>{
-    return this.proformasService.findOne(proformaId);
   }
 
   async removeSeveralByProformaId(idProforma: number) : Promise<any> {

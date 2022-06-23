@@ -1444,6 +1444,10 @@ type Query {
   findOneIncoterm(id: Int!): Incoterm!
   findAllProforma: [Proformas!]!
   findOneProforma(id: Int!): Proformas!
+  findAllProformaClausulas: [ProformaClausulas!]!
+  findOneProformaClausulas(id: Int!): ProformaClausulas!
+  findAllTiposDeClausulas: [TiposDeClausulas!]!
+  findOneTiposDeClausulas(id: Int!): TiposDeClausulas!
   findAllCompradores: [Compradores!]!
   findOneCompradores(id: Int!): Compradores!
   findAllDatosEntidad: [DatosEntidad!]!
@@ -1454,10 +1458,6 @@ type Query {
   findOneProveedor(id: Int!): Proveedores!
   findAllLog: [Logs!]!
   findOneLog(id: Int!): Logs!
-  findAllProformaClausulas: [ProformaClausulas!]!
-  findOneProformaClausulas(id: Int!): ProformaClausulas!
-  findAllTiposDeClausulas: [TiposDeClausulas!]!
-  findOneTiposDeClausulas(id: Int!): TiposDeClausulas!
   findAllBasesGeneralesClausulas: [BasesGeneralesClausulas!]!
   findOneBasesGeneralesClausulas(id: Int!): BasesGeneralesClausulas!
   findAllPuertos: [Puertos!]!
@@ -1600,6 +1600,12 @@ type Mutation {
   createProforma(createProformaInput: CreateProformaInput!): Proformas!
   removeProforma(id: Int!): Proformas!
   removeSeveralProforma(id: [Int!]!): [Proformas!]!
+  createProformaClausula(createProformaClausulaInput: CreateProformaClausulaInput!): ProformaClausulas!
+  removeProformaClausula(id: Int!): ProformaClausulas!
+  removeSeveralProformaClausula(id: [Int!]!): [ProformaClausulas!]!
+  createTiposDeClausulas(createTiposDeClausulaInput: CreateTiposDeClausulaInput!): TiposDeClausulas!
+  removeTiposDeClausulas(id: Int!): TiposDeClausulas!
+  removeSeveralTiposDeClausulas(id: [Int!]!): [TiposDeClausulas!]!
   createCompradore(createCompradoreInput: CreateCompradoresInput!): Compradores!
   removeCompradores(id: Int!): Compradores!
   removeSeveralCompradores(id: [Int!]!): [Compradores!]!
@@ -1607,12 +1613,6 @@ type Mutation {
   removeDatosEntidad(id: Int!): DatosEntidad!
   removeSeveralDatosEntidad(id: [Int!]!): [DatosEntidad!]!
   removeLog(id: Int!): Logs!
-  createProformaClausula(createProformaClausulaInput: CreateProformaClausulaInput!): ProformaClausulas!
-  removeProformaClausula(id: Int!): ProformaClausulas!
-  removeSeveralProformaClausula(id: [Int!]!): [ProformaClausulas!]!
-  createTiposDeClausulas(createTiposDeClausulaInput: CreateTiposDeClausulaInput!): TiposDeClausulas!
-  removeTiposDeClausulas(id: Int!): TiposDeClausulas!
-  removeSeveralTiposDeClausulas(id: [Int!]!): [TiposDeClausulas!]!
   createBasesGeneralesClausula(createBasesGeneralesClausulaInput: CreateBasesGeneralesClausulaInput!): BasesGeneralesClausulas!
   removeBasesGeneralesClausula(id: Int!): BasesGeneralesClausulas!
   removeSeveralBasesGeneralesClausula(id: [Int!]!): [BasesGeneralesClausulas!]!
@@ -1861,6 +1861,25 @@ input CreateProformaInput {
   nombreProfoma: String!
   activa: Boolean!
   cMarcoF: Boolean!
+  proformaClausulas: [CreateProformaClausulaInput!]
+}
+
+input CreateProformaClausulaInput {
+  idProformaClausula: Int
+  idProforma: Int!
+  idTipoClausula: Int!
+  orden: Int!
+  clausula: String!
+}
+
+input CreateTiposDeClausulaInput {
+  idTipoClausula: Int
+  nombre: String!
+  orden: Int!
+  basesG: Boolean!
+  compras: Boolean!
+  cMarco: Boolean!
+  excepcional: Boolean!
 }
 
 input CreateCompradoresInput {
@@ -1889,24 +1908,6 @@ input CreateDatosEntidadInput {
   licCComercio: String
   nombre: String
   compaIa: String
-}
-
-input CreateProformaClausulaInput {
-  idProformaClausula: Int
-  idProforma: Int!
-  idTipoClausula: Int!
-  orden: Int!
-  clausula: String!
-}
-
-input CreateTiposDeClausulaInput {
-  idTipoClausula: Int
-  nombre: String!
-  orden: Int!
-  basesG: Boolean!
-  compras: Boolean!
-  cMarco: Boolean!
-  excepcional: Boolean!
 }
 
 input CreatePuertoInput {

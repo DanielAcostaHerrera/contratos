@@ -3,7 +3,6 @@ import { ProformaClausulasService } from './proforma-clausulas.service';
 import { CreateProformaClausulaInput } from './dto/create-proforma-clausula.input';
 import { ProformaClausulas } from 'src/models/entities/ProformaClausulas.entity';
 import { TiposDeClausulas } from 'src/models/entities/TiposDeClausulas.entity';
-import { Proformas } from 'src/models/entities/Proformas.entity';
 import { UseGuards } from '@nestjs/common';
 import { AuthGuard } from 'src/auth.guard';
 
@@ -44,10 +43,5 @@ export class ProformaClausulasResolver {
   @ResolveField(() => TiposDeClausulas, {nullable: true})
   tiposDeClausulas(@Parent() proformaClausulas: ProformaClausulas): Promise<TiposDeClausulas> {
     return this.proformaClausulasService.getTipoClausula(proformaClausulas.idTipoClausula);
-  }
-
-  @ResolveField(() => Proformas, {nullable: true})
-  proformas(@Parent() proformaClausulas: ProformaClausulas): Promise<Proformas> {
-    return this.proformaClausulasService.getProforma(proformaClausulas.idProforma);
   }
 }
