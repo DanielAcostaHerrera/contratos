@@ -49,4 +49,9 @@ export class ProformaClausulasService {
   async getProforma (proformaId: number) : Promise<Proformas>{
     return this.proformasService.findOne(proformaId);
   }
+
+  async removeSeveralByProformaId(idProforma: number) : Promise<any> {
+    const proformaClausulas = await this.proformaRepository.find({where: {idProforma}});
+    return await this.proformaRepository.remove(proformaClausulas);
+  }
 }
