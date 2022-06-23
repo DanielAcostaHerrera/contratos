@@ -38,7 +38,7 @@ export class ProformasService {
           }
       }
     }
-    if(createProformaInput.idProforma){
+    if(!createProformaInput.idProforma){
       result = await this.proformaRepository.save(createProformaInput);
     }
     return result;
