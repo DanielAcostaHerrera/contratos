@@ -1,4 +1,6 @@
 import { InputType, Int, Field, Float } from '@nestjs/graphql';
+import { CreateSuplementoClausulaInput } from 'src/suplemento-clausulas/dto/create-suplemento-clausula.input';
+import { CreateSuplementoEmbarqueInput } from 'src/suplemento-embarques/dto/create-suplemento-embarque.input';
 
 @InputType()
 export class CreateSuplementoResumanInput {
@@ -118,4 +120,10 @@ export class CreateSuplementoResumanInput {
   
   @Field(() => Int)
   idFormaEntrega: number;
+
+  @Field(()=> [CreateSuplementoClausulaInput],{ nullable: true})
+  suplementoClausulas?: CreateSuplementoClausulaInput[];
+
+  @Field(()=> [CreateSuplementoEmbarqueInput],{ nullable: true})
+  suplementoEmbarques?: CreateSuplementoEmbarqueInput[];
 }

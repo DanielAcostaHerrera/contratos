@@ -1,4 +1,5 @@
 import { InputType, Int, Field, Float } from '@nestjs/graphql';
+import { CreateContratoDesgloseInput } from 'src/contrato-desglose/dto/create-contrato-desglose.input';
 
 @InputType()
 export class CreateSuplementoEmbarqueInput {
@@ -61,4 +62,7 @@ export class CreateSuplementoEmbarqueInput {
 
   @Field()
   actSci: boolean;
+
+  @Field(()=> [CreateContratoDesgloseInput],{ nullable: true})
+  suplementoDesgloses?: CreateContratoDesgloseInput[];
 }

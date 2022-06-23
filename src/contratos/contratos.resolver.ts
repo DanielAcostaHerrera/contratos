@@ -16,6 +16,7 @@ import { AuthGuard, DEFAULT_GRAPHQL_CONTEXT } from 'src/auth.guard';
 import { Usuarios } from 'src/models/entities/Usuarios.entity';
 import { UseGuards } from '@nestjs/common';
 import { ContratoMarco } from 'src/models/entities/ContratoMarco.entity';
+import { CreateSuplementoResumanInput } from 'src/suplemento-resumen/dto/create-suplemento-resuman.input';
 
 @Resolver(() => Contratos)
 export class ContratosResolver {
@@ -27,6 +28,21 @@ export class ContratosResolver {
     @Context(DEFAULT_GRAPHQL_CONTEXT) usuario: Usuarios,
     @Args('createContratoInput') createContratoInput: CreateContratoInput) {
     return this.contratosService.save(usuario,createContratoInput);
+  }
+
+  @Mutation(() => Boolean)
+  @UseGuards(new AuthGuard())
+  anadirSuplemento(
+    @Context(DEFAULT_GRAPHQL_CONTEXT) usuario: Usuarios,
+    @Args('idContrato') idContrato: number) {
+    return this.contratosService.anadirSuplemento(usuario,idContrato);
+  }
+
+  @Mutation(() => Boolean)
+  @UseGuards(new AuthGuard())
+  comprobarDiferencias(
+    @Args('createSuplementoResumanInput') createSuplementoResumanInput: CreateSuplementoResumanInput) {
+    return this.contratosService.comprobarDiferencias(createSuplementoResumanInput);
   }
 
   @Query(() => [Contratos])

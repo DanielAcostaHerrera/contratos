@@ -38,6 +38,11 @@ export class SuplementoChangeService {
     return await this.suplementoChangeRepository.remove(suplementoChange);
   }
 
+  async removeSeveralBySuplementoResumenId(idSuplementoResumen: number) : Promise<any> {
+    const suplementoResumen = await this.suplementoChangeRepository.find({where: {idSuplementoResumen}});
+    return await this.suplementoChangeRepository.remove(suplementoResumen);
+  }
+
   async getSuplementoResumen (id: number) : Promise<SuplementoResumen>{
     return this.suplementoResumenService.findOne(id);
   }

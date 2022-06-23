@@ -16,6 +16,10 @@ export class SuplementoEmbarquesService {
 
 
   async save(createSuplementoEmbarqueInput: CreateSuplementoEmbarqueInput) : Promise<SuplementoEmbarques> {
+    if(!createSuplementoEmbarqueInput.idSuplementoEmbarques){
+      let suplementoResumen = await this.suplementoResumenService.findOne(createSuplementoEmbarqueInput.idSuplementoResumen);
+      createSuplementoEmbarqueInput.numero = suplementoResumen.suplementoEmbarques.filter(embarque=> embarque.idContrato == suplementoResumen.idContrato).length;
+    }
     return await this.suplementoEmbarqueRepository.save(createSuplementoEmbarqueInput);
   }
 

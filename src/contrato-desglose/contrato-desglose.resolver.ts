@@ -43,6 +43,12 @@ export class ContratoDesgloseResolver {
     return this.contratoDesgloseService.removeSeveral(id);
   }
 
+  @Mutation(() => [ContratoDesglose])
+  @UseGuards(new AuthGuard())
+  removeSeveralContratoDesgloseByEmbarqueId(@Args('id', { type: () => Int }) id: number) {
+    return this.contratoDesgloseService.removeSeveralByEmbarqueId(id);
+  }
+
   @ResolveField(() => Referencias, {nullable: true})
   referencia(@Parent() contratoDesglose: ContratoDesglose): Promise<Referencias> {
     return this.contratoDesgloseService.getReferencia(contratoDesglose.idReferencia);

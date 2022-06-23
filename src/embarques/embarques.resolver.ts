@@ -15,9 +15,8 @@ export class EmbarquesResolver {
   @Mutation(() => Embarques)
   @UseGuards(new AuthGuard())
   createEmbarque(
-    @Context(DEFAULT_GRAPHQL_CONTEXT) usuario: Usuarios,
     @Args('createEmbarqueInput') createEmbarqueInput: CreateEmbarqueInput) {
-    return this.embarquesService.save(usuario,createEmbarqueInput);
+    return this.embarquesService.save(createEmbarqueInput);
   }
 
   @Query(() => [Embarques])

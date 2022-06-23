@@ -49,4 +49,9 @@ export class ContratoDesgloseService {
   async getCodigo (Id: number) : Promise<CodigosParaLaVenta>{
     return this.codigosParaLaVentaService.findOne(Id);
   }
+
+  async removeSeveralByEmbarqueId(idEmbarque: number) : Promise<any> {
+    const contratosDesgloses = await this.contratoDesgloseRepository.find({where: {idEmbarque}});
+    return await this.contratoDesgloseRepository.remove(contratosDesgloses);
+  }
 }
