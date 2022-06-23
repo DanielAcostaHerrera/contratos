@@ -1511,6 +1511,8 @@ type Query {
   findOneEmbarques(id: Int!): Embarques!
   findAllContratoDesglose: [ContratoDesglose!]!
   findOneContratoDesglose(id: Int!): ContratoDesglose!
+  findAllPuertoEmbarque: [PuertoEmbarque!]!
+  findOnePuertoEmbarque(id: Int!): PuertoEmbarque!
   findAllTiposContenedor: [TiposContenedor!]!
   findOneTiposContenedor(id: Int!): TiposContenedor!
   findAllConfiguracion: [Configuracion!]!
@@ -1564,8 +1566,6 @@ type Query {
   autenticarUsuarios(contrasena: String!, nombreUsuario: String!): Usuarios!
   findAllUsuarioRol: [UsuarioRol!]!
   findOneUsuarioRol(id: Int!): UsuarioRol!
-  findAllPuertoEmbarque: [PuertoEmbarque!]!
-  findOnePuertoEmbarque(id: Int!): PuertoEmbarque!
 }
 
 type Mutation {
@@ -1631,7 +1631,7 @@ type Mutation {
   removeSeveralDocumentacionContrato(id: [Int!]!): [DocumentacionContrato!]!
   createContrato(createContratoInput: CreateContratoInput!): Contratos!
   anadirSuplemento(idContrato: Float!): Boolean!
-  comprobarDiferencias(createSuplementoResumanInput: CreateSuplementoResumanInput!): Boolean!
+  comprobarDiferencias(createContratoInput: CreateContratoInput!): Boolean!
   removeContrato(id: Int!): Contratos!
   removeSeveralContrato(id: [Int!]!): [Contratos!]!
   createContratoMarco(createContratoMarcoInput: CreateContratoMarcoInput!): ContratoMarco!
@@ -1684,6 +1684,9 @@ type Mutation {
   removeContratoDesglose(id: Int!): ContratoDesglose!
   removeSeveralContratoDesglose(id: [Int!]!): [ContratoDesglose!]!
   removeSeveralContratoDesgloseByEmbarqueId(id: Int!): [ContratoDesglose!]!
+  createPuertoEmbarque(createPuertoEmbarqueInput: CreatePuertoEmbarqueInput!): PuertoEmbarque!
+  removePuertoEmbarque(id: Int!): PuertoEmbarque!
+  removeSeveralPuertoEmbarque(id: [Int!]!): [PuertoEmbarque!]!
   createTiposContenedor(createTiposContenedorInput: CreateTiposContenedorInput!): TiposContenedor!
   removeTiposContenedor(id: Int!): TiposContenedor!
   removeSeveralTiposContenedor(id: [Int!]!): [TiposContenedor!]!
@@ -1765,9 +1768,6 @@ type Mutation {
   removeUsuarioRol(id: Int!): UsuarioRol!
   removeUsuarioRolByUserId(idUsuario: Int!): UsuarioRol!
   removeSeveralUsuarioRol(id: [Int!]!): [UsuarioRol!]!
-  createPuertoEmbarque(createPuertoEmbarqueInput: CreatePuertoEmbarqueInput!): PuertoEmbarque!
-  removePuertoEmbarque(id: Int!): PuertoEmbarque!
-  removeSeveralPuertoEmbarque(id: [Int!]!): [PuertoEmbarque!]!
 }
 
 input CreateMonedaInput {
@@ -2037,83 +2037,6 @@ input CreatePuertoEmbarqueInput {
   idPuertoDestino: Int!
 }
 
-input CreateSuplementoResumanInput {
-  idSuplementoResumen: Int
-  idContrato: Int!
-  suplementadoPor: Int!
-  idEjecutivo: Int!
-  firma: Int!
-  idMoneda: Int!
-  consecutivo: Int
-  fecha: DateTime!
-  idEmpSeguro: Int
-  idEmpNaviera: Int
-  lugarEntrega: String
-  cancelado: Boolean!
-  notas: String
-  permitirEmbarquesParciales: Boolean!
-  cantidadEp: Int
-  permitirEntregas: Boolean!
-  permitirTrasbordos: Boolean!
-  producto: String!
-  noEntregasParciales: Int
-  fInicial: DateTime!
-  fFinal: DateTime!
-  fFirma: DateTime
-  fRecepcion: DateTime
-  fArribo: DateTime
-  financiamiento: Float!
-  tasaMoneda: Float!
-  fechaTasa: DateTime!
-  fechaPFirma: DateTime!
-  pFin: Float!
-  operacion: Boolean!
-  idNegociacion: Int!
-  modificado: Boolean!
-  origen: String!
-  terminadoS: Boolean!
-  gastosLogisticos: Float!
-  lugarFirma: String!
-  idPais: Int!
-  idIncoterm: Int!
-  idFormaEntrega: Int!
-  suplementoClausulas: [CreateSuplementoClausulaInput!]
-  suplementoEmbarques: [CreateSuplementoEmbarqueInput!]
-}
-
-input CreateSuplementoClausulaInput {
-  idSuplementoClausulas: Int
-  idSuplementoResumen: Int!
-  idContrato: Int!
-  noClausula: Int!
-  txClausula: String!
-  modificada: Boolean!
-}
-
-input CreateSuplementoEmbarqueInput {
-  idSuplementoEmbarques: Int
-  idSuplementoResumen: Int!
-  idEmbarque: Int!
-  idContrato: Int!
-  fechaEntrega: DateTime!
-  numero: Int!
-  descuento: Float
-  terminado: Boolean!
-  cancelado: Boolean!
-  porFirmar: Boolean!
-  qtyCnt: Int!
-  flete: Float!
-  seguro: Float!
-  financiamiento: Float!
-  idEmpresaNaviera: Int!
-  inspeccion: Float!
-  otros: Float!
-  c40: Int!
-  c20: Int!
-  actSci: Boolean!
-  suplementoDesgloses: [CreateContratoDesgloseInput!]
-}
-
 input CreateContratoMarcoInput {
   idCMarco: Int
   idProveedor: Int!
@@ -2230,6 +2153,83 @@ input CreateFormasPagoInput {
   idFormaPago: Int
   formaPago: String!
   dias: Int!
+}
+
+input CreateSuplementoResumanInput {
+  idSuplementoResumen: Int
+  idContrato: Int!
+  suplementadoPor: Int!
+  idEjecutivo: Int!
+  firma: Int!
+  idMoneda: Int!
+  consecutivo: Int
+  fecha: DateTime!
+  idEmpSeguro: Int
+  idEmpNaviera: Int
+  lugarEntrega: String
+  cancelado: Boolean!
+  notas: String
+  permitirEmbarquesParciales: Boolean!
+  cantidadEp: Int
+  permitirEntregas: Boolean!
+  permitirTrasbordos: Boolean!
+  producto: String!
+  noEntregasParciales: Int
+  fInicial: DateTime!
+  fFinal: DateTime!
+  fFirma: DateTime
+  fRecepcion: DateTime
+  fArribo: DateTime
+  financiamiento: Float!
+  tasaMoneda: Float!
+  fechaTasa: DateTime!
+  fechaPFirma: DateTime!
+  pFin: Float!
+  operacion: Boolean!
+  idNegociacion: Int!
+  modificado: Boolean!
+  origen: String!
+  terminadoS: Boolean!
+  gastosLogisticos: Float!
+  lugarFirma: String!
+  idPais: Int!
+  idIncoterm: Int!
+  idFormaEntrega: Int!
+  suplementoClausulas: [CreateSuplementoClausulaInput!]
+  suplementoEmbarques: [CreateSuplementoEmbarqueInput!]
+}
+
+input CreateSuplementoClausulaInput {
+  idSuplementoClausulas: Int
+  idSuplementoResumen: Int!
+  idContrato: Int!
+  noClausula: Int!
+  txClausula: String!
+  modificada: Boolean!
+}
+
+input CreateSuplementoEmbarqueInput {
+  idSuplementoEmbarques: Int
+  idSuplementoResumen: Int!
+  idEmbarque: Int!
+  idContrato: Int!
+  fechaEntrega: DateTime!
+  numero: Int!
+  descuento: Float
+  terminado: Boolean!
+  cancelado: Boolean!
+  porFirmar: Boolean!
+  qtyCnt: Int!
+  flete: Float!
+  seguro: Float!
+  financiamiento: Float!
+  idEmpresaNaviera: Int!
+  inspeccion: Float!
+  otros: Float!
+  c40: Int!
+  c20: Int!
+  actSci: Boolean!
+  suplementoDesgloses: [CreateContratoDesgloseInput!]
 }
 
 input CreateSuplementoChangeInput {

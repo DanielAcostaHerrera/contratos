@@ -46,4 +46,9 @@ export class PuertoEmbarqueService {
   async getPuertoOrigen (id: number) : Promise<Puertos>{
     return this.puertosService.findOne(id);
   }
+
+  async removeSeveralByEmbarqueId(idEmbarque: number) : Promise<any> {
+    const puertoEmbarques = await this.puertoEmbarqueRepository.find({where: {idEmbarque}});
+    return await this.puertoEmbarqueRepository.remove(puertoEmbarques);
+  }
 }

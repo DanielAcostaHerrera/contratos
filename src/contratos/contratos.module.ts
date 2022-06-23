@@ -24,6 +24,7 @@ import { SuplementoDesgloseModule } from 'src/suplemento-desglose/suplemento-des
 import { EmbarquesModule } from 'src/embarques/embarques.module';
 import { ContratoDesgloseModule } from 'src/contrato-desglose/contrato-desglose.module';
 import { CodigosParaLaVentaModule } from 'src/codigos-para-la-venta/codigos-para-la-venta.module';
+import { PuertoEmbarqueModule } from 'src/puerto-embarque/puerto-embarque.module';
 
 @Module({
   imports: [TypeOrmModule.forFeature(
@@ -31,7 +32,7 @@ import { CodigosParaLaVentaModule } from 'src/codigos-para-la-venta/codigos-para
   ),BasesGeneralesModule,ContratoMarcoModule,MonedaModule,FormasEntregaModule,NegociacionResumenModule,FichaCostoResumenModule,EjecutivoModule,
   PaisesModule,AgenciasAseguradorasModule,CompaniasNavierasModule,LogsModule,IncotermModule,ContratoClausulaModule,SuplementoResumenModule,
   SuplementoClausulasModule, SuplementoChangeModule, SuplementoEmbarquesModule, SuplementoDesgloseModule,EmbarquesModule,ContratoDesgloseModule,
-  CodigosParaLaVentaModule],
+  CodigosParaLaVentaModule,PuertoEmbarqueModule],
   providers: [ContratosResolver, ContratosService],
   exports: [ContratosService]
 })

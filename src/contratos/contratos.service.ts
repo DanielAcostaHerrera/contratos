@@ -45,6 +45,8 @@ import { EmbarquesService } from 'src/embarques/embarques.service';
 import { CreateContratoDesgloseInput } from 'src/contrato-desglose/dto/create-contrato-desglose.input';
 import { ContratoDesgloseService } from 'src/contrato-desglose/contrato-desglose.service';
 import { CodigosParaLaVentaService } from 'src/codigos-para-la-venta/codigos-para-la-venta.service';
+import { CreatePuertoEmbarqueInput } from 'src/puerto-embarque/dto/create-puerto-embarque.input';
+import { PuertoEmbarqueService } from 'src/puerto-embarque/puerto-embarque.service';
 
 @Injectable()
 export class ContratosService {
@@ -57,7 +59,8 @@ export class ContratosService {
   private contratoClausulaService: ContratoClausulaService, private suplementoResumenService: SuplementoResumenService,
   private suplementoClausulasService: SuplementoClausulasService, private suplementoChangeService: SuplementoChangeService,
   private suplementoDesgloseService: SuplementoDesgloseService, private embarquesService: EmbarquesService,
-  private contratoDesgloseService: ContratoDesgloseService, private codigosParaLaVentaService: CodigosParaLaVentaService) {}
+  private contratoDesgloseService: ContratoDesgloseService, private codigosParaLaVentaService: CodigosParaLaVentaService,
+  private puertoEmbarqueService: PuertoEmbarqueService) {}
 
 
   async anadirSuplemento(usuarioToken: Usuarios, idContrato: number) : Promise<Boolean>{
@@ -149,6 +152,8 @@ export class ContratosService {
 
           let embarqueSuplemento = await this.suplementoEmbarquesService.save(suplementoEmbarque);
 
+          //Aqui se añaden los suplementos PuertoEmbarque
+          
           let desgloses = embarque.suplementoResumen.suplementoDesgloses.filter(embarque2=> embarque2.idEmbarque == embarque.idEmbarque);
           for (let index = 0; index < desgloses.length; index++) {
             const desglose = desgloses[index];
@@ -252,6 +257,8 @@ export class ContratosService {
 
           let embarqueSuplemento = await this.suplementoEmbarquesService.save(suplementoEmbarque);
 
+          //Aqui se añaden los suplementos PuertoEmbarque
+          
           let desgloses = embarque.contratoDesgloses;
           for (let index = 0; index < desgloses.length; index++) {
             const desglose = desgloses[index];
@@ -277,15 +284,19 @@ export class ContratosService {
       return true;
   }
 
-  async comprobarDiferencias(suplementoResumen: CreateSuplementoResumanInput): Promise<Boolean>{
-    let contrato = await this.contratoRepository.findOne(suplementoResumen.idContrato);
+  async comprobarDiferencias(contratoInput: CreateContratoInput): Promise<Boolean>{
+    let contrato = await this.contratoRepository.findOne(contratoInput.idContrato);
     var suplementoChange = new CreateSuplementoChangeInput();
+
+    contrato.suplementoResumen.sort((a, b) => (b.fecha.getFullYear()+b.fecha.getMonth()+b.fecha.getDate()+b.fecha.getHours()+b.fecha.getMinutes()+b.fecha.getSeconds())
+    - (a.fecha.getFullYear()+a.fecha.getMonth()+a.fecha.getDate()+a.fecha.getHours()+a.fecha.getMinutes()+a.fecha.getSeconds()));
+    let suplementoResumen = contrato.suplementoResumen[0];
 
     let idEjecutivo,firma,idMoneda,idEmpSeguro,idEmpNaviera,lugarEntrega,cancelado,notas,permitirEmbarquesParciales,cantidadEp,permitirEntregas,permitirTrasbordos,
     producto,noEntregasParciales,fInicial,fFinal,fFirma,fRecepcion,fArribo,financiamiento,tasaMoneda,fechaTasa,fechaPFirma,pFin,idNegociacion,gastosLogisticos,
     lugarFirma,idPais,idIncoterm;
 
-    this.suplementoChangeService.removeSeveralBySuplementoResumenId(suplementoResumen.idSuplementoResumen);
+    this.suplementoChangeService.removeSeveralBySuplementoResumenId(contrato.suplementoResumen[0].idSuplementoResumen);
 
     if(contrato.suplementoResumen.length == 1){
       idEjecutivo = contrato.realizadoPor;
@@ -355,356 +366,356 @@ export class ContratosService {
       idIncoterm = suplementoAnterior.idIncoterm;
     }
 
-    if(suplementoResumen.suplementadoPor != idEjecutivo){
+    if(contratoInput.realizadoPor != idEjecutivo){
       suplementoChange.idEmbarque = null;
       suplementoChange.orden = null;
       suplementoChange.idCambio = 0;
       suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
       suplementoChange.contenidoViejo = idEjecutivo.toString();
-      suplementoChange.contenidoNuevo = suplementoResumen.suplementadoPor.toString();    
+      suplementoChange.contenidoNuevo = contratoInput.realizadoPor.toString();    
       suplementoChange.clausula = "Realizado por";
       this.suplementoChangeService.save(suplementoChange);
     }
 
-    if(suplementoResumen.firma != firma){
+    if(contratoInput.firmadoPor != firma){
       suplementoChange.idEmbarque = null;
       suplementoChange.orden = null;
       suplementoChange.idCambio = 0;
       suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
       suplementoChange.contenidoViejo = firma.toString();
-      suplementoChange.contenidoNuevo = suplementoResumen.firma.toString();    
+      suplementoChange.contenidoNuevo = contratoInput.firmadoPor.toString();    
       suplementoChange.clausula = "Firmado por";
       this.suplementoChangeService.save(suplementoChange);
     }
 
-    if(suplementoResumen.idMoneda != idMoneda){
+    if(contratoInput.idMoneda != idMoneda){
       suplementoChange.idEmbarque = null;
       suplementoChange.orden = null;
       suplementoChange.idCambio = 0;
       suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
       suplementoChange.contenidoViejo = idMoneda.toString();
-      suplementoChange.contenidoNuevo = suplementoResumen.idMoneda.toString();    
+      suplementoChange.contenidoNuevo = contratoInput.idMoneda.toString();    
       suplementoChange.clausula = "Moneda usada";
       this.suplementoChangeService.save(suplementoChange);
     }
 
-    if(suplementoResumen.idEmpSeguro != idEmpSeguro){
+    if(contratoInput.idEmpresaSeguro != idEmpSeguro){
       suplementoChange.idEmbarque = null;
       suplementoChange.orden = null;
       suplementoChange.idCambio = 0;
       suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
       suplementoChange.contenidoViejo = idEmpSeguro.toString();
-      suplementoChange.contenidoNuevo = suplementoResumen.idEmpSeguro.toString();    
+      suplementoChange.contenidoNuevo = contratoInput.idEmpresaSeguro.toString();    
       suplementoChange.clausula = "Empresa de seguros";
       this.suplementoChangeService.save(suplementoChange);
     }
 
-    if(suplementoResumen.idEmpNaviera != idEmpNaviera){
+    if(contratoInput.idEmpresaNaviera != idEmpNaviera){
       suplementoChange.idEmbarque = null;
       suplementoChange.orden = null;
       suplementoChange.idCambio = 0;
       suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
       suplementoChange.contenidoViejo = idEmpNaviera.toString();
-      suplementoChange.contenidoNuevo = suplementoResumen.idEmpNaviera.toString();    
+      suplementoChange.contenidoNuevo = contratoInput.idEmpresaNaviera.toString();    
       suplementoChange.clausula = "Empresa naviera";
       this.suplementoChangeService.save(suplementoChange);
     }
 
-    if(suplementoResumen.lugarEntrega != lugarEntrega){
+    if(contratoInput.lugarEntrega != lugarEntrega){
       suplementoChange.idEmbarque = null;
       suplementoChange.orden = null;
       suplementoChange.idCambio = 0;
       suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
       suplementoChange.contenidoViejo = lugarEntrega.toString();
-      suplementoChange.contenidoNuevo = suplementoResumen.lugarEntrega.toString();    
+      suplementoChange.contenidoNuevo = contratoInput.lugarEntrega.toString();    
       suplementoChange.clausula = "Lugar de Entrega";
       this.suplementoChangeService.save(suplementoChange);
     }
 
-    if(suplementoResumen.cancelado != cancelado){
+    if(contratoInput.cancelado != cancelado){
       suplementoChange.idEmbarque = null;
       suplementoChange.orden = null;
       suplementoChange.idCambio = 0;
       suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
       suplementoChange.contenidoViejo = cancelado.toString();
-      suplementoChange.contenidoNuevo = suplementoResumen.cancelado.toString();    
+      suplementoChange.contenidoNuevo = contratoInput.cancelado.toString();    
       suplementoChange.clausula = "Cancelado";
       this.suplementoChangeService.save(suplementoChange);
     }
 
-    if(suplementoResumen.notas != notas){
+    if(contratoInput.notas != notas){
       suplementoChange.idEmbarque = null;
       suplementoChange.orden = null;
       suplementoChange.idCambio = 0;
       suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
       suplementoChange.contenidoViejo = notas.toString();
-      suplementoChange.contenidoNuevo = suplementoResumen.notas.toString();    
+      suplementoChange.contenidoNuevo = contratoInput.notas.toString();    
       suplementoChange.clausula = "Notas";
       this.suplementoChangeService.save(suplementoChange);
     }
 
-    if(suplementoResumen.permitirEmbarquesParciales != permitirEmbarquesParciales){
+    if(contratoInput.permitirEmbarquesParciales != permitirEmbarquesParciales){
       suplementoChange.idEmbarque = null;
       suplementoChange.orden = null;
       suplementoChange.idCambio = 0;
       suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
       suplementoChange.contenidoViejo = permitirEmbarquesParciales.toString();
-      suplementoChange.contenidoNuevo = suplementoResumen.permitirEmbarquesParciales.toString();    
+      suplementoChange.contenidoNuevo = contratoInput.permitirEmbarquesParciales.toString();    
       suplementoChange.clausula = "Permitir embarques parciales";
       this.suplementoChangeService.save(suplementoChange);
     }
 
-    if(suplementoResumen.cantidadEp != cantidadEp){
+    if(contratoInput.cantidadEp != cantidadEp){
       suplementoChange.idEmbarque = null;
       suplementoChange.orden = null;
       suplementoChange.idCambio = 0;
       suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
       suplementoChange.contenidoViejo = cantidadEp.toString();
-      suplementoChange.contenidoNuevo = suplementoResumen.cantidadEp.toString();    
+      suplementoChange.contenidoNuevo = contratoInput.cantidadEp.toString();    
       suplementoChange.clausula = "Cantidad EP";
       this.suplementoChangeService.save(suplementoChange);
     }
 
-    if(suplementoResumen.permitirEntregas != permitirEntregas){
+    if(contratoInput.permitirEntregas != permitirEntregas){
       suplementoChange.idEmbarque = null;
       suplementoChange.orden = null;
       suplementoChange.idCambio = 0;
       suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
       suplementoChange.contenidoViejo = permitirEntregas.toString();
-      suplementoChange.contenidoNuevo = suplementoResumen.permitirEntregas.toString();    
+      suplementoChange.contenidoNuevo = contratoInput.permitirEntregas.toString();    
       suplementoChange.clausula = "Permitir entregas";
       this.suplementoChangeService.save(suplementoChange);
     }
 
-    if(suplementoResumen.permitirTrasbordos != permitirTrasbordos){
+    if(contratoInput.permitirTrasbordos != permitirTrasbordos){
       suplementoChange.idEmbarque = null;
       suplementoChange.orden = null;
       suplementoChange.idCambio = 0;
       suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
       suplementoChange.contenidoViejo = permitirTrasbordos.toString();
-      suplementoChange.contenidoNuevo = suplementoResumen.permitirTrasbordos.toString();    
+      suplementoChange.contenidoNuevo = contratoInput.permitirTrasbordos.toString();    
       suplementoChange.clausula = "Permitir trasbordos";
       this.suplementoChangeService.save(suplementoChange);
     }
 
-    if(suplementoResumen.producto != producto){
+    if(contratoInput.producto != producto){
       suplementoChange.idEmbarque = null;
       suplementoChange.orden = null;
       suplementoChange.idCambio = 0;
       suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
       suplementoChange.contenidoViejo = producto.toString();
-      suplementoChange.contenidoNuevo = suplementoResumen.producto.toString();    
+      suplementoChange.contenidoNuevo = contratoInput.producto.toString();    
       suplementoChange.clausula = "Producto";
       this.suplementoChangeService.save(suplementoChange);
     }
 
-    if(suplementoResumen.noEntregasParciales != noEntregasParciales){
+    if(contratoInput.noEntregasParciales != noEntregasParciales){
       suplementoChange.idEmbarque = null;
       suplementoChange.orden = null;
       suplementoChange.idCambio = 0;
       suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
       suplementoChange.contenidoViejo = noEntregasParciales.toString();
-      suplementoChange.contenidoNuevo = suplementoResumen.noEntregasParciales.toString();    
+      suplementoChange.contenidoNuevo = contratoInput.noEntregasParciales.toString();    
       suplementoChange.clausula = "Numero de entregas parciales";
       this.suplementoChangeService.save(suplementoChange);
     }
 
-    if(suplementoResumen.fInicial != fInicial){
+    if(contratoInput.fechaInicial != fInicial){
       suplementoChange.idEmbarque = null;
       suplementoChange.orden = null;
       suplementoChange.idCambio = 0;
       suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
       suplementoChange.contenidoViejo = fInicial.toString();
-      suplementoChange.contenidoNuevo = suplementoResumen.fInicial.toString();    
+      suplementoChange.contenidoNuevo = contratoInput.fechaInicial.toString();    
       suplementoChange.clausula = "Fecha Inicial";
       this.suplementoChangeService.save(suplementoChange);
     }
 
-    if(suplementoResumen.fFinal != fFinal){
+    if(contratoInput.fechaFinal != fFinal){
       suplementoChange.idEmbarque = null;
       suplementoChange.orden = null;
       suplementoChange.idCambio = 0;
       suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
       suplementoChange.contenidoViejo = fFinal.toString();
-      suplementoChange.contenidoNuevo = suplementoResumen.fFinal.toString();    
+      suplementoChange.contenidoNuevo = contratoInput.fechaFinal.toString();    
       suplementoChange.clausula = "Fecha Final";
       this.suplementoChangeService.save(suplementoChange);
     }
 
-    if(suplementoResumen.fFirma != fFirma){
+    if(contratoInput.fechaFirma != fFirma){
       suplementoChange.idEmbarque = null;
       suplementoChange.orden = null;
       suplementoChange.idCambio = 0;
       suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
       suplementoChange.contenidoViejo = fFirma.toString();
-      suplementoChange.contenidoNuevo = suplementoResumen.fFirma.toString();    
+      suplementoChange.contenidoNuevo = contratoInput.fechaFirma.toString();    
       suplementoChange.clausula = "Fecha de firma";
       this.suplementoChangeService.save(suplementoChange);
     }
 
-    if(suplementoResumen.fRecepcion != fRecepcion){
+    if(contratoInput.fechaRecepcion != fRecepcion){
       suplementoChange.idEmbarque = null;
       suplementoChange.orden = null;
       suplementoChange.idCambio = 0;
       suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
       suplementoChange.contenidoViejo = fRecepcion.toString();
-      suplementoChange.contenidoNuevo = suplementoResumen.fRecepcion.toString();    
+      suplementoChange.contenidoNuevo = contratoInput.fechaRecepcion.toString();    
       suplementoChange.clausula = "Fecha de recepcion";
       this.suplementoChangeService.save(suplementoChange);
     }
 
-    if(suplementoResumen.fArribo != fArribo){
+    if(contratoInput.fechaArribo != fArribo){
       suplementoChange.idEmbarque = null;
       suplementoChange.orden = null;
       suplementoChange.idCambio = 0;
       suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
       suplementoChange.contenidoViejo = fArribo.toString();
-      suplementoChange.contenidoNuevo = suplementoResumen.fArribo.toString();    
+      suplementoChange.contenidoNuevo = contratoInput.fechaArribo.toString();    
       suplementoChange.clausula = "Fecha de arribo";
       this.suplementoChangeService.save(suplementoChange);
     }
 
-    if(suplementoResumen.financiamiento != financiamiento){
+    if(contratoInput.financiamiento != financiamiento){
       suplementoChange.idEmbarque = null;
       suplementoChange.orden = null;
       suplementoChange.idCambio = 0;
       suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
       suplementoChange.contenidoViejo = financiamiento.toString();
-      suplementoChange.contenidoNuevo = suplementoResumen.financiamiento.toString();    
+      suplementoChange.contenidoNuevo = contratoInput.financiamiento.toString();    
       suplementoChange.clausula = "Financiamiento";
       this.suplementoChangeService.save(suplementoChange);
     }
 
-    if(suplementoResumen.tasaMoneda != tasaMoneda){
+    if(contratoInput.tasaMoneda != tasaMoneda){
       suplementoChange.idEmbarque = null;
       suplementoChange.orden = null;
       suplementoChange.idCambio = 0;
       suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
       suplementoChange.contenidoViejo = tasaMoneda.toString();
-      suplementoChange.contenidoNuevo = suplementoResumen.tasaMoneda.toString();    
+      suplementoChange.contenidoNuevo = contratoInput.tasaMoneda.toString();    
       suplementoChange.clausula = "Tasa de la moneda";
       this.suplementoChangeService.save(suplementoChange);
     }
 
-    if(suplementoResumen.fechaTasa != fechaTasa){
+    if(contratoInput.fechaTasa != fechaTasa){
       suplementoChange.idEmbarque = null;
       suplementoChange.orden = null;
       suplementoChange.idCambio = 0;
       suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
       suplementoChange.contenidoViejo = fechaTasa.toString();
-      suplementoChange.contenidoNuevo = suplementoResumen.fechaTasa.toString();    
+      suplementoChange.contenidoNuevo = contratoInput.fechaTasa.toString();    
       suplementoChange.clausula = "Fecha de la tasa";
       this.suplementoChangeService.save(suplementoChange);
     }
 
-    if(suplementoResumen.fechaPFirma != fechaPFirma){
+    if(contratoInput.fechaPFirma != fechaPFirma){
       suplementoChange.idEmbarque = null;
       suplementoChange.orden = null;
       suplementoChange.idCambio = 0;
       suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
       suplementoChange.contenidoViejo = fechaPFirma.toString();
-      suplementoChange.contenidoNuevo = suplementoResumen.fechaPFirma.toString();    
+      suplementoChange.contenidoNuevo = contratoInput.fechaPFirma.toString();    
       suplementoChange.clausula = "Fecha firma proveedor";
       this.suplementoChangeService.save(suplementoChange);
     }
 
-    if(suplementoResumen.pFin != pFin){
+    if(contratoInput.pFin != pFin){
       suplementoChange.idEmbarque = null;
       suplementoChange.orden = null;
       suplementoChange.idCambio = 0;
       suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
       suplementoChange.contenidoViejo = pFin.toString();
-      suplementoChange.contenidoNuevo = suplementoResumen.pFin.toString();    
+      suplementoChange.contenidoNuevo = contratoInput.pFin.toString();    
       suplementoChange.clausula = "pFin";
       this.suplementoChangeService.save(suplementoChange);
     }
 
-    if(suplementoResumen.idNegociacion != idNegociacion){
+    if(contratoInput.idNegociacion != idNegociacion){
       suplementoChange.idEmbarque = null;
       suplementoChange.orden = null;
       suplementoChange.idCambio = 0;
       suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
-      suplementoChange.contenidoViejo = suplementoResumen.idNegociacion.toString();
+      suplementoChange.contenidoViejo = contratoInput.idNegociacion.toString();
       suplementoChange.contenidoNuevo = idNegociacion.toString();    
       suplementoChange.clausula = "Negociacion";
       this.suplementoChangeService.save(suplementoChange);
     }
     
-    if(suplementoResumen.gastosLogisticos != gastosLogisticos){
+    if(contratoInput.gastosLogisticos != gastosLogisticos){
       suplementoChange.idEmbarque = null;
       suplementoChange.orden = null;
       suplementoChange.idCambio = 0;
       suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
       suplementoChange.contenidoViejo = gastosLogisticos.toString();
-      suplementoChange.contenidoNuevo = suplementoResumen.gastosLogisticos.toString();    
+      suplementoChange.contenidoNuevo = contratoInput.gastosLogisticos.toString();    
       suplementoChange.clausula = "Gastos logisticos";
       this.suplementoChangeService.save(suplementoChange);
     }
 
-    if(suplementoResumen.lugarFirma != lugarFirma){
+    if(contratoInput.lugarFirma != lugarFirma){
       suplementoChange.idEmbarque = null;
       suplementoChange.orden = null;
       suplementoChange.idCambio = 0;
       suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
       suplementoChange.contenidoViejo = lugarFirma.toString();
-      suplementoChange.contenidoNuevo = suplementoResumen.lugarFirma.toString();    
+      suplementoChange.contenidoNuevo = contratoInput.lugarFirma.toString();    
       suplementoChange.clausula = "Lugar de firma";
       this.suplementoChangeService.save(suplementoChange);
     }
 
-    if(suplementoResumen.idPais != idPais){
+    if(contratoInput.idPais != idPais){
       suplementoChange.idEmbarque = null;
       suplementoChange.orden = null;
       suplementoChange.idCambio = 0;
       suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
       suplementoChange.contenidoViejo = idPais.toString();
-      suplementoChange.contenidoNuevo = suplementoResumen.idPais.toString();    
+      suplementoChange.contenidoNuevo = contratoInput.idPais.toString();    
       suplementoChange.clausula = "Pais";
       this.suplementoChangeService.save(suplementoChange);
     }
 
-    if(suplementoResumen.idIncoterm != idIncoterm){
+    if(contratoInput.idIncoterm != idIncoterm){
       suplementoChange.idEmbarque = null;
       suplementoChange.orden = null;
       suplementoChange.idCambio = 0;
       suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
       suplementoChange.contenidoViejo = idIncoterm.toString();
-      suplementoChange.contenidoNuevo = suplementoResumen.idIncoterm.toString();    
+      suplementoChange.contenidoNuevo = contratoInput.idIncoterm.toString();    
       suplementoChange.clausula = "Condicion de compra";
       this.suplementoChangeService.save(suplementoChange);
     }
 
     if(contrato.suplementoResumen.length == 1){
-      let clausulas = suplementoResumen.suplementoClausulas;
+      let clausulas = contratoInput.contratoClausulas;
       for (let index = 0; index < clausulas.length; index++) {
         const clausula = clausulas[index];
         const clausulaVieja = contrato.contratoClausulas.find(clausula2=> clausula2.noClausula == clausula.noClausula)
         
-        if(clausulaVieja.contenido != clausula.txClausula){
+        if(clausulaVieja.contenido != clausula.contenido){
           suplementoChange.idEmbarque = null;
           suplementoChange.orden = clausula.noClausula;
           suplementoChange.idCambio = 1;
           suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
           suplementoChange.contenidoViejo = clausulaVieja.contenido.toString();
-          suplementoChange.contenidoNuevo = clausula.txClausula.toString();    
+          suplementoChange.contenidoNuevo = clausula.contenido.toString();    
           suplementoChange.clausula = "Cambio en las clausulas";
           this.suplementoChangeService.save(suplementoChange); 
         }
         
-      let embarques = suplementoResumen.suplementoEmbarques;
+      let embarques = contratoInput.embarques;
       for (let index = 0; index < embarques.length; index++) {
         const embarque = embarques[index];
         const embarqueViejo = contrato.embarques.find(clausula2=> clausula2.idEmbarque == embarque.idEmbarque)
 
         if(!embarqueViejo){
-          let desgloses = embarque.suplementoDesgloses
+          let desgloses = embarque.contratoDesglose
           for(let index = 0; index < desgloses.length; index++){
             const desglose = desgloses[index];
             const codigo = await this.codigosParaLaVentaService.findOne(desglose.idCodigo);
             suplementoChange.idEmbarque = embarque.idEmbarque;
             suplementoChange.orden = null;
             suplementoChange.idCambio = 4;
-            suplementoChange.idSuplementoResumen = embarque.idSuplementoResumen;
+            suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
             suplementoChange.contenidoViejo = "0";
             suplementoChange.contenidoNuevo = desglose.idCodigo.toString()+" "+codigo.descripcion;    
             suplementoChange.clausula = "Codigo añadido al contrato";
@@ -717,7 +728,7 @@ export class ContratosService {
             suplementoChange.idEmbarque = embarque.idEmbarque;
             suplementoChange.orden = null;
             suplementoChange.idCambio = 3;
-            suplementoChange.idSuplementoResumen = embarque.idSuplementoResumen;
+            suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
             suplementoChange.contenidoViejo = embarqueViejo.fechaEntrega.toString();
             suplementoChange.contenidoNuevo = embarque.fechaEntrega.toString();    
             suplementoChange.clausula = "Fecha de entrega";
@@ -728,7 +739,7 @@ export class ContratosService {
               suplementoChange.idEmbarque = embarque.idEmbarque;
               suplementoChange.orden = null;
               suplementoChange.idCambio = 3;
-              suplementoChange.idSuplementoResumen = embarque.idSuplementoResumen;
+              suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
               suplementoChange.contenidoViejo = embarqueViejo.descuento.toString();
               suplementoChange.contenidoNuevo = embarque.descuento.toString();    
               suplementoChange.clausula = "Descuento";
@@ -739,7 +750,7 @@ export class ContratosService {
               suplementoChange.idEmbarque = embarque.idEmbarque;
               suplementoChange.orden = null;
               suplementoChange.idCambio = 3;
-              suplementoChange.idSuplementoResumen = embarque.idSuplementoResumen;
+              suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
               suplementoChange.contenidoViejo = embarqueViejo.terminado.toString();
               suplementoChange.contenidoNuevo = embarque.terminado.toString();    
               suplementoChange.clausula = "Terminado";
@@ -750,7 +761,7 @@ export class ContratosService {
               suplementoChange.idEmbarque = embarque.idEmbarque;
               suplementoChange.orden = null;
               suplementoChange.idCambio = 3;
-              suplementoChange.idSuplementoResumen = embarque.idSuplementoResumen;
+              suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
               suplementoChange.contenidoViejo = embarqueViejo.cancelado.toString();
               suplementoChange.contenidoNuevo = embarque.cancelado.toString();    
               suplementoChange.clausula = "Cancelado";
@@ -761,7 +772,7 @@ export class ContratosService {
               suplementoChange.idEmbarque = embarque.idEmbarque;
               suplementoChange.orden = null;
               suplementoChange.idCambio = 3;
-              suplementoChange.idSuplementoResumen = embarque.idSuplementoResumen;
+              suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
               suplementoChange.contenidoViejo = embarqueViejo.porFirmar.toString();
               suplementoChange.contenidoNuevo = embarque.porFirmar.toString();    
               suplementoChange.clausula = "Por firmar";
@@ -772,7 +783,7 @@ export class ContratosService {
               suplementoChange.idEmbarque = embarque.idEmbarque;
               suplementoChange.orden = null;
               suplementoChange.idCambio = 3;
-              suplementoChange.idSuplementoResumen = embarque.idSuplementoResumen;
+              suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
               suplementoChange.contenidoViejo = embarqueViejo.qtyCnt.toString();
               suplementoChange.contenidoNuevo = embarque.qtyCnt.toString();    
               suplementoChange.clausula = "qtyCnt";
@@ -783,7 +794,7 @@ export class ContratosService {
               suplementoChange.idEmbarque = embarque.idEmbarque;
               suplementoChange.orden = null;
               suplementoChange.idCambio = 3;
-              suplementoChange.idSuplementoResumen = embarque.idSuplementoResumen;
+              suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
               suplementoChange.contenidoViejo = embarqueViejo.flete.toString();
               suplementoChange.contenidoNuevo = embarque.flete.toString();    
               suplementoChange.clausula = "Flete";
@@ -794,7 +805,7 @@ export class ContratosService {
               suplementoChange.idEmbarque = embarque.idEmbarque;
               suplementoChange.orden = null;
               suplementoChange.idCambio = 3;
-              suplementoChange.idSuplementoResumen = embarque.idSuplementoResumen;
+              suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
               suplementoChange.contenidoViejo = embarqueViejo.seguro.toString();
               suplementoChange.contenidoNuevo = embarque.seguro.toString();    
               suplementoChange.clausula = "Seguro";
@@ -805,7 +816,7 @@ export class ContratosService {
               suplementoChange.idEmbarque = embarque.idEmbarque;
               suplementoChange.orden = null;
               suplementoChange.idCambio = 3;
-              suplementoChange.idSuplementoResumen = embarque.idSuplementoResumen;
+              suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
               suplementoChange.contenidoViejo = embarqueViejo.financiamiento.toString();
               suplementoChange.contenidoNuevo = embarque.financiamiento.toString();    
               suplementoChange.clausula = "Financiamiento";
@@ -816,7 +827,7 @@ export class ContratosService {
               suplementoChange.idEmbarque = embarque.idEmbarque;
               suplementoChange.orden = null;
               suplementoChange.idCambio = 3;
-              suplementoChange.idSuplementoResumen = embarque.idSuplementoResumen;
+              suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
               suplementoChange.contenidoViejo = embarqueViejo.idEmpresaNaviera.toString();
               suplementoChange.contenidoNuevo = embarque.idEmpresaNaviera.toString();    
               suplementoChange.clausula = "Empresa Naviera";
@@ -827,7 +838,7 @@ export class ContratosService {
               suplementoChange.idEmbarque = embarque.idEmbarque;
               suplementoChange.orden = null;
               suplementoChange.idCambio = 3;
-              suplementoChange.idSuplementoResumen = embarque.idSuplementoResumen;
+              suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
               suplementoChange.contenidoViejo = embarqueViejo.inspeccion.toString();
               suplementoChange.contenidoNuevo = embarque.inspeccion.toString();    
               suplementoChange.clausula = "Inspeccion";
@@ -838,7 +849,7 @@ export class ContratosService {
               suplementoChange.idEmbarque = embarque.idEmbarque;
               suplementoChange.orden = null;
               suplementoChange.idCambio = 3;
-              suplementoChange.idSuplementoResumen = embarque.idSuplementoResumen;
+              suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
               suplementoChange.contenidoViejo = embarqueViejo.otros.toString();
               suplementoChange.contenidoNuevo = embarque.otros.toString();    
               suplementoChange.clausula = "Otros";
@@ -849,7 +860,7 @@ export class ContratosService {
               suplementoChange.idEmbarque = embarque.idEmbarque;
               suplementoChange.orden = null;
               suplementoChange.idCambio = 3;
-              suplementoChange.idSuplementoResumen = embarque.idSuplementoResumen;
+              suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
               suplementoChange.contenidoViejo = embarqueViejo.c40.toString();
               suplementoChange.contenidoNuevo = embarque.c40.toString();    
               suplementoChange.clausula = "c40";
@@ -860,14 +871,16 @@ export class ContratosService {
               suplementoChange.idEmbarque = embarque.idEmbarque;
               suplementoChange.orden = null;
               suplementoChange.idCambio = 3;
-              suplementoChange.idSuplementoResumen = embarque.idSuplementoResumen;
+              suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
               suplementoChange.contenidoViejo = embarqueViejo.c20.toString();
               suplementoChange.contenidoNuevo = embarque.c20.toString();    
               suplementoChange.clausula = "c20";
               this.suplementoChangeService.save(suplementoChange);
             }
 
-            let desgloses = embarque.suplementoDesgloses
+            //Aqui se verifican suplementos PuertoEmbarque
+
+            let desgloses = embarque.contratoDesglose;
             let desglosesViejos = embarqueViejo.contratoDesgloses;
             
             for(let index = 0; index < desgloses.length; index++){
@@ -879,7 +892,7 @@ export class ContratosService {
                 suplementoChange.idEmbarque = embarque.idEmbarque;
                 suplementoChange.orden = null;
                 suplementoChange.idCambio = 4;
-                suplementoChange.idSuplementoResumen = embarque.idSuplementoResumen;
+                suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
                 suplementoChange.contenidoViejo = "-";
                 suplementoChange.contenidoNuevo = desglose.idCodigo.toString()+" "+codigo.descripcion;    
                 suplementoChange.clausula = "Codigo añadido al contrato";
@@ -895,37 +908,37 @@ export class ContratosService {
         - (a.fecha.getFullYear()+a.fecha.getMonth()+a.fecha.getDate()+a.fecha.getHours()+a.fecha.getMinutes()+a.fecha.getSeconds()));
       let suplementoAnterior = contrato.suplementoResumen[1];
 
-      let clausulas = suplementoResumen.suplementoClausulas;
+      let clausulas = contratoInput.contratoClausulas;
       for (let index = 0; index < clausulas.length; index++) {
         const clausula = clausulas[index];
         const clausulaVieja = suplementoAnterior.suplementoClausulas.find(clausula2=> clausula2.noClausula == clausula.noClausula)
         
-        if(clausulaVieja.txClausula != clausula.txClausula){
+        if(clausulaVieja.txClausula != clausula.contenido){
           suplementoChange.idEmbarque = null;
           suplementoChange.orden = clausula.noClausula;
           suplementoChange.idCambio = 1;
           suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
           suplementoChange.contenidoViejo = clausulaVieja.txClausula.toString();
-          suplementoChange.contenidoNuevo = clausula.txClausula.toString();    
+          suplementoChange.contenidoNuevo = clausula.contenido.toString();    
           suplementoChange.clausula = "Cambio en las clausulas";
           this.suplementoChangeService.save(suplementoChange); 
         }     
       }
 
-      let embarques = suplementoResumen.suplementoEmbarques;
+      let embarques = contratoInput.embarques;
       for (let index = 0; index < embarques.length; index++) {
         const embarque = embarques[index];
         const embarqueViejo = suplementoAnterior.suplementoEmbarques.find(clausula2=> clausula2.idEmbarque == embarque.idEmbarque)
 
         if(!embarqueViejo){
-          let desgloses = embarque.suplementoDesgloses
+          let desgloses = embarque.contratoDesglose
           for(let index = 0; index < desgloses.length; index++){
             const desglose = desgloses[index];
             const codigo = await this.codigosParaLaVentaService.findOne(desglose.idCodigo);
             suplementoChange.idEmbarque = embarque.idEmbarque;
             suplementoChange.orden = null;
             suplementoChange.idCambio = 4;
-            suplementoChange.idSuplementoResumen = embarque.idSuplementoResumen;
+            suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
             suplementoChange.contenidoViejo = "0";
             suplementoChange.contenidoNuevo = desglose.idCodigo.toString()+" "+codigo.descripcion;    
             suplementoChange.clausula = "Codigo añadido al contrato";
@@ -938,7 +951,7 @@ export class ContratosService {
             suplementoChange.idEmbarque = embarque.idEmbarque;
             suplementoChange.orden = null;
             suplementoChange.idCambio = 3;
-            suplementoChange.idSuplementoResumen = embarque.idSuplementoResumen;
+            suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
             suplementoChange.contenidoViejo = embarqueViejo.fechaEntrega.toString();
             suplementoChange.contenidoNuevo = embarque.fechaEntrega.toString();    
             suplementoChange.clausula = "Fecha de entrega";
@@ -949,7 +962,7 @@ export class ContratosService {
               suplementoChange.idEmbarque = embarque.idEmbarque;
               suplementoChange.orden = null;
               suplementoChange.idCambio = 3;
-              suplementoChange.idSuplementoResumen = embarque.idSuplementoResumen;
+              suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
               suplementoChange.contenidoViejo = embarqueViejo.descuento.toString();
               suplementoChange.contenidoNuevo = embarque.descuento.toString();    
               suplementoChange.clausula = "Descuento";
@@ -960,7 +973,7 @@ export class ContratosService {
               suplementoChange.idEmbarque = embarque.idEmbarque;
               suplementoChange.orden = null;
               suplementoChange.idCambio = 3;
-              suplementoChange.idSuplementoResumen = embarque.idSuplementoResumen;
+              suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
               suplementoChange.contenidoViejo = embarqueViejo.terminado.toString();
               suplementoChange.contenidoNuevo = embarque.terminado.toString();    
               suplementoChange.clausula = "Terminado";
@@ -971,7 +984,7 @@ export class ContratosService {
               suplementoChange.idEmbarque = embarque.idEmbarque;
               suplementoChange.orden = null;
               suplementoChange.idCambio = 3;
-              suplementoChange.idSuplementoResumen = embarque.idSuplementoResumen;
+              suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
               suplementoChange.contenidoViejo = embarqueViejo.cancelado.toString();
               suplementoChange.contenidoNuevo = embarque.cancelado.toString();    
               suplementoChange.clausula = "Cancelado";
@@ -982,7 +995,7 @@ export class ContratosService {
               suplementoChange.idEmbarque = embarque.idEmbarque;
               suplementoChange.orden = null;
               suplementoChange.idCambio = 3;
-              suplementoChange.idSuplementoResumen = embarque.idSuplementoResumen;
+              suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
               suplementoChange.contenidoViejo = embarqueViejo.porFirmar.toString();
               suplementoChange.contenidoNuevo = embarque.porFirmar.toString();    
               suplementoChange.clausula = "Por firmar";
@@ -993,7 +1006,7 @@ export class ContratosService {
               suplementoChange.idEmbarque = embarque.idEmbarque;
               suplementoChange.orden = null;
               suplementoChange.idCambio = 3;
-              suplementoChange.idSuplementoResumen = embarque.idSuplementoResumen;
+              suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
               suplementoChange.contenidoViejo = embarqueViejo.qtyCnt.toString();
               suplementoChange.contenidoNuevo = embarque.qtyCnt.toString();    
               suplementoChange.clausula = "qtyCnt";
@@ -1004,7 +1017,7 @@ export class ContratosService {
               suplementoChange.idEmbarque = embarque.idEmbarque;
               suplementoChange.orden = null;
               suplementoChange.idCambio = 3;
-              suplementoChange.idSuplementoResumen = embarque.idSuplementoResumen;
+              suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
               suplementoChange.contenidoViejo = embarqueViejo.flete.toString();
               suplementoChange.contenidoNuevo = embarque.flete.toString();    
               suplementoChange.clausula = "Flete";
@@ -1015,7 +1028,7 @@ export class ContratosService {
               suplementoChange.idEmbarque = embarque.idEmbarque;
               suplementoChange.orden = null;
               suplementoChange.idCambio = 3;
-              suplementoChange.idSuplementoResumen = embarque.idSuplementoResumen;
+              suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
               suplementoChange.contenidoViejo = embarqueViejo.seguro.toString();
               suplementoChange.contenidoNuevo = embarque.seguro.toString();    
               suplementoChange.clausula = "Seguro";
@@ -1026,7 +1039,7 @@ export class ContratosService {
               suplementoChange.idEmbarque = embarque.idEmbarque;
               suplementoChange.orden = null;
               suplementoChange.idCambio = 3;
-              suplementoChange.idSuplementoResumen = embarque.idSuplementoResumen;
+              suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
               suplementoChange.contenidoViejo = embarqueViejo.financiamiento.toString();
               suplementoChange.contenidoNuevo = embarque.financiamiento.toString();    
               suplementoChange.clausula = "Financiamiento";
@@ -1037,7 +1050,7 @@ export class ContratosService {
               suplementoChange.idEmbarque = embarque.idEmbarque;
               suplementoChange.orden = null;
               suplementoChange.idCambio = 3;
-              suplementoChange.idSuplementoResumen = embarque.idSuplementoResumen;
+              suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
               suplementoChange.contenidoViejo = embarqueViejo.idEmpresaNaviera.toString();
               suplementoChange.contenidoNuevo = embarque.idEmpresaNaviera.toString();    
               suplementoChange.clausula = "Empresa Naviera";
@@ -1048,7 +1061,7 @@ export class ContratosService {
               suplementoChange.idEmbarque = embarque.idEmbarque;
               suplementoChange.orden = null;
               suplementoChange.idCambio = 3;
-              suplementoChange.idSuplementoResumen = embarque.idSuplementoResumen;
+              suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
               suplementoChange.contenidoViejo = embarqueViejo.inspeccion.toString();
               suplementoChange.contenidoNuevo = embarque.inspeccion.toString();    
               suplementoChange.clausula = "Inspeccion";
@@ -1059,7 +1072,7 @@ export class ContratosService {
               suplementoChange.idEmbarque = embarque.idEmbarque;
               suplementoChange.orden = null;
               suplementoChange.idCambio = 3;
-              suplementoChange.idSuplementoResumen = embarque.idSuplementoResumen;
+              suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
               suplementoChange.contenidoViejo = embarqueViejo.otros.toString();
               suplementoChange.contenidoNuevo = embarque.otros.toString();    
               suplementoChange.clausula = "Otros";
@@ -1070,7 +1083,7 @@ export class ContratosService {
               suplementoChange.idEmbarque = embarque.idEmbarque;
               suplementoChange.orden = null;
               suplementoChange.idCambio = 3;
-              suplementoChange.idSuplementoResumen = embarque.idSuplementoResumen;
+              suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
               suplementoChange.contenidoViejo = embarqueViejo.c40.toString();
               suplementoChange.contenidoNuevo = embarque.c40.toString();    
               suplementoChange.clausula = "c40";
@@ -1081,14 +1094,16 @@ export class ContratosService {
               suplementoChange.idEmbarque = embarque.idEmbarque;
               suplementoChange.orden = null;
               suplementoChange.idCambio = 3;
-              suplementoChange.idSuplementoResumen = embarque.idSuplementoResumen;
+              suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
               suplementoChange.contenidoViejo = embarqueViejo.c20.toString();
               suplementoChange.contenidoNuevo = embarque.c20.toString();    
               suplementoChange.clausula = "c20";
               this.suplementoChangeService.save(suplementoChange);
             }
 
-            let desgloses = embarque.suplementoDesgloses
+            //Aqui se verifican suplementos PuertoEmbarque
+
+            let desgloses = embarque.contratoDesglose
             let desglosesViejos = embarqueViejo.suplementoResumen.suplementoDesgloses.filter(embarque2=> embarque2.idEmbarque == embarqueViejo.idEmbarque);
 
             
@@ -1101,7 +1116,7 @@ export class ContratosService {
                 suplementoChange.idEmbarque = embarque.idEmbarque;
                 suplementoChange.orden = null;
                 suplementoChange.idCambio = 4;
-                suplementoChange.idSuplementoResumen = embarque.idSuplementoResumen;
+                suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
                 suplementoChange.contenidoViejo = "-";
                 suplementoChange.contenidoNuevo = desglose.idCodigo.toString()+" "+codigo.descripcion;    
                 suplementoChange.clausula = "Codigo añadido al contrato";
@@ -1170,6 +1185,18 @@ export class ContratosService {
             contratoEmbarque.actSci = embarque.actSci;
             
             await this.embarquesService.save(contratoEmbarque);
+
+            this.puertoEmbarqueService.removeSeveralByEmbarqueId(embarque.idEmbarque);
+            let puertoEmbarques = contratoEmbarque.puertoEmbarque;
+            for(let index = 0; index < puertoEmbarques.length; index++){
+              const puertoEmbarque = puertoEmbarques[index];
+              var inputPuertoEmbarque = new CreatePuertoEmbarqueInput();
+              inputPuertoEmbarque.idPuertoEmbarque = puertoEmbarque.idPuertoEmbarque;
+              inputPuertoEmbarque.idEmbarque = puertoEmbarque.idEmbarque;
+              inputPuertoEmbarque.idPuertoOrigen = puertoEmbarque.idPuertoOrigen;
+              inputPuertoEmbarque.idPuertoDestino = puertoEmbarque.idPuertoDestino;
+              this.puertoEmbarqueService.save(inputPuertoEmbarque);
+            }
             
             let desgloses = contratoEmbarque.contratoDesglose;
             for (let index = 0; index < desgloses.length; index++) {
@@ -1264,6 +1291,17 @@ export class ContratosService {
           contratoEmbarque.actSci = embarque.actSci;
           
           await this.embarquesService.save(contratoEmbarque);
+
+          let puertoEmbarques = contratoEmbarque.puertoEmbarque;
+            for(let index = 0; index < puertoEmbarques.length; index++){
+              const puertoEmbarque = puertoEmbarques[index];
+              var inputPuertoEmbarque = new CreatePuertoEmbarqueInput();
+              inputPuertoEmbarque.idPuertoEmbarque = puertoEmbarque.idPuertoEmbarque;
+              inputPuertoEmbarque.idEmbarque = puertoEmbarque.idEmbarque;
+              inputPuertoEmbarque.idPuertoOrigen = puertoEmbarque.idPuertoOrigen;
+              inputPuertoEmbarque.idPuertoDestino = puertoEmbarque.idPuertoDestino;
+              this.puertoEmbarqueService.save(inputPuertoEmbarque);
+            }
           
           let desgloses = contratoEmbarque.contratoDesglose;
           for (let index = 0; index < desgloses.length; index++) {
@@ -1417,8 +1455,8 @@ export class ContratosService {
   }
 
   async findOne(id: number) : Promise<Contratos> {
-      return await this.contratoRepository.findOne(id,{relations:['contratoClausulas','documentacionContratos','embarques','facturaResumen','fichaCompraResumen',
-      'suplementoEmbarques','suplementoResumen','suplementoClausulas']});
+    return await this.contratoRepository.findOne(id,{relations:['contratoClausulas','documentacionContratos','embarques','facturaResumen','fichaCompraResumen',
+    'suplementoEmbarques','suplementoResumen','suplementoClausulas']});
   }
 
   async remove(usuarioToken: Usuarios,id: number) : Promise<any> {

@@ -41,8 +41,8 @@ export class ContratosResolver {
   @Mutation(() => Boolean)
   @UseGuards(new AuthGuard())
   comprobarDiferencias(
-    @Args('createSuplementoResumanInput') createSuplementoResumanInput: CreateSuplementoResumanInput) {
-    return this.contratosService.comprobarDiferencias(createSuplementoResumanInput);
+    @Args('createContratoInput') createContratoInput: CreateContratoInput) {
+    return this.contratosService.comprobarDiferencias(createContratoInput);
   }
 
   @Query(() => [Contratos])
