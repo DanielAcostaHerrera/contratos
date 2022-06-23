@@ -40,6 +40,7 @@ import { CreateSuplementoEmbarqueInput } from 'src/suplemento-embarques/dto/crea
 import { SuplementoEmbarquesService } from 'src/suplemento-embarques/suplemento-embarques.service';
 import { CreateSuplementoDesgloseInput } from 'src/suplemento-desglose/dto/create-suplemento-desglose.input';
 import { SuplementoDesgloseService } from 'src/suplemento-desglose/suplemento-desglose.service';
+import { SuplementoResumen } from 'src/models/entities/SuplementoResumen.entity';
 
 @Injectable()
 export class ContratosService {
@@ -158,8 +159,8 @@ export class ContratosService {
       }
   }
 
-  async comprobarDiferencias(): Promise<void>{
-    
+  async comprobarDiferencias(suplementoResumen: SuplementoResumen): Promise<void>{
+
   }
   
   async save(usuarioToken: Usuarios,createContratoInput: CreateContratoInput) : Promise<Contratos> {
