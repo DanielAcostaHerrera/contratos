@@ -9,11 +9,13 @@ import { ContratoDesgloseModule } from 'src/contrato-desglose/contrato-desglose.
 import { SuplementoChangeModule } from 'src/suplemento-change/suplemento-change.module';
 import { SuplementoEmbarquesModule } from 'src/suplemento-embarques/suplemento-embarques.module';
 import { SuplementoDesgloseModule } from 'src/suplemento-desglose/suplemento-desglose.module';
+import { SuplementoResumenModule } from 'src/suplemento-resumen/suplemento-resumen.module';
 
 @Module({
   imports: [TypeOrmModule.forFeature([
     Embarques
-  ]),EjecutivoModule,CompaniasNavierasModule,ContratoDesgloseModule,SuplementoChangeModule,SuplementoEmbarquesModule,SuplementoDesgloseModule],
+  ]),EjecutivoModule,CompaniasNavierasModule,ContratoDesgloseModule,SuplementoChangeModule,SuplementoEmbarquesModule,
+  SuplementoDesgloseModule,SuplementoResumenModule],
   providers: [EmbarquesResolver, EmbarquesService],
   exports: [EmbarquesService]
 })

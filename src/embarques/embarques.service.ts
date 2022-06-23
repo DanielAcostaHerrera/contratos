@@ -7,6 +7,7 @@ import { EjecutivoService } from 'src/ejecutivo/ejecutivo.service';
 import { ContratoDesglose } from 'src/models/entities/ContratoDesglose.entity';
 import { Ejecutivos } from 'src/models/entities/Ejecutivos.entity';
 import { Embarques } from 'src/models/entities/Embarques.entity';
+import { Usuarios } from 'src/models/entities/Usuarios.entity';
 import { CompaniasNavieras } from 'src/modelsNomgen/entities/CompaniasNavieras.entity';
 import { CreateSuplementoChangeInput } from 'src/suplemento-change/dto/create-suplemento-change.input';
 import { SuplementoChangeService } from 'src/suplemento-change/suplemento-change.service';
@@ -14,6 +15,8 @@ import { CreateSuplementoDesgloseInput } from 'src/suplemento-desglose/dto/creat
 import { SuplementoDesgloseService } from 'src/suplemento-desglose/suplemento-desglose.service';
 import { CreateSuplementoEmbarqueInput } from 'src/suplemento-embarques/dto/create-suplemento-embarque.input';
 import { SuplementoEmbarquesService } from 'src/suplemento-embarques/suplemento-embarques.service';
+import { CreateSuplementoResumanInput } from 'src/suplemento-resumen/dto/create-suplemento-resuman.input';
+import { SuplementoResumenService } from 'src/suplemento-resumen/suplemento-resumen.service';
 import { Repository } from 'typeorm';
 import { CreateEmbarqueInput } from './dto/create-embarque.input';
 
@@ -22,10 +25,11 @@ export class EmbarquesService {
   constructor(@InjectRepository(Embarques) public readonly embarquesRepository: Repository<Embarques>,
   private ejecutivoService: EjecutivoService, private contratoDesgloseService: ContratoDesgloseService,
   private companiasNavierasService: CompaniasNavierasService, private suplementoChangeService: SuplementoChangeService,
-  private suplementoEmbarquesService: SuplementoEmbarquesService, private suplementoDesgloseService: SuplementoDesgloseService) {}
+  private suplementoEmbarquesService: SuplementoEmbarquesService, private suplementoDesgloseService: SuplementoDesgloseService,
+  private suplementoResumenService: SuplementoResumenService) {}
 
 
-  async save(createEmbarqueInput: CreateEmbarqueInput) : Promise<Embarques> {
+  async save(usuarioToken: Usuarios,createEmbarqueInput: CreateEmbarqueInput) : Promise<Embarques> {
     var result: Embarques;
     
     if(createEmbarqueInput.idEmbarque){
@@ -33,10 +37,61 @@ export class EmbarquesService {
       let suplementoChange = new CreateSuplementoChangeInput();
       let embarqueViejo = await this.findOne(createEmbarqueInput.idEmbarque)
       let contrato = embarqueViejo.contratos;
+      let idSuplementoResumen;
 
       suplementoEmbarque.idEmbarque = createEmbarqueInput.idEmbarque;
-      suplementoEmbarque.idSuplementoResumen = contrato.suplementoResumen[0].idSuplementoResumen;
       suplementoEmbarque.idContrato = contrato.idContrato;
+      if(!contrato.suplementoResumen){
+        let suplementoResumen = new CreateSuplementoResumanInput()
+        suplementoResumen.idContrato = contrato.idContrato;
+        suplementoResumen.suplementadoPor = usuarioToken.idEjecutivo;
+        suplementoResumen.fecha = new Date();
+        suplementoResumen.operacion = contrato.negociacionResumen.operacion;
+        suplementoResumen.modificado = false;
+        suplementoResumen.terminadoS = false;
+        suplementoResumen.idEjecutivo = contrato.realizadoPor;
+        suplementoResumen.firma = contrato.firmadoPor;
+        suplementoResumen.idMoneda = contrato.idMoneda;
+        suplementoResumen.idEmpSeguro = contrato.idEmpresaSeguro;
+        suplementoResumen.idEmpNaviera = contrato.idEmpresaNaviera;
+        suplementoResumen.lugarEntrega = contrato.lugarEntrega;
+        suplementoResumen.cancelado = contrato.cancelado;
+        suplementoResumen.notas = contrato.notas;
+        suplementoResumen.permitirEmbarquesParciales = contrato.permitirEmbarquesParciales;
+        suplementoResumen.cantidadEp = contrato.cantidadEp;
+        suplementoResumen.permitirEntregas = contrato.permitirEntregas;
+        suplementoResumen.permitirTrasbordos = contrato.permitirTrasbordos;
+        suplementoResumen.producto = contrato.producto;
+        suplementoResumen.noEntregasParciales = contrato.noEntregasParciales;
+        suplementoResumen.fInicial = contrato.fechaInicial;
+        suplementoResumen.fFinal = contrato.fechaFinal;
+        suplementoResumen.fFirma = contrato.fechaFirma;
+        suplementoResumen.fRecepcion = contrato.fechaRecepcion;
+        suplementoResumen.fArribo = contrato.fechaArribo;
+        suplementoResumen.financiamiento = contrato.financiamiento;
+        suplementoResumen.tasaMoneda = contrato.tasaMoneda;
+        suplementoResumen.fechaTasa = contrato.fechaTasa;
+        suplementoResumen.fechaPFirma = contrato.fechaPFirma;
+        suplementoResumen.pFin = contrato.pFin;
+        suplementoResumen.idNegociacion = contrato.idNegociacion;
+        suplementoResumen.gastosLogisticos = contrato.gastosLogisticos;
+        suplementoResumen.lugarFirma = contrato.lugarFirma;
+        suplementoResumen.idPais = contrato.idPais;
+        suplementoResumen.idIncoterm = contrato.idIncoterm;
+        suplementoResumen.origen = "A"+contrato.idContrato.toString();
+        let resumenSuplemento = await this.suplementoResumenService.save(suplementoResumen);
+        idSuplementoResumen = resumenSuplemento.idSuplementoResumen;
+
+      }
+      else{
+        if(contrato.suplementoResumen.length > 1){
+          contrato.suplementoResumen.sort((a, b) => (b.fecha.getFullYear()+b.fecha.getMonth()+b.fecha.getDate()+b.fecha.getHours()+b.fecha.getMinutes()+b.fecha.getSeconds())
+        - (a.fecha.getFullYear()+a.fecha.getMonth()+a.fecha.getDate()+a.fecha.getHours()+a.fecha.getMinutes()+a.fecha.getSeconds()));
+        }
+        idSuplementoResumen = contrato.suplementoResumen[0].idSuplementoResumen;
+      }
+
+      suplementoEmbarque.idSuplementoResumen = idSuplementoResumen;
       suplementoEmbarque.numero = createEmbarqueInput.numero;
 
       suplementoEmbarque.fechaEntrega = createEmbarqueInput.fechaEntrega;

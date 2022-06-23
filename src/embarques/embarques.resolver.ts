@@ -1,11 +1,12 @@
-import { Resolver, Query, Mutation, Args, Int, ResolveField, Parent } from '@nestjs/graphql';
+import { Resolver, Query, Mutation, Args, Int, ResolveField, Parent, Context } from '@nestjs/graphql';
 import { EmbarquesService } from './embarques.service';
 import { CreateEmbarqueInput } from './dto/create-embarque.input';
 import { Embarques } from 'src/models/entities/Embarques.entity';
 import { Ejecutivos } from 'src/models/entities/Ejecutivos.entity';
 import { CompaniasNavieras } from 'src/modelsNomgen/entities/CompaniasNavieras.entity';
 import { UseGuards } from '@nestjs/common';
-import { AuthGuard } from 'src/auth.guard';
+import { AuthGuard, DEFAULT_GRAPHQL_CONTEXT } from 'src/auth.guard';
+import { Usuarios } from 'src/models/entities/Usuarios.entity';
 
 @Resolver(() => Embarques)
 export class EmbarquesResolver {
@@ -13,8 +14,10 @@ export class EmbarquesResolver {
 
   @Mutation(() => Embarques)
   @UseGuards(new AuthGuard())
-  createEmbarque(@Args('createEmbarqueInput') createEmbarqueInput: CreateEmbarqueInput) {
-    return this.embarquesService.save(createEmbarqueInput);
+  createEmbarque(
+    @Context(DEFAULT_GRAPHQL_CONTEXT) usuario: Usuarios,
+    @Args('createEmbarqueInput') createEmbarqueInput: CreateEmbarqueInput) {
+    return this.embarquesService.save(usuario,createEmbarqueInput);
   }
 
   @Query(() => [Embarques])
