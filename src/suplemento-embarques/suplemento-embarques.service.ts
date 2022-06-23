@@ -1,8 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CompaniasNavierasService } from 'src/companias-navieras/companias-navieras.service';
-import { ContratosService } from 'src/contratos/contratos.service';
-import { Contratos } from 'src/models/entities/Contratos.entity';
 import { SuplementoEmbarques } from 'src/models/entities/SuplementoEmbarques.entity';
 import { SuplementoResumen } from 'src/models/entities/SuplementoResumen.entity';
 import { CompaniasNavieras } from 'src/modelsNomgen/entities/CompaniasNavieras.entity';
@@ -13,7 +11,7 @@ import { CreateSuplementoEmbarqueInput } from './dto/create-suplemento-embarque.
 @Injectable()
 export class SuplementoEmbarquesService {
   constructor(@InjectRepository(SuplementoEmbarques) public readonly suplementoEmbarqueRepository: Repository<SuplementoEmbarques>,
-  private contratosService: ContratosService,private suplementoResumenService: SuplementoResumenService,
+  private suplementoResumenService: SuplementoResumenService,
   private companiaNavieraService: CompaniasNavierasService) {}
 
 
@@ -22,11 +20,11 @@ export class SuplementoEmbarquesService {
   }
 
   async findAll(): Promise<SuplementoEmbarques[]> {
-    return await this.suplementoEmbarqueRepository.find({relations:['embarques']});
+    return await this.suplementoEmbarqueRepository.find({relations:['embarques','contrato']});
   }
 
   async findOne(id: number) : Promise<SuplementoEmbarques> {
-    return await this.suplementoEmbarqueRepository.findOne(id,{relations:['embarques']});
+    return await this.suplementoEmbarqueRepository.findOne(id,{relations:['embarques','contrato']});
   }
 
   async remove(id: number) : Promise<any> {
@@ -37,10 +35,6 @@ export class SuplementoEmbarquesService {
   async removeSeveral(id: number[]) : Promise<any> {
     const suplementoEmbarques = await this.suplementoEmbarqueRepository.findByIds(id);
     return await this.suplementoEmbarqueRepository.remove(suplementoEmbarques);
-  }
-
-  async getContrato (id: number) : Promise<Contratos>{
-    return this.contratosService.findOne(id);
   }
 
   async getSuplementoResumen (id: number) : Promise<SuplementoResumen>{

@@ -56,10 +56,6 @@ export class ContratoMarco {
   @OneToMany(() => Contratos, (contratos) => contratos.contratoMarco)
   contratos: Contratos[];
 
-  @Field(() => [FichaCostoResumen], {nullable: true})
-  @OneToMany(() => FichaCostoResumen, (fichaCostoResumen) => fichaCostoResumen.contratoMarco)
-  fichaCostoResumen: FichaCostoResumen[];
-
   @Field(() => Proveedores, {nullable: true})
   @ManyToOne(() => Proveedores, (proveedores) => proveedores.contratoMarco)
   @JoinColumn([{ name: "IdProveedor", referencedColumnName: "codigo" }])

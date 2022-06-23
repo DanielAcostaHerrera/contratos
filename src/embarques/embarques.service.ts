@@ -11,6 +11,8 @@ import { Usuarios } from 'src/models/entities/Usuarios.entity';
 import { CompaniasNavieras } from 'src/modelsNomgen/entities/CompaniasNavieras.entity';
 import { CreateSuplementoChangeInput } from 'src/suplemento-change/dto/create-suplemento-change.input';
 import { SuplementoChangeService } from 'src/suplemento-change/suplemento-change.service';
+import { CreateSuplementoClausulaInput } from 'src/suplemento-clausulas/dto/create-suplemento-clausula.input';
+import { SuplementoClausulasService } from 'src/suplemento-clausulas/suplemento-clausulas.service';
 import { CreateSuplementoDesgloseInput } from 'src/suplemento-desglose/dto/create-suplemento-desglose.input';
 import { SuplementoDesgloseService } from 'src/suplemento-desglose/suplemento-desglose.service';
 import { CreateSuplementoEmbarqueInput } from 'src/suplemento-embarques/dto/create-suplemento-embarque.input';
@@ -26,7 +28,7 @@ export class EmbarquesService {
   private ejecutivoService: EjecutivoService, private contratoDesgloseService: ContratoDesgloseService,
   private companiasNavierasService: CompaniasNavierasService, private suplementoChangeService: SuplementoChangeService,
   private suplementoEmbarquesService: SuplementoEmbarquesService, private suplementoDesgloseService: SuplementoDesgloseService,
-  private suplementoResumenService: SuplementoResumenService) {}
+  private suplementoResumenService: SuplementoResumenService, private suplementoClausulasService: SuplementoClausulasService) {}
 
 
   async save(usuarioToken: Usuarios,createEmbarqueInput: CreateEmbarqueInput) : Promise<Embarques> {
@@ -90,6 +92,18 @@ export class EmbarquesService {
         suplementoResumen.origen = "A"+contrato.idContrato.toString();
         let resumenSuplemento = await this.suplementoResumenService.save(suplementoResumen);
         idSuplementoResumen = resumenSuplemento.idSuplementoResumen;
+
+        let clausulas = contrato.contratoClausulas;
+        for (let index = 0; index < clausulas.length; index++) {
+            const clausula = clausulas[index];
+            var suplementoClausula = new CreateSuplementoClausulaInput();
+            suplementoClausula.idSuplementoResumen = resumenSuplemento.idSuplementoResumen;
+            suplementoClausula.idContrato = contrato.idContrato;
+            suplementoClausula.noClausula = clausula.noClausula;
+            suplementoClausula.txClausula = clausula.contenido;
+            suplementoClausula.modificada = false;     
+            await this.suplementoClausulasService.save(suplementoClausula);        
+        }
 
       }
 
@@ -269,7 +283,7 @@ export class EmbarquesService {
         let desgloses = createEmbarqueInput.contratoDesglose;
         for (let index = 0; index < desgloses.length; index++) {
           const desglose = desgloses[index];
-          const desgloseViejo = embarqueViejo.contratoDesgloses.find(desglose2=> desglose2.idContratoDesglose == desglose.idContratoDesglose);
+          const desgloseViejo = embarqueViejo.contratoDesgloses.find(desglose2=> desglose2.idCodigo == desglose.idCodigo);
 
           var suplementoDesglose = new CreateSuplementoDesgloseInput();
           suplementoDesglose.idSuplementoResumen = embarqueSuplemento.idSuplementoResumen;
@@ -523,14 +537,12 @@ export class EmbarquesService {
 
       let desgloseContrato: ContratoDesglose[];
       let desgloseSuplemento = ultimoSuplementoResumen.suplementoDesgloses.filter(desglose=> desglose.idEmbarque == embarque.idEmbarque);
-      //let idContratoDesgloseTemp = (await this.contratoDesgloseService.findAll()).sort((a, b) => b.idContratoDesglose - a.idContratoDesglose)[0].idContratoDesglose+1
       
       for (let index = 0; index < desgloseSuplemento.length; index++) {
         const desglose = desgloseSuplemento[index];
         
         var contratoDesglose = new ContratoDesglose();
         contratoDesglose.idContratoDesglose = null;
-        //idContratoDesgloseTemp += 1;
         contratoDesglose.idEmbarque = desglose.idEmbarque;
         contratoDesglose.idReferencia = desglose.idReferencia;
         contratoDesglose.idCodigo = desglose.idCodigo;

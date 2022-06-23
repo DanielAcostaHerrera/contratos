@@ -47,11 +47,6 @@ export class SuplementoEmbarquesResolver {
     return this.suplementoEmbarquesService.getSuplementoResumen(suplementoEmbarques.idSuplementoResumen);
   }
 
-  @ResolveField(() => Contratos, {nullable: true})
-  contrato(@Parent() suplementoEmbarques: SuplementoEmbarques): Promise<Contratos> {
-    return this.suplementoEmbarquesService.getContrato(suplementoEmbarques.idContrato);
-  }
-
   @ResolveField(() => CompaniasNavieras, {nullable: true})
   companiaNaviera(@Parent() suplementoEmbarques: SuplementoEmbarques): Promise<CompaniasNavieras> {
     return this.suplementoEmbarquesService.getNaviera(suplementoEmbarques.idEmpresaNaviera);

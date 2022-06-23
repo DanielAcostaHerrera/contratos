@@ -392,11 +392,6 @@ export class FichaCostoResumen {
   @Field(() => Int,{nullable: true})
   aprobado: number | null;
 
-  @Field(() => ContratoMarco, {nullable: true})
-  @ManyToOne(() => ContratoMarco, (contratoMarco) => contratoMarco.fichaCostoResumen)
-  @JoinColumn([{ name: "IdCMarco", referencedColumnName: "idCMarco" }])
-  contratoMarco: ContratoMarco;
-
   @Field(() => Monedas, {nullable: true})
   @ManyToOne(() => Monedas, (monedas) => monedas.fichaCostoResumen)
   @JoinColumn([{ name: "IdMoneda", referencedColumnName: "idMoneda" }])

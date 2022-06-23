@@ -36,6 +36,10 @@ import { SuplementoClausulasService } from 'src/suplemento-clausulas/suplemento-
 import { CreateSuplementoChangeInput } from 'src/suplemento-change/dto/create-suplemento-change.input';
 import { SuplementoChangeService } from 'src/suplemento-change/suplemento-change.service';
 import { ContratoClausulas } from 'src/models/entities/ContratoClausulas.entity';
+import { CreateSuplementoEmbarqueInput } from 'src/suplemento-embarques/dto/create-suplemento-embarque.input';
+import { SuplementoEmbarquesService } from 'src/suplemento-embarques/suplemento-embarques.service';
+import { CreateSuplementoDesgloseInput } from 'src/suplemento-desglose/dto/create-suplemento-desglose.input';
+import { SuplementoDesgloseService } from 'src/suplemento-desglose/suplemento-desglose.service';
 
 @Injectable()
 export class ContratosService {
@@ -43,12 +47,121 @@ export class ContratosService {
   private basesGeneralesService: BasesGeneralesService,private contratoMarcoService: ContratoMarcoService,private monedaService: MonedaService,
   private formasEntregaService: FormasEntregaService,private negociacionResumenService: NegociacionResumenService,
   private fichaCostoResumenService: FichaCostoResumenService,private ejecutivoService: EjecutivoService,
-  private paisesService: PaisesService,private logsService: LogsService,
+  private paisesService: PaisesService,private logsService: LogsService, private suplementoEmbarquesService: SuplementoEmbarquesService,
   private agenciasAseguradorasService: AgenciasAseguradorasService, private incotermService: IncotermService,
   private contratoClausulaService: ContratoClausulaService, private suplementoResumenService: SuplementoResumenService,
-  private suplementoClausulasService: SuplementoClausulasService, private suplementoChangeService: SuplementoChangeService) {}
+  private suplementoClausulasService: SuplementoClausulasService, private suplementoChangeService: SuplementoChangeService,
+  private suplementoDesgloseService: SuplementoDesgloseService) {}
 
 
+  async añadirSuplemento(usuarioToken: Usuarios, contrato: Contratos) : Promise<void>{
+      var suplementoResumen = new CreateSuplementoResumanInput();
+      let suplementoEmbarque = new CreateSuplementoEmbarqueInput();
+      let suplementoDesglose = new CreateSuplementoDesgloseInput();
+      var negociacion = await this.negociacionResumenService.findOne(contrato.idNegociacion);
+      
+      suplementoResumen.idContrato = contrato.idContrato;
+      suplementoResumen.suplementadoPor = usuarioToken.idEjecutivo;
+      suplementoResumen.fecha = new Date();
+      suplementoResumen.operacion = negociacion.operacion;
+      suplementoResumen.modificado = false;
+      suplementoResumen.terminadoS = false;
+      suplementoResumen.idEjecutivo = contrato.realizadoPor;
+      suplementoResumen.firma = contrato.firmadoPor;
+      suplementoResumen.idMoneda = contrato.idMoneda;
+      suplementoResumen.idEmpSeguro = contrato.idEmpresaSeguro;
+      suplementoResumen.idEmpNaviera = contrato.idEmpresaNaviera;
+      suplementoResumen.lugarEntrega = contrato.lugarEntrega;
+      suplementoResumen.cancelado = contrato.cancelado;
+      suplementoResumen.notas = contrato.notas;
+      suplementoResumen.permitirEmbarquesParciales = contrato.permitirEmbarquesParciales;
+      suplementoResumen.cantidadEp = contrato.cantidadEp;
+      suplementoResumen.permitirEntregas = contrato.permitirEntregas;
+      suplementoResumen.permitirTrasbordos = contrato.permitirTrasbordos;
+      suplementoResumen.producto = contrato.producto;
+      suplementoResumen.noEntregasParciales = contrato.noEntregasParciales;
+      suplementoResumen.fInicial = contrato.fechaInicial;
+      suplementoResumen.fFinal = contrato.fechaFinal;
+      suplementoResumen.fFirma = contrato.fechaFirma;
+      suplementoResumen.fRecepcion = contrato.fechaRecepcion;
+      suplementoResumen.fArribo = contrato.fechaArribo;
+      suplementoResumen.financiamiento = contrato.financiamiento;
+      suplementoResumen.tasaMoneda = contrato.tasaMoneda;
+      suplementoResumen.fechaTasa = contrato.fechaTasa;
+      suplementoResumen.fechaPFirma = contrato.fechaPFirma;
+      suplementoResumen.pFin = contrato.pFin;
+      suplementoResumen.idNegociacion = contrato.idNegociacion;
+      suplementoResumen.gastosLogisticos = contrato.gastosLogisticos;
+      suplementoResumen.lugarFirma = contrato.lugarFirma;
+      suplementoResumen.idPais = contrato.idPais;
+      suplementoResumen.idIncoterm = contrato.idIncoterm;
+
+      suplementoResumen.origen = "A"+contrato.idContrato.toString();
+      let resumenSuplemento = await this.suplementoResumenService.save(suplementoResumen);
+
+      let clausulas = contrato.contratoClausulas;
+      for (let index = 0; index < clausulas.length; index++) {
+          const clausula = clausulas[index];
+          var suplementoClausula = new CreateSuplementoClausulaInput();
+          suplementoClausula.idSuplementoResumen = resumenSuplemento.idSuplementoResumen;
+          suplementoClausula.idContrato = contrato.idContrato;
+          suplementoClausula.noClausula = clausula.noClausula;
+          suplementoClausula.txClausula = clausula.contenido;
+          suplementoClausula.modificada = false;     
+          await this.suplementoClausulasService.save(suplementoClausula);        
+      }
+
+      let embarques = contrato.embarques;
+      for(let index = 0; index < embarques.length; index++){
+        const embarque = embarques[index];
+        
+        suplementoEmbarque.idSuplementoResumen = resumenSuplemento.idSuplementoResumen;
+        suplementoEmbarque.numero = embarque.numero;
+        suplementoEmbarque.fechaEntrega = embarque.fechaEntrega;
+        suplementoEmbarque.descuento = embarque.descuento;
+        suplementoEmbarque.terminado = embarque.terminado;
+        suplementoEmbarque.cancelado = embarque.cancelado;
+        suplementoEmbarque.porFirmar = embarque.porFirmar;
+        suplementoEmbarque.qtyCnt = embarque.qtyCnt;
+        suplementoEmbarque.flete = embarque.flete;
+        suplementoEmbarque.seguro = embarque.seguro;
+        suplementoEmbarque.financiamiento = embarque.financiamiento;
+        suplementoEmbarque.idEmpresaNaviera = embarque.idEmpresaNaviera;
+        suplementoEmbarque.inspeccion = embarque.inspeccion;
+        suplementoEmbarque.otros = embarque.otros;
+        suplementoEmbarque.c40 = embarque.c40;
+        suplementoEmbarque.c20 = embarque.c20;
+
+        let embarqueSuplemento = await this.suplementoEmbarquesService.save(suplementoEmbarque);
+
+        let desgloses = embarque.contratoDesgloses;
+        for (let index = 0; index < desgloses.length; index++) {
+          const desglose = desgloses[index];
+          suplementoDesglose.idSuplementoResumen = embarqueSuplemento.idSuplementoResumen;
+          suplementoDesglose.idEmbarque = embarque.idEmbarque;
+          suplementoDesglose.idReferencia = desglose.idReferencia;
+          suplementoDesglose.idCodigo = desglose.idCodigo;
+          suplementoDesglose.descripcionSp = desglose.descripcionAx;
+          suplementoDesglose.idUnidadMedida = desglose.idUnidadMedida;
+          suplementoDesglose.cantidadPorCarton = desglose.cantidadPorCarton;
+          suplementoDesglose.paquete = desglose.paquete;
+          suplementoDesglose.cantidadCartones = desglose.cantidadCartones;
+          suplementoDesglose.volumen = desglose.volumen;
+          suplementoDesglose.precio = desglose.precio;
+          suplementoDesglose.precioPaquete = desglose.precioPaquete;
+          suplementoDesglose.packing = desglose.packing;
+          suplementoDesglose.cajas = desglose.cajas;
+
+          await this.suplementoDesgloseService.save(suplementoDesglose);
+        }
+
+      }
+  }
+
+  async comprobarDiferencias(): Promise<void>{
+    
+  }
+  
   async save(usuarioToken: Usuarios,createContratoInput: CreateContratoInput) : Promise<Contratos> {
     return new Promise<Contratos>(async (resolve, reject) => {
     var esNuevo = true;
@@ -717,8 +830,7 @@ export class ContratosService {
 
       let clausulasContrato: ContratoClausulas[];
       let clausulasSuplemento = ultimoSuplemento.suplementoClausulas;
-      //let idContratoClausulasTemp = (await this.contratoClausulaService.findAll()).sort((a, b) => b.idContratoClausulas - a.idContratoClausulas)[0].idContratoClausulas+1
-      
+     
       for (let index = 0; index < clausulasSuplemento.length; index++) {
         const clausula = clausulasSuplemento[index];
         
@@ -727,7 +839,6 @@ export class ContratosService {
         contratoClausula.contenido = clausula.txClausula;
         contratoClausula.noClausula = clausula.noClausula;
         contratoClausula.idContratoClausulas = null;
-        //idContratoClausulasTemp += 1;
         
         clausulasContrato.push(contratoClausula)        
       }

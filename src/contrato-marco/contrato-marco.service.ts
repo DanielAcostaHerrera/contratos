@@ -43,11 +43,11 @@ export class ContratoMarcoService {
   async findAll(): Promise<ContratoMarco[]> {
     return await this.contratoMarcoRepository.find({order: {
       fecha : "DESC"
-    }, relations: ['contratos','FichaCostoResumen']});
+    }, relations: ['contratos']});
   }
 
   async findOne(id: number) : Promise<ContratoMarco> {
-    return await this.contratoMarcoRepository.findOne(id, { relations: ['contratos','FichaCostoResumen']});
+    return await this.contratoMarcoRepository.findOne(id, { relations: ['contratos']});
   }
 
   async remove(id: number) : Promise<any> {

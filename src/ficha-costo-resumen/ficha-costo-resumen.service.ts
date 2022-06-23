@@ -19,12 +19,10 @@ import { CodigosParaLaVentaService } from 'src/codigos-para-la-venta/codigos-par
 import { Proveedores } from 'src/modelsMercurio/entities/Proveedores.entity';
 import { Paises } from 'src/modelsMercurio/entities/Paises.entity';
 import { CodigosParaLaVenta } from 'src/modelsMercurio/entities/CodigosParaLaVenta.entity';
-import { ContratoMarco } from 'src/models/entities/ContratoMarco.entity';
-import { ContratoMarcoService } from 'src/contrato-marco/contrato-marco.service';
 
 @Injectable()
 export class FichaCostoResumenService {
-  constructor(@InjectRepository(FichaCostoResumen) public readonly fichaCostoResumenRepository: Repository<FichaCostoResumen>,private contratoMarcoService: ContratoMarcoService,
+  constructor(@InjectRepository(FichaCostoResumen) public readonly fichaCostoResumenRepository: Repository<FichaCostoResumen>,
   private monedaService: MonedaService,private FormasPagoService: FormasPagoService,private incotermService: IncotermService,
   private puertosService: PuertosService,private embalajesService: EmbalajesService,
   private proveedoresService: ProveedoresService,private paisesService: PaisesService,private codigosParaLaVentaService: CodigosParaLaVentaService,) {}
@@ -50,10 +48,6 @@ export class FichaCostoResumenService {
   async removeSeveral(id: number[]) : Promise<any> {
     const fichaCostoResumen = await this.fichaCostoResumenRepository.findByIds(id);
     return await this.fichaCostoResumenRepository.remove(fichaCostoResumen);
-  }
-
-  async getCMarco (id: number) : Promise<ContratoMarco>{
-    return this.contratoMarcoService.findOne(id);
   }
 
   async getMoneda (monedaId: number) : Promise<Monedas>{

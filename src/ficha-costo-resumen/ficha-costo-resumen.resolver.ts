@@ -47,11 +47,6 @@ export class FichaCostoResumenResolver {
   removeSeveralFichaCostoResuman(@Args('id', { type: () => [Int] }) id: number[]) {
     return this.fichaCostoResumenService.removeSeveral(id);
   }
-
-  @ResolveField(() => ContratoMarco, {nullable: true})
-  baseCMarco(@Parent() fichaCostoResumen: FichaCostoResumen): Promise<ContratoMarco> {
-    return this.fichaCostoResumenService.getCMarco(fichaCostoResumen.idCMarco);
-  }
   
   @ResolveField(() => Monedas, {nullable: true})
   moneda(@Parent() fichaCostoResumen: FichaCostoResumen): Promise<Monedas> {

@@ -10,12 +10,13 @@ import { SuplementoChangeModule } from 'src/suplemento-change/suplemento-change.
 import { SuplementoEmbarquesModule } from 'src/suplemento-embarques/suplemento-embarques.module';
 import { SuplementoDesgloseModule } from 'src/suplemento-desglose/suplemento-desglose.module';
 import { SuplementoResumenModule } from 'src/suplemento-resumen/suplemento-resumen.module';
+import { SuplementoClausulasModule } from 'src/suplemento-clausulas/suplemento-clausulas.module';
 
 @Module({
   imports: [TypeOrmModule.forFeature([
     Embarques
   ]),EjecutivoModule,CompaniasNavierasModule,ContratoDesgloseModule,SuplementoChangeModule,SuplementoEmbarquesModule,
-  SuplementoDesgloseModule,SuplementoResumenModule],
+  SuplementoDesgloseModule,SuplementoResumenModule,SuplementoClausulasModule],
   providers: [EmbarquesResolver, EmbarquesService],
   exports: [EmbarquesService]
 })

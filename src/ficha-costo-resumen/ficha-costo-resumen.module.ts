@@ -11,12 +11,11 @@ import { EmbalajesModule } from 'src/embalajes/embalajes.module';
 import { ProveedoresModule } from 'src/proveedores/proveedores.module';
 import { PaisesModule } from 'src/paises/paises.module';
 import { CodigosParaLaVentaModule } from 'src/codigos-para-la-venta/codigos-para-la-venta.module';
-import { ContratoMarcoModule } from 'src/contrato-marco/contrato-marco.module';
 
 @Module({
   imports:[TypeOrmModule.forFeature([
     FichaCostoResumen
-  ]),ContratoMarcoModule,MonedaModule,FormasPagoModule,IncotermModule,PuertosModule,EmbalajesModule,ProveedoresModule,PaisesModule,CodigosParaLaVentaModule],
+  ]),MonedaModule,FormasPagoModule,IncotermModule,PuertosModule,EmbalajesModule,ProveedoresModule,PaisesModule,CodigosParaLaVentaModule],
   providers: [FichaCostoResumenResolver, FichaCostoResumenService],
   exports: [FichaCostoResumenService]
 })
