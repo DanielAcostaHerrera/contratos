@@ -41,6 +41,15 @@ export class EmbarquesService {
 
       suplementoEmbarque.idEmbarque = createEmbarqueInput.idEmbarque;
       suplementoEmbarque.idContrato = contrato.idContrato;
+      
+      if(contrato.suplementoResumen){
+        if(contrato.suplementoResumen.length > 1){
+          contrato.suplementoResumen.sort((a, b) => (b.fecha.getFullYear()+b.fecha.getMonth()+b.fecha.getDate()+b.fecha.getHours()+b.fecha.getMinutes()+b.fecha.getSeconds())
+        - (a.fecha.getFullYear()+a.fecha.getMonth()+a.fecha.getDate()+a.fecha.getHours()+a.fecha.getMinutes()+a.fecha.getSeconds()));
+        }
+        idSuplementoResumen = contrato.suplementoResumen[0].idSuplementoResumen;
+      }
+      
       if(!contrato.suplementoResumen){
         let suplementoResumen = new CreateSuplementoResumanInput()
         suplementoResumen.idContrato = contrato.idContrato;
@@ -82,13 +91,6 @@ export class EmbarquesService {
         let resumenSuplemento = await this.suplementoResumenService.save(suplementoResumen);
         idSuplementoResumen = resumenSuplemento.idSuplementoResumen;
 
-      }
-      else{
-        if(contrato.suplementoResumen.length > 1){
-          contrato.suplementoResumen.sort((a, b) => (b.fecha.getFullYear()+b.fecha.getMonth()+b.fecha.getDate()+b.fecha.getHours()+b.fecha.getMinutes()+b.fecha.getSeconds())
-        - (a.fecha.getFullYear()+a.fecha.getMonth()+a.fecha.getDate()+a.fecha.getHours()+a.fecha.getMinutes()+a.fecha.getSeconds()));
-        }
-        idSuplementoResumen = contrato.suplementoResumen[0].idSuplementoResumen;
       }
 
       suplementoEmbarque.idSuplementoResumen = idSuplementoResumen;
