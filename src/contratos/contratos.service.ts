@@ -47,6 +47,10 @@ import { ContratoDesgloseService } from 'src/contrato-desglose/contrato-desglose
 import { CodigosParaLaVentaService } from 'src/codigos-para-la-venta/codigos-para-la-venta.service';
 import { CreatePuertoEmbarqueInput } from 'src/puerto-embarque/dto/create-puerto-embarque.input';
 import { PuertoEmbarqueService } from 'src/puerto-embarque/puerto-embarque.service';
+import { ContratoClausulas } from 'src/models/entities/ContratoClausulas.entity';
+import { Embarques } from 'src/models/entities/Embarques.entity';
+import { PuertoEmbarque } from 'src/models/entities/PuertoEmbarque.entity';
+import { ContratoDesglose } from 'src/models/entities/ContratoDesglose.entity';
 
 @Injectable()
 export class ContratosService {
@@ -152,7 +156,7 @@ export class ContratosService {
 
           let embarqueSuplemento = await this.suplementoEmbarquesService.save(suplementoEmbarque);
 
-          //Aqui se añaden los suplementos PuertoEmbarque
+          //Aqui se añaden los suplementos PuertoEmbarque y los suplementos Pagos
           
           let desgloses = embarque.suplementoResumen.suplementoDesgloses.filter(embarque2=> embarque2.idEmbarque == embarque.idEmbarque);
           for (let index = 0; index < desgloses.length; index++) {
@@ -257,7 +261,7 @@ export class ContratosService {
 
           let embarqueSuplemento = await this.suplementoEmbarquesService.save(suplementoEmbarque);
 
-          //Aqui se añaden los suplementos PuertoEmbarque
+          //Aqui se añaden los suplementos PuertoEmbarque y los suplementos Pagos
           
           let desgloses = embarque.contratoDesgloses;
           for (let index = 0; index < desgloses.length; index++) {
@@ -287,6 +291,10 @@ export class ContratosService {
   async comprobarDiferencias(contratoInput: CreateContratoInput): Promise<Boolean>{
     let contrato = await this.contratoRepository.findOne(contratoInput.idContrato);
     var suplementoChange = new CreateSuplementoChangeInput();
+
+    if(!contrato.suplementoResumen){
+      return false;
+    }
 
     contrato.suplementoResumen.sort((a, b) => (b.fecha.getFullYear()+b.fecha.getMonth()+b.fecha.getDate()+b.fecha.getHours()+b.fecha.getMinutes()+b.fecha.getSeconds())
     - (a.fecha.getFullYear()+a.fecha.getMonth()+a.fecha.getDate()+a.fecha.getHours()+a.fecha.getMinutes()+a.fecha.getSeconds()));
@@ -878,7 +886,7 @@ export class ContratosService {
               this.suplementoChangeService.save(suplementoChange);
             }
 
-            //Aqui se verifican suplementos PuertoEmbarque
+            //Aqui se verifican suplementos PuertoEmbarque y los suplementos Pagos
 
             let desgloses = embarque.contratoDesglose;
             let desglosesViejos = embarqueViejo.contratoDesgloses;
@@ -1101,7 +1109,7 @@ export class ContratosService {
               this.suplementoChangeService.save(suplementoChange);
             }
 
-            //Aqui se verifican suplementos PuertoEmbarque
+            //Aqui se verifican suplementos PuertoEmbarque y los suplementos Pagos
 
             let desgloses = embarque.contratoDesglose
             let desglosesViejos = embarqueViejo.suplementoResumen.suplementoDesgloses.filter(embarque2=> embarque2.idEmbarque == embarqueViejo.idEmbarque);
@@ -1133,91 +1141,227 @@ export class ContratosService {
     return new Promise<Contratos>(async (resolve, reject) => {
       var esNuevo = true;
       var result: Contratos;
+      var suplementoResumen = new CreateSuplementoResumanInput();
       if(createContratoInput.idContrato){
         esNuevo = false;
         var contratoViejo = await this.findOne(createContratoInput.idContrato);
         var negociacion = await this.negociacionResumenService.findOne(createContratoInput.idNegociacion);
-  
-        await this.contratoClausulaService.removeSeveralByContratoId(createContratoInput.idContrato);
-        
-        createContratoInput.modificado = true;
-  
-        result = await this.contratoRepository.save(createContratoInput);
-  
-        if(result){
-          let clausulas = createContratoInput.contratoClausulas;
-          for (let index = 0; index < clausulas.length; index++) {
-            const clausula = clausulas[index];
-            
-            var contratoClausula = new CreateContratoClausulaInput();
-            contratoClausula.idContrato = clausula.idContrato;
-            contratoClausula.contenido = clausula.contenido;
-            contratoClausula.noClausula = clausula.noClausula;
-            contratoClausula.idContratoClausulas = clausula.idContratoClausulas;
-            
-            await this.contratoClausulaService.save(contratoClausula)        
-          }
 
-          let embarques = createContratoInput.embarques;
-          for (let index = 0; index < embarques.length; index++) {
-            const embarque = embarques[index];
-            
-            await this.contratoDesgloseService.removeSeveralByEmbarqueId(embarque.idEmbarque);
-            var contratoEmbarque = new CreateEmbarqueInput();
-            contratoEmbarque.idEmbarque = embarque.idEmbarque;
-            contratoEmbarque.idContrato = embarque.idContrato;
-            contratoEmbarque.idEjecutivo = embarque.idEjecutivo;
-            contratoEmbarque.fechaEntrega = embarque.fechaEntrega;
-            contratoEmbarque.numero = embarque.numero;
-            contratoEmbarque.descuento = embarque.descuento;
-            contratoEmbarque.terminado = embarque.terminado;
-            contratoEmbarque.cancelado = embarque.cancelado;
-            contratoEmbarque.porFirmar = embarque.porFirmar;
-            contratoEmbarque.qtyCnt = embarque.qtyCnt;
-            contratoEmbarque.flete = embarque.flete;
-            contratoEmbarque.seguro = embarque.seguro;
-            contratoEmbarque.financiamiento = embarque.financiamiento;
-            contratoEmbarque.idEmpresaNaviera = embarque.idEmpresaNaviera;
-            contratoEmbarque.inspeccion = embarque.inspeccion;
-            contratoEmbarque.otros = embarque.otros;
-            contratoEmbarque.c20 = embarque.c20;
-            contratoEmbarque.c40 = embarque.c40;
-            contratoEmbarque.actSci = embarque.actSci;
-            
-            await this.embarquesService.save(contratoEmbarque);
-
-            this.puertoEmbarqueService.removeSeveralByEmbarqueId(embarque.idEmbarque);
-            let puertoEmbarques = contratoEmbarque.puertoEmbarque;
-            for(let index = 0; index < puertoEmbarques.length; index++){
-              const puertoEmbarque = puertoEmbarques[index];
-              var inputPuertoEmbarque = new CreatePuertoEmbarqueInput();
-              inputPuertoEmbarque.idPuertoEmbarque = puertoEmbarque.idPuertoEmbarque;
-              inputPuertoEmbarque.idEmbarque = puertoEmbarque.idEmbarque;
-              inputPuertoEmbarque.idPuertoOrigen = puertoEmbarque.idPuertoOrigen;
-              inputPuertoEmbarque.idPuertoDestino = puertoEmbarque.idPuertoDestino;
-              this.puertoEmbarqueService.save(inputPuertoEmbarque);
+        if(!contratoViejo.suplementoResumen){
+          await this.contratoClausulaService.removeSeveralByContratoId(createContratoInput.idContrato);
+          
+          createContratoInput.modificado = true;
+    
+          result = await this.contratoRepository.save(createContratoInput);
+    
+          if(result){
+            let clausulas = createContratoInput.contratoClausulas;
+            for (let index = 0; index < clausulas.length; index++) {
+              const clausula = clausulas[index];
+              
+              var contratoClausula = new CreateContratoClausulaInput();
+              contratoClausula.idContrato = clausula.idContrato;
+              contratoClausula.contenido = clausula.contenido;
+              contratoClausula.noClausula = clausula.noClausula;
+              contratoClausula.idContratoClausulas = clausula.idContratoClausulas;
+              
+              await this.contratoClausulaService.save(contratoClausula)        
             }
-            
-            let desgloses = contratoEmbarque.contratoDesglose;
-            for (let index = 0; index < desgloses.length; index++) {
-              const desglose = desgloses[index];
-              var contratoDesglose = new CreateContratoDesgloseInput();
-              contratoDesglose.idContratoDesglose = desglose.idContratoDesglose;
-              contratoDesglose.idEmbarque = desglose.idEmbarque;
-              contratoDesglose.idReferencia = desglose.idEmbarque;
-              contratoDesglose.idCodigo = desglose.idCodigo;
-              contratoDesglose.descripcionAx = desglose.descripcionAx;
-              contratoDesglose.idUnidadMedida = desglose.idUnidadMedida;
-              contratoDesglose.cantidadPorCarton = desglose.cantidadPorCarton;
-              contratoDesglose.paquete = desglose.paquete;
-              contratoDesglose.cantidadCartones = desglose.cantidadCartones;
-              contratoDesglose.volumen = desglose.volumen;
-              contratoDesglose.precio = desglose.precio;
-              contratoDesglose.precioPaquete = desglose.precioPaquete;
-              contratoDesglose.packing = desglose.packing;
-              contratoDesglose.cajas = desglose.cajas;
 
-              await this.contratoDesgloseService.save(contratoDesglose);
+            let embarques = createContratoInput.embarques;
+            for (let index = 0; index < embarques.length; index++) {
+              const embarque = embarques[index];
+              
+              await this.contratoDesgloseService.removeSeveralByEmbarqueId(embarque.idEmbarque);
+              await this.puertoEmbarqueService.removeSeveralByEmbarqueId(embarque.idEmbarque);
+              
+              var contratoEmbarque = new CreateEmbarqueInput();
+              contratoEmbarque.idEmbarque = embarque.idEmbarque;
+              contratoEmbarque.idContrato = embarque.idContrato;
+              contratoEmbarque.idEjecutivo = embarque.idEjecutivo;
+              contratoEmbarque.fechaEntrega = embarque.fechaEntrega;
+              contratoEmbarque.numero = embarque.numero;
+              contratoEmbarque.descuento = embarque.descuento;
+              contratoEmbarque.terminado = embarque.terminado;
+              contratoEmbarque.cancelado = embarque.cancelado;
+              contratoEmbarque.porFirmar = embarque.porFirmar;
+              contratoEmbarque.qtyCnt = embarque.qtyCnt;
+              contratoEmbarque.flete = embarque.flete;
+              contratoEmbarque.seguro = embarque.seguro;
+              contratoEmbarque.financiamiento = embarque.financiamiento;
+              contratoEmbarque.idEmpresaNaviera = embarque.idEmpresaNaviera;
+              contratoEmbarque.inspeccion = embarque.inspeccion;
+              contratoEmbarque.otros = embarque.otros;
+              contratoEmbarque.c20 = embarque.c20;
+              contratoEmbarque.c40 = embarque.c40;
+              contratoEmbarque.actSci = embarque.actSci;
+              
+              await this.embarquesService.save(contratoEmbarque);
+
+              
+              let puertoEmbarques = createContratoInput.embarques[index].puertoEmbarque;
+              for(let index = 0; index < puertoEmbarques.length; index++){
+                const puertoEmbarque = puertoEmbarques[index];
+                var inputPuertoEmbarque = new CreatePuertoEmbarqueInput();
+                inputPuertoEmbarque.idPuertoEmbarque = puertoEmbarque.idPuertoEmbarque;
+                inputPuertoEmbarque.idEmbarque = puertoEmbarque.idEmbarque;
+                inputPuertoEmbarque.idPuertoOrigen = puertoEmbarque.idPuertoOrigen;
+                inputPuertoEmbarque.idPuertoDestino = puertoEmbarque.idPuertoDestino;
+                this.puertoEmbarqueService.save(inputPuertoEmbarque);
+              }
+              
+              let desgloses = createContratoInput.embarques[index].contratoDesglose;
+              for (let index = 0; index < desgloses.length; index++) {
+                const desglose = desgloses[index];
+                var contratoDesglose = new CreateContratoDesgloseInput();
+                contratoDesglose.idContratoDesglose = desglose.idContratoDesglose;
+                contratoDesglose.idEmbarque = desglose.idEmbarque;
+                contratoDesglose.idReferencia = desglose.idEmbarque;
+                contratoDesglose.idCodigo = desglose.idCodigo;
+                contratoDesglose.descripcionAx = desglose.descripcionAx;
+                contratoDesglose.idUnidadMedida = desglose.idUnidadMedida;
+                contratoDesglose.cantidadPorCarton = desglose.cantidadPorCarton;
+                contratoDesglose.paquete = desglose.paquete;
+                contratoDesglose.cantidadCartones = desglose.cantidadCartones;
+                contratoDesglose.volumen = desglose.volumen;
+                contratoDesglose.precio = desglose.precio;
+                contratoDesglose.precioPaquete = desglose.precioPaquete;
+                contratoDesglose.packing = desglose.packing;
+                contratoDesglose.cajas = desglose.cajas;
+
+                await this.contratoDesgloseService.save(contratoDesglose);
+              }
+            }
+          }
+        }
+
+        if(contratoViejo.suplementoResumen){
+          await this.suplementoClausulasService.removeSeveralByContratoId(createContratoInput.idContrato);
+
+          contratoViejo.suplementoResumen.sort((a, b) => (b.fecha.getFullYear()+b.fecha.getMonth()+b.fecha.getDate()+b.fecha.getHours()+b.fecha.getMinutes()+b.fecha.getSeconds())
+        - (a.fecha.getFullYear()+a.fecha.getMonth()+a.fecha.getDate()+a.fecha.getHours()+a.fecha.getMinutes()+a.fecha.getSeconds()));
+         let ultimoSuplemento = contratoViejo.suplementoResumen[0];
+
+          suplementoResumen.idSuplementoResumen = ultimoSuplemento.idSuplementoResumen;
+          suplementoResumen.idContrato = ultimoSuplemento.idContrato;
+          suplementoResumen.suplementadoPor = usuarioToken.idEjecutivo;
+          suplementoResumen.fecha = new Date();
+          suplementoResumen.operacion = negociacion.operacion;
+          suplementoResumen.modificado = true;
+          suplementoResumen.terminadoS = false;
+          suplementoResumen.idEjecutivo = createContratoInput.firmadoPor;
+          suplementoResumen.firma = createContratoInput.firmadoPor;
+          suplementoResumen.idMoneda = createContratoInput.idMoneda;
+          suplementoResumen.idEmpSeguro = createContratoInput.idEmpresaSeguro;
+          suplementoResumen.idEmpNaviera = createContratoInput.idEmpresaNaviera;
+          suplementoResumen.lugarEntrega = createContratoInput.lugarEntrega;
+          suplementoResumen.cancelado = createContratoInput.cancelado;
+          suplementoResumen.notas = createContratoInput.notas;
+          suplementoResumen.permitirEmbarquesParciales = createContratoInput.permitirEmbarquesParciales;
+          suplementoResumen.cantidadEp = createContratoInput.cantidadEp;
+          suplementoResumen.permitirEntregas = createContratoInput.permitirEntregas;
+          suplementoResumen.permitirTrasbordos = createContratoInput.permitirTrasbordos;
+          suplementoResumen.producto = createContratoInput.producto;
+          suplementoResumen.noEntregasParciales = createContratoInput.noEntregasParciales;
+          suplementoResumen.fInicial = createContratoInput.fechaInicial;
+          suplementoResumen.fFinal = createContratoInput.fechaFinal;
+          suplementoResumen.fFirma = createContratoInput.fechaFirma;
+          suplementoResumen.fRecepcion = createContratoInput.fechaRecepcion;
+          suplementoResumen.fArribo = createContratoInput.fechaArribo;
+          suplementoResumen.financiamiento = createContratoInput.financiamiento;
+          suplementoResumen.tasaMoneda = createContratoInput.tasaMoneda;
+          suplementoResumen.fechaTasa = createContratoInput.fechaTasa;
+          suplementoResumen.fechaPFirma = createContratoInput.fechaPFirma;
+          suplementoResumen.pFin = createContratoInput.pFin;
+          suplementoResumen.idNegociacion = createContratoInput.idNegociacion;
+          suplementoResumen.gastosLogisticos = createContratoInput.gastosLogisticos;
+          suplementoResumen.lugarFirma = createContratoInput.lugarFirma;
+          suplementoResumen.idPais = createContratoInput.idPais;
+          suplementoResumen.idIncoterm = createContratoInput.idIncoterm;
+
+          suplementoResumen.origen = "S"+ultimoSuplemento.idSuplementoResumen.toString();
+    
+          let result2 = await this.suplementoResumenService.save(suplementoResumen);
+    
+          if(result2){
+            let clausulas = createContratoInput.contratoClausulas;
+            for (let index = 0; index < clausulas.length; index++) {
+              const clausula = clausulas[index];
+              
+              var suplementoClausula = new CreateSuplementoClausulaInput();
+              suplementoClausula.idSuplementoResumen = result2.idSuplementoResumen;
+              suplementoClausula.idContrato = clausula.idContrato;
+              suplementoClausula.txClausula = clausula.contenido;
+              suplementoClausula.noClausula = clausula.noClausula;
+              suplementoClausula.modificada = false; 
+              
+              await this.suplementoClausulasService.save(suplementoClausula)        
+            }
+
+            let embarques = createContratoInput.embarques;
+            for (let index = 0; index < embarques.length; index++) {
+              const embarque = embarques[index];
+              
+              await this.suplementoDesgloseService.removeSeveralByEmbarqueId(embarque.idEmbarque);
+
+              var suplementoEmbarque = new CreateSuplementoEmbarqueInput();
+              suplementoEmbarque.idSuplementoResumen = result2.idSuplementoResumen;
+              suplementoEmbarque.idEmbarque = embarque.idEmbarque;
+              suplementoEmbarque.idContrato = embarque.idContrato;
+              suplementoEmbarque.fechaEntrega = embarque.fechaEntrega;
+              suplementoEmbarque.numero = embarque.numero;
+              suplementoEmbarque.descuento = embarque.descuento;
+              suplementoEmbarque.terminado = embarque.terminado;
+              suplementoEmbarque.cancelado = embarque.cancelado;
+              suplementoEmbarque.porFirmar = embarque.porFirmar;
+              suplementoEmbarque.qtyCnt = embarque.qtyCnt;
+              suplementoEmbarque.flete = embarque.flete;
+              suplementoEmbarque.seguro = embarque.seguro;
+              suplementoEmbarque.financiamiento = embarque.financiamiento;
+              suplementoEmbarque.idEmpresaNaviera = embarque.idEmpresaNaviera;
+              suplementoEmbarque.inspeccion = embarque.inspeccion;
+              suplementoEmbarque.otros = embarque.otros;
+              suplementoEmbarque.c20 = embarque.c20;
+              suplementoEmbarque.c40 = embarque.c40;
+              suplementoEmbarque.actSci = embarque.actSci;
+              
+              await this.suplementoEmbarquesService.save(suplementoEmbarque);
+
+              //Descomentar cuando implemente SuplementoPuertoEmbarque
+              /*await this.puertoEmbarqueService.removeSeveralByEmbarqueId(embarque.idEmbarque);
+              
+              let puertoEmbarques = createContratoInput.embarques[index].puertoEmbarque;
+              for(let index = 0; index < puertoEmbarques.length; index++){
+                const puertoEmbarque = puertoEmbarques[index];
+                var suplementoPuertoEmbarque = new CreatePuertoEmbarqueInput();
+                suplementoPuertoEmbarque.idPuertoEmbarque = puertoEmbarque.idPuertoEmbarque;
+                suplementoPuertoEmbarque.idEmbarque = puertoEmbarque.idEmbarque;
+                suplementoPuertoEmbarque.idPuertoOrigen = puertoEmbarque.idPuertoOrigen;
+                suplementoPuertoEmbarque.idPuertoDestino = puertoEmbarque.idPuertoDestino;
+                this.puertoEmbarqueService.save(suplementoPuertoEmbarque);
+              }*/
+              
+              let desgloses = createContratoInput.embarques[index].contratoDesglose;
+              for (let index = 0; index < desgloses.length; index++) {
+                const desglose = desgloses[index];
+                var suplementoDesglose = new CreateSuplementoDesgloseInput();
+                suplementoDesglose.idSuplementoResumen = result2.idSuplementoResumen;
+                suplementoDesglose.idEmbarque = desglose.idEmbarque;
+                suplementoDesglose.idReferencia = desglose.idEmbarque;
+                suplementoDesglose.idCodigo = desglose.idCodigo;
+                suplementoDesglose.descripcionSp = desglose.descripcionAx;
+                suplementoDesglose.idUnidadMedida = desglose.idUnidadMedida;
+                suplementoDesglose.cantidadPorCarton = desglose.cantidadPorCarton;
+                suplementoDesglose.paquete = desglose.paquete;
+                suplementoDesglose.cantidadCartones = desglose.cantidadCartones;
+                suplementoDesglose.volumen = desglose.volumen;
+                suplementoDesglose.precio = desglose.precio;
+                suplementoDesglose.precioPaquete = desglose.precioPaquete;
+                suplementoDesglose.packing = desglose.packing;
+                suplementoDesglose.cajas = desglose.cajas;
+
+                await this.suplementoDesgloseService.save(suplementoDesglose);
+              }
             }
           }
         }
@@ -1292,7 +1436,7 @@ export class ContratosService {
           
           await this.embarquesService.save(contratoEmbarque);
 
-          let puertoEmbarques = contratoEmbarque.puertoEmbarque;
+          let puertoEmbarques = createContratoInput.embarques[index].puertoEmbarque;
             for(let index = 0; index < puertoEmbarques.length; index++){
               const puertoEmbarque = puertoEmbarques[index];
               var inputPuertoEmbarque = new CreatePuertoEmbarqueInput();
@@ -1303,7 +1447,7 @@ export class ContratosService {
               this.puertoEmbarqueService.save(inputPuertoEmbarque);
             }
           
-          let desgloses = contratoEmbarque.contratoDesglose;
+          let desgloses = createContratoInput.embarques[index].contratoDesglose;
           for (let index = 0; index < desgloses.length; index++) {
             const desglose = desgloses[index];
             var contratoDesglose = new CreateContratoDesgloseInput();
@@ -1457,6 +1601,151 @@ export class ContratosService {
   async findOne(id: number) : Promise<Contratos> {
     return await this.contratoRepository.findOne(id,{relations:['contratoClausulas','documentacionContratos','embarques','facturaResumen','fichaCompraResumen',
     'suplementoEmbarques','suplementoResumen','suplementoClausulas']});
+  }
+
+  async findOneActualizado(id: number) : Promise<Contratos> {
+    let contrato = await this.contratoRepository.findOne(id,{relations:['contratoClausulas','documentacionContratos','embarques','facturaResumen','fichaCompraResumen',
+      'suplementoEmbarques','suplementoResumen','suplementoClausulas']});
+
+      if(contrato.suplementoResumen){
+        contrato.suplementoResumen.sort((a, b) => (b.fecha.getFullYear()+b.fecha.getMonth()+b.fecha.getDate()+b.fecha.getHours()+b.fecha.getMinutes()+b.fecha.getSeconds())
+      - (a.fecha.getFullYear()+a.fecha.getMonth()+a.fecha.getDate()+a.fecha.getHours()+a.fecha.getMinutes()+a.fecha.getSeconds()));
+
+      let ultimoSuplemento = contrato.suplementoResumen[0];
+      contrato.idBasesGenerales = contrato.idBasesGenerales;
+      contrato.idFichaCosto = contrato.idFichaCosto;
+      contrato.idCMarco = contrato.idCMarco;
+      contrato.idMoneda = ultimoSuplemento.idMoneda;
+      contrato.idFormaEntrega = ultimoSuplemento.idFormaEntrega;
+      contrato.idNegociacion = ultimoSuplemento.idNegociacion;
+      contrato.idIncoterm = ultimoSuplemento.idIncoterm;
+      contrato.realizadoPor = ultimoSuplemento.suplementadoPor;
+      contrato.firmadoPor = ultimoSuplemento.firma;
+      contrato.modificadoPor = ultimoSuplemento.suplementadoPor;
+      contrato.lugarFirma = ultimoSuplemento.lugarFirma;
+      contrato.consecutivo = ultimoSuplemento.consecutivo;
+      contrato.idPais = ultimoSuplemento.idPais
+      contrato.cancelado = ultimoSuplemento.cancelado;
+      contrato.terminado = ultimoSuplemento.terminadoS;
+      contrato.modificado = ultimoSuplemento.modificado;
+      contrato.idEmpresaSeguro = ultimoSuplemento.idEmpSeguro;
+      contrato.idEmpresaNaviera = ultimoSuplemento.idEmpNaviera;
+      contrato.lugarEntrega = ultimoSuplemento.lugarEntrega;
+      contrato.notas = ultimoSuplemento.notas;
+      contrato.permitirEmbarquesParciales = ultimoSuplemento.permitirEmbarquesParciales;
+      contrato.cantidadEp = ultimoSuplemento.cantidadEp;
+      contrato.permitirEntregas = ultimoSuplemento.permitirEntregas;
+      contrato.permitirTrasbordos = ultimoSuplemento.permitirTrasbordos;
+      contrato.producto = ultimoSuplemento.producto;
+      contrato.noEntregasParciales = ultimoSuplemento.noEntregasParciales;
+      contrato.fechaElaboracion = ultimoSuplemento.fecha;
+      contrato.fechaInicial = ultimoSuplemento.fInicial;
+      contrato.fechaFinal = ultimoSuplemento.fFinal;
+      contrato.fechaFirma = ultimoSuplemento.fFirma;
+      contrato.fechaRecepcion = ultimoSuplemento.fRecepcion;
+      contrato.fechaArribo = ultimoSuplemento.fArribo;
+      contrato.fechaPFirma = ultimoSuplemento.fechaPFirma;
+      contrato.financiamiento = ultimoSuplemento.financiamiento;
+      contrato.tasaMoneda = ultimoSuplemento.tasaMoneda;
+      contrato.fechaTasa = ultimoSuplemento.fechaTasa;
+      contrato.pFin = ultimoSuplemento.pFin;
+      contrato.gastosLogisticos = ultimoSuplemento.gastosLogisticos;
+
+      let clausulasContrato: ContratoClausulas[] = [];
+      let desglosesContrato: ContratoDesglose[] = [];
+      let embarquesContrato: Embarques[] = [];
+      let puertoEmbarques: PuertoEmbarque[] = [];
+      let clausulasSuplemento = ultimoSuplemento.suplementoClausulas;
+      
+      for (let index = 0; index < clausulasSuplemento.length; index++) {
+        const clausula = clausulasSuplemento[index];
+        
+        var contratoClausula = new ContratoClausulas();
+        contratoClausula.idContrato = clausula.idContrato;
+        contratoClausula.contenido = clausula.txClausula;
+        contratoClausula.noClausula = clausula.noClausula;
+        contratoClausula.idContratoClausulas = null;
+        
+        clausulasContrato.push(contratoClausula)        
+      }
+      contrato.contratoClausulas = clausulasContrato;
+
+      let embarquesSuplemento = ultimoSuplemento.suplementoEmbarques;
+        for (let index = 0; index < embarquesSuplemento.length; index++) {
+            const embarque = embarquesSuplemento[index];
+            
+            var contratoEmbarque = new Embarques();
+            contratoEmbarque.idEmbarque = embarque.idEmbarque;
+            contratoEmbarque.idContrato = embarque.idContrato;
+            contratoEmbarque.idEjecutivo = embarque.suplementoResumen.suplementadoPor;
+            contratoEmbarque.fechaEntrega = embarque.fechaEntrega;
+            contratoEmbarque.numero = embarque.numero;
+            contratoEmbarque.descuento = embarque.descuento;
+            contratoEmbarque.terminado = embarque.terminado;
+            contratoEmbarque.cancelado = embarque.cancelado;
+            contratoEmbarque.porFirmar = embarque.porFirmar;
+            contratoEmbarque.qtyCnt = embarque.qtyCnt;
+            contratoEmbarque.flete = embarque.flete;
+            contratoEmbarque.seguro = embarque.seguro;
+            contratoEmbarque.financiamiento = embarque.financiamiento;
+            contratoEmbarque.idEmpresaNaviera = embarque.idEmpresaNaviera;
+            contratoEmbarque.inspeccion = embarque.inspeccion;
+            contratoEmbarque.otros = embarque.otros;
+            contratoEmbarque.c20 = embarque.c20;
+            contratoEmbarque.c40 = embarque.c40;
+            contratoEmbarque.actSci = embarque.actSci;
+            
+            embarquesContrato.push(contratoEmbarque);
+
+            //Descomentar cuando implemente SuplementoPuertoEmbarque
+           /* let puertoEmbarquesSuplemento = ultimoSuplemento.puertoE;
+            for(let index = 0; index < puertoEmbarquesSuplemento.length; index++){
+              const embarque = puertoEmbarques[index];
+              var puertoEmbarque = new PuertoEmbarque();
+              puertoEmbarque.idPuertoEmbarque = embarque.idPuertoEmbarque;
+              puertoEmbarque.idEmbarque = embarque.idEmbarque;
+              puertoEmbarque.idPuertoOrigen = embarque.idPuertoOrigen;
+              puertoEmbarque.idPuertoDestino = embarque.idPuertoDestino;
+              puertoEmbarques.push(puertoEmbarque);
+            }*/
+            
+            
+            let desglosesSuplemento = ultimoSuplemento.suplementoDesgloses.filter(desglose=> desglose.idEmbarque == embarque.idEmbarque);
+            for (let index = 0; index < desglosesSuplemento.length; index++) {
+              const desglose = desglosesSuplemento[index];
+              var contratoDesglose = new ContratoDesglose();
+              contratoDesglose.idContratoDesglose = null;
+              contratoDesglose.idEmbarque = desglose.idEmbarque;
+              contratoDesglose.idReferencia = desglose.idEmbarque;
+              contratoDesglose.idCodigo = desglose.idCodigo;
+              contratoDesglose.descripcionAx = desglose.descripcionSp;
+              contratoDesglose.idUnidadMedida = desglose.idUnidadMedida;
+              contratoDesglose.cantidadPorCarton = desglose.cantidadPorCarton;
+              contratoDesglose.paquete = desglose.paquete;
+              contratoDesglose.cantidadCartones = desglose.cantidadCartones;
+              contratoDesglose.volumen = desglose.volumen;
+              contratoDesglose.precio = desglose.precio;
+              contratoDesglose.precioPaquete = desglose.precioPaquete;
+              contratoDesglose.packing = desglose.packing;
+              contratoDesglose.cajas = desglose.cajas;
+
+              desglosesContrato.push(contratoDesglose);
+            }
+          }
+          contrato.embarques = embarquesContrato;
+          for(let index = 0; index < contrato.embarques.length; index++){
+            const embarque = contrato.embarques[index];
+            let desgloses = desglosesContrato.filter(desglose=> desglose.idEmbarque == embarque.idEmbarque);
+            contrato.embarques[index].contratoDesgloses = desgloses;
+          }
+
+          for(let index = 0; index < contrato.embarques.length; index++){
+            const embarque = contrato.embarques[index];
+            let listaPuertoEmbarque = puertoEmbarques.filter(puertoEmbarque=> puertoEmbarque.idEmbarque == embarque.idEmbarque);
+            contrato.embarques[index].puertoEmbarques = listaPuertoEmbarque;
+          }
+    }
+    return contrato;
   }
 
   async remove(usuarioToken: Usuarios,id: number) : Promise<any> {

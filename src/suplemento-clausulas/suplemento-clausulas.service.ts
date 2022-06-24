@@ -34,6 +34,11 @@ export class SuplementoClausulasService {
     return await this.suplementoClausulaRepository.remove(suplementoClausulas);
   }
 
+  async removeSeveralByContratoId(idContrato: number) : Promise<any> {
+    const contratosClausulas = await this.suplementoClausulaRepository.find({where: {idContrato}});
+    return await this.suplementoClausulaRepository.remove(contratosClausulas);
+  }
+
   async getSuplementoResumen (id: number) : Promise<SuplementoResumen>{
     return this.suplementoResumenService.findOne(id);
   }

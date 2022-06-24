@@ -57,6 +57,12 @@ export class ContratosResolver {
     return this.contratosService.findOne(id);
   }
 
+  @Query(() => Contratos)
+  @UseGuards(new AuthGuard())
+  findOneContratosActualizado(@Args('id', { type: () => Int }) id: number) {
+    return this.contratosService.findOneActualizado(id);
+  }
+
   @Mutation(() => Contratos)
   @UseGuards(new AuthGuard())
   removeContrato(
