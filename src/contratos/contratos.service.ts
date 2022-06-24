@@ -1143,6 +1143,9 @@ export class ContratosService {
       var result: Contratos;
       var suplementoResumen = new CreateSuplementoResumanInput();
       if(createContratoInput.idContrato){
+        
+        this.comprobarDiferencias(createContratoInput);
+        
         esNuevo = false;
         var contratoViejo = await this.findOne(createContratoInput.idContrato);
         var negociacion = await this.negociacionResumenService.findOne(createContratoInput.idNegociacion);
@@ -1278,8 +1281,7 @@ export class ContratosService {
           suplementoResumen.lugarFirma = createContratoInput.lugarFirma;
           suplementoResumen.idPais = createContratoInput.idPais;
           suplementoResumen.idIncoterm = createContratoInput.idIncoterm;
-
-          suplementoResumen.origen = "S"+ultimoSuplemento.idSuplementoResumen.toString();
+          suplementoResumen.origen = ultimoSuplemento.origen;
     
           let result2 = await this.suplementoResumenService.save(suplementoResumen);
     
