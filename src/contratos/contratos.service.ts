@@ -304,75 +304,37 @@ export class ContratosService {
     producto,noEntregasParciales,fInicial,fFinal,fFirma,fRecepcion,fArribo,financiamiento,tasaMoneda,fechaTasa,fechaPFirma,pFin,idNegociacion,gastosLogisticos,
     lugarFirma,idPais,idIncoterm;
 
-    this.suplementoChangeService.removeSeveralBySuplementoResumenId(contrato.suplementoResumen[0].idSuplementoResumen);
+    this.suplementoChangeService.removeSeveralBySuplementoResumenId(suplementoResumen.idSuplementoResumen);
 
-    if(contrato.suplementoResumen.length == 1){
-      idEjecutivo = contrato.realizadoPor;
-      firma = contrato.firmadoPor;
-      idMoneda = contrato.idMoneda;
-      idEmpSeguro = contrato.idEmpresaSeguro;
-      idEmpNaviera = contrato.idEmpresaNaviera;
-      lugarEntrega = contrato.lugarEntrega;
-      cancelado = contrato.cancelado;
-      notas = contrato.notas;
-      permitirEmbarquesParciales = contrato.permitirEmbarquesParciales;
-      cantidadEp = contrato.cantidadEp;
-      permitirEntregas = contrato.permitirEntregas;
-      permitirTrasbordos = contrato.permitirTrasbordos;
-      producto = contrato.producto;
-      noEntregasParciales = contrato.noEntregasParciales;
-      fInicial = contrato.fechaInicial;
-      fFinal = contrato.fechaFinal;
-      fFirma = contrato.fechaFirma;
-      fRecepcion = contrato.fechaRecepcion;
-      fArribo = contrato.fechaArribo;
-      financiamiento = contrato.financiamiento;
-      tasaMoneda = contrato.tasaMoneda;
-      fechaTasa = contrato.fechaTasa;
-      fechaPFirma = contrato.fechaPFirma;
-      pFin = contrato.pFin;
-      idNegociacion = contrato.idNegociacion;
-      gastosLogisticos = contrato.gastosLogisticos;
-      lugarFirma = contrato.lugarFirma;
-      idPais = contrato.idPais;
-      idIncoterm = contrato.idIncoterm;
-    }
-
-    else if(contrato.suplementoResumen.length > 1){
-      contrato.suplementoResumen.sort((a, b) => (b.fecha.getFullYear()+b.fecha.getMonth()+b.fecha.getDate()+b.fecha.getHours()+b.fecha.getMinutes()+b.fecha.getSeconds())
-        - (a.fecha.getFullYear()+a.fecha.getMonth()+a.fecha.getDate()+a.fecha.getHours()+a.fecha.getMinutes()+a.fecha.getSeconds()));
-      let suplementoAnterior = contrato.suplementoResumen[1];
-
-      idEjecutivo = suplementoAnterior.suplementadoPor;
-      firma = suplementoAnterior.firma;
-      idMoneda = suplementoAnterior.idMoneda;
-      idEmpSeguro = suplementoAnterior.idEmpSeguro;
-      idEmpNaviera = suplementoAnterior.idEmpNaviera;
-      lugarEntrega = suplementoAnterior.lugarEntrega;
-      cancelado = suplementoAnterior.cancelado;
-      notas = suplementoAnterior.notas;
-      permitirEmbarquesParciales = suplementoAnterior.permitirEmbarquesParciales;
-      cantidadEp = suplementoAnterior.cantidadEp;
-      permitirEntregas = suplementoAnterior.permitirEntregas;
-      permitirTrasbordos = suplementoAnterior.permitirTrasbordos;
-      producto = suplementoAnterior.producto;
-      noEntregasParciales = suplementoAnterior.noEntregasParciales;
-      fInicial = suplementoAnterior.fInicial;
-      fFinal = suplementoAnterior.fFinal;
-      fFirma = suplementoAnterior.fFirma;
-      fRecepcion = suplementoAnterior.fRecepcion;
-      fArribo = suplementoAnterior.fArribo;
-      financiamiento = suplementoAnterior.financiamiento;
-      tasaMoneda = suplementoAnterior.tasaMoneda;
-      fechaTasa = suplementoAnterior.fechaTasa;
-      fechaPFirma = suplementoAnterior.fechaPFirma;
-      pFin = suplementoAnterior.pFin;
-      idNegociacion = suplementoAnterior.idNegociacion;
-      gastosLogisticos = suplementoAnterior.gastosLogisticos;
-      lugarFirma = suplementoAnterior.lugarFirma;
-      idPais = suplementoAnterior.idPais;
-      idIncoterm = suplementoAnterior.idIncoterm;
-    }
+      idEjecutivo = suplementoResumen.suplementadoPor;
+      firma = suplementoResumen.firma;
+      idMoneda = suplementoResumen.idMoneda;
+      idEmpSeguro = suplementoResumen.idEmpSeguro;
+      idEmpNaviera = suplementoResumen.idEmpNaviera;
+      lugarEntrega = suplementoResumen.lugarEntrega;
+      cancelado = suplementoResumen.cancelado;
+      notas = suplementoResumen.notas;
+      permitirEmbarquesParciales = suplementoResumen.permitirEmbarquesParciales;
+      cantidadEp = suplementoResumen.cantidadEp;
+      permitirEntregas = suplementoResumen.permitirEntregas;
+      permitirTrasbordos = suplementoResumen.permitirTrasbordos;
+      producto = suplementoResumen.producto;
+      noEntregasParciales = suplementoResumen.noEntregasParciales;
+      fInicial = suplementoResumen.fInicial;
+      fFinal = suplementoResumen.fFinal;
+      fFirma = suplementoResumen.fFirma;
+      fRecepcion = suplementoResumen.fRecepcion;
+      fArribo = suplementoResumen.fArribo;
+      financiamiento = suplementoResumen.financiamiento;
+      tasaMoneda = suplementoResumen.tasaMoneda;
+      fechaTasa = suplementoResumen.fechaTasa;
+      fechaPFirma = suplementoResumen.fechaPFirma;
+      pFin = suplementoResumen.pFin;
+      idNegociacion = suplementoResumen.idNegociacion;
+      gastosLogisticos = suplementoResumen.gastosLogisticos;
+      lugarFirma = suplementoResumen.lugarFirma;
+      idPais = suplementoResumen.idPais;
+      idIncoterm = suplementoResumen.idIncoterm;
 
     if(contratoInput.realizadoPor != idEjecutivo){
       suplementoChange.idEmbarque = null;
@@ -693,233 +655,10 @@ export class ContratosService {
       this.suplementoChangeService.save(suplementoChange);
     }
 
-    if(contrato.suplementoResumen.length == 1){
       let clausulas = contratoInput.contratoClausulas;
       for (let index = 0; index < clausulas.length; index++) {
         const clausula = clausulas[index];
-        const clausulaVieja = contrato.contratoClausulas.find(clausula2=> clausula2.noClausula == clausula.noClausula)
-        
-        if(clausulaVieja.contenido != clausula.contenido){
-          suplementoChange.idEmbarque = null;
-          suplementoChange.orden = clausula.noClausula;
-          suplementoChange.idCambio = 1;
-          suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
-          suplementoChange.contenidoViejo = clausulaVieja.contenido.toString();
-          suplementoChange.contenidoNuevo = clausula.contenido.toString();    
-          suplementoChange.clausula = "Cambio en las clausulas";
-          this.suplementoChangeService.save(suplementoChange); 
-        }
-        
-      let embarques = contratoInput.embarques;
-      for (let index = 0; index < embarques.length; index++) {
-        const embarque = embarques[index];
-        const embarqueViejo = contrato.embarques.find(clausula2=> clausula2.idEmbarque == embarque.idEmbarque)
-
-        if(!embarqueViejo){
-          let desgloses = embarque.contratoDesglose
-          for(let index = 0; index < desgloses.length; index++){
-            const desglose = desgloses[index];
-            const codigo = await this.codigosParaLaVentaService.findOne(desglose.idCodigo);
-            suplementoChange.idEmbarque = embarque.idEmbarque;
-            suplementoChange.orden = null;
-            suplementoChange.idCambio = 4;
-            suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
-            suplementoChange.contenidoViejo = "0";
-            suplementoChange.contenidoNuevo = desglose.idCodigo.toString()+" "+codigo.descripcion;    
-            suplementoChange.clausula = "Codigo añadido al contrato";
-            this.suplementoChangeService.save(suplementoChange);
-          }
-        }
-
-        if(embarqueViejo){
-          if(embarqueViejo.fechaEntrega != embarque.fechaEntrega){
-            suplementoChange.idEmbarque = embarque.idEmbarque;
-            suplementoChange.orden = null;
-            suplementoChange.idCambio = 3;
-            suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
-            suplementoChange.contenidoViejo = embarqueViejo.fechaEntrega.toString();
-            suplementoChange.contenidoNuevo = embarque.fechaEntrega.toString();    
-            suplementoChange.clausula = "Fecha de entrega";
-            this.suplementoChangeService.save(suplementoChange);
-            }
-    
-            if(embarqueViejo.descuento != embarque.descuento){
-              suplementoChange.idEmbarque = embarque.idEmbarque;
-              suplementoChange.orden = null;
-              suplementoChange.idCambio = 3;
-              suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
-              suplementoChange.contenidoViejo = embarqueViejo.descuento.toString();
-              suplementoChange.contenidoNuevo = embarque.descuento.toString();    
-              suplementoChange.clausula = "Descuento";
-              this.suplementoChangeService.save(suplementoChange);
-            }
-  
-            if(embarqueViejo.terminado != embarque.terminado){
-              suplementoChange.idEmbarque = embarque.idEmbarque;
-              suplementoChange.orden = null;
-              suplementoChange.idCambio = 3;
-              suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
-              suplementoChange.contenidoViejo = embarqueViejo.terminado.toString();
-              suplementoChange.contenidoNuevo = embarque.terminado.toString();    
-              suplementoChange.clausula = "Terminado";
-              this.suplementoChangeService.save(suplementoChange);
-            }
-    
-            if(embarqueViejo.cancelado != embarque.cancelado){
-              suplementoChange.idEmbarque = embarque.idEmbarque;
-              suplementoChange.orden = null;
-              suplementoChange.idCambio = 3;
-              suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
-              suplementoChange.contenidoViejo = embarqueViejo.cancelado.toString();
-              suplementoChange.contenidoNuevo = embarque.cancelado.toString();    
-              suplementoChange.clausula = "Cancelado";
-              this.suplementoChangeService.save(suplementoChange);
-            }
-    
-            if(embarqueViejo.porFirmar != embarque.porFirmar){
-              suplementoChange.idEmbarque = embarque.idEmbarque;
-              suplementoChange.orden = null;
-              suplementoChange.idCambio = 3;
-              suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
-              suplementoChange.contenidoViejo = embarqueViejo.porFirmar.toString();
-              suplementoChange.contenidoNuevo = embarque.porFirmar.toString();    
-              suplementoChange.clausula = "Por firmar";
-              this.suplementoChangeService.save(suplementoChange);
-            }
-    
-            if(embarqueViejo.qtyCnt != embarque.qtyCnt){
-              suplementoChange.idEmbarque = embarque.idEmbarque;
-              suplementoChange.orden = null;
-              suplementoChange.idCambio = 3;
-              suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
-              suplementoChange.contenidoViejo = embarqueViejo.qtyCnt.toString();
-              suplementoChange.contenidoNuevo = embarque.qtyCnt.toString();    
-              suplementoChange.clausula = "qtyCnt";
-              this.suplementoChangeService.save(suplementoChange);
-            }
-    
-            if(embarqueViejo.flete != embarque.flete){
-              suplementoChange.idEmbarque = embarque.idEmbarque;
-              suplementoChange.orden = null;
-              suplementoChange.idCambio = 3;
-              suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
-              suplementoChange.contenidoViejo = embarqueViejo.flete.toString();
-              suplementoChange.contenidoNuevo = embarque.flete.toString();    
-              suplementoChange.clausula = "Flete";
-              this.suplementoChangeService.save(suplementoChange);
-            }
-    
-            if(embarqueViejo.seguro != embarque.seguro){
-              suplementoChange.idEmbarque = embarque.idEmbarque;
-              suplementoChange.orden = null;
-              suplementoChange.idCambio = 3;
-              suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
-              suplementoChange.contenidoViejo = embarqueViejo.seguro.toString();
-              suplementoChange.contenidoNuevo = embarque.seguro.toString();    
-              suplementoChange.clausula = "Seguro";
-              this.suplementoChangeService.save(suplementoChange);
-            }
-    
-            if(embarqueViejo.financiamiento != embarque.financiamiento){
-              suplementoChange.idEmbarque = embarque.idEmbarque;
-              suplementoChange.orden = null;
-              suplementoChange.idCambio = 3;
-              suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
-              suplementoChange.contenidoViejo = embarqueViejo.financiamiento.toString();
-              suplementoChange.contenidoNuevo = embarque.financiamiento.toString();    
-              suplementoChange.clausula = "Financiamiento";
-              this.suplementoChangeService.save(suplementoChange);
-            }
-    
-            if(embarqueViejo.idEmpresaNaviera != embarque.idEmpresaNaviera){
-              suplementoChange.idEmbarque = embarque.idEmbarque;
-              suplementoChange.orden = null;
-              suplementoChange.idCambio = 3;
-              suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
-              suplementoChange.contenidoViejo = embarqueViejo.idEmpresaNaviera.toString();
-              suplementoChange.contenidoNuevo = embarque.idEmpresaNaviera.toString();    
-              suplementoChange.clausula = "Empresa Naviera";
-              this.suplementoChangeService.save(suplementoChange);
-            }
-    
-            if(embarqueViejo.inspeccion != embarque.inspeccion){
-              suplementoChange.idEmbarque = embarque.idEmbarque;
-              suplementoChange.orden = null;
-              suplementoChange.idCambio = 3;
-              suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
-              suplementoChange.contenidoViejo = embarqueViejo.inspeccion.toString();
-              suplementoChange.contenidoNuevo = embarque.inspeccion.toString();    
-              suplementoChange.clausula = "Inspeccion";
-              this.suplementoChangeService.save(suplementoChange);
-            }
-    
-            if(embarqueViejo.otros != embarque.otros){
-              suplementoChange.idEmbarque = embarque.idEmbarque;
-              suplementoChange.orden = null;
-              suplementoChange.idCambio = 3;
-              suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
-              suplementoChange.contenidoViejo = embarqueViejo.otros.toString();
-              suplementoChange.contenidoNuevo = embarque.otros.toString();    
-              suplementoChange.clausula = "Otros";
-              this.suplementoChangeService.save(suplementoChange);
-            }
-    
-            if(embarqueViejo.c40 != embarque.c40){
-              suplementoChange.idEmbarque = embarque.idEmbarque;
-              suplementoChange.orden = null;
-              suplementoChange.idCambio = 3;
-              suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
-              suplementoChange.contenidoViejo = embarqueViejo.c40.toString();
-              suplementoChange.contenidoNuevo = embarque.c40.toString();    
-              suplementoChange.clausula = "c40";
-              this.suplementoChangeService.save(suplementoChange);
-            }
-    
-            if(embarqueViejo.c20 != embarque.c20){
-              suplementoChange.idEmbarque = embarque.idEmbarque;
-              suplementoChange.orden = null;
-              suplementoChange.idCambio = 3;
-              suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
-              suplementoChange.contenidoViejo = embarqueViejo.c20.toString();
-              suplementoChange.contenidoNuevo = embarque.c20.toString();    
-              suplementoChange.clausula = "c20";
-              this.suplementoChangeService.save(suplementoChange);
-            }
-
-            //Aqui se verifican suplementos PuertoEmbarque y los suplementos Pagos
-
-            let desgloses = embarque.contratoDesglose;
-            let desglosesViejos = embarqueViejo.contratoDesgloses;
-            
-            for(let index = 0; index < desgloses.length; index++){
-              const desglose = desgloses[index];
-              const desgloseViejo = desglosesViejos.find(desglose2=> desglose2.idCodigo == desglose.idCodigo)
-              const codigo = await this.codigosParaLaVentaService.findOne(desglose.idCodigo);
-
-              if(!desgloseViejo){
-                suplementoChange.idEmbarque = embarque.idEmbarque;
-                suplementoChange.orden = null;
-                suplementoChange.idCambio = 4;
-                suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
-                suplementoChange.contenidoViejo = "-";
-                suplementoChange.contenidoNuevo = desglose.idCodigo.toString()+" "+codigo.descripcion;    
-                suplementoChange.clausula = "Codigo añadido al contrato";
-                this.suplementoChangeService.save(suplementoChange);
-              }
-          }
-        }
-      } 
-    }
-  }
-    else if(contrato.suplementoResumen.length > 1){
-      contrato.suplementoResumen.sort((a, b) => (b.fecha.getFullYear()+b.fecha.getMonth()+b.fecha.getDate()+b.fecha.getHours()+b.fecha.getMinutes()+b.fecha.getSeconds())
-        - (a.fecha.getFullYear()+a.fecha.getMonth()+a.fecha.getDate()+a.fecha.getHours()+a.fecha.getMinutes()+a.fecha.getSeconds()));
-      let suplementoAnterior = contrato.suplementoResumen[1];
-
-      let clausulas = contratoInput.contratoClausulas;
-      for (let index = 0; index < clausulas.length; index++) {
-        const clausula = clausulas[index];
-        const clausulaVieja = suplementoAnterior.suplementoClausulas.find(clausula2=> clausula2.noClausula == clausula.noClausula)
+        const clausulaVieja = suplementoResumen.suplementoClausulas.find(clausula2=> clausula2.noClausula == clausula.noClausula)
         
         if(clausulaVieja.txClausula != clausula.contenido){
           suplementoChange.idEmbarque = null;
@@ -936,7 +675,7 @@ export class ContratosService {
       let embarques = contratoInput.embarques;
       for (let index = 0; index < embarques.length; index++) {
         const embarque = embarques[index];
-        const embarqueViejo = suplementoAnterior.suplementoEmbarques.find(clausula2=> clausula2.idEmbarque == embarque.idEmbarque)
+        const embarqueViejo = suplementoResumen.suplementoEmbarques.find(suplementoEmbarque=> suplementoEmbarque.idEmbarque == embarque.idEmbarque)
 
         if(!embarqueViejo){
           let desgloses = embarque.contratoDesglose
@@ -947,7 +686,7 @@ export class ContratosService {
             suplementoChange.orden = null;
             suplementoChange.idCambio = 4;
             suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
-            suplementoChange.contenidoViejo = "0";
+            suplementoChange.contenidoViejo = "-";
             suplementoChange.contenidoNuevo = desglose.idCodigo.toString()+" "+codigo.descripcion;    
             suplementoChange.clausula = "Codigo añadido al contrato";
             this.suplementoChangeService.save(suplementoChange);
@@ -1109,12 +848,9 @@ export class ContratosService {
               this.suplementoChangeService.save(suplementoChange);
             }
 
-            //Aqui se verifican suplementos PuertoEmbarque y los suplementos Pagos
-
             let desgloses = embarque.contratoDesglose
             let desglosesViejos = embarqueViejo.suplementoResumen.suplementoDesgloses.filter(embarque2=> embarque2.idEmbarque == embarqueViejo.idEmbarque);
 
-            
             for(let index = 0; index < desgloses.length; index++){
               const desglose = desgloses[index];
               const desgloseViejo = desglosesViejos.find(desglose2=> desglose2.idCodigo == desglose.idCodigo)
@@ -1132,8 +868,9 @@ export class ContratosService {
               }
           }
         }
+        //Aqui se verifican suplementos PuertoEmbarque y los suplementos Pagos
       }
-    }
+    
     return true;
   }
   
