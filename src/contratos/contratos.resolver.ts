@@ -17,6 +17,8 @@ import { Usuarios } from 'src/models/entities/Usuarios.entity';
 import { UseGuards } from '@nestjs/common';
 import { ContratoMarco } from 'src/models/entities/ContratoMarco.entity';
 import { CreateSuplementoResumanInput } from 'src/suplemento-resumen/dto/create-suplemento-resuman.input';
+import { SuplementoChange } from 'src/models/entities/SuplementoChange.entity';
+import { SuplementoResumen } from 'src/models/entities/SuplementoResumen.entity';
 
 @Resolver(() => Contratos)
 export class ContratosResolver {
@@ -30,7 +32,7 @@ export class ContratosResolver {
     return this.contratosService.save(usuario,createContratoInput);
   }
 
-  @Mutation(() => Boolean)
+  @Mutation(() => SuplementoResumen)
   @UseGuards(new AuthGuard())
   anadirSuplemento(
     @Context(DEFAULT_GRAPHQL_CONTEXT) usuario: Usuarios,
@@ -38,11 +40,11 @@ export class ContratosResolver {
     return this.contratosService.anadirSuplemento(usuario,idContrato);
   }
 
-  @Mutation(() => Boolean)
+  @Mutation(() => [SuplementoChange])
   @UseGuards(new AuthGuard())
   comprobarDiferencias(
-    @Args('createContratoInput') createContratoInput: CreateContratoInput) {
-    return this.contratosService.comprobarDiferencias(createContratoInput);
+    @Args('idContrato', { type: () => Int }) idContrato: number) {
+    return this.contratosService.comprobarDiferencias(idContrato);
   }
 
   @Query(() => [Contratos])

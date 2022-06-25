@@ -42,8 +42,8 @@ export class SuplementoDesgloseService {
     return await this.suplementoDesgloseRepository.remove(suplementoDesglose);
   }
 
-  async removeSeveralByEmbarqueId(idEmbarque: number) : Promise<any> {
-    const suplementoDesgloses = await this.suplementoDesgloseRepository.find({where: {idEmbarque}});
+  async removeSeveralByEmbarqueIdSuplementoResumenId(idEmbarque: number, idSuplementoResumen: number) : Promise<any> {
+    const suplementoDesgloses = await this.suplementoDesgloseRepository.find({where: {idEmbarque,idSuplementoResumen}});
     return await this.suplementoDesgloseRepository.remove(suplementoDesgloses);
   }
 

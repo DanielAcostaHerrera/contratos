@@ -34,8 +34,8 @@ export class SuplementoClausulasService {
     return await this.suplementoClausulaRepository.remove(suplementoClausulas);
   }
 
-  async removeSeveralByContratoId(idContrato: number) : Promise<any> {
-    const contratosClausulas = await this.suplementoClausulaRepository.find({where: {idContrato}});
+  async removeSeveralByContratoIdSuplementoResumenId(idContrato: number, idSuplementoResumen: number) : Promise<any> {
+    const contratosClausulas = await this.suplementoClausulaRepository.find({where: {idSuplementoResumen,idContrato}});
     return await this.suplementoClausulaRepository.remove(contratosClausulas);
   }
 
