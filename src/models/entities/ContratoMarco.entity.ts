@@ -52,6 +52,10 @@ export class ContratoMarco {
   @Field()
   actualizado: Date;
 
+  @Column("nvarchar", { name: "NoContratoMarco" })
+  @Field()
+  noContratoMarco: string;
+
   @Field(() => [Contratos], {nullable: true})
   @OneToMany(() => Contratos, (contratos) => contratos.contratoMarco)
   contratos: Contratos[];
