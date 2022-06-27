@@ -1507,7 +1507,7 @@ type Query {
   findOneDocumentacionContrato(id: Int!): DocumentacionContrato!
   findAllContratos: [Contratos!]!
   findOneContratos(id: Int!): Contratos!
-  findOneContratosActualizado(id: Int!): Contratos!
+  findOneContratosActualizado(mostrar: Int!, id: Int!): Contratos!
   findAllContratoMarco: [ContratoMarco!]!
   findOneContratoMarco(id: Int!): ContratoMarco!
   findAllFormasEntrega: [FormasEntrega!]!
