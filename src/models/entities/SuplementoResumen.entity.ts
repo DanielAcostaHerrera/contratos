@@ -22,6 +22,7 @@ import { CompaniasNavieras } from '../../modelsNomgen/entities/CompaniasNavieras
 import { Paises } from '../../modelsMercurio/entities/Paises.entity';
 import { Incoterm } from './Incoterm.entity';
 import { FormasEntrega } from './FormasEntrega.entity';
+import { SuplementoPuertoEmbarque } from './SuplementoPuertoEmbarque.entity';
 
 @ObjectType()
 @Index("PK_SuplementoResumen", ["idSuplementoResumen"], { unique: true })
@@ -258,4 +259,8 @@ export class SuplementoResumen {
   @ManyToOne(() => NegociacionResumen, (negociacionResumen) => negociacionResumen.suplementoResumen)
   @JoinColumn([{ name: "IdNegociacion", referencedColumnName: "idNegociacion" }])
   negociacion: NegociacionResumen;
+
+  @Field(() => SuplementoPuertoEmbarque, {nullable: true})
+  @OneToMany(() => SuplementoPuertoEmbarque, (suplementoPuertoEmbarque) => suplementoPuertoEmbarque.suplementoResumen)
+  suplementoPuertoEmbarques: SuplementoPuertoEmbarque[];
 }

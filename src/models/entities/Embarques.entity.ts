@@ -18,6 +18,8 @@ import { SuplementoDesglose } from "./SuplementoDesglose.entity";
 import { SuplementoEmbarques } from "./SuplementoEmbarques.entity";
 import { SuplementoPagos } from "./SuplementoPagos.entity";
 import { PuertoEmbarque } from './PuertoEmbarque.entity';
+import { Pagos } from './Pagos.entity';
+import { SuplementoPuertoEmbarque } from './SuplementoPuertoEmbarque.entity';
 
 @ObjectType()
 @Index("PK_Embarques", ["idEmbarque"], { unique: true })
@@ -150,4 +152,12 @@ export class Embarques {
   @Field(() => [PuertoEmbarque], { nullable: true })
   @OneToMany(() => PuertoEmbarque,(puertoEmbarque) => puertoEmbarque.embarques)
   puertoEmbarques: PuertoEmbarque[];
+
+  @Field(() => [Pagos], { nullable: true })
+  @OneToMany(() => Pagos,(pagos) => pagos.embarques)
+  pagos: Pagos[];
+
+  @Field(() => SuplementoPuertoEmbarque, {nullable: true})
+  @OneToMany(() => SuplementoPuertoEmbarque, (suplementoPuertoEmbarque) => suplementoPuertoEmbarque.suplementoResumen)
+  suplementoPuertoEmbarques: SuplementoPuertoEmbarque[];
 }

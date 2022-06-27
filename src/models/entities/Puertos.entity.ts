@@ -8,6 +8,7 @@ import { FichaCostoResumen } from "./FichaCostoResumen.entity";
 import { PliegoConcurrenciaResumen } from "./PliegoConcurrenciaResumen.entity";
 import { PuertoEmbarque } from "./PuertoEmbarque.entity";
 import { SuplementoEmbarques } from "./SuplementoEmbarques.entity";
+import { SuplementoPuertoEmbarque } from "./SuplementoPuertoEmbarque.entity";
 import { SuplementoResumen } from "./SuplementoResumen.entity";
 
 @ObjectType()
@@ -60,4 +61,12 @@ export class Puertos {
   @Field(() => [PuertoEmbarque], { nullable: true })
   @OneToMany(() => PuertoEmbarque,(puertoEmbarque) => puertoEmbarque.puertoDestino)
   puertoEmbarquesDestino: PuertoEmbarque[];
+
+  @Field(() => SuplementoPuertoEmbarque, {nullable: true})
+  @OneToMany(() => SuplementoPuertoEmbarque, (suplementoPuertoEmbarque) => suplementoPuertoEmbarque.puertoOrigen)
+  suplementoPuertoEmbarquesOrigen: SuplementoPuertoEmbarque[];
+
+  @Field(() => SuplementoPuertoEmbarque, {nullable: true})
+  @OneToMany(() => SuplementoPuertoEmbarque, (suplementoPuertoEmbarque) => suplementoPuertoEmbarque.puertoDestino)
+  suplementoPuertoEmbarquesDestino: SuplementoPuertoEmbarque[];
 }

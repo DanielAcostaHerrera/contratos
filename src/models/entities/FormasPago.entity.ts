@@ -7,6 +7,7 @@ import {
   PrimaryGeneratedColumn,
 } from "typeorm";
 import { FichaCostoResumen } from "./FichaCostoResumen.entity";
+import { Pagos } from "./Pagos.entity";
 import { PliegoConcurrenciaResumen } from "./PliegoConcurrenciaResumen.entity";
 import { SuplementoPagos } from "./SuplementoPagos.entity";
 
@@ -37,4 +38,8 @@ export class FormasPago {
   @Field(() => [SuplementoPagos], {nullable: true})
   @OneToMany(() => SuplementoPagos,(suplementoPagos) => suplementoPagos.formasPago)
   suplementoPagos: SuplementoPagos[];
+
+  @Field(() => [Pagos], { nullable: true })
+  @OneToMany(() => Pagos,(pagos) => pagos.embarques)
+  pagos: Pagos[];
 }

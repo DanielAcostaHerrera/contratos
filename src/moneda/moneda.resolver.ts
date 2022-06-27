@@ -30,12 +30,6 @@ export class MonedaResolver {
 
   @Mutation(() => Monedas)
   @UseGuards(new AuthGuard())
-  updateMoneda(@Args('updateMonedaInput') updateMonedaInput: CreateMonedaInput) {
-    return this.monedaService.save(updateMonedaInput);
-  }
-
-  @Mutation(() => Monedas)
-  @UseGuards(new AuthGuard())
   removeMoneda(@Args('id', { type: () => Int }) id: number) {
     return this.monedaService.remove(id);
   }

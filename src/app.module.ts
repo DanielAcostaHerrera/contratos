@@ -78,6 +78,9 @@ import { LogsModule } from './logs/logs.module';
 import { PuertoEmbarqueModule } from './puerto-embarque/puerto-embarque.module';
 import { ContratoMarcoModule } from './contrato-marco/contrato-marco.module';
 import { StreamingController } from './streaming/streaming.controller';
+import { PagosModule } from './pagos/pagos.module';
+import { PagosApartirDeModule } from './pagos-apartir-de/pagos-apartir-de.module';
+import { SuplementoPuertoEmbarqueModule } from './suplemento-puerto-embarque/suplemento-puerto-embarque.module';
 
 
 @Module({
@@ -194,6 +197,9 @@ import { StreamingController } from './streaming/streaming.controller';
       ],
     }),
     ContratoMarcoModule,
+    PagosModule,
+    PagosApartirDeModule,
+    SuplementoPuertoEmbarqueModule,
   ],
   controllers: [AppController, StreamingController],
   providers: [AppService],
