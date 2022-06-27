@@ -44,6 +44,17 @@ export class StreamingController {
     })
     return new StreamableFile(file);
   }
+
+  @Get('proformas')
+  getFileProformas(@Response({ passthrough: true }) res): StreamableFile {
+    const file = createReadStream(join(process.cwd(), 'proformas.docx'));
+    res.set({
+      'Content-Type': 'application/json',
+      'Content-Disposition': 'attachment; filename="bg.docx',
+    });
+    return new StreamableFile(file);
+  }
+
     
 }
 

@@ -16,7 +16,6 @@ import { AuthGuard, DEFAULT_GRAPHQL_CONTEXT } from 'src/auth.guard';
 import { Usuarios } from 'src/models/entities/Usuarios.entity';
 import { UseGuards } from '@nestjs/common';
 import { ContratoMarco } from 'src/models/entities/ContratoMarco.entity';
-import { CreateSuplementoResumanInput } from 'src/suplemento-resumen/dto/create-suplemento-resuman.input';
 import { SuplementoChange } from 'src/models/entities/SuplementoChange.entity';
 import { SuplementoResumen } from 'src/models/entities/SuplementoResumen.entity';
 
@@ -87,7 +86,7 @@ export class ContratosResolver {
   }
 
   @ResolveField(() => ContratoMarco, {nullable: true})
-  baseCMarco(@Parent() contratos: Contratos): Promise<ContratoMarco> {
+  contratoMarco(@Parent() contratos: Contratos): Promise<ContratoMarco> {
     return this.contratosService.getCMarco(contratos.idCMarco);
   }
 

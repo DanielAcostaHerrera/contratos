@@ -12,6 +12,9 @@ export class CreateSuplementoPuertoEmbarqueInput {
   idEmbarque: number;
 
   @Field(() => Int)
+  idPuertoEmbarque: number;
+
+  @Field(() => Int)
   idPuertoOrigen: number;
 
   @Field(() => Int)

@@ -7,6 +7,7 @@ import {
   PrimaryGeneratedColumn,
 } from "typeorm";
 import { Pagos } from "./Pagos.entity";
+import { SuplementoPagos } from "./SuplementoPagos.entity";
 
 @ObjectType()
 @Index("PK_PagosAPartirDe", ["idPartir"], { unique: true })
@@ -21,6 +22,10 @@ export class PagosAPartirDe {
   aPartirDe: string;
 
   @Field(() => Pagos, {nullable: true})
-  @OneToMany(() => Pagos, (pagos) => pagos.idPagosAPartirDe)
+  @OneToMany(() => Pagos, (pagos) => pagos.pagoAPartirDe)
   pagos: Pagos[];
+
+  @Field(() => SuplementoPagos, {nullable: true})
+  @OneToMany(() => SuplementoPagos, (suplementoPagos) => suplementoPagos.pagoAPartirDe)
+  suplementoPagos: SuplementoPagos[];
 }

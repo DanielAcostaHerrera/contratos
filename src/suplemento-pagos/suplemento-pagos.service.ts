@@ -49,4 +49,9 @@ export class SuplementoPagosService {
   async getFormaPago (id: number) : Promise<FormasPago>{
     return this.formasPagoService.findOne(id);
   }
+
+  async removeSeveralByEmbarqueIdSuplementoResumenId(idEmbarque: number, idSuplementoResumen: number) : Promise<any> {
+    const suplementoDesgloses = await this.suplementoPagosRepository.find({where: {idEmbarque,idSuplementoResumen}});
+    return await this.suplementoPagosRepository.remove(suplementoDesgloses);
+  }
 }

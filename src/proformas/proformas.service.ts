@@ -22,7 +22,6 @@ export class ProformasService {
       result = await this.proformaRepository.save(createProformaInput);
 
       if(result){
-        this.proformaClausulaService.removeSeveralByProformaId(createProformaInput.idProforma);
         let clausulas = createProformaInput.proformaClausulas;
           for (let index = 0; index < clausulas.length; index++) {
             const clausula = clausulas[index];

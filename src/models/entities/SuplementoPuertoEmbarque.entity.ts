@@ -29,6 +29,10 @@ export class SuplementoPuertoEmbarque {
   @Field(() => Int)
   idEmbarque: number;
 
+  @Column("int", { name: "IdPuertoEmbarque" })
+  @Field(() => Int)
+  idPuertoEmbarque: number;
+
   @Column("int", { name: "IdPuertoOrigen" })
   @Field(() => Int)
   idPuertoOrigen: number;

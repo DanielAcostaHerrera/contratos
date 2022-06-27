@@ -15,6 +15,9 @@ export class CreateSuplementoPagoInput {
   idFormaPago: number;
 
   @Field(() => Int)
+  idPago: number;
+
+  @Field(() => Int)
   plazoPago: number;
 
   @Field(() => Int)

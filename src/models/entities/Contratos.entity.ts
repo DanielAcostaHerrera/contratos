@@ -204,9 +204,6 @@ export class Contratos {
   @Field(() => Float)
   gastosLogisticos: number;
 
-  @Field(()=> [ContratoClausulas],{ nullable: true})
-  clausulas?: ContratoClausulas[];
-
   @Field(() => [ContratoClausulas], {nullable: true})
   @OneToMany(() => ContratoClausulas,(contratoClausulas) => contratoClausulas.contratos)
   contratoClausulas: ContratoClausulas[];

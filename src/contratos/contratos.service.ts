@@ -53,6 +53,13 @@ import { PuertoEmbarque } from 'src/models/entities/PuertoEmbarque.entity';
 import { ContratoDesglose } from 'src/models/entities/ContratoDesglose.entity';
 import { SuplementoChange } from 'src/models/entities/SuplementoChange.entity';
 import { SuplementoResumen } from 'src/models/entities/SuplementoResumen.entity';
+import { CreateSuplementoPuertoEmbarqueInput } from 'src/suplemento-puerto-embarque/dto/create-suplemento-puerto-embarque.input';
+import { SuplementoPuertoEmbarqueService } from 'src/suplemento-puerto-embarque/suplemento-puerto-embarque.service';
+import { CreateSuplementoPagoInput } from 'src/suplemento-pagos/dto/create-suplemento-pago.input';
+import { PagosService } from 'src/pagos/pagos.service';
+import { SuplementoPagosService } from 'src/suplemento-pagos/suplemento-pagos.service';
+import { CreatePagoInput } from 'src/pagos/dto/create-pago.input';
+import { Pagos } from 'src/models/entities/Pagos.entity';
 
 @Injectable()
 export class ContratosService {
@@ -66,7 +73,8 @@ export class ContratosService {
   private suplementoClausulasService: SuplementoClausulasService, private suplementoChangeService: SuplementoChangeService,
   private suplementoDesgloseService: SuplementoDesgloseService, private embarquesService: EmbarquesService,
   private contratoDesgloseService: ContratoDesgloseService, private codigosParaLaVentaService: CodigosParaLaVentaService,
-  private puertoEmbarqueService: PuertoEmbarqueService) {}
+  private puertoEmbarqueService: PuertoEmbarqueService, private suplementoPuertoEmbarqueService: SuplementoPuertoEmbarqueService,
+  private suplementoPagosService: SuplementoPagosService, private pagosService: PagosService) {}
 
 
   async anadirSuplemento(usuarioToken: Usuarios, idContrato: number) : Promise<SuplementoResumen>{
@@ -74,6 +82,8 @@ export class ContratosService {
       var suplementoResumen = new CreateSuplementoResumanInput();
       let suplementoEmbarque = new CreateSuplementoEmbarqueInput();
       let suplementoDesglose = new CreateSuplementoDesgloseInput();
+      let suplementoPuertoEmbarque = new CreateSuplementoPuertoEmbarqueInput();
+      let suplementoPagos = new CreateSuplementoPagoInput();
       let resumenSuplemento: SuplementoResumen;
       
       if(contrato.suplementoResumen){
@@ -159,7 +169,32 @@ export class ContratosService {
 
           let embarqueSuplemento = await this.suplementoEmbarquesService.save(suplementoEmbarque);
 
-          //Aqui se añaden los suplementos PuertoEmbarque y los suplementos Pagos
+          let puertoEmbarques = embarque.suplementoResumen.suplementoPuertoEmbarques.filter(embarque2=> embarque2.idEmbarque == embarque.idEmbarque);
+          for (let index = 0; index < puertoEmbarques.length; index++) {
+            const puertoEmbarque = puertoEmbarques[index];
+            suplementoPuertoEmbarque.idSuplementoResumen = embarqueSuplemento.idSuplementoResumen;
+            suplementoPuertoEmbarque.idEmbarque = embarque.idEmbarque;
+            suplementoPuertoEmbarque.idPuertoOrigen = puertoEmbarque.idPuertoOrigen;
+            suplementoPuertoEmbarque.idPuertoDestino = puertoEmbarque.idPuertoDestino;
+            suplementoPuertoEmbarque.idPuertoEmbarque = puertoEmbarque.idPuertoEmbarque;
+            
+
+            await this.suplementoPuertoEmbarqueService.save(suplementoPuertoEmbarque);
+          }
+
+          let pagos = embarque.suplementoResumen.suplementoPagos.filter(embarque2=> embarque2.idEmbarque == embarque.idEmbarque);
+          for (let index = 0; index < pagos.length; index++) {
+            const pago = pagos[index];
+            suplementoPagos.idSuplementoResumen = embarqueSuplemento.idSuplementoResumen;
+            suplementoPagos.idEmbarque = embarque.idEmbarque;
+            suplementoPagos.idFormaPago = pago.idFormaPago;
+            suplementoPagos.plazoPago = pago.plazoPago;
+            suplementoPagos.porciento = pago.porciento;
+            suplementoPagos.aPartirDe = pago.aPartirDe;     
+            suplementoPagos.idPago = pago.idPago; 
+
+            await this.suplementoPagosService.save(suplementoPagos);
+          }
           
           let desgloses = embarque.suplementoResumen.suplementoDesgloses.filter(embarque2=> embarque2.idEmbarque == embarque.idEmbarque);
           for (let index = 0; index < desgloses.length; index++) {
@@ -264,7 +299,31 @@ export class ContratosService {
 
           let embarqueSuplemento = await this.suplementoEmbarquesService.save(suplementoEmbarque);
 
-          //Aqui se añaden los suplementos PuertoEmbarque y los suplementos Pagos
+          let puertoEmbarques = embarque.puertoEmbarques;
+          for (let index = 0; index < puertoEmbarques.length; index++) {
+            const puertoEmbarque = puertoEmbarques[index];
+            suplementoPuertoEmbarque.idSuplementoResumen = embarqueSuplemento.idSuplementoResumen;
+            suplementoPuertoEmbarque.idEmbarque = embarque.idEmbarque;
+            suplementoPuertoEmbarque.idPuertoOrigen = puertoEmbarque.idPuertoOrigen;
+            suplementoPuertoEmbarque.idPuertoDestino = puertoEmbarque.idPuertoDestino;
+            
+
+            await this.suplementoPuertoEmbarqueService.save(suplementoPuertoEmbarque);
+          }
+
+          let pagos = embarque.pagos;
+          for (let index = 0; index < pagos.length; index++) {
+            const pago = pagos[index];
+            suplementoPagos.idSuplementoResumen = embarqueSuplemento.idSuplementoResumen;
+            suplementoPagos.idEmbarque = embarque.idEmbarque;
+            suplementoPagos.idFormaPago = pago.idFormaPago;
+            suplementoPagos.plazoPago = pago.plazoPago;
+            suplementoPagos.porciento = pago.porciento;
+            suplementoPagos.aPartirDe = pago.idPagosAPartirDe;
+            
+
+            await this.suplementoPagosService.save(suplementoPagos);
+          }
           
           let desgloses = embarque.contratoDesgloses;
           for (let index = 0; index < desgloses.length; index++) {
@@ -694,6 +753,46 @@ export class ContratosService {
                 suplementoChange.clausula = "Codigo añadido al contrato";
                 this.suplementoChangeService.save(suplementoChange);
               }
+
+              let pagos  = embarque.pagos;
+
+              for(let index = 0; index < pagos.length; index++){
+                const pago = pagos[index];
+
+                suplementoChange.idEmbarque = embarque.idEmbarque;
+                suplementoChange.orden = null;
+                suplementoChange.idCambio = 2;
+                suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
+                suplementoChange.contenidoViejo = "-";
+                suplementoChange.contenidoNuevo = "Forma de pago: "+pago.formaPago.formaPago.toString()," Pago a partir de: "+pago.pagoAPartirDe.aPartirDe.toString()+
+                " Plazo pago: "+pago.plazoPago.toString()+" Porciento: "+pago.porciento.toString();    
+                suplementoChange.clausula = "Añadido un nuevo pago";
+                this.suplementoChangeService.save(suplementoChange);                 
+              }
+
+              let puertoEmbarques  = embarque.puertoEmbarques;
+
+              for(let index = 0; index < puertoEmbarques.length; index++){
+                const puertoEmbarque = puertoEmbarques[index];
+
+                suplementoChange.idEmbarque = embarque.idEmbarque;
+                suplementoChange.orden = null;
+                suplementoChange.idCambio = 3;
+                suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
+                suplementoChange.contenidoViejo = "-"
+                suplementoChange.contenidoNuevo = puertoEmbarque.puertoDestino.nombre.toString();    
+                suplementoChange.clausula = "Añadido nuevo puerto de destino";
+                this.suplementoChangeService.save(suplementoChange);
+                  
+                suplementoChange.idEmbarque = embarque.idEmbarque;
+                suplementoChange.orden = null;
+                suplementoChange.idCambio = 3;
+                suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
+                suplementoChange.contenidoViejo = "-"
+                suplementoChange.contenidoNuevo = puertoEmbarque.puertoOrigen.nombre.toString();    
+                suplementoChange.clausula = "Añadido nuevo puerto de origen";
+                this.suplementoChangeService.save(suplementoChange);              
+              } 
             }
 
             if(embarqueViejo){
@@ -869,9 +968,127 @@ export class ContratosService {
                     suplementoChange.clausula = "Codigo añadido al contrato";
                     this.suplementoChangeService.save(suplementoChange);
                   }
+                }
+
+              let pagos  = embarque.pagos;
+              let pagosViejos = embarqueViejo.suplementoResumen.suplementoPagos.filter(pago2=> pago2.idEmbarque == embarqueViejo.idEmbarque);
+
+              for(let index = 0; index < pagos.length; index++){
+                const pago = pagos[index];
+                const pagoViejo = pagosViejos.find(pago2=> pago2.idPago == pago.idPago)
+
+                if(!pagoViejo){
+                    suplementoChange.idEmbarque = embarque.idEmbarque;
+                    suplementoChange.orden = null;
+                    suplementoChange.idCambio = 2;
+                    suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
+                    suplementoChange.contenidoViejo = "-";
+                    suplementoChange.contenidoNuevo = "Forma de pago: "+pago.formaPago.formaPago.toString()," Pago a partir de: "+pago.pagoAPartirDe.aPartirDe.toString()+
+                    " Plazo pago: "+pago.plazoPago.toString()+" Porciento: "+pago.porciento.toString();    
+                    suplementoChange.clausula = "Añadido un nuevo pago";
+                    this.suplementoChangeService.save(suplementoChange);               
+                }
+
+                if(pagoViejo){
+                  if(pago.idFormaPago != pagoViejo.idFormaPago){
+                    suplementoChange.idEmbarque = embarque.idEmbarque;
+                    suplementoChange.orden = null;
+                    suplementoChange.idCambio = 2;
+                    suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
+                    suplementoChange.contenidoViejo = pagoViejo.formasPago.formaPago.toString();
+                    suplementoChange.contenidoNuevo = pago.formaPago.formaPago.toString();    
+                    suplementoChange.clausula = "Forma de pago";
+                    this.suplementoChangeService.save(suplementoChange);
+                  }
+  
+                  if(pago.idPagosAPartirDe != pagoViejo.aPartirDe){
+                    suplementoChange.idEmbarque = embarque.idEmbarque;
+                    suplementoChange.orden = null;
+                    suplementoChange.idCambio = 2;
+                    suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
+                    suplementoChange.contenidoViejo = pagoViejo.pagoAPartirDe.aPartirDe.toString();
+                    suplementoChange.contenidoNuevo = pago.pagoAPartirDe.aPartirDe.toString();    
+                    suplementoChange.clausula = "Pago a partir de";
+                    this.suplementoChangeService.save(suplementoChange);
+                  }
+  
+                  if(pago.plazoPago != pagoViejo.plazoPago){
+                    suplementoChange.idEmbarque = embarque.idEmbarque;
+                    suplementoChange.orden = null;
+                    suplementoChange.idCambio = 2;
+                    suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
+                    suplementoChange.contenidoViejo = pagoViejo.plazoPago.toString();
+                    suplementoChange.contenidoNuevo = pago.plazoPago.toString();    
+                    suplementoChange.clausula = "Plazo pago";
+                    this.suplementoChangeService.save(suplementoChange);
+                  }
+  
+                  if(pago.porciento != pagoViejo.porciento){
+                    suplementoChange.idEmbarque = embarque.idEmbarque;
+                    suplementoChange.orden = null;
+                    suplementoChange.idCambio = 2;
+                    suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
+                    suplementoChange.contenidoViejo = pagoViejo.porciento.toString();
+                    suplementoChange.contenidoNuevo = pago.porciento.toString();    
+                    suplementoChange.clausula = "Porciento";
+                    this.suplementoChangeService.save(suplementoChange);
+                  }
+                }
+                
+              }
+
+              let puertoEmbarques  = embarque.puertoEmbarques;
+              let puertoEmbarquesViejos = embarqueViejo.suplementoResumen.suplementoPuertoEmbarques.filter(embarque2=> embarque2.idEmbarque == embarqueViejo.idEmbarque);
+
+              for(let index = 0; index < puertoEmbarques.length; index++){
+                const puertoEmbarque = puertoEmbarques[index];
+                const puertoEmbarqueViejo = puertoEmbarquesViejos.find(puertoEmbarque2=> puertoEmbarque2.idPuertoEmbarque == puertoEmbarque.idPuertoEmbarque)
+
+                if(!puertoEmbarqueViejo){
+                    suplementoChange.idEmbarque = embarque.idEmbarque;
+                    suplementoChange.orden = null;
+                    suplementoChange.idCambio = 3;
+                    suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
+                    suplementoChange.contenidoViejo = "-"
+                    suplementoChange.contenidoNuevo = puertoEmbarque.puertoDestino.nombre.toString();    
+                    suplementoChange.clausula = "Añadido nuevo puerto de destino";
+                    this.suplementoChangeService.save(suplementoChange);
+                  
+                    suplementoChange.idEmbarque = embarque.idEmbarque;
+                    suplementoChange.orden = null;
+                    suplementoChange.idCambio = 3;
+                    suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
+                    suplementoChange.contenidoViejo = "-"
+                    suplementoChange.contenidoNuevo = puertoEmbarque.puertoOrigen.nombre.toString();    
+                    suplementoChange.clausula = "Añadido nuevo puerto de origen";
+                    this.suplementoChangeService.save(suplementoChange);              
+                }
+                
+                if(puertoEmbarqueViejo){
+                  if(puertoEmbarque.idPuertoDestino != puertoEmbarqueViejo.idPuertoDestino){
+                    suplementoChange.idEmbarque = embarque.idEmbarque;
+                    suplementoChange.orden = null;
+                    suplementoChange.idCambio = 3;
+                    suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
+                    suplementoChange.contenidoViejo = puertoEmbarqueViejo.puertoDestino.nombre.toString();
+                    suplementoChange.contenidoNuevo = puertoEmbarque.puertoDestino.nombre.toString();    
+                    suplementoChange.clausula = "Cambiado puerto de destino";
+                    this.suplementoChangeService.save(suplementoChange);
+                  }
+  
+                  if(puertoEmbarque.idPuertoOrigen != puertoEmbarqueViejo.idPuertoOrigen){
+                    suplementoChange.idEmbarque = embarque.idEmbarque;
+                    suplementoChange.orden = null;
+                    suplementoChange.idCambio = 3;
+                    suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
+                    suplementoChange.contenidoViejo = puertoEmbarqueViejo.puertoOrigen.nombre.toString();
+                    suplementoChange.contenidoNuevo = puertoEmbarque.puertoOrigen.nombre.toString();    
+                    suplementoChange.clausula = "Cambiado puerto de origen";
+                    this.suplementoChangeService.save(suplementoChange);
+                  }
+                }
               }
             }
-            //Aqui se verifican suplementos PuertoEmbarque y los suplementos Pagos
           }
           let changesTemp = await this.suplementoChangeService.findAll();
           let result = changesTemp.filter(change=> change.idSuplementoResumen == suplementoResumen.idSuplementoResumen)
@@ -1276,6 +1493,46 @@ export class ContratosService {
               suplementoChange.clausula = "Codigo añadido al contrato";
               this.suplementoChangeService.save(suplementoChange);
             }
+
+            let pagos  = embarque.suplementoResumen.suplementoPagos.filter(pago2=> pago2.idEmbarque == embarque.idEmbarque);
+
+              for(let index = 0; index < pagos.length; index++){
+                const pago = pagos[index];
+
+                suplementoChange.idEmbarque = embarque.idEmbarque;
+                suplementoChange.orden = null;
+                suplementoChange.idCambio = 2;
+                suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
+                suplementoChange.contenidoViejo = "-";
+                suplementoChange.contenidoNuevo = "Forma de pago: "+pago.formasPago.formaPago.toString()," Pago a partir de: "+pago.pagoAPartirDe.aPartirDe.toString()+
+                " Plazo pago: "+pago.plazoPago.toString()+" Porciento: "+pago.porciento.toString();    
+                suplementoChange.clausula = "Añadido un nuevo pago";
+                this.suplementoChangeService.save(suplementoChange);                 
+              }
+
+              let puertoEmbarques  = embarque.suplementoResumen.suplementoPuertoEmbarques.filter(pago2=> pago2.idEmbarque == embarque.idEmbarque);
+
+              for(let index = 0; index < puertoEmbarques.length; index++){
+                const puertoEmbarque = puertoEmbarques[index];
+
+                suplementoChange.idEmbarque = embarque.idEmbarque;
+                suplementoChange.orden = null;
+                suplementoChange.idCambio = 3;
+                suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
+                suplementoChange.contenidoViejo = "-"
+                suplementoChange.contenidoNuevo = puertoEmbarque.puertoDestino.nombre.toString();    
+                suplementoChange.clausula = "Añadido nuevo puerto de destino";
+                this.suplementoChangeService.save(suplementoChange);
+                  
+                suplementoChange.idEmbarque = embarque.idEmbarque;
+                suplementoChange.orden = null;
+                suplementoChange.idCambio = 3;
+                suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
+                suplementoChange.contenidoViejo = "-"
+                suplementoChange.contenidoNuevo = puertoEmbarque.puertoOrigen.nombre.toString();    
+                suplementoChange.clausula = "Añadido nuevo puerto de origen";
+                this.suplementoChangeService.save(suplementoChange);              
+              }
           }
 
           if(embarqueViejo){
@@ -1452,8 +1709,126 @@ export class ContratosService {
                   this.suplementoChangeService.save(suplementoChange);
                 }
             }
+
+            let pagos  = embarque.suplementoResumen.suplementoPagos.filter(pago2=> pago2.idEmbarque == embarque.idEmbarque);
+            let pagosViejos = embarqueViejo.suplementoResumen.suplementoPagos.filter(pago2=> pago2.idEmbarque == embarqueViejo.idEmbarque);
+
+              for(let index = 0; index < pagos.length; index++){
+                const pago = pagos[index];
+                const pagoViejo = pagosViejos.find(pago2=> pago2.idPago == pago.idPago)
+
+                if(!pagoViejo){
+                    suplementoChange.idEmbarque = embarque.idEmbarque;
+                    suplementoChange.orden = null;
+                    suplementoChange.idCambio = 2;
+                    suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
+                    suplementoChange.contenidoViejo = "-";
+                    suplementoChange.contenidoNuevo = "Forma de pago: "+pago.formasPago.formaPago.toString()," Pago a partir de: "+pago.pagoAPartirDe.aPartirDe.toString()+
+                    " Plazo pago: "+pago.plazoPago.toString()+" Porciento: "+pago.porciento.toString();    
+                    suplementoChange.clausula = "Añadido un nuevo pago";
+                    this.suplementoChangeService.save(suplementoChange);               
+                }
+
+                if(pagoViejo){
+                  if(pago.idFormaPago != pagoViejo.idFormaPago){
+                    suplementoChange.idEmbarque = embarque.idEmbarque;
+                    suplementoChange.orden = null;
+                    suplementoChange.idCambio = 2;
+                    suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
+                    suplementoChange.contenidoViejo = pagoViejo.formasPago.formaPago.toString();
+                    suplementoChange.contenidoNuevo = pago.formasPago.formaPago.toString();    
+                    suplementoChange.clausula = "Forma de pago";
+                    this.suplementoChangeService.save(suplementoChange);
+                  }
+  
+                  if(pago.aPartirDe != pagoViejo.aPartirDe){
+                    suplementoChange.idEmbarque = embarque.idEmbarque;
+                    suplementoChange.orden = null;
+                    suplementoChange.idCambio = 2;
+                    suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
+                    suplementoChange.contenidoViejo = pagoViejo.pagoAPartirDe.aPartirDe.toString();
+                    suplementoChange.contenidoNuevo = pago.pagoAPartirDe.aPartirDe.toString();    
+                    suplementoChange.clausula = "Pago a partir de";
+                    this.suplementoChangeService.save(suplementoChange);
+                  }
+  
+                  if(pago.plazoPago != pagoViejo.plazoPago){
+                    suplementoChange.idEmbarque = embarque.idEmbarque;
+                    suplementoChange.orden = null;
+                    suplementoChange.idCambio = 2;
+                    suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
+                    suplementoChange.contenidoViejo = pagoViejo.plazoPago.toString();
+                    suplementoChange.contenidoNuevo = pago.plazoPago.toString();    
+                    suplementoChange.clausula = "Plazo pago";
+                    this.suplementoChangeService.save(suplementoChange);
+                  }
+  
+                  if(pago.porciento != pagoViejo.porciento){
+                    suplementoChange.idEmbarque = embarque.idEmbarque;
+                    suplementoChange.orden = null;
+                    suplementoChange.idCambio = 2;
+                    suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
+                    suplementoChange.contenidoViejo = pagoViejo.porciento.toString();
+                    suplementoChange.contenidoNuevo = pago.porciento.toString();    
+                    suplementoChange.clausula = "Porciento";
+                    this.suplementoChangeService.save(suplementoChange);
+                  }
+                }
+                
+              }
+
+              let puertoEmbarques  = embarque.suplementoResumen.suplementoPuertoEmbarques.filter(embarque2=> embarque2.idEmbarque == embarque.idEmbarque);;
+              let puertoEmbarquesViejos = embarqueViejo.suplementoResumen.suplementoPuertoEmbarques.filter(embarque2=> embarque2.idEmbarque == embarqueViejo.idEmbarque);
+
+              for(let index = 0; index < puertoEmbarques.length; index++){
+                const puertoEmbarque = puertoEmbarques[index];
+                const puertoEmbarqueViejo = puertoEmbarquesViejos.find(puertoEmbarque2=> puertoEmbarque2.idPuertoEmbarque == puertoEmbarque.idPuertoEmbarque)
+
+                if(!puertoEmbarqueViejo){
+                    suplementoChange.idEmbarque = embarque.idEmbarque;
+                    suplementoChange.orden = null;
+                    suplementoChange.idCambio = 3;
+                    suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
+                    suplementoChange.contenidoViejo = "-"
+                    suplementoChange.contenidoNuevo = puertoEmbarque.puertoDestino.nombre.toString();    
+                    suplementoChange.clausula = "Añadido nuevo puerto de destino";
+                    this.suplementoChangeService.save(suplementoChange);
+                  
+                    suplementoChange.idEmbarque = embarque.idEmbarque;
+                    suplementoChange.orden = null;
+                    suplementoChange.idCambio = 3;
+                    suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
+                    suplementoChange.contenidoViejo = "-"
+                    suplementoChange.contenidoNuevo = puertoEmbarque.puertoOrigen.nombre.toString();    
+                    suplementoChange.clausula = "Añadido nuevo puerto de origen";
+                    this.suplementoChangeService.save(suplementoChange);              
+                }
+                
+                if(puertoEmbarqueViejo){
+                  if(puertoEmbarque.idPuertoDestino != puertoEmbarqueViejo.idPuertoDestino){
+                    suplementoChange.idEmbarque = embarque.idEmbarque;
+                    suplementoChange.orden = null;
+                    suplementoChange.idCambio = 3;
+                    suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
+                    suplementoChange.contenidoViejo = puertoEmbarqueViejo.puertoDestino.nombre.toString();
+                    suplementoChange.contenidoNuevo = puertoEmbarque.puertoDestino.nombre.toString();    
+                    suplementoChange.clausula = "Cambiado puerto de destino";
+                    this.suplementoChangeService.save(suplementoChange);
+                  }
+  
+                  if(puertoEmbarque.idPuertoOrigen != puertoEmbarqueViejo.idPuertoOrigen){
+                    suplementoChange.idEmbarque = embarque.idEmbarque;
+                    suplementoChange.orden = null;
+                    suplementoChange.idCambio = 3;
+                    suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
+                    suplementoChange.contenidoViejo = puertoEmbarqueViejo.puertoOrigen.nombre.toString();
+                    suplementoChange.contenidoNuevo = puertoEmbarque.puertoOrigen.nombre.toString();    
+                    suplementoChange.clausula = "Cambiado puerto de origen";
+                    this.suplementoChangeService.save(suplementoChange);
+                  }
+                }
+              }
           }
-          //Aqui se verifican suplementos PuertoEmbarque y los suplementos Pagos
         }
         let changesTemp = await this.suplementoChangeService.findAll();
         let result = changesTemp.filter(change=> change.idSuplementoResumen == suplementoResumen.idSuplementoResumen)
@@ -1533,7 +1908,20 @@ export class ContratosService {
                 inputPuertoEmbarque.idEmbarque = puertoEmbarque.idEmbarque;
                 inputPuertoEmbarque.idPuertoOrigen = puertoEmbarque.idPuertoOrigen;
                 inputPuertoEmbarque.idPuertoDestino = puertoEmbarque.idPuertoDestino;
-                this.puertoEmbarqueService.save(inputPuertoEmbarque);
+                await this.puertoEmbarqueService.save(inputPuertoEmbarque);
+              }
+
+              let pagos = createContratoInput.embarques[index].pagos;
+              for(let index = 0; index < pagos.length; index++){
+                const pago = pagos[index];
+                var inputPago = new CreatePagoInput();
+                inputPago.idEmbarque = pago.idEmbarque;
+                inputPago.idFormaPago = pago.idFormaPago;
+                inputPago.idPagosAPartirDe = pago.idPagosAPartirDe;
+                inputPago.plazoPago = pago.plazoPago;
+                inputPago.porciento = pago.porciento;
+                inputPago.idPago = pago.idPago;
+                await this.pagosService.save(inputPago);
               }
               
               let desgloses = createContratoInput.embarques[index].contratoDesglose;
@@ -1562,8 +1950,6 @@ export class ContratosService {
         }
 
         if(contratoViejo.suplementoResumen){
-          
-
           contratoViejo.suplementoResumen.sort((a, b) => (b.fecha.getFullYear()+b.fecha.getMonth()+b.fecha.getDate()+b.fecha.getHours()+b.fecha.getMinutes()+b.fecha.getSeconds())
         - (a.fecha.getFullYear()+a.fecha.getMonth()+a.fecha.getDate()+a.fecha.getHours()+a.fecha.getMinutes()+a.fecha.getSeconds()));
          let ultimoSuplemento = contratoViejo.suplementoResumen[0];
@@ -1630,6 +2016,8 @@ export class ContratosService {
               const embarque = embarques[index];
               
               await this.suplementoDesgloseService.removeSeveralByEmbarqueIdSuplementoResumenId(embarque.idEmbarque, suplementoResumen.idSuplementoResumen);
+              await this.suplementoPuertoEmbarqueService.removeSeveralByEmbarqueIdSuplementoResumenId(embarque.idEmbarque,suplementoResumen.idSuplementoResumen);
+              await this.suplementoPagosService.removeSeveralByEmbarqueIdSuplementoResumenId(embarque.idEmbarque,suplementoResumen.idSuplementoResumen);
 
               var suplementoEmbarque = new CreateSuplementoEmbarqueInput();
               suplementoEmbarque.idSuplementoResumen = result2.idSuplementoResumen;
@@ -1653,20 +2041,32 @@ export class ContratosService {
               suplementoEmbarque.actSci = embarque.actSci;
               
               await this.suplementoEmbarquesService.save(suplementoEmbarque);
-
-              //Descomentar cuando implemente SuplementoPuertoEmbarque
-              /*await this.puertoEmbarqueService.removeSeveralByEmbarqueId(embarque.idEmbarque);
               
               let puertoEmbarques = createContratoInput.embarques[index].puertoEmbarque;
               for(let index = 0; index < puertoEmbarques.length; index++){
                 const puertoEmbarque = puertoEmbarques[index];
-                var suplementoPuertoEmbarque = new CreatePuertoEmbarqueInput();
+                var suplementoPuertoEmbarque = new CreateSuplementoPuertoEmbarqueInput();
+                suplementoPuertoEmbarque.idSuplementoResumen = result2.idSuplementoResumen;
                 suplementoPuertoEmbarque.idPuertoEmbarque = puertoEmbarque.idPuertoEmbarque;
                 suplementoPuertoEmbarque.idEmbarque = puertoEmbarque.idEmbarque;
                 suplementoPuertoEmbarque.idPuertoOrigen = puertoEmbarque.idPuertoOrigen;
                 suplementoPuertoEmbarque.idPuertoDestino = puertoEmbarque.idPuertoDestino;
-                this.puertoEmbarqueService.save(suplementoPuertoEmbarque);
-              }*/
+                await this.suplementoPuertoEmbarqueService.save(suplementoPuertoEmbarque);
+              }
+
+              let pagos = createContratoInput.embarques[index].pagos;
+              for(let index = 0; index < pagos.length; index++){
+                const pago = pagos[index];
+                var suplementoPago = new CreateSuplementoPagoInput();
+                suplementoPago.idSuplementoResumen = result2.idSuplementoResumen;
+                suplementoPago.idPago = pago.idPago;
+                suplementoPago.idEmbarque = pago.idEmbarque;
+                suplementoPago.idFormaPago = pago.idFormaPago;
+                suplementoPago.plazoPago = pago.plazoPago;
+                suplementoPago.aPartirDe = pago.idPagosAPartirDe;
+                suplementoPago.porciento = pago.porciento;
+                await this.suplementoPagosService.save(suplementoPago);
+              }
               
               let desgloses = createContratoInput.embarques[index].contratoDesglose;
               for (let index = 0; index < desgloses.length; index++) {
@@ -1686,7 +2086,6 @@ export class ContratosService {
                 suplementoDesglose.precioPaquete = desglose.precioPaquete;
                 suplementoDesglose.packing = desglose.packing;
                 suplementoDesglose.cajas = desglose.cajas;
-
                 await this.suplementoDesgloseService.save(suplementoDesglose);
               }
             }
@@ -1982,6 +2381,7 @@ export class ContratosService {
       let desglosesContrato: ContratoDesglose[] = [];
       let embarquesContrato: Embarques[] = [];
       let puertoEmbarques: PuertoEmbarque[] = [];
+      let pagosEmbarques: Pagos[] = [];
       let clausulasSuplemento = ultimoSuplemento.suplementoClausulas;
       
       for (let index = 0; index < clausulasSuplemento.length; index++) {
@@ -2024,17 +2424,29 @@ export class ContratosService {
             
             embarquesContrato.push(contratoEmbarque);
 
-            //Descomentar cuando implemente SuplementoPuertoEmbarque
-           /* let puertoEmbarquesSuplemento = ultimoSuplemento.puertoE;
+            let puertoEmbarquesSuplemento = ultimoSuplemento.suplementoPuertoEmbarques.filter(desglose=> desglose.idEmbarque == embarque.idEmbarque);;
             for(let index = 0; index < puertoEmbarquesSuplemento.length; index++){
-              const embarque = puertoEmbarques[index];
+              const puertoEmbarqueSuplemento = puertoEmbarquesSuplemento[index];
               var puertoEmbarque = new PuertoEmbarque();
-              puertoEmbarque.idPuertoEmbarque = embarque.idPuertoEmbarque;
-              puertoEmbarque.idEmbarque = embarque.idEmbarque;
-              puertoEmbarque.idPuertoOrigen = embarque.idPuertoOrigen;
-              puertoEmbarque.idPuertoDestino = embarque.idPuertoDestino;
+              puertoEmbarque.idPuertoEmbarque = puertoEmbarqueSuplemento.idPuertoEmbarque;
+              puertoEmbarque.idEmbarque = puertoEmbarqueSuplemento.idEmbarque;
+              puertoEmbarque.idPuertoOrigen = puertoEmbarqueSuplemento.idPuertoOrigen;
+              puertoEmbarque.idPuertoDestino = puertoEmbarqueSuplemento.idPuertoDestino;
               puertoEmbarques.push(puertoEmbarque);
-            }*/
+            }
+
+            let pagos = ultimoSuplemento.suplementoPagos.filter(desglose=> desglose.idEmbarque == embarque.idEmbarque);;
+            for(let index = 0; index < pagos.length; index++){
+              const pago = pagos[index];
+              var pagoEmbarque = new Pagos();
+              pagoEmbarque.idPago = pago.idPago;
+              pagoEmbarque.idEmbarque = pago.idEmbarque;
+              pagoEmbarque.idFormaPago = pago.idFormaPago;
+              pagoEmbarque.idPagosAPartirDe = pago.aPartirDe;
+              pagoEmbarque.plazoPago = pago.plazoPago;
+              pagoEmbarque.porciento = pago.porciento;
+              pagosEmbarques.push(pagoEmbarque);
+            }
             
             
             let desglosesSuplemento = ultimoSuplemento.suplementoDesgloses.filter(desglose=> desglose.idEmbarque == embarque.idEmbarque);
@@ -2070,6 +2482,12 @@ export class ContratosService {
             const embarque = contrato.embarques[index];
             let listaPuertoEmbarque = puertoEmbarques.filter(puertoEmbarque=> puertoEmbarque.idEmbarque == embarque.idEmbarque);
             contrato.embarques[index].puertoEmbarques = listaPuertoEmbarque;
+          }
+
+          for(let index = 0; index < contrato.embarques.length; index++){
+            const embarque = contrato.embarques[index];
+            let listaPagos = pagosEmbarques.filter(pagoEmbarque=> pagoEmbarque.idEmbarque == embarque.idEmbarque);
+            contrato.embarques[index].pagos = listaPagos;
           }
     }
     return contrato;

@@ -108,6 +108,7 @@ type SuplementoPuertoEmbarque {
   idSuplementoPuertoEmbarque: Int!
   idSuplementoResumen: Int!
   idEmbarque: Int!
+  idPuertoEmbarque: Int!
   idPuertoOrigen: Int!
   idPuertoDestino: Int!
   suplementoResumen: SuplementoResumen
@@ -461,14 +462,23 @@ type SuplementoChange {
   cambiosSuplementos: CambiosSuplementos
 }
 
+type PagosAPartirDe {
+  idPartir: Int!
+  aPartirDe: String!
+  pagos: Pagos
+  suplementoPagos: SuplementoPagos
+}
+
 type SuplementoPagos {
   idSuplementoPagos: Int!
   idSuplementoResumen: Int!
   idEmbarque: Int!
   idFormaPago: Int!
+  idPago: Int!
   plazoPago: Int!
   aPartirDe: Int!
   porciento: Float!
+  pagoAPartirDe: PagosAPartirDe
   suplementoResumen: SuplementoResumen
   embarques: Embarques
   formasPago: FormasPago
@@ -506,12 +516,6 @@ type Embarques {
   puertoEmbarques: [PuertoEmbarque!]
   pagos: [Pagos!]
   suplementoPuertoEmbarques: SuplementoPuertoEmbarque
-}
-
-type PagosAPartirDe {
-  idPartir: Int!
-  aPartirDe: String!
-  pagos: Pagos
 }
 
 type Pagos {
@@ -1400,7 +1404,6 @@ type Contratos {
   fechaTasa: DateTime
   pFin: Float!
   gastosLogisticos: Float!
-  clausulas: [ContratoClausulas!]
   contratoClausulas: [ContratoClausulas!]
   basesGenerales: BasesGenerales
   contratoMarco: ContratoMarco
@@ -1422,7 +1425,6 @@ type Contratos {
   companiaNaviera: CompaniasNavieras
   agenciaAseguradora: AgenciasAseguradoras
   incoterm: Incoterm
-  baseCMarco: ContratoMarco
 }
 
 type Monedas {
@@ -1550,6 +1552,14 @@ type Query {
   findOneContratoDesglose(id: Int!): ContratoDesglose!
   findAllPuertoEmbarque: [PuertoEmbarque!]!
   findOnePuertoEmbarque(id: Int!): PuertoEmbarque!
+  findAllSuplementoPuertoEmbarque: [SuplementoPuertoEmbarque!]!
+  findOneSuplementoPuertoEmbarque(id: Int!): SuplementoPuertoEmbarque!
+  findAllSuplementoPagos: [SuplementoPagos!]!
+  findOneSuplementoPagos(id: Int!): SuplementoPagos!
+  findAllPagos: [Pagos!]!
+  findOnePagos(id: Int!): Pagos!
+  findAllPagosAPartirDe: [PagosAPartirDe!]!
+  findOnePagosAPartirDe(id: Int!): PagosAPartirDe!
   findAllTiposContenedor: [TiposContenedor!]!
   findOneTiposContenedor(id: Int!): TiposContenedor!
   findAllConfiguracion: [Configuracion!]!
@@ -1594,8 +1604,6 @@ type Query {
   findOneFacturaDesglose(id: Int!): FacturaDesglose!
   findAllFacturaContenedor: [FacturaContenedor!]!
   findOneFacturaContenedor(id: Int!): FacturaContenedor!
-  findAllSuplementoPagos: [SuplementoPagos!]!
-  findOneSuplementoPagos(id: Int!): SuplementoPagos!
   findAllRoles: [Roles!]!
   findOneRoles(id: Int!): Roles!
   findAllUsuarios: [Usuarios!]!
@@ -1603,12 +1611,6 @@ type Query {
   autenticarUsuarios(contrasena: String!, nombreUsuario: String!): Usuarios!
   findAllUsuarioRol: [UsuarioRol!]!
   findOneUsuarioRol(id: Int!): UsuarioRol!
-  findAllPagos: [Pagos!]!
-  findOnePagos(id: Int!): Pagos!
-  findAllPagosAPartirDe: [PagosAPartirDe!]!
-  findOnePagosAPartirDe(id: Int!): PagosAPartirDe!
-  findAllSuplementoPuertoEmbarque: [SuplementoPuertoEmbarque!]!
-  findOneSuplementoPuertoEmbarque(id: Int!): SuplementoPuertoEmbarque!
 }
 
 type Mutation {
@@ -1729,6 +1731,18 @@ type Mutation {
   createPuertoEmbarque(createPuertoEmbarqueInput: CreatePuertoEmbarqueInput!): PuertoEmbarque!
   removePuertoEmbarque(id: Int!): PuertoEmbarque!
   removeSeveralPuertoEmbarque(id: [Int!]!): [PuertoEmbarque!]!
+  createSuplementoPuertoEmbarque(createSuplementoPuertoEmbarqueInput: CreateSuplementoPuertoEmbarqueInput!): SuplementoPuertoEmbarque!
+  removeSuplementoPuertoEmbarque(id: Int!): SuplementoPuertoEmbarque!
+  removeSeveralSuplementoPuertoEmbarque(id: [Int!]!): [SuplementoPuertoEmbarque!]!
+  createSuplementoPago(createSuplementoPagoInput: CreateSuplementoPagoInput!): SuplementoPagos!
+  removeSuplementoPago(id: Int!): SuplementoPagos!
+  removeSeveralSuplementoPago(id: [Int!]!): [SuplementoPagos!]!
+  createPago(createPagoInput: CreatePagoInput!): Pagos!
+  removePago(id: Int!): Pagos!
+  removeSeveralPago(id: [Int!]!): [Pagos!]!
+  createPagosApartirDe(createPagosApartirDeInput: CreatePagosApartirDeInput!): PagosAPartirDe!
+  removePagosApartirDe(id: Int!): PagosAPartirDe!
+  removeSeveralPagosApartirDe(id: [Int!]!): [PagosAPartirDe!]!
   createTiposContenedor(createTiposContenedorInput: CreateTiposContenedorInput!): TiposContenedor!
   removeTiposContenedor(id: Int!): TiposContenedor!
   removeSeveralTiposContenedor(id: [Int!]!): [TiposContenedor!]!
@@ -1794,9 +1808,6 @@ type Mutation {
   removeFacturaContenedor(id: Int!): FacturaContenedor!
   removeSeveralFacturaContenedor(id: [Int!]!): [FacturaContenedor!]!
   removeSeveralFacturaContenedorByFacturaId(id: Int!): [FacturaContenedor!]!
-  createSuplementoPago(createSuplementoPagoInput: CreateSuplementoPagoInput!): SuplementoPagos!
-  removeSuplementoPago(id: Int!): SuplementoPagos!
-  removeSeveralSuplementoPago(id: [Int!]!): [SuplementoPagos!]!
   createRole(createRoleInput: CreateRoleInput!): Roles!
   removeRoles(id: Int!): Roles!
   removeSeveralRoles(id: [Int!]!): [Roles!]!
@@ -1810,15 +1821,6 @@ type Mutation {
   removeUsuarioRol(id: Int!): UsuarioRol!
   removeUsuarioRolByUserId(idUsuario: Int!): UsuarioRol!
   removeSeveralUsuarioRol(id: [Int!]!): [UsuarioRol!]!
-  createPago(createPagoInput: CreatePagoInput!): Pagos!
-  removePago(id: Int!): Pagos!
-  removeSeveralPago(id: [Int!]!): [Pagos!]!
-  createPagosApartirDe(createPagosApartirDeInput: CreatePagosApartirDeInput!): PagosAPartirDe!
-  removePagosApartirDe(id: Int!): PagosAPartirDe!
-  removeSeveralPagosApartirDe(id: [Int!]!): [PagosAPartirDe!]!
-  createSuplementoPuertoEmbarque(createSuplementoPuertoEmbarqueInput: CreateSuplementoPuertoEmbarqueInput!): SuplementoPuertoEmbarque!
-  removeSuplementoPuertoEmbarque(id: Int!): SuplementoPuertoEmbarque!
-  removeSeveralSuplementoPuertoEmbarque(id: [Int!]!): [SuplementoPuertoEmbarque!]!
 }
 
 input CreateMonedaInput {
@@ -2063,6 +2065,7 @@ input CreateEmbarqueInput {
   actSci: Boolean!
   contratoDesglose: [CreateContratoDesgloseInput!]
   puertoEmbarque: [CreatePuertoEmbarqueInput!]
+  pagos: [CreatePagoInput!]
 }
 
 input CreateContratoDesgloseInput {
@@ -2087,6 +2090,15 @@ input CreatePuertoEmbarqueInput {
   idEmbarque: Int!
   idPuertoOrigen: Int!
   idPuertoDestino: Int!
+}
+
+input CreatePagoInput {
+  idPago: Int
+  idEmbarque: Int!
+  idFormaPago: Int!
+  idPagosAPartirDe: Int!
+  plazoPago: Int!
+  porciento: Float!
 }
 
 input CreateContratoMarcoInput {
@@ -2316,6 +2328,31 @@ input CreateSuplementoDesgloseInput {
   precioPaquete: Float!
   packing: Float!
   cajas: Float!
+}
+
+input CreateSuplementoPuertoEmbarqueInput {
+  idSuplementoPuertoEmbarque: Int
+  idSuplementoResumen: Int!
+  idEmbarque: Int!
+  idPuertoEmbarque: Int!
+  idPuertoOrigen: Int!
+  idPuertoDestino: Int!
+}
+
+input CreateSuplementoPagoInput {
+  idSuplementoPagos: Int
+  idSuplementoResumen: Int!
+  idEmbarque: Int!
+  idFormaPago: Int!
+  idPago: Int!
+  plazoPago: Int!
+  aPartirDe: Int!
+  porciento: Float!
+}
+
+input CreatePagosApartirDeInput {
+  idPartir: Int
+  aPartirDe: String!
 }
 
 input CreateTiposContenedorInput {
@@ -2637,16 +2674,6 @@ input CreateFacturaContenedorInput {
   idContenedor: Int!
 }
 
-input CreateSuplementoPagoInput {
-  idSuplementoPagos: Int
-  idSuplementoResumen: Int!
-  idEmbarque: Int!
-  idFormaPago: Int!
-  plazoPago: Int!
-  aPartirDe: Int!
-  porciento: Float!
-}
-
 input CreateRoleInput {
   idRol: Int
   rol: String!
@@ -2664,26 +2691,4 @@ input CreateUsuarioRolInput {
   idUsuarioRol: Int
   idUsuario: Int!
   idRol: Int!
-}
-
-input CreatePagoInput {
-  idPago: Int
-  idEmbarque: Int!
-  idFormaPago: Int!
-  idPagosAPartirDe: Int!
-  plazoPago: Int!
-  porciento: Float!
-}
-
-input CreatePagosApartirDeInput {
-  idPartir: Int
-  aPartirDe: String!
-}
-
-input CreateSuplementoPuertoEmbarqueInput {
-  idSuplementoPuertoEmbarque: Int
-  idSuplementoResumen: Int!
-  idEmbarque: Int!
-  idPuertoOrigen: Int!
-  idPuertoDestino: Int!
 }
