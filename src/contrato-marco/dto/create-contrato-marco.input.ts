@@ -28,7 +28,4 @@ export class CreateContratoMarcoInput {
 
   @Field({nullable: true})
   actualizado?: Date;
-
-  @Field({nullable: true})
-  noContratoMarco?: string;
 }

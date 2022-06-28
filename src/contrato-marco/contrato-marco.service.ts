@@ -19,13 +19,6 @@ export class ContratoMarcoService {
     if(createContratoMarcoInput.idCMarco){
       createContratoMarcoInput.actualizado = new Date();
       createContratoMarcoInput.pendiente = createContratoMarcoInput.monto - createContratoMarcoInput.contratado;
-      while(createContratoMarcoInput.idProveedor.toString().length < 4){
-        let provString = createContratoMarcoInput.idProveedor.toString();
-        provString = "0"+provString;
-        createContratoMarcoInput.idProveedor = Int.parseValue(provString);
-      }
-      createContratoMarcoInput.noContratoMarco = createContratoMarcoInput.idProveedor.toString()+"-"+createContratoMarcoInput.consecutivo.toString()+
-      " / "+createContratoMarcoInput.fecha.getFullYear().toString();
       result = await this.contratoMarcoRepository.save(createContratoMarcoInput);
     }
 
@@ -43,13 +36,6 @@ export class ContratoMarcoService {
       createContratoMarcoInput.creado = new Date();
       createContratoMarcoInput.actualizado = new Date();
       createContratoMarcoInput.pendiente = createContratoMarcoInput.monto - createContratoMarcoInput.contratado;
-      while(createContratoMarcoInput.idProveedor.toString().length < 4){
-        let provString = createContratoMarcoInput.idProveedor.toString();
-        provString = "0"+provString;
-        createContratoMarcoInput.idProveedor = Int.parseValue(provString);
-      }
-      createContratoMarcoInput.noContratoMarco = createContratoMarcoInput.idProveedor.toString()+"-"+createContratoMarcoInput.consecutivo.toString()+
-      " / "+createContratoMarcoInput.fecha.getFullYear().toString();
       result = await this.contratoMarcoRepository.save(createContratoMarcoInput);
     }
 
