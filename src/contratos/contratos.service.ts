@@ -2586,6 +2586,9 @@ export class ContratosService {
         }
 
         else{
+          contrato.suplementoResumen.sort((a, b) => (a.fecha.getFullYear()+a.fecha.getMonth()+a.fecha.getDate()+a.fecha.getHours()+a.fecha.getMinutes()+a.fecha.getSeconds())
+        - (b.fecha.getFullYear()+b.fecha.getMonth()+b.fecha.getDate()+b.fecha.getHours()+b.fecha.getMinutes()+b.fecha.getSeconds()));
+
           let ultimoSuplemento = contrato.suplementoResumen[mostrar];
           contrato.idBasesGenerales = contrato.idBasesGenerales;
           contrato.idFichaCosto = contrato.idFichaCosto;
