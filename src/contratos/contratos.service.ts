@@ -2098,6 +2098,7 @@ export class ContratosService {
           await this.contratoClausulaService.removeSeveralByContratoId(createContratoInput.idContrato);
           
           createContratoInput.modificado = true;
+          createContratoInput.modificadoPor = usuarioToken.idEjecutivo;
     
           result = await this.contratoRepository.save(createContratoInput);
     
@@ -2349,6 +2350,8 @@ export class ContratosService {
         createContratoInput.cancelado = false;
         createContratoInput.modificado = false;
         createContratoInput.terminado = false;
+        createContratoInput.realizadoPor = usuarioToken.idEjecutivo;
+        createContratoInput.modificadoPor = usuarioToken.idEjecutivo;
         createContratoInput.fechaElaboracion = new Date();
 
         if(createContratoInput.idCMarco){

@@ -201,6 +201,7 @@ type ContratoMarco {
   pendiente: Float!
   creado: DateTime!
   actualizado: DateTime!
+  noContratoMarco: String
   contratos: [Contratos!]
   proveedor: Proveedores
 }
