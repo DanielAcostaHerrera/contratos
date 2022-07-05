@@ -18,7 +18,7 @@ import { Puertos } from "./Puertos.entity";
   { unique: true }
 )
 @Index("PK_PuertoEmbarque", ["idPuertoEmbarque"], { unique: true })
-@Entity("PuertoEmbarque", { schema: "dbo" })
+@Entity("PuertoEmbarque", { schema: "CONTRATO.dbo" })
 export class PuertoEmbarque {
   @PrimaryGeneratedColumn({ type: "int", name: "IdPuertoEmbarque" })
   @Field(() => Int)

@@ -11,7 +11,7 @@ import { SuplementoPagos } from "./SuplementoPagos.entity";
 
 @ObjectType()
 @Index("PK_PagosAPartirDe", ["idPartir"], { unique: true })
-@Entity("PagosAPartirDe", { schema: "dbo" })
+@Entity("PagosAPartirDe", { schema: "CONTRATO.dbo" })
 export class PagosAPartirDe {
   @PrimaryGeneratedColumn({ type: "int", name: "IdPartir" })
   @Field(() => Int)
