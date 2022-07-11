@@ -2039,7 +2039,7 @@ input CreateContratoInput {
 
 input CreateContratoClausulaInput {
   idContratoClausulas: Int
-  idContrato: Int!
+  idContrato: Int
   noClausula: Int!
   contenido: String
 }

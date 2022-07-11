@@ -5,8 +5,8 @@ export class CreateContratoClausulaInput {
   @Field(() => Int,{nullable: true})
   idContratoClausulas?: number;
 
-  @Field(() => Int)
-  idContrato: number;
+  @Field(() => Int,{nullable: true})
+  idContrato?: number;
 
   @Field(() => Int)
   noClausula: number;
