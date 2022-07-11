@@ -1,6 +1,5 @@
 import { Field, Int, ObjectType } from "@nestjs/graphql";
 import { Column, Entity, Index, OneToMany, PrimaryGeneratedColumn } from "typeorm";
-import { FichaCostoResumen } from "./FichaCostoResumen.entity";
 import { PliegoConcurrenciaDetalle } from "./PliegoConcurrenciaDetalle.entity";
 import { SolicitudCodificacion } from "./SolicitudCodificacion.entity";
 
@@ -19,10 +18,6 @@ export class Embalajes {
   @Column("nvarchar", { name: "Abreviatura", nullable: true, length: 7 })
   @Field({nullable: true})
   abreviatura: string | null;
-
-  @Field(() => [FichaCostoResumen], {nullable: true})
-  @OneToMany(() => FichaCostoResumen,(fichaCostoResumen) => fichaCostoResumen.embalaje)
-  fichaCostoResumen: FichaCostoResumen[];
 
   @Field(() => [PliegoConcurrenciaDetalle], {nullable: true})
   @OneToMany(() => PliegoConcurrenciaDetalle,(pliegoConcurrenciaDetalle) => pliegoConcurrenciaDetalle.embalaje)

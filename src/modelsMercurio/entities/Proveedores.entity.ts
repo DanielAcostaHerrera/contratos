@@ -2,12 +2,8 @@
 import { Field, Float, Int, ObjectType } from "@nestjs/graphql";
 import { Column, Entity, Index, JoinColumn, ManyToOne, OneToMany } from "typeorm";
 import { BasesGenerales } from '../../models/entities/BasesGenerales.entity';
-import { Contratos } from '../../models/entities/Contratos.entity';
 import { SolicitudOfertasProveedor } from '../../models/entities/SolicitudOfertasProveedor.entity';
 import { PliegoConcurrenciaResumen } from '../../models/entities/PliegoConcurrenciaResumen.entity';
-import { NegociacionResumen } from '../../models/entities/NegociacionResumen.entity';
-import { FichaCompraResumen } from '../../models/entities/FichaCompraResumen.entity';
-import { FichaCostoResumen } from '../../models/entities/FichaCostoResumen.entity';
 import { ContratoMarco } from '../../models/entities/ContratoMarco.entity';
 import { NegociacionProveedores } from "../../models/entities/NegociacionProveedores.entity";
 
@@ -290,12 +286,4 @@ export class Proveedores {
   @Field(() => [NegociacionProveedores], { nullable: true })
   @OneToMany(() => NegociacionProveedores,(negociacionProveedores) => negociacionProveedores.proveedor)
   negociacionProveedores: NegociacionProveedores[];
-
-  @Field(() => [FichaCompraResumen], { nullable: true })
-  @OneToMany(() => FichaCompraResumen,(fichaCompraResumen) => fichaCompraResumen.proveedor)
-  fichaCompraResumen: FichaCompraResumen[];
-
-  @Field(() => [FichaCostoResumen], { nullable: true })
-  @OneToMany(() => FichaCostoResumen,(fichaCostoResumen) => fichaCostoResumen.proveedor)
-  fichaCostoResumen: FichaCostoResumen[];
 }

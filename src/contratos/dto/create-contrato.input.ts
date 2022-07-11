@@ -23,9 +23,6 @@ export class CreateContratoInput {
   @Field(() => Int)
   idNegociacion: number;
 
-  @Field(() => Int,{nullable: true})
-  idFichaCosto?: number;
-
   @Field(() => Int)
   realizadoPor: number;
 

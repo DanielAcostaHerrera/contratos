@@ -10,7 +10,6 @@ import {
 } from "typeorm";
 import { Proveedores } from "../../modelsMercurio/entities/Proveedores.entity";
 import { Contratos } from "./Contratos.entity";
-import { FichaCostoResumen } from "./FichaCostoResumen.entity";
 
 @ObjectType()
 @Index("PK_ContratoMarco", ["idCMarco"], { unique: true })

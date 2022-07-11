@@ -8,8 +8,6 @@ import {
 } from "typeorm";
 import { BasesGenerales } from "./BasesGenerales.entity";
 import { Contratos } from "./Contratos.entity";
-import { FichaCompraResumen } from "./FichaCompraResumen.entity";
-import { FichaCostoResumen } from "./FichaCostoResumen.entity";
 import { PliegoConcurrenciaResumen } from "./PliegoConcurrenciaResumen.entity";
 import { Proformas } from "./Proformas.entity";
 import { SuplementoResumen } from "./SuplementoResumen.entity";
@@ -42,14 +40,6 @@ export class Incoterm {
   @Field(() => [BasesGenerales] , {nullable: true})
   @OneToMany(() => BasesGenerales,(basesGenerales) => basesGenerales.incoterm)
   basesGenerales: BasesGenerales[];
-
-  @Field(() => [FichaCompraResumen] , {nullable: true})
-  @OneToMany(() => FichaCompraResumen,(fichaCompraResumen) => fichaCompraResumen.incoterm)
-  fichaCompraResumen: FichaCompraResumen[];
-
-  @Field(() => [FichaCostoResumen] , {nullable: true})
-  @OneToMany(() => FichaCostoResumen,(fichaCostoResumen) => fichaCostoResumen.incoterm)
-  fichaCostoResumen: FichaCostoResumen[];
 
   @Field(() => [PliegoConcurrenciaResumen] , {nullable: true})
   @OneToMany(() => PliegoConcurrenciaResumen,(pliegoConcurrenciaResumen) => pliegoConcurrenciaResumen.incoterm)

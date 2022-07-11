@@ -13,12 +13,10 @@ import { BasesGenerales } from "./BasesGenerales.entity";
 import { Monedas } from "./Monedas.entity";
 import { FormasEntrega } from "./FormasEntrega.entity";
 import { NegociacionResumen } from "./NegociacionResumen.entity";
-import { FichaCostoResumen } from "./FichaCostoResumen.entity";
 import { Ejecutivos } from "./Ejecutivos.entity";
 import { DocumentacionContrato } from "./DocumentacionContrato.entity";
 import { Embarques } from "./Embarques.entity";
 import { FacturaResumen } from "./FacturaResumen.entity";
-import { FichaCompraResumen } from "./FichaCompraResumen.entity";
 import { SuplementoEmbarques } from "./SuplementoEmbarques.entity";
 import { SuplementoResumen } from "./SuplementoResumen.entity";
 import { Field, Float, Int, ObjectType } from "@nestjs/graphql";
@@ -55,10 +53,6 @@ export class Contratos {
   @Column("int", { name: "IdNegociacion" })
   @Field(() => Int)
   idNegociacion: number;
-
-  @Column("int", { name: "IdFichaCosto" })
-  @Field(() => Int)
-  idFichaCosto: number;
 
   @Column("int", { name: "RealizadoPor" })
   @Field(() => Int)
@@ -233,11 +227,6 @@ export class Contratos {
   @JoinColumn([{ name: "IdNegociacion", referencedColumnName: "idNegociacion" }])
   negociacionResumen: NegociacionResumen;
 
-  @Field(() => FichaCostoResumen, {nullable: true})
-  @ManyToOne(() => FichaCostoResumen,(fichaCostoResumen) => fichaCostoResumen.contratos)
-  @JoinColumn([{ name: "IdFichaCosto", referencedColumnName: "idFicha" }])
-  fichaCostoResumen: FichaCostoResumen;
-
   @Field(() => Ejecutivos, {nullable: true})
   @ManyToOne(() => Ejecutivos, (ejecutivos) => ejecutivos.contratosRealiza)
   @JoinColumn([{ name: "RealizadoPor", referencedColumnName: "idEjecutivo" }])
@@ -264,10 +253,6 @@ export class Contratos {
   @Field(() => [FacturaResumen], {nullable: true})
   @OneToMany(() => FacturaResumen,(facturaResumen) => facturaResumen.contratos)
   facturaResumen: FacturaResumen[];
-
-  @Field(() => [FichaCompraResumen], {nullable: true})
-  @OneToMany(() => FichaCompraResumen,(fichaCompraResumen) => fichaCompraResumen.contrato)
-  fichaCompraResumen: FichaCompraResumen[];
 
   @Field(() => [SuplementoEmbarques], {nullable: true})
   @OneToMany(() => SuplementoEmbarques,(suplementoEmbarques) => suplementoEmbarques.contrato)

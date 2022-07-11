@@ -35,10 +35,6 @@ import { CampanasModule } from './campanas/campanas.module';
 import { EtapasContratacionModule } from './etapas-contratacion/etapas-contratacion.module';
 import { TiemposTravesiaModule } from './tiempos-travesia/tiempos-travesia.module';
 import { DatosEntidadModule } from './datos-entidad/datos-entidad.module';
-import { FichaCompraAtributosModule } from './ficha-compra-atributos/ficha-compra-atributos.module';
-import { FichaCompraDetalleModule } from './ficha-compra-detalle/ficha-compra-detalle.module';
-import { FichaCompraResumenModule } from './ficha-compra-resumen/ficha-compra-resumen.module';
-import { FichaCostoResumenModule } from './ficha-costo-resumen/ficha-costo-resumen.module';
 import { FormasEntregaModule } from './formas-entrega/formas-entrega.module';
 import { FormasPagoModule } from './formas-pago/formas-pago.module';
 import { PliegoConcurrenciaModule } from './pliego-concurrencia/pliego-concurrencia.module';
@@ -151,10 +147,6 @@ import { SuplementoPuertoEmbarqueModule } from './suplemento-puerto-embarque/sup
     EtapasContratacionModule,
     TiemposTravesiaModule,
     DatosEntidadModule,
-    FichaCompraAtributosModule,
-    FichaCompraDetalleModule,
-    FichaCompraResumenModule,
-    FichaCostoResumenModule,
     FormasEntregaModule,
     FormasPagoModule,
     PliegoConcurrenciaModule,

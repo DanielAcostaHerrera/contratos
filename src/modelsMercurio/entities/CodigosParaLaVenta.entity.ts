@@ -2,8 +2,6 @@ import { Field, Float, Int, ObjectType } from "@nestjs/graphql";
 import { Column, Entity, Index, OneToMany, OneToOne } from "typeorm";
 import { ContratoDesglose } from "../../models/entities/ContratoDesglose.entity";
 import { FacturaDesglose } from "../../models/entities/FacturaDesglose.entity";
-import { FichaCompraDetalle } from "../../models/entities/FichaCompraDetalle.entity";
-import { FichaCostoResumen } from "../../models/entities/FichaCostoResumen.entity";
 import { SolicitudOfertasEntradas } from "../../models/entities/SolicitudOfertasEntradas.entity";
 import { SuplementoDesglose } from "../../models/entities/SuplementoDesglose.entity";
 
@@ -675,10 +673,6 @@ export class CodigosParaLaVenta {
   @OneToMany(() => FacturaDesglose,(facturaDesglose) => facturaDesglose.codigo)
   facturaDesgloses : FacturaDesglose[];
 
-  @Field(() => [FichaCompraDetalle], { nullable: true })
-  @OneToMany(() => FichaCompraDetalle,(fichaCompraDetalle) => fichaCompraDetalle.codigo)
-  fichaCompraDetalles : FichaCompraDetalle[];
-
   @Field(() => [SuplementoDesglose], { nullable: true })
   @OneToMany(() => SuplementoDesglose,(suplementoDesgloses) => suplementoDesgloses.codigo)
   suplementoDesgloses: SuplementoDesglose[];
@@ -686,8 +680,4 @@ export class CodigosParaLaVenta {
   @Field(() => [SolicitudOfertasEntradas], { nullable: true })
   @OneToMany(() => SolicitudOfertasEntradas,(solicitudOfertasEntradas) => solicitudOfertasEntradas.codigo)
   solicitudOfertasEntradas: SolicitudOfertasEntradas[];
-
-  @Field(() => [FichaCostoResumen], { nullable: true })
-  @OneToMany(() => FichaCostoResumen,(fichaCostoResumen) => fichaCostoResumen.codigo)
-  fichaCostoResumen: FichaCostoResumen[];
 }

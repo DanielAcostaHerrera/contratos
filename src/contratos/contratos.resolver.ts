@@ -4,7 +4,6 @@ import { Resolver, Query, Mutation, Args, Int, ResolveField, Parent, Context } f
 import { BasesGenerales } from 'src/models/entities/BasesGenerales.entity';
 import { Contratos } from 'src/models/entities/Contratos.entity';
 import { Ejecutivos } from 'src/models/entities/Ejecutivos.entity';
-import { FichaCostoResumen } from 'src/models/entities/FichaCostoResumen.entity';
 import { FormasEntrega } from 'src/models/entities/FormasEntrega.entity';
 import { Monedas } from 'src/models/entities/Monedas.entity';
 import { NegociacionResumen } from 'src/models/entities/NegociacionResumen.entity';
@@ -105,11 +104,6 @@ export class ContratosResolver {
   @ResolveField(() => NegociacionResumen, {nullable: true})
   negociacionResumen(@Parent() contratos: Contratos): Promise<NegociacionResumen> {
     return this.contratosService.getNegociacionResumen(contratos.idNegociacion);
-  }
-
-  @ResolveField(() => FichaCostoResumen, {nullable: true})
-  fichaCostoResumen(@Parent() contratos: Contratos): Promise<FichaCostoResumen> {
-    return this.contratosService.getFichaCostoResumen(contratos.idFichaCosto);
   }
 
   @ResolveField(() => Ejecutivos, {nullable: true})

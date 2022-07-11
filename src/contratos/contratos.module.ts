@@ -1,5 +1,4 @@
 import { EjecutivoModule } from './../ejecutivo/ejecutivo.module';
-import { FichaCostoResumenModule } from './../ficha-costo-resumen/ficha-costo-resumen.module';
 import { Module } from '@nestjs/common';
 import { ContratosService } from './contratos.service';
 import { ContratosResolver } from './contratos.resolver';
@@ -32,7 +31,7 @@ import { PagosModule } from 'src/pagos/pagos.module';
 @Module({
   imports: [TypeOrmModule.forFeature(
     [Contratos]
-  ),BasesGeneralesModule,ContratoMarcoModule,MonedaModule,FormasEntregaModule,NegociacionResumenModule,FichaCostoResumenModule,EjecutivoModule,
+  ),BasesGeneralesModule,ContratoMarcoModule,MonedaModule,FormasEntregaModule,NegociacionResumenModule,EjecutivoModule,
   PaisesModule,AgenciasAseguradorasModule,CompaniasNavierasModule,LogsModule,IncotermModule,ContratoClausulaModule,SuplementoResumenModule,
   SuplementoClausulasModule, SuplementoChangeModule, SuplementoEmbarquesModule, SuplementoDesgloseModule,EmbarquesModule,ContratoDesgloseModule,
   CodigosParaLaVentaModule,PuertoEmbarqueModule, SuplementoPuertoEmbarqueModule, SuplementoPagosModule, PagosModule],

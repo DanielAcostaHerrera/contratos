@@ -1,8 +1,6 @@
 import { Field, Int, ObjectType } from "@nestjs/graphql";
 import { Column, Entity, Index, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { Contratos } from "./Contratos.entity";
-import { FichaCompraResumen } from "./FichaCompraResumen.entity";
-import { FichaCostoResumen } from "./FichaCostoResumen.entity";
 import { NegociacionResumen } from "./NegociacionResumen.entity";
 import { PliegoConcurrenciaResumen } from "./PliegoConcurrenciaResumen.entity";
 import { SuplementoResumen } from "./SuplementoResumen.entity";
@@ -27,14 +25,6 @@ export class Monedas {
   @Field(() => [NegociacionResumen], {nullable: true})
   @OneToMany(() => NegociacionResumen,(negociacionResumen) => negociacionResumen.monedas)
   negociacionResumen: NegociacionResumen[];
-
-  @Field(() => [FichaCompraResumen], {nullable: true})
-  @OneToMany(() => FichaCompraResumen,(fichaCompraResumen) => fichaCompraResumen.moneda)
-  fichaCompraResumen: FichaCompraResumen[];
-
-  @Field(() => [FichaCostoResumen], {nullable: true})
-  @OneToMany(() => FichaCostoResumen,(fichaCostoResumen) => fichaCostoResumen.moneda)
-  fichaCostoResumen: FichaCostoResumen[];
 
   @Field(() => [PliegoConcurrenciaResumen], {nullable: true})
   @OneToMany(() => PliegoConcurrenciaResumen,(pliegoConcurrenciaResumen) => pliegoConcurrenciaResumen.monedaOferta)

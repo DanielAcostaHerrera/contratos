@@ -6,7 +6,6 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
 } from "typeorm";
-import { FichaCostoResumen } from "./FichaCostoResumen.entity";
 import { Pagos } from "./Pagos.entity";
 import { PliegoConcurrenciaResumen } from "./PliegoConcurrenciaResumen.entity";
 import { SuplementoPagos } from "./SuplementoPagos.entity";
@@ -27,10 +26,6 @@ export class FormasPago {
   @Field(() => Int)
   dias: number;
 
-  @Field(() => [FichaCostoResumen], {nullable: true})
-  @OneToMany(() => FichaCostoResumen,(fichaCostoResumen) => fichaCostoResumen.formaPago)
-  fichaCostoResumen: FichaCostoResumen[];
-
   @Field(() => [PliegoConcurrenciaResumen], {nullable: true})
   @OneToMany(() => PliegoConcurrenciaResumen,(pliegoConcurrenciaResumen) => pliegoConcurrenciaResumen.formaPago)
   pliegoConcurrenciaResumen: PliegoConcurrenciaResumen[];
@@ -40,6 +35,6 @@ export class FormasPago {
   suplementoPagos: SuplementoPagos[];
 
   @Field(() => [Pagos], { nullable: true })
-  @OneToMany(() => Pagos,(pagos) => pagos.embarques)
+  @OneToMany(() => Pagos,(pagos) => pagos.formaPago)
   pagos: Pagos[];
 }

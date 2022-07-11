@@ -1,4 +1,3 @@
-import { Int } from '@nestjs/graphql';
 import { CompaniasNavieras } from './../modelsNomgen/entities/CompaniasNavieras.entity';
 import { AgenciasAseguradoras } from './../modelsNomgen/entities/AgenciasAseguradoras.entity';
 import { Injectable } from '@nestjs/common';
@@ -7,12 +6,10 @@ import { AgenciasAseguradorasService } from 'src/agencias-aseguradoras/agencias-
 import { BasesGeneralesService } from 'src/bases-generales/bases-generales.service';
 import { CompaniasNavierasService } from 'src/companias-navieras/companias-navieras.service';
 import { EjecutivoService } from 'src/ejecutivo/ejecutivo.service';
-import { FichaCostoResumenService } from 'src/ficha-costo-resumen/ficha-costo-resumen.service';
 import { FormasEntregaService } from 'src/formas-entrega/formas-entrega.service';
 import { BasesGenerales } from 'src/models/entities/BasesGenerales.entity';
 import { Contratos } from 'src/models/entities/Contratos.entity';
 import { Ejecutivos } from 'src/models/entities/Ejecutivos.entity';
-import { FichaCostoResumen } from 'src/models/entities/FichaCostoResumen.entity';
 import { FormasEntrega } from 'src/models/entities/FormasEntrega.entity';
 import { Monedas } from 'src/models/entities/Monedas.entity';
 import { NegociacionResumen } from 'src/models/entities/NegociacionResumen.entity';
@@ -66,7 +63,7 @@ export class ContratosService {
   constructor(@InjectRepository(Contratos) public readonly contratoRepository: Repository<Contratos>,private companiasNavierasService: CompaniasNavierasService,
   private basesGeneralesService: BasesGeneralesService,private contratoMarcoService: ContratoMarcoService,private monedaService: MonedaService,
   private formasEntregaService: FormasEntregaService,private negociacionResumenService: NegociacionResumenService,
-  private fichaCostoResumenService: FichaCostoResumenService,private ejecutivoService: EjecutivoService,
+  private ejecutivoService: EjecutivoService,
   private paisesService: PaisesService,private logsService: LogsService, private suplementoEmbarquesService: SuplementoEmbarquesService,
   private agenciasAseguradorasService: AgenciasAseguradorasService, private incotermService: IncotermService,
   private contratoClausulaService: ContratoClausulaService, private suplementoResumenService: SuplementoResumenService,
@@ -2564,7 +2561,7 @@ export class ContratosService {
   }
 
   async findAll(): Promise<Contratos[]> {
-    let contratos = await this.contratoRepository.find({relations:['contratoClausulas','documentacionContratos','embarques','facturaResumen','fichaCompraResumen',
+    let contratos = await this.contratoRepository.find({relations:['contratoClausulas','documentacionContratos','embarques','facturaResumen',
     'suplementoEmbarques','suplementoResumen','suplementoClausulas']});
     contratos.forEach(element => {
       element.suplementoResumen.sort((a, b) => (b.fecha.getFullYear()+b.fecha.getMonth()+b.fecha.getDate()+b.fecha.getHours()+b.fecha.getMinutes()+b.fecha.getSeconds())
@@ -2574,13 +2571,13 @@ export class ContratosService {
   }
 
   async findOne(id: number) : Promise<Contratos> {
-    return await this.contratoRepository.findOne(id,{relations:['contratoClausulas','documentacionContratos','embarques','facturaResumen','fichaCompraResumen',
+    return await this.contratoRepository.findOne(id,{relations:['contratoClausulas','documentacionContratos','embarques','facturaResumen',
     'suplementoEmbarques','suplementoResumen','suplementoClausulas']});
   }
 
   async findOneActualizado(id: number, mostrar: number) : Promise<Contratos> {
     return new Promise<Contratos>(async (resolve, reject) => {
-      let contrato = await this.contratoRepository.findOne(id,{relations:['contratoClausulas','documentacionContratos','embarques','facturaResumen','fichaCompraResumen',
+      let contrato = await this.contratoRepository.findOne(id,{relations:['contratoClausulas','documentacionContratos','embarques','facturaResumen',
       'suplementoEmbarques','suplementoResumen','suplementoClausulas']});
 
       if(contrato.suplementoResumen){
@@ -2594,7 +2591,6 @@ export class ContratosService {
 
           let ultimoSuplemento = contrato.suplementoResumen[mostrar];
           contrato.idBasesGenerales = contrato.idBasesGenerales;
-          contrato.idFichaCosto = contrato.idFichaCosto;
           contrato.idCMarco = contrato.idCMarco;
           contrato.idMoneda = ultimoSuplemento.idMoneda;
           contrato.idFormaEntrega = ultimoSuplemento.idFormaEntrega;
@@ -2795,10 +2791,6 @@ export class ContratosService {
 
   async getNegociacionResumen (Id: number) : Promise<NegociacionResumen>{
     return this.negociacionResumenService.findOne(Id);
-  }
-
-  async getFichaCostoResumen (Id: number) : Promise<FichaCostoResumen>{
-    return this.fichaCostoResumenService.findOne(Id);
   }
 
   async getEjecutivoRealiza (Id: number) : Promise<Ejecutivos>{

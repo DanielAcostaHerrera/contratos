@@ -6,8 +6,6 @@ import { Contratos } from '../../models/entities/Contratos.entity';
 import { PliegoConcurrenciaResumen } from '../../models/entities/PliegoConcurrenciaResumen.entity';
 import { FacturaDesglose } from '../../models/entities/FacturaDesglose.entity';
 import { TiemposTravesia } from '../../models/entities/TiemposTravesia.entity';
-import { FichaCompraResumen } from '../../models/entities/FichaCompraResumen.entity';
-import { FichaCostoResumen } from '../../models/entities/FichaCostoResumen.entity';
 import { Puertos } from '../../models/entities/Puertos.entity';
 import { SuplementoResumen } from '../../models/entities/SuplementoResumen.entity';
 
@@ -116,14 +114,6 @@ export class Paises {
   @Field(() => [TiemposTravesia], { nullable: true })
   @OneToMany(() => TiemposTravesia,(tiemposTravesia) => tiemposTravesia.pais)
   tiemposTravesias: TiemposTravesia[];
-
-  @Field(() => [FichaCompraResumen], { nullable: true })
-  @OneToMany(() => FichaCompraResumen,(fichaCompraResumen) => fichaCompraResumen.pais)
-  fichaCompraResumen: FichaCompraResumen[];
-
-  @Field(() => [FichaCostoResumen], { nullable: true })
-  @OneToMany(() => FichaCostoResumen,(fichaCostoResumen) => fichaCostoResumen.pais)
-  fichaCostoResumen: FichaCostoResumen[];
 
   @Field(() => [Puertos], { nullable: true })
   @OneToMany(() => Puertos,(puerto) => puerto.pais)

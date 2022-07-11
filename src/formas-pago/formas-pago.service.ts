@@ -14,11 +14,11 @@ export class FormasPagoService {
   }
 
   async findAll(): Promise<FormasPago[]> { 
-    return await this.formasPagoRepository.find({relations:['fichaCostoResumen','pliegoConcurrenciaResumen','suplementoPagos','pagos']});
+    return await this.formasPagoRepository.find({relations:['pliegoConcurrenciaResumen','suplementoPagos','pagos']});
   }
 
   async findOne(id: number) : Promise<FormasPago> {
-    return await this.formasPagoRepository.findOne(id,{relations:['fichaCostoResumen','pliegoConcurrenciaResumen','suplementoPagos','pagos']});
+    return await this.formasPagoRepository.findOne(id,{relations:['pliegoConcurrenciaResumen','suplementoPagos','pagos']});
   }
 
   async remove(id: number) : Promise<any> {

@@ -16,7 +16,6 @@ export class PaisesService {
   }
 
   async findOne(id: number) : Promise<Paises> {
-    return await this.paisesRepository.findOne(id,/*,{relations: ['basesGenerales','campanaEtapasContratacion','contratos','pliegoConcurrenciaResumen','facturaDesgloses',
-  'tiemposTravesias','fichaCompraResumen','fichaCostoResumen','puerto','suplementoResumen']}*/);
+    return await this.paisesRepository.findOne(id);
   }
 }

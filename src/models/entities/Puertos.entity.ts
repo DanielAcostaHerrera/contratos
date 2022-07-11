@@ -1,15 +1,10 @@
 import { Field, Int, ObjectType } from "@nestjs/graphql";
 import { Column, Entity, Index, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { Paises } from "../../modelsMercurio/entities/Paises.entity";
-import { Contratos } from "./Contratos.entity";
-import { Embarques } from "./Embarques.entity";
 import { FacturaResumen } from "./FacturaResumen.entity";
-import { FichaCostoResumen } from "./FichaCostoResumen.entity";
 import { PliegoConcurrenciaResumen } from "./PliegoConcurrenciaResumen.entity";
 import { PuertoEmbarque } from "./PuertoEmbarque.entity";
-import { SuplementoEmbarques } from "./SuplementoEmbarques.entity";
 import { SuplementoPuertoEmbarque } from "./SuplementoPuertoEmbarque.entity";
-import { SuplementoResumen } from "./SuplementoResumen.entity";
 
 @ObjectType()
 @Index("IX_NOM_Puertos", ["idPais", "nombre"], { unique: true })
@@ -32,10 +27,6 @@ export class Puertos {
   @Column("nvarchar", { name: "Deposito", nullable: true, length: 10 })
   @Field({nullable: true})
   deposito: string | null;
-
-  @Field(() => [FichaCostoResumen], { nullable: true })
-  @OneToMany(() => FichaCostoResumen,(fichaCostoResumen) => fichaCostoResumen.puerto)
-  fichaCostoResumen: FichaCostoResumen[];
 
   @Field(() => [PliegoConcurrenciaResumen], { nullable: true })
   @OneToMany(() => PliegoConcurrenciaResumen,(pliegoConcurrenciaResumen) => pliegoConcurrenciaResumen.puertoEmbarque)
