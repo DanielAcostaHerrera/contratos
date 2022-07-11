@@ -11,8 +11,8 @@ export class CreateContratoInput {
   @Field(() => Int)
   idBasesGenerales: number;
 
-  @Field(() => Int)
-  idCMarco: number;
+  @Field(() => Int,{nullable: true})
+  idCMarco?: number;
 
   @Field(() => Int)
   idMoneda: number;
@@ -23,8 +23,8 @@ export class CreateContratoInput {
   @Field(() => Int)
   idNegociacion: number;
 
-  @Field(() => Int)
-  idFichaCosto: number;
+  @Field(() => Int,{nullable: true})
+  idFichaCosto?: number;
 
   @Field(() => Int)
   realizadoPor: number;
@@ -32,8 +32,8 @@ export class CreateContratoInput {
   @Field(() => Int)
   firmadoPor: number;
 
-  @Field(() => Int)
-  modificadoPor: number;
+  @Field(() => Int,{nullable: true})
+  modificadoPor?: number;
 
   @Field()
   lugarFirma: string | null;
@@ -50,11 +50,11 @@ export class CreateContratoInput {
   @Field()
   cancelado: boolean;
 
-  @Field()
-  terminado: boolean;
+  @Field({nullable: true})
+  terminado?: boolean;
 
-  @Field()
-  modificado: boolean;
+  @Field({nullable: true})
+  modificado?: boolean;
 
   @Field({nullable: true})
   idEmpresaSeguro: number | null;
@@ -116,8 +116,8 @@ export class CreateContratoInput {
   @Field({nullable: true})
   fechaTasa: Date | null;
 
-  @Field(() => Float)
-  pFin: number;
+  @Field(() => Float,{nullable: true})
+  pFin?: number;
 
   @Field(() => Float)
   gastosLogisticos: number;

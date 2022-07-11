@@ -2099,6 +2099,10 @@ export class ContratosService {
           
           createContratoInput.modificado = true;
           createContratoInput.modificadoPor = usuarioToken.idEjecutivo;
+
+          if(contratoViejo.tasaMoneda != createContratoInput.tasaMoneda){
+            createContratoInput.fechaTasa = new Date();
+          }
     
           result = await this.contratoRepository.save(createContratoInput);
     
@@ -2231,7 +2235,13 @@ export class ContratosService {
           suplementoResumen.fArribo = createContratoInput.fechaArribo;
           suplementoResumen.financiamiento = createContratoInput.financiamiento;
           suplementoResumen.tasaMoneda = createContratoInput.tasaMoneda;
-          suplementoResumen.fechaTasa = createContratoInput.fechaTasa;
+          if(createContratoInput.tasaMoneda != ultimoSuplemento.tasaMoneda){
+            suplementoResumen.fechaTasa = new Date();
+          }
+          else{
+            suplementoResumen.fechaTasa = ultimoSuplemento.fechaTasa;
+          }
+          
           suplementoResumen.fechaPFirma = createContratoInput.fechaPFirma;
           suplementoResumen.pFin = createContratoInput.pFin;
           suplementoResumen.idNegociacion = createContratoInput.idNegociacion;
@@ -2351,8 +2361,9 @@ export class ContratosService {
         createContratoInput.modificado = false;
         createContratoInput.terminado = false;
         createContratoInput.realizadoPor = usuarioToken.idEjecutivo;
-        createContratoInput.modificadoPor = usuarioToken.idEjecutivo;
+        createContratoInput.modificadoPor = null;
         createContratoInput.fechaElaboracion = new Date();
+        createContratoInput.fechaTasa = new Date();
 
         if(createContratoInput.idCMarco){
           var contratoMarco = await this.contratoMarcoService.findOne(createContratoInput.idCMarco);

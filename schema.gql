@@ -1995,21 +1995,21 @@ input CreateDocumentacionContratoInput {
 input CreateContratoInput {
   idContrato: Int
   idBasesGenerales: Int!
-  idCMarco: Int!
+  idCMarco: Int
   idMoneda: Int!
   idFormaEntrega: Int!
   idNegociacion: Int!
-  idFichaCosto: Int!
+  idFichaCosto: Int
   realizadoPor: Int!
   firmadoPor: Int!
-  modificadoPor: Int!
+  modificadoPor: Int
   lugarFirma: String!
   consecutivo: Int
   idIncoterm: Int!
   idPais: Int!
   cancelado: Boolean!
-  terminado: Boolean!
-  modificado: Boolean!
+  terminado: Boolean
+  modificado: Boolean
   idEmpresaSeguro: Float
   idEmpresaNaviera: Int
   lugarEntrega: String
@@ -2030,7 +2030,7 @@ input CreateContratoInput {
   financiamiento: Float!
   tasaMoneda: Float!
   fechaTasa: DateTime
-  pFin: Float!
+  pFin: Float
   gastosLogisticos: Float!
   contratoClausulas: [CreateContratoClausulaInput!]
   embarques: [CreateEmbarqueInput!]
