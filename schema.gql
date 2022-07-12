@@ -1246,7 +1246,8 @@ type Query {
   findOneDocumentacionContrato(id: Int!): DocumentacionContrato!
   findAllContratos: [Contratos!]!
   findOneContratos(id: Int!): Contratos!
-  findOneContratosActualizado(mostrar: Int!, id: Int!): Contratos!
+  findOneContratosUltimoSuplemento(id: Int!): Contratos!
+  findOneContratosSuplementoEspecifico(mostrar: Int!, id: Int!): Contratos!
   findAllContratoMarco: [ContratoMarco!]!
   findOneContratoMarco(id: Int!): ContratoMarco!
   findAllFormasEntrega: [FormasEntrega!]!
@@ -1805,14 +1806,14 @@ input CreateContratoDesgloseInput {
 
 input CreatePuertoEmbarqueInput {
   idPuertoEmbarque: Int
-  idEmbarque: Int!
+  idEmbarque: Int
   idPuertoOrigen: Int!
   idPuertoDestino: Int!
 }
 
 input CreatePagoInput {
   idPago: Int
-  idEmbarque: Int!
+  idEmbarque: Int
   idFormaPago: Int!
   idPagosAPartirDe: Int!
   plazoPago: Int!

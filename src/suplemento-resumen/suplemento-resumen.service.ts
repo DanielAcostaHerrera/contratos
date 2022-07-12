@@ -30,14 +30,6 @@ export class SuplementoResumenService {
 
 
   async save(createSuplementoResumanInput: CreateSuplementoResumanInput) : Promise<SuplementoResumen> {
-    let suplementoResumen: SuplementoResumen;
-    suplementoResumen = await this.suplementoResumenRepository.save(createSuplementoResumanInput);
-    
-    var contrato = suplementoResumen.contrato;
-    var cantSuplementos = contrato.suplementoResumen.length;
-    createSuplementoResumanInput.consecutivo = cantSuplementos+1;
-    createSuplementoResumanInput.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
-
     return await this.suplementoResumenRepository.save(createSuplementoResumanInput);
   }
 

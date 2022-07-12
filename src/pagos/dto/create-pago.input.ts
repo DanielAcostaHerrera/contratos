@@ -5,8 +5,8 @@ export class CreatePagoInput {
   @Field(() => Int,{nullable: true})
   idPago?: number;
 
-  @Field(() => Int)
-  idEmbarque: number;
+  @Field(() => Int,{nullable: true})
+  idEmbarque?: number;
 
   @Field(() => Int)
   idFormaPago: number;

@@ -5,8 +5,8 @@ export class CreatePuertoEmbarqueInput {
   @Field(() => Int, { nullable: true})
   idPuertoEmbarque?: number;
 
-  @Field(() => Int)
-  idEmbarque: number;
+  @Field(() => Int,{nullable: true})
+  idEmbarque?: number;
 
   @Field(() => Int)
   idPuertoOrigen: number;

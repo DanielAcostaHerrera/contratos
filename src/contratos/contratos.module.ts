@@ -1,3 +1,4 @@
+import { PagosApartirDeModule } from './../pagos-apartir-de/pagos-apartir-de.module';
 import { EjecutivoModule } from './../ejecutivo/ejecutivo.module';
 import { Module } from '@nestjs/common';
 import { ContratosService } from './contratos.service';
@@ -27,6 +28,10 @@ import { PuertoEmbarqueModule } from 'src/puerto-embarque/puerto-embarque.module
 import { SuplementoPuertoEmbarqueModule } from 'src/suplemento-puerto-embarque/suplemento-puerto-embarque.module';
 import { SuplementoPagosModule } from 'src/suplemento-pagos/suplemento-pagos.module';
 import { PagosModule } from 'src/pagos/pagos.module';
+import { FormasPagoModule } from 'src/formas-pago/formas-pago.module';
+import { PuertosModule } from 'src/puertos/puertos.module';
+import { ReferenciasModule } from 'src/referencias/referencias.module';
+import { UnidadMedidaModule } from 'src/unidad-medida/unidad-medida.module';
 
 @Module({
   imports: [TypeOrmModule.forFeature(
@@ -34,7 +39,8 @@ import { PagosModule } from 'src/pagos/pagos.module';
   ),BasesGeneralesModule,ContratoMarcoModule,MonedaModule,FormasEntregaModule,NegociacionResumenModule,EjecutivoModule,
   PaisesModule,AgenciasAseguradorasModule,CompaniasNavierasModule,LogsModule,IncotermModule,ContratoClausulaModule,SuplementoResumenModule,
   SuplementoClausulasModule, SuplementoChangeModule, SuplementoEmbarquesModule, SuplementoDesgloseModule,EmbarquesModule,ContratoDesgloseModule,
-  CodigosParaLaVentaModule,PuertoEmbarqueModule, SuplementoPuertoEmbarqueModule, SuplementoPagosModule, PagosModule],
+  CodigosParaLaVentaModule,PuertoEmbarqueModule, SuplementoPuertoEmbarqueModule, SuplementoPagosModule, PagosModule, FormasPagoModule, PagosApartirDeModule,
+  PuertosModule, ReferenciasModule, UnidadMedidaModule],
   providers: [ContratosResolver, ContratosService],
   exports: [ContratosService]
 })

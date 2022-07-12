@@ -158,6 +158,6 @@ export class Embarques {
   pagos: Pagos[];
 
   @Field(() => SuplementoPuertoEmbarque, {nullable: true})
-  @OneToMany(() => SuplementoPuertoEmbarque, (suplementoPuertoEmbarque) => suplementoPuertoEmbarque.suplementoResumen)
+  @OneToMany(() => SuplementoPuertoEmbarque, (suplementoPuertoEmbarque) => suplementoPuertoEmbarque.embarque)
   suplementoPuertoEmbarques: SuplementoPuertoEmbarque[];
 }

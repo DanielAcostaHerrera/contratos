@@ -24,11 +24,11 @@ export class SuplementoEmbarquesService {
   }
 
   async findAll(): Promise<SuplementoEmbarques[]> {
-    return await this.suplementoEmbarqueRepository.find({relations:['embarques','contrato']});
+    return await this.suplementoEmbarqueRepository.find({relations:['embarques','contrato','suplementoResumen']});
   }
 
   async findOne(id: number) : Promise<SuplementoEmbarques> {
-    return await this.suplementoEmbarqueRepository.findOne(id,{relations:['embarques','contrato']});
+    return await this.suplementoEmbarqueRepository.findOne(id,{relations:['embarques','contrato','suplementoResumen']});
   }
 
   async remove(id: number) : Promise<any> {

@@ -57,6 +57,11 @@ import { PagosService } from 'src/pagos/pagos.service';
 import { SuplementoPagosService } from 'src/suplemento-pagos/suplemento-pagos.service';
 import { CreatePagoInput } from 'src/pagos/dto/create-pago.input';
 import { Pagos } from 'src/models/entities/Pagos.entity';
+import { FormasPagoService } from 'src/formas-pago/formas-pago.service';
+import { PagosApartirDeService } from 'src/pagos-apartir-de/pagos-apartir-de.service';
+import { PuertosService } from 'src/puertos/puertos.service';
+import { ReferenciasService } from 'src/referencias/referencias.service';
+import { UnidadMedidaService } from 'src/unidad-medida/unidad-medida.service';
 
 @Injectable()
 export class ContratosService {
@@ -71,25 +76,29 @@ export class ContratosService {
   private suplementoDesgloseService: SuplementoDesgloseService, private embarquesService: EmbarquesService,
   private contratoDesgloseService: ContratoDesgloseService, private codigosParaLaVentaService: CodigosParaLaVentaService,
   private puertoEmbarqueService: PuertoEmbarqueService, private suplementoPuertoEmbarqueService: SuplementoPuertoEmbarqueService,
-  private suplementoPagosService: SuplementoPagosService, private pagosService: PagosService) {}
+  private suplementoPagosService: SuplementoPagosService, private pagosService: PagosService, private formaPagoService: FormasPagoService,
+  private pagoAPartirDeService: PagosApartirDeService, private puertoService: PuertosService, private referenciasService: ReferenciasService,
+  private unidadMedidaService: UnidadMedidaService) {}
 
 
   async anadirSuplemento(usuarioToken: Usuarios, idContrato: number) : Promise<SuplementoResumen>{
       let contrato = await this.findOne(idContrato)
-      var suplementoResumen = new CreateSuplementoResumanInput();
-      let suplementoEmbarque = new CreateSuplementoEmbarqueInput();
-      let suplementoDesglose = new CreateSuplementoDesgloseInput();
-      let suplementoPuertoEmbarque = new CreateSuplementoPuertoEmbarqueInput();
-      let suplementoPagos = new CreateSuplementoPagoInput();
       let resumenSuplemento: SuplementoResumen;
       
-      if(contrato.suplementoResumen){
-      contrato.suplementoResumen.sort((a, b) => (b.fecha.getFullYear()+b.fecha.getMonth()+b.fecha.getDate()+b.fecha.getHours()+b.fecha.getMinutes()+b.fecha.getSeconds())
-        - (a.fecha.getFullYear()+a.fecha.getMonth()+a.fecha.getDate()+a.fecha.getHours()+a.fecha.getMinutes()+a.fecha.getSeconds()));
-      let ultimoSuplemento = contrato.suplementoResumen[0];
+      if(contrato.suplementoResumen.length > 0){
+        let suplementoResumen = new CreateSuplementoResumanInput();
+        let suplementoEmbarque = new CreateSuplementoEmbarqueInput();
+        let suplementoDesglose = new CreateSuplementoDesgloseInput();
+        let suplementoPuertoEmbarque = new CreateSuplementoPuertoEmbarqueInput();
+        let suplementoPagos = new CreateSuplementoPagoInput();
 
-      var negociacion = await this.negociacionResumenService.findOne(ultimoSuplemento.idNegociacion);
-        
+        contrato.suplementoResumen.sort((a, b) => (b.fecha.getFullYear()+b.fecha.getMonth()+b.fecha.getDate()+b.fecha.getHours()+b.fecha.getMinutes()+b.fecha.getSeconds())
+          - (a.fecha.getFullYear()+a.fecha.getMonth()+a.fecha.getDate()+a.fecha.getHours()+a.fecha.getMinutes()+a.fecha.getSeconds()));
+        let ultimoSuplemento = contrato.suplementoResumen[0];
+
+        var negociacion = await this.negociacionResumenService.findOne(ultimoSuplemento.idNegociacion);
+
+        suplementoResumen.consecutivo = ultimoSuplemento.consecutivo+1;
         suplementoResumen.idContrato = ultimoSuplemento.idContrato;
         suplementoResumen.suplementadoPor = usuarioToken.idEjecutivo;
         suplementoResumen.fecha = new Date();
@@ -125,6 +134,7 @@ export class ContratosService {
         suplementoResumen.lugarFirma = ultimoSuplemento.lugarFirma;
         suplementoResumen.idPais = ultimoSuplemento.idPais;
         suplementoResumen.idIncoterm = ultimoSuplemento.idIncoterm;
+        suplementoResumen.idFormaEntrega = ultimoSuplemento.idFormaEntrega;
 
         suplementoResumen.origen = "S"+ultimoSuplemento.idSuplementoResumen.toString();
         resumenSuplemento = await this.suplementoResumenService.save(suplementoResumen);
@@ -166,7 +176,9 @@ export class ContratosService {
 
           let embarqueSuplemento = await this.suplementoEmbarquesService.save(suplementoEmbarque);
 
-          let puertoEmbarques = embarque.suplementoResumen.suplementoPuertoEmbarques.filter(embarque2=> embarque2.idEmbarque == embarque.idEmbarque);
+          let supRes = await this.suplementoResumenService.findOne(embarque.idSuplementoResumen);
+
+          let puertoEmbarques = supRes.suplementoPuertoEmbarques.filter(embarque2=> embarque2.idEmbarque == embarque.idEmbarque);
           for (let index = 0; index < puertoEmbarques.length; index++) {
             const puertoEmbarque = puertoEmbarques[index];
             suplementoPuertoEmbarque.idSuplementoResumen = embarqueSuplemento.idSuplementoResumen;
@@ -179,7 +191,7 @@ export class ContratosService {
             await this.suplementoPuertoEmbarqueService.save(suplementoPuertoEmbarque);
           }
 
-          let pagos = embarque.suplementoResumen.suplementoPagos.filter(embarque2=> embarque2.idEmbarque == embarque.idEmbarque);
+          let pagos = supRes.suplementoPagos.filter(embarque2=> embarque2.idEmbarque == embarque.idEmbarque);
           for (let index = 0; index < pagos.length; index++) {
             const pago = pagos[index];
             suplementoPagos.idSuplementoResumen = embarqueSuplemento.idSuplementoResumen;
@@ -193,7 +205,7 @@ export class ContratosService {
             await this.suplementoPagosService.save(suplementoPagos);
           }
           
-          let desgloses = embarque.suplementoResumen.suplementoDesgloses.filter(embarque2=> embarque2.idEmbarque == embarque.idEmbarque);
+          let desgloses = supRes.suplementoDesgloses.filter(embarque2=> embarque2.idEmbarque == embarque.idEmbarque);
           for (let index = 0; index < desgloses.length; index++) {
             const desglose = desgloses[index];
             suplementoDesglose.idSuplementoResumen = embarqueSuplemento.idSuplementoResumen;
@@ -217,9 +229,15 @@ export class ContratosService {
 
       }
       
-      else if(!contrato.suplementoResumen){
+      else if(contrato.suplementoResumen.length == 0){
+        let suplementoResumen = new CreateSuplementoResumanInput();
+        let suplementoEmbarque = new CreateSuplementoEmbarqueInput();
+        let suplementoDesglose = new CreateSuplementoDesgloseInput();
+        let suplementoPuertoEmbarque = new CreateSuplementoPuertoEmbarqueInput();
+        let suplementoPagos = new CreateSuplementoPagoInput();
         var negociacion = await this.negociacionResumenService.findOne(contrato.idNegociacion);
         
+        suplementoResumen.consecutivo = 1;
         suplementoResumen.idContrato = contrato.idContrato;
         suplementoResumen.suplementadoPor = usuarioToken.idEjecutivo;
         suplementoResumen.fecha = new Date();
@@ -255,6 +273,7 @@ export class ContratosService {
         suplementoResumen.lugarFirma = contrato.lugarFirma;
         suplementoResumen.idPais = contrato.idPais;
         suplementoResumen.idIncoterm = contrato.idIncoterm;
+        suplementoResumen.idFormaEntrega = contrato.idFormaEntrega;
 
         suplementoResumen.origen = "A"+contrato.idContrato.toString();
         resumenSuplemento = await this.suplementoResumenService.save(suplementoResumen);
@@ -303,6 +322,7 @@ export class ContratosService {
             suplementoPuertoEmbarque.idEmbarque = embarque.idEmbarque;
             suplementoPuertoEmbarque.idPuertoOrigen = puertoEmbarque.idPuertoOrigen;
             suplementoPuertoEmbarque.idPuertoDestino = puertoEmbarque.idPuertoDestino;
+            suplementoPuertoEmbarque.idPuertoEmbarque = puertoEmbarque.idPuertoEmbarque;
             
 
             await this.suplementoPuertoEmbarqueService.save(suplementoPuertoEmbarque);
@@ -317,6 +337,7 @@ export class ContratosService {
             suplementoPagos.plazoPago = pago.plazoPago;
             suplementoPagos.porciento = pago.porciento;
             suplementoPagos.aPartirDe = pago.idPagosAPartirDe;
+            suplementoPagos.idPago = pago.idPago;
             
 
             await this.suplementoPagosService.save(suplementoPagos);
@@ -349,10 +370,9 @@ export class ContratosService {
 
   async comprobarDiferencias(idContrato: number): Promise<SuplementoChange[]>{
     return new Promise<SuplementoChange[]>(async (resolve, reject) => {
-      let contrato = await this.contratoRepository.findOne(idContrato);
-      var suplementoChange = new CreateSuplementoChangeInput();
+      let contrato = await this.findOne(idContrato);
 
-      if(!contrato.suplementoResumen){
+      if(contrato.suplementoResumen.length == 0){
         reject("El contrato seleccionado no tiene suplementos");
       }
 
@@ -360,8 +380,8 @@ export class ContratosService {
         let suplementoResumen = contrato.suplementoResumen[0];
 
         let idEjecutivo,firma,idMoneda,idEmpSeguro,idEmpNaviera,lugarEntrega,cancelado,notas,permitirEmbarquesParciales,cantidadEp,permitirEntregas,permitirTrasbordos,
-        producto,noEntregasParciales,fInicial,fFinal,fFirma,fRecepcion,fArribo,financiamiento,tasaMoneda,fechaTasa,fechaPFirma,pFin,idNegociacion,gastosLogisticos,
-        lugarFirma,idPais,idIncoterm;
+        producto,noEntregasParciales,fInicial: Date,fFinal: Date,fFirma: Date,fRecepcion: Date,fArribo: Date,financiamiento,tasaMoneda,fechaTasa: Date,
+        fechaPFirma: Date,pFin,idNegociacion,gastosLogisticos, lugarFirma,idPais,idIncoterm;
 
         this.suplementoChangeService.removeSeveralBySuplementoResumenId(suplementoResumen.idSuplementoResumen);
 
@@ -396,351 +416,400 @@ export class ContratosService {
           idIncoterm = suplementoResumen.idIncoterm;
 
         if(contrato.realizadoPor != idEjecutivo){
+          let suplementoChange = new CreateSuplementoChangeInput();
+          let ejecutivoNuevo = await this.ejecutivoService.findOne(idEjecutivo);
+          let ejecutivoViejo = await this.ejecutivoService.findOne(contrato.realizadoPor);
           suplementoChange.idEmbarque = null;
           suplementoChange.orden = null;
           suplementoChange.idCambio = 0;
           suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
-          suplementoChange.contenidoViejo = idEjecutivo.toString();
-          suplementoChange.contenidoNuevo = contrato.realizadoPor.toString();    
+          suplementoChange.contenidoViejo = ejecutivoViejo.nombre.toString();
+          suplementoChange.contenidoNuevo = ejecutivoNuevo.nombre.toString();    
           suplementoChange.clausula = "Realizado por";
           this.suplementoChangeService.save(suplementoChange);
         }
 
         if(contrato.firmadoPor != firma){
+          let suplementoChange = new CreateSuplementoChangeInput();
+          let ejecutivoNuevo = await this.ejecutivoService.findOne(firma);
+          let ejecutivoViejo = await this.ejecutivoService.findOne(contrato.firmadoPor);
           suplementoChange.idEmbarque = null;
           suplementoChange.orden = null;
           suplementoChange.idCambio = 0;
           suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
-          suplementoChange.contenidoViejo = firma.toString();
-          suplementoChange.contenidoNuevo = contrato.firmadoPor.toString();    
+          suplementoChange.contenidoViejo = ejecutivoViejo.nombre.toString();
+          suplementoChange.contenidoNuevo = ejecutivoNuevo.nombre.toString();      
           suplementoChange.clausula = "Firmado por";
           this.suplementoChangeService.save(suplementoChange);
         }
 
         if(contrato.idMoneda != idMoneda){
+          let suplementoChange = new CreateSuplementoChangeInput();
+          let monedaNueva = await this.monedaService.findOne(idMoneda);
+          let monedaVieja = await this.monedaService.findOne(contrato.idMoneda);
           suplementoChange.idEmbarque = null;
           suplementoChange.orden = null;
           suplementoChange.idCambio = 0;
           suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
-          suplementoChange.contenidoViejo = idMoneda.toString();
-          suplementoChange.contenidoNuevo = contrato.idMoneda.toString();    
+          suplementoChange.contenidoViejo = monedaVieja.moneda.toString();
+          suplementoChange.contenidoNuevo = monedaNueva.moneda.toString();    
           suplementoChange.clausula = "Moneda usada";
           this.suplementoChangeService.save(suplementoChange);
         }
 
         if(contrato.idEmpresaSeguro != idEmpSeguro){
+          let suplementoChange = new CreateSuplementoChangeInput();
+          let seguroNueva = await this.agenciasAseguradorasService.findOne(idEmpSeguro);
+          let seguroVieja = await this.agenciasAseguradorasService.findOne(contrato.idEmpresaSeguro);
           suplementoChange.idEmbarque = null;
           suplementoChange.orden = null;
           suplementoChange.idCambio = 0;
           suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
-          suplementoChange.contenidoViejo = idEmpSeguro.toString();
-          suplementoChange.contenidoNuevo = contrato.idEmpresaSeguro.toString();    
+          suplementoChange.contenidoViejo = seguroVieja.nombre.toString();
+          suplementoChange.contenidoNuevo = seguroNueva.nombre.toString();    
           suplementoChange.clausula = "Empresa de seguros";
           this.suplementoChangeService.save(suplementoChange);
         }
 
         if(contrato.idEmpresaNaviera != idEmpNaviera){
+          let suplementoChange = new CreateSuplementoChangeInput();
+          let navieraNueva = await this.companiasNavierasService.findOne(idEmpNaviera);
+          let navieraVieja = await this.companiasNavierasService.findOne(contrato.idEmpresaNaviera);
           suplementoChange.idEmbarque = null;
           suplementoChange.orden = null;
           suplementoChange.idCambio = 0;
           suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
-          suplementoChange.contenidoViejo = idEmpNaviera.toString();
-          suplementoChange.contenidoNuevo = contrato.idEmpresaNaviera.toString();    
+          suplementoChange.contenidoViejo = navieraVieja.nombre.toString();
+          suplementoChange.contenidoNuevo = navieraNueva.nombre.toString();    
           suplementoChange.clausula = "Empresa naviera";
           this.suplementoChangeService.save(suplementoChange);
         }
 
         if(contrato.lugarEntrega != lugarEntrega){
+          let suplementoChange = new CreateSuplementoChangeInput();
           suplementoChange.idEmbarque = null;
           suplementoChange.orden = null;
           suplementoChange.idCambio = 0;
           suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
-          suplementoChange.contenidoViejo = lugarEntrega.toString();
-          suplementoChange.contenidoNuevo = contrato.lugarEntrega.toString();    
+          suplementoChange.contenidoNuevo = lugarEntrega.toString();
+          suplementoChange.contenidoViejo = contrato.lugarEntrega.toString();    
           suplementoChange.clausula = "Lugar de Entrega";
           this.suplementoChangeService.save(suplementoChange);
         }
 
         if(contrato.cancelado != cancelado){
+          let suplementoChange = new CreateSuplementoChangeInput();
           suplementoChange.idEmbarque = null;
           suplementoChange.orden = null;
           suplementoChange.idCambio = 0;
           suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
-          suplementoChange.contenidoViejo = cancelado.toString();
-          suplementoChange.contenidoNuevo = contrato.cancelado.toString();    
+          suplementoChange.contenidoNuevo = cancelado.toString();
+          suplementoChange.contenidoViejo = contrato.cancelado.toString();    
           suplementoChange.clausula = "Cancelado";
           this.suplementoChangeService.save(suplementoChange);
         }
 
         if(contrato.notas != notas){
+          let suplementoChange = new CreateSuplementoChangeInput();
           suplementoChange.idEmbarque = null;
           suplementoChange.orden = null;
           suplementoChange.idCambio = 0;
           suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
-          suplementoChange.contenidoViejo = notas.toString();
-          suplementoChange.contenidoNuevo = contrato.notas.toString();    
+          suplementoChange.contenidoNuevo = notas.toString();
+          suplementoChange.contenidoViejo = contrato.notas.toString();    
           suplementoChange.clausula = "Notas";
           this.suplementoChangeService.save(suplementoChange);
         }
 
         if(contrato.permitirEmbarquesParciales != permitirEmbarquesParciales){
+          let suplementoChange = new CreateSuplementoChangeInput();
           suplementoChange.idEmbarque = null;
           suplementoChange.orden = null;
           suplementoChange.idCambio = 0;
           suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
-          suplementoChange.contenidoViejo = permitirEmbarquesParciales.toString();
-          suplementoChange.contenidoNuevo = contrato.permitirEmbarquesParciales.toString();    
+          suplementoChange.contenidoNuevo = permitirEmbarquesParciales.toString();
+          suplementoChange.contenidoViejo = contrato.permitirEmbarquesParciales.toString();    
           suplementoChange.clausula = "Permitir embarques parciales";
           this.suplementoChangeService.save(suplementoChange);
         }
 
         if(contrato.cantidadEp != cantidadEp){
+          let suplementoChange = new CreateSuplementoChangeInput();
           suplementoChange.idEmbarque = null;
           suplementoChange.orden = null;
           suplementoChange.idCambio = 0;
           suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
-          suplementoChange.contenidoViejo = cantidadEp.toString();
-          suplementoChange.contenidoNuevo = contrato.cantidadEp.toString();    
+          suplementoChange.contenidoNuevo = cantidadEp.toString();
+          suplementoChange.contenidoViejo = contrato.cantidadEp.toString();    
           suplementoChange.clausula = "Cantidad EP";
           this.suplementoChangeService.save(suplementoChange);
         }
 
         if(contrato.permitirEntregas != permitirEntregas){
+          let suplementoChange = new CreateSuplementoChangeInput();
           suplementoChange.idEmbarque = null;
           suplementoChange.orden = null;
           suplementoChange.idCambio = 0;
           suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
-          suplementoChange.contenidoViejo = permitirEntregas.toString();
-          suplementoChange.contenidoNuevo = contrato.permitirEntregas.toString();    
+          suplementoChange.contenidoNuevo = permitirEntregas.toString();
+          suplementoChange.contenidoViejo = contrato.permitirEntregas.toString();    
           suplementoChange.clausula = "Permitir entregas";
           this.suplementoChangeService.save(suplementoChange);
         }
 
         if(contrato.permitirTrasbordos != permitirTrasbordos){
+          let suplementoChange = new CreateSuplementoChangeInput();
           suplementoChange.idEmbarque = null;
           suplementoChange.orden = null;
           suplementoChange.idCambio = 0;
           suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
-          suplementoChange.contenidoViejo = permitirTrasbordos.toString();
-          suplementoChange.contenidoNuevo = contrato.permitirTrasbordos.toString();    
+          suplementoChange.contenidoNuevo = permitirTrasbordos.toString();
+          suplementoChange.contenidoViejo = contrato.permitirTrasbordos.toString();    
           suplementoChange.clausula = "Permitir trasbordos";
           this.suplementoChangeService.save(suplementoChange);
         }
 
         if(contrato.producto != producto){
+          let suplementoChange = new CreateSuplementoChangeInput();
           suplementoChange.idEmbarque = null;
           suplementoChange.orden = null;
           suplementoChange.idCambio = 0;
           suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
-          suplementoChange.contenidoViejo = producto.toString();
-          suplementoChange.contenidoNuevo = contrato.producto.toString();    
+          suplementoChange.contenidoNuevo = producto.toString();
+          suplementoChange.contenidoViejo = contrato.producto.toString();    
           suplementoChange.clausula = "Producto";
           this.suplementoChangeService.save(suplementoChange);
         }
 
         if(contrato.noEntregasParciales != noEntregasParciales){
+          let suplementoChange = new CreateSuplementoChangeInput();
           suplementoChange.idEmbarque = null;
           suplementoChange.orden = null;
           suplementoChange.idCambio = 0;
           suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
-          suplementoChange.contenidoViejo = noEntregasParciales.toString();
-          suplementoChange.contenidoNuevo = contrato.noEntregasParciales.toString();    
+          suplementoChange.contenidoNuevo = noEntregasParciales.toString();
+          suplementoChange.contenidoViejo = contrato.noEntregasParciales.toString();    
           suplementoChange.clausula = "Numero de entregas parciales";
           this.suplementoChangeService.save(suplementoChange);
         }
 
-        if(contrato.fechaInicial != fInicial){
+        if(contrato.fechaInicial.getTime() != fInicial.getTime()){
+          let suplementoChange = new CreateSuplementoChangeInput();
           suplementoChange.idEmbarque = null;
           suplementoChange.orden = null;
           suplementoChange.idCambio = 0;
           suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
-          suplementoChange.contenidoViejo = fInicial.toString();
-          suplementoChange.contenidoNuevo = contrato.fechaInicial.toString();    
+          suplementoChange.contenidoNuevo = fInicial.toString();
+          suplementoChange.contenidoViejo = contrato.fechaInicial.toString();    
           suplementoChange.clausula = "Fecha Inicial";
           this.suplementoChangeService.save(suplementoChange);
         }
 
-        if(contrato.fechaFinal != fFinal){
+        if(contrato.fechaFinal.getTime() != fFinal.getTime()){
+          let suplementoChange = new CreateSuplementoChangeInput();
           suplementoChange.idEmbarque = null;
           suplementoChange.orden = null;
           suplementoChange.idCambio = 0;
           suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
-          suplementoChange.contenidoViejo = fFinal.toString();
-          suplementoChange.contenidoNuevo = contrato.fechaFinal.toString();    
+          suplementoChange.contenidoNuevo = fFinal.toString();
+          suplementoChange.contenidoViejo = contrato.fechaFinal.toString();    
           suplementoChange.clausula = "Fecha Final";
           this.suplementoChangeService.save(suplementoChange);
         }
 
-        if(contrato.fechaFirma != fFirma){
+        if(contrato.fechaFirma.getTime() != fFirma.getTime()){
+          let suplementoChange = new CreateSuplementoChangeInput();
           suplementoChange.idEmbarque = null;
           suplementoChange.orden = null;
           suplementoChange.idCambio = 0;
           suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
-          suplementoChange.contenidoViejo = fFirma.toString();
-          suplementoChange.contenidoNuevo = contrato.fechaFirma.toString();    
+          suplementoChange.contenidoNuevo = fFirma.toString();
+          suplementoChange.contenidoViejo = contrato.fechaFirma.toString();    
           suplementoChange.clausula = "Fecha de firma";
           this.suplementoChangeService.save(suplementoChange);
         }
 
-        if(contrato.fechaRecepcion != fRecepcion){
+        if(contrato.fechaRecepcion.getTime() != fRecepcion.getTime()){
+          let suplementoChange = new CreateSuplementoChangeInput();
           suplementoChange.idEmbarque = null;
           suplementoChange.orden = null;
           suplementoChange.idCambio = 0;
           suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
-          suplementoChange.contenidoViejo = fRecepcion.toString();
-          suplementoChange.contenidoNuevo = contrato.fechaRecepcion.toString();    
+          suplementoChange.contenidoNuevo = fRecepcion.toString();
+          suplementoChange.contenidoViejo = contrato.fechaRecepcion.toString();    
           suplementoChange.clausula = "Fecha de recepcion";
           this.suplementoChangeService.save(suplementoChange);
         }
 
-        if(contrato.fechaArribo != fArribo){
+        if(contrato.fechaArribo.getTime() != fArribo.getTime()){
+          let suplementoChange = new CreateSuplementoChangeInput();
           suplementoChange.idEmbarque = null;
           suplementoChange.orden = null;
           suplementoChange.idCambio = 0;
           suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
-          suplementoChange.contenidoViejo = fArribo.toString();
-          suplementoChange.contenidoNuevo = contrato.fechaArribo.toString();    
+          suplementoChange.contenidoNuevo = fArribo.toString();
+          suplementoChange.contenidoViejo = contrato.fechaArribo.toString();    
           suplementoChange.clausula = "Fecha de arribo";
           this.suplementoChangeService.save(suplementoChange);
         }
 
         if(contrato.financiamiento != financiamiento){
+          let suplementoChange = new CreateSuplementoChangeInput();
           suplementoChange.idEmbarque = null;
           suplementoChange.orden = null;
           suplementoChange.idCambio = 0;
           suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
-          suplementoChange.contenidoViejo = financiamiento.toString();
-          suplementoChange.contenidoNuevo = contrato.financiamiento.toString();    
+          suplementoChange.contenidoNuevo = financiamiento.toString();
+          suplementoChange.contenidoViejo = contrato.financiamiento.toString();    
           suplementoChange.clausula = "Financiamiento";
           this.suplementoChangeService.save(suplementoChange);
         }
 
         if(contrato.tasaMoneda != tasaMoneda){
+          let suplementoChange = new CreateSuplementoChangeInput();
           suplementoChange.idEmbarque = null;
           suplementoChange.orden = null;
           suplementoChange.idCambio = 0;
           suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
-          suplementoChange.contenidoViejo = tasaMoneda.toString();
-          suplementoChange.contenidoNuevo = contrato.tasaMoneda.toString();    
+          suplementoChange.contenidoNuevo = tasaMoneda.toString();
+          suplementoChange.contenidoViejo = contrato.tasaMoneda.toString();    
           suplementoChange.clausula = "Tasa de la moneda";
           this.suplementoChangeService.save(suplementoChange);
         }
 
-        if(contrato.fechaTasa != fechaTasa){
+        if(contrato.fechaTasa.getDate() != fechaTasa.getDate()){
+          let suplementoChange = new CreateSuplementoChangeInput();
           suplementoChange.idEmbarque = null;
           suplementoChange.orden = null;
           suplementoChange.idCambio = 0;
           suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
-          suplementoChange.contenidoViejo = fechaTasa.toString();
-          suplementoChange.contenidoNuevo = contrato.fechaTasa.toString();    
+          suplementoChange.contenidoNuevo = fechaTasa.toString();
+          suplementoChange.contenidoViejo = contrato.fechaTasa.toString();    
           suplementoChange.clausula = "Fecha de la tasa";
           this.suplementoChangeService.save(suplementoChange);
         }
 
-        if(contrato.fechaPFirma != fechaPFirma){
+        if(contrato.fechaPFirma.getTime() != fechaPFirma.getTime()){
+          let suplementoChange = new CreateSuplementoChangeInput();
           suplementoChange.idEmbarque = null;
           suplementoChange.orden = null;
           suplementoChange.idCambio = 0;
           suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
-          suplementoChange.contenidoViejo = fechaPFirma.toString();
-          suplementoChange.contenidoNuevo = contrato.fechaPFirma.toString();    
+          suplementoChange.contenidoNuevo = fechaPFirma.toString();
+          suplementoChange.contenidoViejo = contrato.fechaPFirma.toString();    
           suplementoChange.clausula = "Fecha firma proveedor";
           this.suplementoChangeService.save(suplementoChange);
         }
 
         if(contrato.pFin != pFin){
+          let suplementoChange = new CreateSuplementoChangeInput();
           suplementoChange.idEmbarque = null;
           suplementoChange.orden = null;
           suplementoChange.idCambio = 0;
           suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
-          suplementoChange.contenidoViejo = pFin.toString();
-          suplementoChange.contenidoNuevo = contrato.pFin.toString();    
+          suplementoChange.contenidoNuevo = pFin.toString();
+          suplementoChange.contenidoViejo = contrato.pFin.toString();    
           suplementoChange.clausula = "pFin";
           this.suplementoChangeService.save(suplementoChange);
         }
 
         if(contrato.idNegociacion != idNegociacion){
+          let suplementoChange = new CreateSuplementoChangeInput();
+          let negociacionNueva = await this.negociacionResumenService.findOne(idNegociacion);
+          let negociacionVieja = await this.negociacionResumenService.findOne(contrato.idNegociacion);
           suplementoChange.idEmbarque = null;
           suplementoChange.orden = null;
           suplementoChange.idCambio = 0;
           suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
-          suplementoChange.contenidoViejo = contrato.idNegociacion.toString();
-          suplementoChange.contenidoNuevo = idNegociacion.toString();    
+          suplementoChange.contenidoNuevo = negociacionNueva.noNegociacion.toString();
+          suplementoChange.contenidoViejo = negociacionVieja.noNegociacion.toString();    
           suplementoChange.clausula = "Negociacion";
           this.suplementoChangeService.save(suplementoChange);
         }
         
         if(contrato.gastosLogisticos != gastosLogisticos){
+          let suplementoChange = new CreateSuplementoChangeInput();
           suplementoChange.idEmbarque = null;
           suplementoChange.orden = null;
           suplementoChange.idCambio = 0;
           suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
-          suplementoChange.contenidoViejo = gastosLogisticos.toString();
-          suplementoChange.contenidoNuevo = contrato.gastosLogisticos.toString();    
+          suplementoChange.contenidoNuevo = gastosLogisticos.toString();
+          suplementoChange.contenidoViejo = contrato.gastosLogisticos.toString();    
           suplementoChange.clausula = "Gastos logisticos";
           this.suplementoChangeService.save(suplementoChange);
         }
 
         if(contrato.lugarFirma != lugarFirma){
+          let suplementoChange = new CreateSuplementoChangeInput();
           suplementoChange.idEmbarque = null;
           suplementoChange.orden = null;
           suplementoChange.idCambio = 0;
           suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
-          suplementoChange.contenidoViejo = lugarFirma.toString();
-          suplementoChange.contenidoNuevo = contrato.lugarFirma.toString();    
+          suplementoChange.contenidoNuevo = lugarFirma.toString();
+          suplementoChange.contenidoViejo = contrato.lugarFirma.toString();    
           suplementoChange.clausula = "Lugar de firma";
           this.suplementoChangeService.save(suplementoChange);
         }
 
         if(contrato.idPais != idPais){
+          let suplementoChange = new CreateSuplementoChangeInput();
+          let paisNuevo = await this.paisesService.findOne(idPais);
+          let paisViejo = await this.paisesService.findOne(contrato.idPais);
           suplementoChange.idEmbarque = null;
           suplementoChange.orden = null;
           suplementoChange.idCambio = 0;
           suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
-          suplementoChange.contenidoViejo = idPais.toString();
-          suplementoChange.contenidoNuevo = contrato.idPais.toString();    
+          suplementoChange.contenidoNuevo = paisNuevo.nomb.toString();
+          suplementoChange.contenidoViejo = paisViejo.nomb.toString();    
           suplementoChange.clausula = "Pais";
           this.suplementoChangeService.save(suplementoChange);
         }
 
         if(contrato.idIncoterm != idIncoterm){
+          let suplementoChange = new CreateSuplementoChangeInput();
+          let incotermNuevo = await this.incotermService.findOne(idIncoterm);
+          let incotermViejo = await this.incotermService.findOne(contrato.idIncoterm);
           suplementoChange.idEmbarque = null;
           suplementoChange.orden = null;
           suplementoChange.idCambio = 0;
           suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
-          suplementoChange.contenidoViejo = idIncoterm.toString();
-          suplementoChange.contenidoNuevo = contrato.idIncoterm.toString();    
+          suplementoChange.contenidoNuevo = incotermNuevo.nombre.toString();
+          suplementoChange.contenidoViejo = incotermViejo.nombre.toString();    
           suplementoChange.clausula = "Condicion de compra";
           this.suplementoChangeService.save(suplementoChange);
         }
 
-          let clausulas = contrato.contratoClausulas;
+          let clausulas = suplementoResumen.suplementoClausulas;
           for (let index = 0; index < clausulas.length; index++) {
             const clausula = clausulas[index];
-            const clausulaVieja = suplementoResumen.suplementoClausulas.find(clausula2=> clausula2.noClausula == clausula.noClausula)
+            const clausulaVieja = contrato.contratoClausulas.find(clausula2=> clausula2.noClausula == clausula.noClausula)
             
-            if(clausulaVieja.txClausula != clausula.contenido){
+            if(clausulaVieja.contenido != clausula.txClausula){
+              let suplementoChange = new CreateSuplementoChangeInput();
               suplementoChange.idEmbarque = null;
               suplementoChange.orden = clausula.noClausula;
               suplementoChange.idCambio = 1;
               suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
-              suplementoChange.contenidoViejo = clausulaVieja.txClausula.toString();
-              suplementoChange.contenidoNuevo = clausula.contenido.toString();    
+              suplementoChange.contenidoViejo = clausulaVieja.contenido.toString();
+              suplementoChange.contenidoNuevo = clausula.txClausula.toString();    
               suplementoChange.clausula = "Cambio en las clausulas";
               this.suplementoChangeService.save(suplementoChange); 
             }     
           }
 
-          let embarques = contrato.embarques;
+          let embarques = suplementoResumen.suplementoEmbarques;
           for (let index = 0; index < embarques.length; index++) {
             const embarque = embarques[index];
-            const embarqueViejo = suplementoResumen.suplementoEmbarques.find(suplementoEmbarque=> suplementoEmbarque.idEmbarque == embarque.idEmbarque)
+            const embarqueViejo = contrato.embarques.find(suplementoEmbarque=> suplementoEmbarque.idEmbarque == embarque.idEmbarque)
 
             if(!embarqueViejo){
-              let desgloses = embarque.contratoDesgloses
+              let supRes = await this.suplementoResumenService.findOne(embarque.idSuplementoResumen);
+              let desgloses = supRes.suplementoDesgloses.filter(suplementoEmbarque=> suplementoEmbarque.idEmbarque == embarque.idEmbarque)
+
               for(let index = 0; index < desgloses.length; index++){
                 const desglose = desgloses[index];
                 const codigo = await this.codigosParaLaVentaService.findOne(desglose.idCodigo);
+                let suplementoChange = new CreateSuplementoChangeInput();
                 suplementoChange.idEmbarque = embarque.idEmbarque;
                 suplementoChange.orden = null;
                 suplementoChange.idCambio = 4;
@@ -751,49 +820,56 @@ export class ContratosService {
                 this.suplementoChangeService.save(suplementoChange);
               }
 
-              let pagos  = embarque.pagos;
+              let pagos  = supRes.suplementoPagos.filter(pago2=> pago2.idEmbarque == embarque.idEmbarque);
 
               for(let index = 0; index < pagos.length; index++){
                 const pago = pagos[index];
-
+                let suplementoChange = new CreateSuplementoChangeInput();
+                let formPago = await this.formaPagoService.findOne(pago.idFormaPago);
+                let pagoPartirDe = await this.pagoAPartirDeService.findOne(pago.aPartirDe);
                 suplementoChange.idEmbarque = embarque.idEmbarque;
                 suplementoChange.orden = null;
                 suplementoChange.idCambio = 2;
                 suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
                 suplementoChange.contenidoViejo = "-";
-                suplementoChange.contenidoNuevo = "Forma de pago: "+pago.formaPago.formaPago.toString()," Pago a partir de: "+pago.pagoAPartirDe.aPartirDe.toString()+
+                suplementoChange.contenidoNuevo = "Forma de pago: "+formPago.formaPago.toString()," Pago a partir de: "+pagoPartirDe.aPartirDe.toString()+
                 " Plazo pago: "+pago.plazoPago.toString()+" Porciento: "+pago.porciento.toString();    
                 suplementoChange.clausula = "Añadido un nuevo pago";
                 this.suplementoChangeService.save(suplementoChange);                 
               }
 
-              let puertoEmbarques  = embarque.puertoEmbarques;
+              let puertoEmbarques  = supRes.suplementoPuertoEmbarques.filter(pago2=> pago2.idEmbarque == embarque.idEmbarque);
 
               for(let index = 0; index < puertoEmbarques.length; index++){
                 const puertoEmbarque = puertoEmbarques[index];
+                let suplementoChange = new CreateSuplementoChangeInput();
+                let puertoOrigen = await this.puertoService.findOne(puertoEmbarque.idPuertoOrigen)
+                let puertoDestino = await this.puertoService.findOne(puertoEmbarque.idPuertoDestino)
 
                 suplementoChange.idEmbarque = embarque.idEmbarque;
                 suplementoChange.orden = null;
                 suplementoChange.idCambio = 3;
                 suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
                 suplementoChange.contenidoViejo = "-"
-                suplementoChange.contenidoNuevo = puertoEmbarque.puertoDestino.nombre.toString();    
+                suplementoChange.contenidoNuevo = puertoDestino.nombre.toString();    
                 suplementoChange.clausula = "Añadido nuevo puerto de destino";
                 this.suplementoChangeService.save(suplementoChange);
                   
-                suplementoChange.idEmbarque = embarque.idEmbarque;
-                suplementoChange.orden = null;
-                suplementoChange.idCambio = 3;
-                suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
-                suplementoChange.contenidoViejo = "-"
-                suplementoChange.contenidoNuevo = puertoEmbarque.puertoOrigen.nombre.toString();    
-                suplementoChange.clausula = "Añadido nuevo puerto de origen";
-                this.suplementoChangeService.save(suplementoChange);              
+                let suplementoChange2 = new CreateSuplementoChangeInput();
+                suplementoChange2.idEmbarque = embarque.idEmbarque;
+                suplementoChange2.orden = null;
+                suplementoChange2.idCambio = 3;
+                suplementoChange2.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
+                suplementoChange2.contenidoViejo = "-"
+                suplementoChange2.contenidoNuevo = puertoOrigen.nombre.toString();    
+                suplementoChange2.clausula = "Añadido nuevo puerto de origen";
+                this.suplementoChangeService.save(suplementoChange2);              
               } 
             }
 
             if(embarqueViejo){
-              if(embarqueViejo.fechaEntrega != embarque.fechaEntrega){
+              if(embarqueViejo.fechaEntrega.getTime() != embarque.fechaEntrega.getTime()){
+                let suplementoChange = new CreateSuplementoChangeInput();
                 suplementoChange.idEmbarque = embarque.idEmbarque;
                 suplementoChange.orden = null;
                 suplementoChange.idCambio = 3;
@@ -805,6 +881,7 @@ export class ContratosService {
                 }
         
                 if(embarqueViejo.descuento != embarque.descuento){
+                  let suplementoChange = new CreateSuplementoChangeInput();
                   suplementoChange.idEmbarque = embarque.idEmbarque;
                   suplementoChange.orden = null;
                   suplementoChange.idCambio = 3;
@@ -816,6 +893,7 @@ export class ContratosService {
                 }
       
                 if(embarqueViejo.terminado != embarque.terminado){
+                  let suplementoChange = new CreateSuplementoChangeInput();
                   suplementoChange.idEmbarque = embarque.idEmbarque;
                   suplementoChange.orden = null;
                   suplementoChange.idCambio = 3;
@@ -827,6 +905,7 @@ export class ContratosService {
                 }
         
                 if(embarqueViejo.cancelado != embarque.cancelado){
+                  let suplementoChange = new CreateSuplementoChangeInput();
                   suplementoChange.idEmbarque = embarque.idEmbarque;
                   suplementoChange.orden = null;
                   suplementoChange.idCambio = 3;
@@ -838,6 +917,7 @@ export class ContratosService {
                 }
         
                 if(embarqueViejo.porFirmar != embarque.porFirmar){
+                  let suplementoChange = new CreateSuplementoChangeInput();
                   suplementoChange.idEmbarque = embarque.idEmbarque;
                   suplementoChange.orden = null;
                   suplementoChange.idCambio = 3;
@@ -849,6 +929,7 @@ export class ContratosService {
                 }
         
                 if(embarqueViejo.qtyCnt != embarque.qtyCnt){
+                  let suplementoChange = new CreateSuplementoChangeInput();
                   suplementoChange.idEmbarque = embarque.idEmbarque;
                   suplementoChange.orden = null;
                   suplementoChange.idCambio = 3;
@@ -860,6 +941,7 @@ export class ContratosService {
                 }
         
                 if(embarqueViejo.flete != embarque.flete){
+                  let suplementoChange = new CreateSuplementoChangeInput();
                   suplementoChange.idEmbarque = embarque.idEmbarque;
                   suplementoChange.orden = null;
                   suplementoChange.idCambio = 3;
@@ -871,6 +953,7 @@ export class ContratosService {
                 }
         
                 if(embarqueViejo.seguro != embarque.seguro){
+                  let suplementoChange = new CreateSuplementoChangeInput();
                   suplementoChange.idEmbarque = embarque.idEmbarque;
                   suplementoChange.orden = null;
                   suplementoChange.idCambio = 3;
@@ -882,6 +965,7 @@ export class ContratosService {
                 }
         
                 if(embarqueViejo.financiamiento != embarque.financiamiento){
+                  let suplementoChange = new CreateSuplementoChangeInput();
                   suplementoChange.idEmbarque = embarque.idEmbarque;
                   suplementoChange.orden = null;
                   suplementoChange.idCambio = 3;
@@ -893,17 +977,21 @@ export class ContratosService {
                 }
         
                 if(embarqueViejo.idEmpresaNaviera != embarque.idEmpresaNaviera){
+                  let suplementoChange = new CreateSuplementoChangeInput();
+                  let navieraVieja = await this.companiasNavierasService.findOne(embarqueViejo.idEmpresaNaviera)
+                  let navieraNueva = await this.companiasNavierasService.findOne(embarque.idEmpresaNaviera)
                   suplementoChange.idEmbarque = embarque.idEmbarque;
                   suplementoChange.orden = null;
                   suplementoChange.idCambio = 3;
                   suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
-                  suplementoChange.contenidoViejo = embarqueViejo.idEmpresaNaviera.toString();
-                  suplementoChange.contenidoNuevo = embarque.idEmpresaNaviera.toString();    
+                  suplementoChange.contenidoViejo = navieraVieja.nombre.toString();
+                  suplementoChange.contenidoNuevo = navieraNueva.nombre.toString();    
                   suplementoChange.clausula = "Empresa Naviera";
                   this.suplementoChangeService.save(suplementoChange);
                 }
         
                 if(embarqueViejo.inspeccion != embarque.inspeccion){
+                  let suplementoChange = new CreateSuplementoChangeInput();
                   suplementoChange.idEmbarque = embarque.idEmbarque;
                   suplementoChange.orden = null;
                   suplementoChange.idCambio = 3;
@@ -915,6 +1003,7 @@ export class ContratosService {
                 }
         
                 if(embarqueViejo.otros != embarque.otros){
+                  let suplementoChange = new CreateSuplementoChangeInput();
                   suplementoChange.idEmbarque = embarque.idEmbarque;
                   suplementoChange.orden = null;
                   suplementoChange.idCambio = 3;
@@ -926,6 +1015,7 @@ export class ContratosService {
                 }
         
                 if(embarqueViejo.c40 != embarque.c40){
+                  let suplementoChange = new CreateSuplementoChangeInput();
                   suplementoChange.idEmbarque = embarque.idEmbarque;
                   suplementoChange.orden = null;
                   suplementoChange.idCambio = 3;
@@ -937,6 +1027,7 @@ export class ContratosService {
                 }
         
                 if(embarqueViejo.c20 != embarque.c20){
+                  let suplementoChange = new CreateSuplementoChangeInput();
                   suplementoChange.idEmbarque = embarque.idEmbarque;
                   suplementoChange.orden = null;
                   suplementoChange.idCambio = 3;
@@ -947,8 +1038,9 @@ export class ContratosService {
                   this.suplementoChangeService.save(suplementoChange);
                 }
 
-                let desgloses = embarque.contratoDesgloses
-                let desglosesViejos = embarqueViejo.suplementoResumen.suplementoDesgloses.filter(embarque2=> embarque2.idEmbarque == embarqueViejo.idEmbarque);
+                let supRes = await this.suplementoResumenService.findOne(embarque.idSuplementoResumen);
+                let desgloses = supRes.suplementoDesgloses.filter(suplementoEmbarque=> suplementoEmbarque.idEmbarque == embarque.idEmbarque)
+                let desglosesViejos = embarqueViejo.contratoDesgloses
 
                 for(let index = 0; index < desgloses.length; index++){
                   const desglose = desgloses[index];
@@ -956,48 +1048,59 @@ export class ContratosService {
                   
 
                   if(!desgloseViejo){
+                    let suplementoChange = new CreateSuplementoChangeInput();
+                    let codigo = await this.codigosParaLaVentaService.findOne(desglose.idCodigo);
+                    let referencia = await this.referenciasService.findOne(desglose.idReferencia);
                     suplementoChange.idEmbarque = embarque.idEmbarque;
                     suplementoChange.orden = null;
                     suplementoChange.idCambio = 4;
                     suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
                     suplementoChange.contenidoViejo = "-";
-                    suplementoChange.contenidoNuevo = desglose.idCodigo.toString()+" "+desglose.codigo.descripcion.toString()+" Referencia: "+desglose.referencia.referencia;    
+                    suplementoChange.contenidoNuevo = desglose.idCodigo.toString()+" "+codigo.descripcion.toString()+" Referencia: "+referencia.referencia;    
                     suplementoChange.clausula = "Codigo añadido al contrato";
                     this.suplementoChangeService.save(suplementoChange);
                   }
 
                   if(desgloseViejo){
                     if(desglose.idReferencia != desgloseViejo.idReferencia){
+                      let suplementoChange = new CreateSuplementoChangeInput();
+                      let referenciaNueva = await this.referenciasService.findOne(desglose.idReferencia);
+                      let referenciaVieja = await this.referenciasService.findOne(desgloseViejo.idReferencia);
                       suplementoChange.idEmbarque = embarque.idEmbarque;
                       suplementoChange.orden = null;
                       suplementoChange.idCambio = 5;
                       suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
-                      suplementoChange.contenidoViejo = desgloseViejo.referencia.referencia.toString();
-                      suplementoChange.contenidoNuevo = desglose.referencia.referencia.toString();    
+                      suplementoChange.contenidoViejo = referenciaVieja.referencia.toString();
+                      suplementoChange.contenidoNuevo = referenciaNueva.referencia.toString();    
                       suplementoChange.clausula = "Referencia";
                       this.suplementoChangeService.save(suplementoChange);
                     }
                     if(desglose.idCodigo != desgloseViejo.idCodigo){
+                      let suplementoChange = new CreateSuplementoChangeInput();
+                      let codigoViejo = await this.codigosParaLaVentaService.findOne(desgloseViejo.idCodigo);
+                      let codigoNuevo = await this.codigosParaLaVentaService.findOne(desglose.idCodigo);
                       suplementoChange.idEmbarque = embarque.idEmbarque;
                       suplementoChange.orden = null;
                       suplementoChange.idCambio = 5;
                       suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
-                      suplementoChange.contenidoViejo = desgloseViejo.idCodigo.toString()+" "+desgloseViejo.codigo.descripcion.toString();
-                      suplementoChange.contenidoNuevo = desglose.idCodigo.toString()+" "+desglose.codigo.descripcion.toString();    
+                      suplementoChange.contenidoViejo = desgloseViejo.idCodigo.toString()+" "+codigoViejo.descripcion.toString();
+                      suplementoChange.contenidoNuevo = desglose.idCodigo.toString()+" "+codigoNuevo.descripcion.toString();    
                       suplementoChange.clausula = "Codigo";
                       this.suplementoChangeService.save(suplementoChange);
                     }
-                    if(desglose.descripcionAx != desgloseViejo.descripcionSp){
+                    if(desglose.descripcionSp != desgloseViejo.descripcionAx){
+                      let suplementoChange = new CreateSuplementoChangeInput();
                       suplementoChange.idEmbarque = embarque.idEmbarque;
                       suplementoChange.orden = null;
                       suplementoChange.idCambio = 5;
                       suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
-                      suplementoChange.contenidoViejo = desgloseViejo.descripcionSp.toString();
-                      suplementoChange.contenidoNuevo = desglose.descripcionAx.toString();    
+                      suplementoChange.contenidoViejo = desgloseViejo.descripcionAx.toString();
+                      suplementoChange.contenidoNuevo = desglose.descripcionSp.toString();    
                       suplementoChange.clausula = "Descripcion";
                       this.suplementoChangeService.save(suplementoChange);
                     }
                     if(desglose.idUnidadMedida != desgloseViejo.idUnidadMedida){
+                      let suplementoChange = new CreateSuplementoChangeInput();
                       suplementoChange.idEmbarque = embarque.idEmbarque;
                       suplementoChange.orden = null;
                       suplementoChange.idCambio = 5;
@@ -1008,6 +1111,7 @@ export class ContratosService {
                       this.suplementoChangeService.save(suplementoChange);
                     }
                     if(desglose.cantidadCartones != desgloseViejo.cantidadCartones){
+                      let suplementoChange = new CreateSuplementoChangeInput();
                       suplementoChange.idEmbarque = embarque.idEmbarque;
                       suplementoChange.orden = null;
                       suplementoChange.idCambio = 5;
@@ -1018,6 +1122,7 @@ export class ContratosService {
                       this.suplementoChangeService.save(suplementoChange);
                     }
                     if(desglose.cantidadPorCarton != desgloseViejo.cantidadPorCarton){
+                      let suplementoChange = new CreateSuplementoChangeInput();
                       suplementoChange.idEmbarque = embarque.idEmbarque;
                       suplementoChange.orden = null;
                       suplementoChange.idCambio = 5;
@@ -1028,6 +1133,7 @@ export class ContratosService {
                       this.suplementoChangeService.save(suplementoChange);
                     }
                     if(desglose.paquete != desgloseViejo.paquete){
+                      let suplementoChange = new CreateSuplementoChangeInput();
                       suplementoChange.idEmbarque = embarque.idEmbarque;
                       suplementoChange.orden = null;
                       suplementoChange.idCambio = 5;
@@ -1038,6 +1144,7 @@ export class ContratosService {
                       this.suplementoChangeService.save(suplementoChange);
                     }
                     if(desglose.precioPaquete != desgloseViejo.precioPaquete){
+                      let suplementoChange = new CreateSuplementoChangeInput();
                       suplementoChange.idEmbarque = embarque.idEmbarque;
                       suplementoChange.orden = null;
                       suplementoChange.idCambio = 5;
@@ -1048,6 +1155,7 @@ export class ContratosService {
                       this.suplementoChangeService.save(suplementoChange);
                     }
                     if(desglose.volumen != desgloseViejo.volumen){
+                      let suplementoChange = new CreateSuplementoChangeInput();
                       suplementoChange.idEmbarque = embarque.idEmbarque;
                       suplementoChange.orden = null;
                       suplementoChange.idCambio = 5;
@@ -1058,6 +1166,7 @@ export class ContratosService {
                       this.suplementoChangeService.save(suplementoChange);
                     }
                     if(desglose.precio != desgloseViejo.precio){
+                      let suplementoChange = new CreateSuplementoChangeInput();
                       suplementoChange.idEmbarque = embarque.idEmbarque;
                       suplementoChange.orden = null;
                       suplementoChange.idCambio = 5;
@@ -1068,6 +1177,7 @@ export class ContratosService {
                       this.suplementoChangeService.save(suplementoChange);
                     }
                     if(desglose.packing != desgloseViejo.packing){
+                      let suplementoChange = new CreateSuplementoChangeInput();
                       suplementoChange.idEmbarque = embarque.idEmbarque;
                       suplementoChange.orden = null;
                       suplementoChange.idCambio = 5;
@@ -1078,6 +1188,7 @@ export class ContratosService {
                       this.suplementoChangeService.save(suplementoChange);
                     }
                     if(desglose.cajas != desgloseViejo.cajas){
+                      let suplementoChange = new CreateSuplementoChangeInput();
                       suplementoChange.idEmbarque = embarque.idEmbarque;
                       suplementoChange.orden = null;
                       suplementoChange.idCambio = 5;
@@ -1090,20 +1201,23 @@ export class ContratosService {
                   }
                 }
 
-              let pagos  = embarque.pagos;
-              let pagosViejos = embarqueViejo.suplementoResumen.suplementoPagos.filter(pago2=> pago2.idEmbarque == embarqueViejo.idEmbarque);
+              let pagos  = supRes.suplementoPagos.filter(pago2=> pago2.idEmbarque == embarque.idEmbarque);
+              let pagosViejos = embarqueViejo.pagos
 
               for(let index = 0; index < pagos.length; index++){
                 const pago = pagos[index];
                 const pagoViejo = pagosViejos.find(pago2=> pago2.idPago == pago.idPago)
 
                 if(!pagoViejo){
+                    let suplementoChange = new CreateSuplementoChangeInput();
+                    let formPago = await this.formaPagoService.findOne(pago.idFormaPago);
+                    let pagoPartirDe = await this.pagoAPartirDeService.findOne(pago.aPartirDe);
                     suplementoChange.idEmbarque = embarque.idEmbarque;
                     suplementoChange.orden = null;
                     suplementoChange.idCambio = 2;
                     suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
                     suplementoChange.contenidoViejo = "-";
-                    suplementoChange.contenidoNuevo = "Forma de pago: "+pago.formaPago.formaPago.toString()," Pago a partir de: "+pago.pagoAPartirDe.aPartirDe.toString()+
+                    suplementoChange.contenidoNuevo = "Forma de pago: "+formPago.formaPago.toString()," Pago a partir de: "+pagoPartirDe.aPartirDe.toString()+
                     " Plazo pago: "+pago.plazoPago.toString()+" Porciento: "+pago.porciento.toString();    
                     suplementoChange.clausula = "Añadido un nuevo pago";
                     this.suplementoChangeService.save(suplementoChange);               
@@ -1111,28 +1225,35 @@ export class ContratosService {
 
                 if(pagoViejo){
                   if(pago.idFormaPago != pagoViejo.idFormaPago){
+                    let suplementoChange = new CreateSuplementoChangeInput();
+                    let formPago = await this.formaPagoService.findOne(pago.idFormaPago);
+                    let formPagoViejo = await this.formaPagoService.findOne(pagoViejo.idFormaPago);
                     suplementoChange.idEmbarque = embarque.idEmbarque;
                     suplementoChange.orden = null;
                     suplementoChange.idCambio = 2;
                     suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
-                    suplementoChange.contenidoViejo = pagoViejo.formasPago.formaPago.toString();
-                    suplementoChange.contenidoNuevo = pago.formaPago.formaPago.toString();    
+                    suplementoChange.contenidoViejo = formPagoViejo.formaPago.toString();
+                    suplementoChange.contenidoNuevo = formPago.formaPago.toString();    
                     suplementoChange.clausula = "Forma de pago";
                     this.suplementoChangeService.save(suplementoChange);
                   }
   
-                  if(pago.idPagosAPartirDe != pagoViejo.aPartirDe){
+                  if(pago.aPartirDe != pagoViejo.idPagosAPartirDe){
+                    let suplementoChange = new CreateSuplementoChangeInput();
+                    let pagoAPartir = await this.pagoAPartirDeService.findOne(pago.aPartirDe);
+                    let pagoAPartirViejo = await this.pagoAPartirDeService.findOne(pagoViejo.idPagosAPartirDe);
                     suplementoChange.idEmbarque = embarque.idEmbarque;
                     suplementoChange.orden = null;
                     suplementoChange.idCambio = 2;
                     suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
-                    suplementoChange.contenidoViejo = pagoViejo.pagoAPartirDe.aPartirDe.toString();
-                    suplementoChange.contenidoNuevo = pago.pagoAPartirDe.aPartirDe.toString();    
+                    suplementoChange.contenidoViejo = pagoAPartirViejo.aPartirDe.toString();
+                    suplementoChange.contenidoNuevo = pagoAPartir.aPartirDe.toString();    
                     suplementoChange.clausula = "Pago a partir de";
                     this.suplementoChangeService.save(suplementoChange);
                   }
   
                   if(pago.plazoPago != pagoViejo.plazoPago){
+                    let suplementoChange = new CreateSuplementoChangeInput();
                     suplementoChange.idEmbarque = embarque.idEmbarque;
                     suplementoChange.orden = null;
                     suplementoChange.idCambio = 2;
@@ -1144,6 +1265,7 @@ export class ContratosService {
                   }
   
                   if(pago.porciento != pagoViejo.porciento){
+                    let suplementoChange = new CreateSuplementoChangeInput();
                     suplementoChange.idEmbarque = embarque.idEmbarque;
                     suplementoChange.orden = null;
                     suplementoChange.idCambio = 2;
@@ -1157,52 +1279,66 @@ export class ContratosService {
                 
               }
 
-              let puertoEmbarques  = embarque.puertoEmbarques;
-              let puertoEmbarquesViejos = embarqueViejo.suplementoResumen.suplementoPuertoEmbarques.filter(embarque2=> embarque2.idEmbarque == embarqueViejo.idEmbarque);
+              let puertoEmbarques  = supRes.suplementoPuertoEmbarques.filter(embarque2=> embarque2.idEmbarque == embarque.idEmbarque);
+              let puertoEmbarquesViejos = embarqueViejo.puertoEmbarques;
 
               for(let index = 0; index < puertoEmbarques.length; index++){
                 const puertoEmbarque = puertoEmbarques[index];
                 const puertoEmbarqueViejo = puertoEmbarquesViejos.find(puertoEmbarque2=> puertoEmbarque2.idPuertoEmbarque == puertoEmbarque.idPuertoEmbarque)
+                
 
                 if(!puertoEmbarqueViejo){
+                    let puertoOrigen = await this.puertoService.findOne(puertoEmbarque.idPuertoOrigen)
+                    let puertoDestino = await this.puertoService.findOne(puertoEmbarque.idPuertoDestino)
+
+                    let suplementoChange = new CreateSuplementoChangeInput();
                     suplementoChange.idEmbarque = embarque.idEmbarque;
                     suplementoChange.orden = null;
                     suplementoChange.idCambio = 3;
                     suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
                     suplementoChange.contenidoViejo = "-"
-                    suplementoChange.contenidoNuevo = puertoEmbarque.puertoDestino.nombre.toString();    
+                    suplementoChange.contenidoNuevo = puertoDestino.nombre.toString();    
                     suplementoChange.clausula = "Añadido nuevo puerto de destino";
                     this.suplementoChangeService.save(suplementoChange);
                   
-                    suplementoChange.idEmbarque = embarque.idEmbarque;
-                    suplementoChange.orden = null;
-                    suplementoChange.idCambio = 3;
-                    suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
-                    suplementoChange.contenidoViejo = "-"
-                    suplementoChange.contenidoNuevo = puertoEmbarque.puertoOrigen.nombre.toString();    
-                    suplementoChange.clausula = "Añadido nuevo puerto de origen";
-                    this.suplementoChangeService.save(suplementoChange);              
+                    let suplementoChange2 = new CreateSuplementoChangeInput();
+                    suplementoChange2.idEmbarque = embarque.idEmbarque;
+                    suplementoChange2.orden = null;
+                    suplementoChange2.idCambio = 3;
+                    suplementoChange2.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
+                    suplementoChange2.contenidoViejo = "-"
+                    suplementoChange2.contenidoNuevo = puertoOrigen.nombre.toString();    
+                    suplementoChange2.clausula = "Añadido nuevo puerto de origen";
+                    this.suplementoChangeService.save(suplementoChange2);              
                 }
                 
                 if(puertoEmbarqueViejo){
                   if(puertoEmbarque.idPuertoDestino != puertoEmbarqueViejo.idPuertoDestino){
+                    let suplementoChange = new CreateSuplementoChangeInput();
+                    let puertoDestinoViejo = await this.puertoService.findOne(puertoEmbarqueViejo.idPuertoDestino)
+                    let puertoDestino = await this.puertoService.findOne(puertoEmbarque.idPuertoDestino)
+
                     suplementoChange.idEmbarque = embarque.idEmbarque;
                     suplementoChange.orden = null;
                     suplementoChange.idCambio = 3;
                     suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
-                    suplementoChange.contenidoViejo = puertoEmbarqueViejo.puertoDestino.nombre.toString();
-                    suplementoChange.contenidoNuevo = puertoEmbarque.puertoDestino.nombre.toString();    
+                    suplementoChange.contenidoViejo = puertoDestinoViejo.nombre.toString();
+                    suplementoChange.contenidoNuevo = puertoDestino.nombre.toString();    
                     suplementoChange.clausula = "Cambiado puerto de destino";
                     this.suplementoChangeService.save(suplementoChange);
                   }
   
                   if(puertoEmbarque.idPuertoOrigen != puertoEmbarqueViejo.idPuertoOrigen){
+                    let suplementoChange = new CreateSuplementoChangeInput();
+                    let puertoOrigenViejo = await this.puertoService.findOne(puertoEmbarqueViejo.idPuertoOrigen)
+                    let puertoOrigen = await this.puertoService.findOne(puertoEmbarque.idPuertoOrigen)
+
                     suplementoChange.idEmbarque = embarque.idEmbarque;
                     suplementoChange.orden = null;
                     suplementoChange.idCambio = 3;
                     suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
-                    suplementoChange.contenidoViejo = puertoEmbarqueViejo.puertoOrigen.nombre.toString();
-                    suplementoChange.contenidoNuevo = puertoEmbarque.puertoOrigen.nombre.toString();    
+                    suplementoChange.contenidoViejo = puertoOrigenViejo.nombre.toString();
+                    suplementoChange.contenidoNuevo = puertoOrigen.nombre.toString();    
                     suplementoChange.clausula = "Cambiado puerto de origen";
                     this.suplementoChangeService.save(suplementoChange);
                   }
@@ -1223,7 +1359,7 @@ export class ContratosService {
       let suplementoAnterior = contrato.suplementoResumen[1];
 
       let idEjecutivo,firma,idMoneda,idEmpSeguro,idEmpNaviera,lugarEntrega,cancelado,notas,permitirEmbarquesParciales,cantidadEp,permitirEntregas,permitirTrasbordos,
-      producto,noEntregasParciales,fInicial,fFinal,fFirma,fRecepcion,fArribo,financiamiento,tasaMoneda,fechaTasa,fechaPFirma,pFin,idNegociacion,gastosLogisticos,
+      producto,noEntregasParciales,fInicial: Date,fFinal: Date,fFirma: Date,fRecepcion: Date,fArribo: Date,financiamiento,tasaMoneda,fechaTasa: Date,fechaPFirma,pFin,idNegociacion,gastosLogisticos,
       lugarFirma,idPais,idIncoterm;
 
       this.suplementoChangeService.removeSeveralBySuplementoResumenId(suplementoResumen.idSuplementoResumen);
@@ -1259,330 +1395,376 @@ export class ContratosService {
         idIncoterm = suplementoResumen.idIncoterm;
 
       if(suplementoAnterior.suplementadoPor != idEjecutivo){
+        let suplementoChange = new CreateSuplementoChangeInput();
+        let ejecutivoNuevo = await this.ejecutivoService.findOne(idEjecutivo);
+        let ejecutivoViejo = await this.ejecutivoService.findOne(suplementoAnterior.suplementadoPor);
         suplementoChange.idEmbarque = null;
         suplementoChange.orden = null;
         suplementoChange.idCambio = 0;
         suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
-        suplementoChange.contenidoViejo = idEjecutivo.toString();
-        suplementoChange.contenidoNuevo = suplementoAnterior.suplementadoPor.toString();    
+        suplementoChange.contenidoViejo = ejecutivoViejo.nombre.toString();
+        suplementoChange.contenidoNuevo = ejecutivoNuevo.nombre.toString();    
         suplementoChange.clausula = "Realizado por";
         this.suplementoChangeService.save(suplementoChange);
       }
 
       if(suplementoAnterior.firma != firma){
+        let suplementoChange = new CreateSuplementoChangeInput();
+        let ejecutivoNuevo = await this.ejecutivoService.findOne(firma);
+        let ejecutivoViejo = await this.ejecutivoService.findOne(suplementoAnterior.firma);
         suplementoChange.idEmbarque = null;
         suplementoChange.orden = null;
         suplementoChange.idCambio = 0;
         suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
-        suplementoChange.contenidoViejo = firma.toString();
-        suplementoChange.contenidoNuevo = suplementoAnterior.firma.toString();    
+        suplementoChange.contenidoViejo = ejecutivoViejo.nombre.toString();
+        suplementoChange.contenidoNuevo = ejecutivoNuevo.nombre.toString();    
         suplementoChange.clausula = "Firmado por";
         this.suplementoChangeService.save(suplementoChange);
       }
 
       if(suplementoAnterior.idMoneda != idMoneda){
+        let suplementoChange = new CreateSuplementoChangeInput();
+        let monedaNueva = await this.monedaService.findOne(idMoneda);
+        let monedaVieja = await this.monedaService.findOne(suplementoAnterior.idMoneda);
         suplementoChange.idEmbarque = null;
         suplementoChange.orden = null;
         suplementoChange.idCambio = 0;
         suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
-        suplementoChange.contenidoViejo = idMoneda.toString();
-        suplementoChange.contenidoNuevo = suplementoAnterior.idMoneda.toString();    
+        suplementoChange.contenidoViejo = monedaVieja.moneda.toString();
+        suplementoChange.contenidoNuevo = monedaNueva.moneda.toString();    
         suplementoChange.clausula = "Moneda usada";
         this.suplementoChangeService.save(suplementoChange);
       }
 
       if(suplementoAnterior.idEmpSeguro != idEmpSeguro){
+        let suplementoChange = new CreateSuplementoChangeInput();
+        let seguroNueva = await this.agenciasAseguradorasService.findOne(idEmpSeguro);
+        let seguroVieja = await this.agenciasAseguradorasService.findOne(suplementoAnterior.idEmpSeguro);
         suplementoChange.idEmbarque = null;
         suplementoChange.orden = null;
         suplementoChange.idCambio = 0;
         suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
-        suplementoChange.contenidoViejo = idEmpSeguro.toString();
-        suplementoChange.contenidoNuevo = suplementoAnterior.idEmpSeguro.toString();    
+        suplementoChange.contenidoViejo = seguroVieja.nombre.toString();
+        suplementoChange.contenidoNuevo = seguroNueva.nombre.toString();    
         suplementoChange.clausula = "Empresa de seguros";
         this.suplementoChangeService.save(suplementoChange);
       }
 
       if(suplementoAnterior.idEmpNaviera != idEmpNaviera){
+        let suplementoChange = new CreateSuplementoChangeInput();
+        let navieraNueva = await this.companiasNavierasService.findOne(idEmpNaviera);
+        let navieraVieja = await this.companiasNavierasService.findOne(suplementoAnterior.idEmpNaviera);
         suplementoChange.idEmbarque = null;
         suplementoChange.orden = null;
         suplementoChange.idCambio = 0;
         suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
-        suplementoChange.contenidoViejo = idEmpNaviera.toString();
-        suplementoChange.contenidoNuevo = suplementoAnterior.idEmpNaviera.toString();    
+        suplementoChange.contenidoViejo = navieraVieja.nombre.toString();
+        suplementoChange.contenidoNuevo = navieraNueva.nombre.toString();    
         suplementoChange.clausula = "Empresa naviera";
         this.suplementoChangeService.save(suplementoChange);
       }
 
       if(suplementoAnterior.lugarEntrega != lugarEntrega){
+        let suplementoChange = new CreateSuplementoChangeInput();
         suplementoChange.idEmbarque = null;
         suplementoChange.orden = null;
         suplementoChange.idCambio = 0;
         suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
-        suplementoChange.contenidoViejo = lugarEntrega.toString();
-        suplementoChange.contenidoNuevo = suplementoAnterior.lugarEntrega.toString();    
+        suplementoChange.contenidoNuevo = lugarEntrega.toString();
+        suplementoChange.contenidoViejo = suplementoAnterior.lugarEntrega.toString();    
         suplementoChange.clausula = "Lugar de Entrega";
         this.suplementoChangeService.save(suplementoChange);
       }
 
       if(suplementoAnterior.cancelado != cancelado){
+        let suplementoChange = new CreateSuplementoChangeInput();
         suplementoChange.idEmbarque = null;
         suplementoChange.orden = null;
         suplementoChange.idCambio = 0;
         suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
-        suplementoChange.contenidoViejo = cancelado.toString();
-        suplementoChange.contenidoNuevo = suplementoAnterior.cancelado.toString();    
+        suplementoChange.contenidoNuevo = cancelado.toString();
+        suplementoChange.contenidoViejo = suplementoAnterior.cancelado.toString();    
         suplementoChange.clausula = "Cancelado";
         this.suplementoChangeService.save(suplementoChange);
       }
 
       if(suplementoAnterior.notas != notas){
+        let suplementoChange = new CreateSuplementoChangeInput();
         suplementoChange.idEmbarque = null;
         suplementoChange.orden = null;
         suplementoChange.idCambio = 0;
         suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
-        suplementoChange.contenidoViejo = notas.toString();
-        suplementoChange.contenidoNuevo = suplementoAnterior.notas.toString();    
+        suplementoChange.contenidoNuevo = notas.toString();
+        suplementoChange.contenidoViejo = suplementoAnterior.notas.toString();    
         suplementoChange.clausula = "Notas";
         this.suplementoChangeService.save(suplementoChange);
       }
 
       if(suplementoAnterior.permitirEmbarquesParciales != permitirEmbarquesParciales){
+        let suplementoChange = new CreateSuplementoChangeInput();
         suplementoChange.idEmbarque = null;
         suplementoChange.orden = null;
         suplementoChange.idCambio = 0;
         suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
-        suplementoChange.contenidoViejo = permitirEmbarquesParciales.toString();
-        suplementoChange.contenidoNuevo = suplementoAnterior.permitirEmbarquesParciales.toString();    
+        suplementoChange.contenidoNuevo = permitirEmbarquesParciales.toString();
+        suplementoChange.contenidoViejo = suplementoAnterior.permitirEmbarquesParciales.toString();    
         suplementoChange.clausula = "Permitir embarques parciales";
         this.suplementoChangeService.save(suplementoChange);
       }
 
       if(suplementoAnterior.cantidadEp != cantidadEp){
+        let suplementoChange = new CreateSuplementoChangeInput();
         suplementoChange.idEmbarque = null;
         suplementoChange.orden = null;
         suplementoChange.idCambio = 0;
         suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
-        suplementoChange.contenidoViejo = cantidadEp.toString();
-        suplementoChange.contenidoNuevo = suplementoAnterior.cantidadEp.toString();    
+        suplementoChange.contenidoNuevo = cantidadEp.toString();
+        suplementoChange.contenidoViejo = suplementoAnterior.cantidadEp.toString();    
         suplementoChange.clausula = "Cantidad EP";
         this.suplementoChangeService.save(suplementoChange);
       }
 
       if(suplementoAnterior.permitirEntregas != permitirEntregas){
+        let suplementoChange = new CreateSuplementoChangeInput();
         suplementoChange.idEmbarque = null;
         suplementoChange.orden = null;
         suplementoChange.idCambio = 0;
         suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
-        suplementoChange.contenidoViejo = permitirEntregas.toString();
-        suplementoChange.contenidoNuevo = suplementoAnterior.permitirEntregas.toString();    
+        suplementoChange.contenidoNuevo = permitirEntregas.toString();
+        suplementoChange.contenidoViejo = suplementoAnterior.permitirEntregas.toString();    
         suplementoChange.clausula = "Permitir entregas";
         this.suplementoChangeService.save(suplementoChange);
       }
 
       if(suplementoAnterior.permitirTrasbordos != permitirTrasbordos){
+        let suplementoChange = new CreateSuplementoChangeInput();
         suplementoChange.idEmbarque = null;
         suplementoChange.orden = null;
         suplementoChange.idCambio = 0;
         suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
-        suplementoChange.contenidoViejo = permitirTrasbordos.toString();
-        suplementoChange.contenidoNuevo = suplementoAnterior.permitirTrasbordos.toString();    
+        suplementoChange.contenidoNuevo = permitirTrasbordos.toString();
+        suplementoChange.contenidoViejo = suplementoAnterior.permitirTrasbordos.toString();    
         suplementoChange.clausula = "Permitir trasbordos";
         this.suplementoChangeService.save(suplementoChange);
       }
 
       if(suplementoAnterior.producto != producto){
+        let suplementoChange = new CreateSuplementoChangeInput();
         suplementoChange.idEmbarque = null;
         suplementoChange.orden = null;
         suplementoChange.idCambio = 0;
         suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
-        suplementoChange.contenidoViejo = producto.toString();
-        suplementoChange.contenidoNuevo = suplementoAnterior.producto.toString();    
+        suplementoChange.contenidoNuevo = producto.toString();
+        suplementoChange.contenidoViejo = suplementoAnterior.producto.toString();    
         suplementoChange.clausula = "Producto";
         this.suplementoChangeService.save(suplementoChange);
       }
 
       if(suplementoAnterior.noEntregasParciales != noEntregasParciales){
+        let suplementoChange = new CreateSuplementoChangeInput();
         suplementoChange.idEmbarque = null;
         suplementoChange.orden = null;
         suplementoChange.idCambio = 0;
         suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
-        suplementoChange.contenidoViejo = noEntregasParciales.toString();
-        suplementoChange.contenidoNuevo = suplementoAnterior.noEntregasParciales.toString();    
+        suplementoChange.contenidoNuevo = noEntregasParciales.toString();
+        suplementoChange.contenidoViejo = suplementoAnterior.noEntregasParciales.toString();    
         suplementoChange.clausula = "Numero de entregas parciales";
         this.suplementoChangeService.save(suplementoChange);
       }
 
-      if(suplementoAnterior.fInicial != fInicial){
+      if(suplementoAnterior.fInicial.getTime() != fInicial.getTime()){
+        let suplementoChange = new CreateSuplementoChangeInput();
         suplementoChange.idEmbarque = null;
         suplementoChange.orden = null;
         suplementoChange.idCambio = 0;
         suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
-        suplementoChange.contenidoViejo = fInicial.toString();
-        suplementoChange.contenidoNuevo = suplementoAnterior.fInicial.toString();    
+        suplementoChange.contenidoNuevo = fInicial.toString();
+        suplementoChange.contenidoViejo = suplementoAnterior.fInicial.toString();    
         suplementoChange.clausula = "Fecha Inicial";
         this.suplementoChangeService.save(suplementoChange);
       }
 
-      if(suplementoAnterior.fFinal != fFinal){
+      if(suplementoAnterior.fFinal.getTime() != fFinal.getTime()){
+        let suplementoChange = new CreateSuplementoChangeInput();
         suplementoChange.idEmbarque = null;
         suplementoChange.orden = null;
         suplementoChange.idCambio = 0;
         suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
-        suplementoChange.contenidoViejo = fFinal.toString();
-        suplementoChange.contenidoNuevo = suplementoAnterior.fFinal.toString();    
+        suplementoChange.contenidoNuevo = fFinal.toString();
+        suplementoChange.contenidoViejo = suplementoAnterior.fFinal.toString();    
         suplementoChange.clausula = "Fecha Final";
         this.suplementoChangeService.save(suplementoChange);
       }
 
-      if(suplementoAnterior.fFirma != fFirma){
+      if(suplementoAnterior.fFirma.getTime() != fFirma.getTime()){
+        let suplementoChange = new CreateSuplementoChangeInput();
         suplementoChange.idEmbarque = null;
         suplementoChange.orden = null;
         suplementoChange.idCambio = 0;
         suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
-        suplementoChange.contenidoViejo = fFirma.toString();
-        suplementoChange.contenidoNuevo = suplementoAnterior.fFirma.toString();    
+        suplementoChange.contenidoNuevo = fFirma.toString();
+        suplementoChange.contenidoViejo = suplementoAnterior.fFirma.toString();    
         suplementoChange.clausula = "Fecha de firma";
         this.suplementoChangeService.save(suplementoChange);
       }
 
-      if(suplementoAnterior.fRecepcion != fRecepcion){
+      if(suplementoAnterior.fRecepcion.getTime() != fRecepcion.getTime()){
+        let suplementoChange = new CreateSuplementoChangeInput();
         suplementoChange.idEmbarque = null;
         suplementoChange.orden = null;
         suplementoChange.idCambio = 0;
         suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
-        suplementoChange.contenidoViejo = fRecepcion.toString();
-        suplementoChange.contenidoNuevo = suplementoAnterior.fRecepcion.toString();    
+        suplementoChange.contenidoNuevo = fRecepcion.toString();
+        suplementoChange.contenidoViejo = suplementoAnterior.fRecepcion.toString();    
         suplementoChange.clausula = "Fecha de recepcion";
         this.suplementoChangeService.save(suplementoChange);
       }
 
-      if(suplementoAnterior.fArribo != fArribo){
+      if(suplementoAnterior.fArribo.getTime() != fArribo.getTime()){
+        let suplementoChange = new CreateSuplementoChangeInput();
         suplementoChange.idEmbarque = null;
         suplementoChange.orden = null;
         suplementoChange.idCambio = 0;
         suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
-        suplementoChange.contenidoViejo = fArribo.toString();
-        suplementoChange.contenidoNuevo = suplementoAnterior.fArribo.toString();    
+        suplementoChange.contenidoNuevo = fArribo.toString();
+        suplementoChange.contenidoViejo = suplementoAnterior.fArribo.toString();    
         suplementoChange.clausula = "Fecha de arribo";
         this.suplementoChangeService.save(suplementoChange);
       }
 
       if(suplementoAnterior.financiamiento != financiamiento){
+        let suplementoChange = new CreateSuplementoChangeInput();
         suplementoChange.idEmbarque = null;
         suplementoChange.orden = null;
         suplementoChange.idCambio = 0;
         suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
-        suplementoChange.contenidoViejo = financiamiento.toString();
-        suplementoChange.contenidoNuevo = suplementoAnterior.financiamiento.toString();    
+        suplementoChange.contenidoNuevo = financiamiento.toString();
+        suplementoChange.contenidoViejo = suplementoAnterior.financiamiento.toString();    
         suplementoChange.clausula = "Financiamiento";
         this.suplementoChangeService.save(suplementoChange);
       }
 
       if(suplementoAnterior.tasaMoneda != tasaMoneda){
+        let suplementoChange = new CreateSuplementoChangeInput();
         suplementoChange.idEmbarque = null;
         suplementoChange.orden = null;
         suplementoChange.idCambio = 0;
         suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
-        suplementoChange.contenidoViejo = tasaMoneda.toString();
-        suplementoChange.contenidoNuevo = suplementoAnterior.tasaMoneda.toString();    
+        suplementoChange.contenidoNuevo = tasaMoneda.toString();
+        suplementoChange.contenidoViejo = suplementoAnterior.tasaMoneda.toString();    
         suplementoChange.clausula = "Tasa de la moneda";
         this.suplementoChangeService.save(suplementoChange);
       }
 
-      if(suplementoAnterior.fechaTasa != fechaTasa){
+      if(suplementoAnterior.fechaTasa.getTime() != fechaTasa.getTime()){
+        let suplementoChange = new CreateSuplementoChangeInput();
         suplementoChange.idEmbarque = null;
         suplementoChange.orden = null;
         suplementoChange.idCambio = 0;
         suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
-        suplementoChange.contenidoViejo = fechaTasa.toString();
-        suplementoChange.contenidoNuevo = suplementoAnterior.fechaTasa.toString();    
+        suplementoChange.contenidoNuevo = fechaTasa.toString();
+        suplementoChange.contenidoViejo = suplementoAnterior.fechaTasa.toString();    
         suplementoChange.clausula = "Fecha de la tasa";
         this.suplementoChangeService.save(suplementoChange);
       }
 
-      if(suplementoAnterior.fechaPFirma != fechaPFirma){
+      if(suplementoAnterior.fechaPFirma.getTime() != fechaPFirma.getTime()){
+        let suplementoChange = new CreateSuplementoChangeInput();
         suplementoChange.idEmbarque = null;
         suplementoChange.orden = null;
         suplementoChange.idCambio = 0;
         suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
-        suplementoChange.contenidoViejo = fechaPFirma.toString();
-        suplementoChange.contenidoNuevo = suplementoAnterior.fechaPFirma.toString();    
+        suplementoChange.contenidoNuevo = fechaPFirma.toString();
+        suplementoChange.contenidoViejo = suplementoAnterior.fechaPFirma.toString();    
         suplementoChange.clausula = "Fecha firma proveedor";
         this.suplementoChangeService.save(suplementoChange);
       }
 
       if(suplementoAnterior.pFin != pFin){
+        let suplementoChange = new CreateSuplementoChangeInput();
         suplementoChange.idEmbarque = null;
         suplementoChange.orden = null;
         suplementoChange.idCambio = 0;
         suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
-        suplementoChange.contenidoViejo = pFin.toString();
-        suplementoChange.contenidoNuevo = suplementoAnterior.pFin.toString();    
+        suplementoChange.contenidoNuevo = pFin.toString();
+        suplementoChange.contenidoViejo = suplementoAnterior.pFin.toString();    
         suplementoChange.clausula = "pFin";
         this.suplementoChangeService.save(suplementoChange);
       }
 
       if(suplementoAnterior.idNegociacion != idNegociacion){
+        let suplementoChange = new CreateSuplementoChangeInput();
+        let negociacionVieja = await this.negociacionResumenService.findOne(suplementoAnterior.idNegociacion);
+        let negociacionNueva = await this.negociacionResumenService.findOne(idNegociacion);
         suplementoChange.idEmbarque = null;
         suplementoChange.orden = null;
         suplementoChange.idCambio = 0;
         suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
-        suplementoChange.contenidoViejo = contrato.idNegociacion.toString();
-        suplementoChange.contenidoNuevo = suplementoAnterior.toString();    
+        suplementoChange.contenidoViejo = negociacionVieja.noNegociacion.toString();
+        suplementoChange.contenidoNuevo = negociacionNueva.noNegociacion.toString();    
         suplementoChange.clausula = "Negociacion";
         this.suplementoChangeService.save(suplementoChange);
       }
       
       if(suplementoAnterior.gastosLogisticos != gastosLogisticos){
+        let suplementoChange = new CreateSuplementoChangeInput();
         suplementoChange.idEmbarque = null;
         suplementoChange.orden = null;
         suplementoChange.idCambio = 0;
         suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
-        suplementoChange.contenidoViejo = gastosLogisticos.toString();
-        suplementoChange.contenidoNuevo = suplementoAnterior.gastosLogisticos.toString();    
+        suplementoChange.contenidoNuevo = gastosLogisticos.toString();
+        suplementoChange.contenidoViejo = suplementoAnterior.gastosLogisticos.toString();    
         suplementoChange.clausula = "Gastos logisticos";
         this.suplementoChangeService.save(suplementoChange);
       }
 
       if(suplementoAnterior.lugarFirma != lugarFirma){
+        let suplementoChange = new CreateSuplementoChangeInput();
         suplementoChange.idEmbarque = null;
         suplementoChange.orden = null;
         suplementoChange.idCambio = 0;
         suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
-        suplementoChange.contenidoViejo = lugarFirma.toString();
-        suplementoChange.contenidoNuevo = suplementoAnterior.lugarFirma.toString();    
+        suplementoChange.contenidoNuevo = lugarFirma.toString();
+        suplementoChange.contenidoViejo = suplementoAnterior.lugarFirma.toString();    
         suplementoChange.clausula = "Lugar de firma";
         this.suplementoChangeService.save(suplementoChange);
       }
 
       if(suplementoAnterior.idPais != idPais){
+        let suplementoChange = new CreateSuplementoChangeInput();
+        let paisViejo = await this.paisesService.findOne(suplementoAnterior.idPais);
+        let paisNuevo = await this.paisesService.findOne(idPais);
         suplementoChange.idEmbarque = null;
         suplementoChange.orden = null;
         suplementoChange.idCambio = 0;
         suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
-        suplementoChange.contenidoViejo = idPais.toString();
-        suplementoChange.contenidoNuevo = suplementoAnterior.idPais.toString();    
+        suplementoChange.contenidoViejo = paisNuevo.nomb.toString();
+        suplementoChange.contenidoNuevo = paisViejo.nomb.toString();    
         suplementoChange.clausula = "Pais";
         this.suplementoChangeService.save(suplementoChange);
       }
 
       if(suplementoAnterior.idIncoterm != idIncoterm){
+        let suplementoChange = new CreateSuplementoChangeInput();
+        let incotermViejo = await this.incotermService.findOne(suplementoAnterior.idIncoterm);
+        let incotermNuevo = await this.incotermService.findOne(idIncoterm);
         suplementoChange.idEmbarque = null;
         suplementoChange.orden = null;
         suplementoChange.idCambio = 0;
         suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
-        suplementoChange.contenidoViejo = idIncoterm.toString();
-        suplementoChange.contenidoNuevo = suplementoAnterior.idIncoterm.toString();    
+        suplementoChange.contenidoViejo = incotermViejo.nombre.toString();
+        suplementoChange.contenidoNuevo = incotermNuevo.nombre.toString();    
         suplementoChange.clausula = "Condicion de compra";
         this.suplementoChangeService.save(suplementoChange);
       }
 
-        let clausulas = suplementoAnterior.suplementoClausulas;
+        let clausulas = suplementoResumen.suplementoClausulas;
         for (let index = 0; index < clausulas.length; index++) {
           const clausula = clausulas[index];
-          const clausulaVieja = suplementoResumen.suplementoClausulas.find(clausula2=> clausula2.noClausula == clausula.noClausula)
+          const clausulaVieja = suplementoAnterior.suplementoClausulas.find(clausula2=> clausula2.noClausula == clausula.noClausula)
           
           if(clausulaVieja.txClausula != clausula.txClausula){
+            let suplementoChange = new CreateSuplementoChangeInput();
             suplementoChange.idEmbarque = null;
             suplementoChange.orden = clausula.noClausula;
             suplementoChange.idCambio = 1;
@@ -1594,16 +1776,18 @@ export class ContratosService {
           }     
         }
 
-        let embarques = suplementoAnterior.suplementoEmbarques.filter(suplementoEmbarque=> suplementoEmbarque.idSuplementoResumen == suplementoAnterior.idSuplementoResumen);
+        let embarques = suplementoResumen.suplementoEmbarques.filter(suplementoEmbarque=> suplementoEmbarque.idSuplementoResumen == suplementoAnterior.idSuplementoResumen);
         for (let index = 0; index < embarques.length; index++) {
           const embarque = embarques[index];
-          const embarqueViejo = suplementoResumen.suplementoEmbarques.find(suplementoEmbarque=> suplementoEmbarque.idEmbarque == embarque.idEmbarque)
+          const embarqueViejo = suplementoAnterior.suplementoEmbarques.find(suplementoEmbarque=> suplementoEmbarque.idEmbarque == embarque.idEmbarque)
 
           if(!embarqueViejo){
-            let desgloses = embarque.suplementoResumen.suplementoDesgloses.filter(suplementoEmbarque=> suplementoEmbarque.idEmbarque == embarque.idEmbarque)
+            let supRes = await this.suplementoResumenService.findOne(embarque.idSuplementoResumen);
+            let desgloses = supRes.suplementoDesgloses.filter(suplementoEmbarque=> suplementoEmbarque.idEmbarque == embarque.idEmbarque)
             for(let index = 0; index < desgloses.length; index++){
               const desglose = desgloses[index];
               const codigo = await this.codigosParaLaVentaService.findOne(desglose.idCodigo);
+              let suplementoChange = new CreateSuplementoChangeInput();
               suplementoChange.idEmbarque = embarque.idEmbarque;
               suplementoChange.orden = null;
               suplementoChange.idCambio = 4;
@@ -1614,49 +1798,57 @@ export class ContratosService {
               this.suplementoChangeService.save(suplementoChange);
             }
 
-            let pagos  = embarque.suplementoResumen.suplementoPagos.filter(pago2=> pago2.idEmbarque == embarque.idEmbarque);
+            let pagos  = supRes.suplementoPagos.filter(pago2=> pago2.idEmbarque == embarque.idEmbarque);
 
               for(let index = 0; index < pagos.length; index++){
                 const pago = pagos[index];
+                let suplementoChange = new CreateSuplementoChangeInput();
+                let formPago = await this.formaPagoService.findOne(pago.idFormaPago);
+                let pagoPartirDe = await this.pagoAPartirDeService.findOne(pago.aPartirDe);
 
                 suplementoChange.idEmbarque = embarque.idEmbarque;
                 suplementoChange.orden = null;
                 suplementoChange.idCambio = 2;
                 suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
                 suplementoChange.contenidoViejo = "-";
-                suplementoChange.contenidoNuevo = "Forma de pago: "+pago.formasPago.formaPago.toString()," Pago a partir de: "+pago.pagoAPartirDe.aPartirDe.toString()+
+                suplementoChange.contenidoNuevo = "Forma de pago: "+formPago.formaPago.toString()," Pago a partir de: "+pagoPartirDe.aPartirDe.toString()+
                 " Plazo pago: "+pago.plazoPago.toString()+" Porciento: "+pago.porciento.toString();    
                 suplementoChange.clausula = "Añadido un nuevo pago";
                 this.suplementoChangeService.save(suplementoChange);                 
               }
 
-              let puertoEmbarques  = embarque.suplementoResumen.suplementoPuertoEmbarques.filter(pago2=> pago2.idEmbarque == embarque.idEmbarque);
+              let puertoEmbarques  = supRes.suplementoPuertoEmbarques.filter(pago2=> pago2.idEmbarque == embarque.idEmbarque);
 
               for(let index = 0; index < puertoEmbarques.length; index++){
                 const puertoEmbarque = puertoEmbarques[index];
-
+                
+                let suplementoChange = new CreateSuplementoChangeInput();
+                let puertoOrigen = await this.puertoService.findOne(puertoEmbarque.idPuertoOrigen)
+                let puertoDestino = await this.puertoService.findOne(puertoEmbarque.idPuertoDestino)
                 suplementoChange.idEmbarque = embarque.idEmbarque;
                 suplementoChange.orden = null;
                 suplementoChange.idCambio = 3;
                 suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
                 suplementoChange.contenidoViejo = "-"
-                suplementoChange.contenidoNuevo = puertoEmbarque.puertoDestino.nombre.toString();    
+                suplementoChange.contenidoNuevo = puertoDestino.nombre.toString();    
                 suplementoChange.clausula = "Añadido nuevo puerto de destino";
                 this.suplementoChangeService.save(suplementoChange);
                   
-                suplementoChange.idEmbarque = embarque.idEmbarque;
-                suplementoChange.orden = null;
-                suplementoChange.idCambio = 3;
-                suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
-                suplementoChange.contenidoViejo = "-"
-                suplementoChange.contenidoNuevo = puertoEmbarque.puertoOrigen.nombre.toString();    
-                suplementoChange.clausula = "Añadido nuevo puerto de origen";
-                this.suplementoChangeService.save(suplementoChange);              
+                let suplementoChange2 = new CreateSuplementoChangeInput();
+                suplementoChange2.idEmbarque = embarque.idEmbarque;
+                suplementoChange2.orden = null;
+                suplementoChange2.idCambio = 3;
+                suplementoChange2.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
+                suplementoChange2.contenidoViejo = "-"
+                suplementoChange2.contenidoNuevo = puertoOrigen.nombre.toString();    
+                suplementoChange2.clausula = "Añadido nuevo puerto de origen";
+                this.suplementoChangeService.save(suplementoChange2);              
               }
           }
 
           if(embarqueViejo){
-            if(embarqueViejo.fechaEntrega != embarque.fechaEntrega){
+            if(embarqueViejo.fechaEntrega.getTime() != embarque.fechaEntrega.getTime()){
+              let suplementoChange = new CreateSuplementoChangeInput();
               suplementoChange.idEmbarque = embarque.idEmbarque;
               suplementoChange.orden = null;
               suplementoChange.idCambio = 3;
@@ -1668,6 +1860,7 @@ export class ContratosService {
               }
       
               if(embarqueViejo.descuento != embarque.descuento){
+                let suplementoChange = new CreateSuplementoChangeInput();
                 suplementoChange.idEmbarque = embarque.idEmbarque;
                 suplementoChange.orden = null;
                 suplementoChange.idCambio = 3;
@@ -1679,6 +1872,7 @@ export class ContratosService {
               }
     
               if(embarqueViejo.terminado != embarque.terminado){
+                let suplementoChange = new CreateSuplementoChangeInput();
                 suplementoChange.idEmbarque = embarque.idEmbarque;
                 suplementoChange.orden = null;
                 suplementoChange.idCambio = 3;
@@ -1690,6 +1884,7 @@ export class ContratosService {
               }
       
               if(embarqueViejo.cancelado != embarque.cancelado){
+                let suplementoChange = new CreateSuplementoChangeInput();
                 suplementoChange.idEmbarque = embarque.idEmbarque;
                 suplementoChange.orden = null;
                 suplementoChange.idCambio = 3;
@@ -1701,6 +1896,7 @@ export class ContratosService {
               }
       
               if(embarqueViejo.porFirmar != embarque.porFirmar){
+                let suplementoChange = new CreateSuplementoChangeInput();
                 suplementoChange.idEmbarque = embarque.idEmbarque;
                 suplementoChange.orden = null;
                 suplementoChange.idCambio = 3;
@@ -1712,6 +1908,7 @@ export class ContratosService {
               }
       
               if(embarqueViejo.qtyCnt != embarque.qtyCnt){
+                let suplementoChange = new CreateSuplementoChangeInput();
                 suplementoChange.idEmbarque = embarque.idEmbarque;
                 suplementoChange.orden = null;
                 suplementoChange.idCambio = 3;
@@ -1723,6 +1920,7 @@ export class ContratosService {
               }
       
               if(embarqueViejo.flete != embarque.flete){
+                let suplementoChange = new CreateSuplementoChangeInput();
                 suplementoChange.idEmbarque = embarque.idEmbarque;
                 suplementoChange.orden = null;
                 suplementoChange.idCambio = 3;
@@ -1734,6 +1932,7 @@ export class ContratosService {
               }
       
               if(embarqueViejo.seguro != embarque.seguro){
+                let suplementoChange = new CreateSuplementoChangeInput();
                 suplementoChange.idEmbarque = embarque.idEmbarque;
                 suplementoChange.orden = null;
                 suplementoChange.idCambio = 3;
@@ -1745,6 +1944,7 @@ export class ContratosService {
               }
       
               if(embarqueViejo.financiamiento != embarque.financiamiento){
+                let suplementoChange = new CreateSuplementoChangeInput();
                 suplementoChange.idEmbarque = embarque.idEmbarque;
                 suplementoChange.orden = null;
                 suplementoChange.idCambio = 3;
@@ -1756,17 +1956,21 @@ export class ContratosService {
               }
       
               if(embarqueViejo.idEmpresaNaviera != embarque.idEmpresaNaviera){
+                let suplementoChange = new CreateSuplementoChangeInput();
+                let navieraVieja = await this.companiasNavierasService.findOne(embarqueViejo.idEmpresaNaviera);
+                let navieraNueva = await this.companiasNavierasService.findOne(embarque.idEmpresaNaviera);
                 suplementoChange.idEmbarque = embarque.idEmbarque;
                 suplementoChange.orden = null;
                 suplementoChange.idCambio = 3;
                 suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
-                suplementoChange.contenidoViejo = embarqueViejo.idEmpresaNaviera.toString();
-                suplementoChange.contenidoNuevo = embarque.idEmpresaNaviera.toString();    
+                suplementoChange.contenidoViejo = navieraVieja.nombre.toString();
+                suplementoChange.contenidoNuevo = navieraNueva.nombre.toString();    
                 suplementoChange.clausula = "Empresa Naviera";
                 this.suplementoChangeService.save(suplementoChange);
               }
       
               if(embarqueViejo.inspeccion != embarque.inspeccion){
+                let suplementoChange = new CreateSuplementoChangeInput();
                 suplementoChange.idEmbarque = embarque.idEmbarque;
                 suplementoChange.orden = null;
                 suplementoChange.idCambio = 3;
@@ -1778,6 +1982,7 @@ export class ContratosService {
               }
       
               if(embarqueViejo.otros != embarque.otros){
+                let suplementoChange = new CreateSuplementoChangeInput();
                 suplementoChange.idEmbarque = embarque.idEmbarque;
                 suplementoChange.orden = null;
                 suplementoChange.idCambio = 3;
@@ -1789,6 +1994,7 @@ export class ContratosService {
               }
       
               if(embarqueViejo.c40 != embarque.c40){
+                let suplementoChange = new CreateSuplementoChangeInput();
                 suplementoChange.idEmbarque = embarque.idEmbarque;
                 suplementoChange.orden = null;
                 suplementoChange.idCambio = 3;
@@ -1800,6 +2006,7 @@ export class ContratosService {
               }
       
               if(embarqueViejo.c20 != embarque.c20){
+                let suplementoChange = new CreateSuplementoChangeInput();
                 suplementoChange.idEmbarque = embarque.idEmbarque;
                 suplementoChange.orden = null;
                 suplementoChange.idCambio = 3;
@@ -1810,47 +2017,59 @@ export class ContratosService {
                 this.suplementoChangeService.save(suplementoChange);
               }
 
-              let desgloses = embarque.suplementoResumen.suplementoDesgloses.filter(suplementoEmbarque=> suplementoEmbarque.idEmbarque == embarque.idEmbarque);
-              let desglosesViejos = embarqueViejo.suplementoResumen.suplementoDesgloses.filter(embarque2=> embarque2.idEmbarque == embarqueViejo.idEmbarque);
+              let supRes = await this.suplementoResumenService.findOne(embarque.idSuplementoResumen);
+              let supResViejo = await this.suplementoResumenService.findOne(embarqueViejo.idSuplementoResumen);
+
+              let desgloses = supRes.suplementoDesgloses.filter(suplementoEmbarque=> suplementoEmbarque.idEmbarque == embarque.idEmbarque);
+              let desglosesViejos = supResViejo.suplementoDesgloses.filter(embarque2=> embarque2.idEmbarque == embarqueViejo.idEmbarque);
 
               for(let index = 0; index < desgloses.length; index++){
                 const desglose = desgloses[index];
                 const desgloseViejo = desglosesViejos.find(desglose2=> desglose2.idCodigo == desglose.idCodigo)
-                const codigo = await this.codigosParaLaVentaService.findOne(desglose.idCodigo);
+                let codigo = await this.codigosParaLaVentaService.findOne(desglose.idCodigo);
+                let referencia = await this.referenciasService.findOne(desglose.idReferencia);
 
                 if(!desgloseViejo){
+                  let suplementoChange = new CreateSuplementoChangeInput();
                   suplementoChange.idEmbarque = embarque.idEmbarque;
                   suplementoChange.orden = null;
                   suplementoChange.idCambio = 4;
                   suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
                   suplementoChange.contenidoViejo = "-";
-                  suplementoChange.contenidoNuevo = desglose.idCodigo.toString()+" "+codigo.descripcion+" Referencia: "+desglose.referencia.referencia; ;    
+                  suplementoChange.contenidoNuevo = desglose.idCodigo.toString()+" "+codigo.descripcion+" Referencia: "+referencia.referencia; ;    
                   suplementoChange.clausula = "Codigo añadido al contrato";
                   this.suplementoChangeService.save(suplementoChange);
                 }
 
-                if(desgloseViejo){
+                if(desgloseViejo){               
                   if(desglose.idReferencia != desgloseViejo.idReferencia){
+                    let suplementoChange = new CreateSuplementoChangeInput();
+                    let referenciaVieja = await this.referenciasService.findOne(desgloseViejo.idReferencia);
+                    let referenciaNueva = await this.referenciasService.findOne(desglose.idReferencia);
                     suplementoChange.idEmbarque = embarque.idEmbarque;
                     suplementoChange.orden = null;
                     suplementoChange.idCambio = 5;
                     suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
-                    suplementoChange.contenidoViejo = desgloseViejo.referencia.referencia.toString();
-                    suplementoChange.contenidoNuevo = desglose.referencia.referencia.toString();    
+                    suplementoChange.contenidoViejo = referenciaVieja.referencia.toString();
+                    suplementoChange.contenidoNuevo = referenciaNueva.referencia.toString();    
                     suplementoChange.clausula = "Referencia";
                     this.suplementoChangeService.save(suplementoChange);
                   }
                   if(desglose.idCodigo != desgloseViejo.idCodigo){
+                    let suplementoChange = new CreateSuplementoChangeInput();
+                    let codigoViejo = await this.codigosParaLaVentaService.findOne(desgloseViejo.idCodigo);
+                    let codigoNuevo = await this.codigosParaLaVentaService.findOne(desglose.idCodigo);
                     suplementoChange.idEmbarque = embarque.idEmbarque;
                     suplementoChange.orden = null;
                     suplementoChange.idCambio = 5;
                     suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
-                    suplementoChange.contenidoViejo = desgloseViejo.idCodigo.toString()+" "+desgloseViejo.codigo.descripcion.toString();
-                    suplementoChange.contenidoNuevo = desglose.idCodigo.toString()+" "+desglose.codigo.descripcion.toString();    
+                    suplementoChange.contenidoViejo = desgloseViejo.idCodigo.toString()+" "+codigoViejo.descripcion.toString();
+                    suplementoChange.contenidoNuevo = desglose.idCodigo.toString()+" "+codigoNuevo.descripcion.toString();    
                     suplementoChange.clausula = "Codigo";
                     this.suplementoChangeService.save(suplementoChange);
                   }
                   if(desglose.descripcionSp != desgloseViejo.descripcionSp){
+                    let suplementoChange = new CreateSuplementoChangeInput();
                     suplementoChange.idEmbarque = embarque.idEmbarque;
                     suplementoChange.orden = null;
                     suplementoChange.idCambio = 5;
@@ -1861,16 +2080,20 @@ export class ContratosService {
                     this.suplementoChangeService.save(suplementoChange);
                   }
                   if(desglose.idUnidadMedida != desgloseViejo.idUnidadMedida){
+                    let suplementoChange = new CreateSuplementoChangeInput();
+                    let unidadMedidaVieja = await this.unidadMedidaService.findOne(desgloseViejo.idUnidadMedida);
+                    let unidadMedidaNueva = await this.unidadMedidaService.findOne(desglose.idUnidadMedida);
                     suplementoChange.idEmbarque = embarque.idEmbarque;
                     suplementoChange.orden = null;
                     suplementoChange.idCambio = 5;
                     suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
-                    suplementoChange.contenidoViejo = desgloseViejo.unidadMedida.nombre.toString();
-                    suplementoChange.contenidoNuevo = desglose.unidadMedida.nombre.toString();    
+                    suplementoChange.contenidoViejo = unidadMedidaVieja.nombre.toString();
+                    suplementoChange.contenidoNuevo = unidadMedidaNueva.nombre.toString();    
                     suplementoChange.clausula = "Unidad de medida";
                     this.suplementoChangeService.save(suplementoChange);
                   }
                   if(desglose.cantidadCartones != desgloseViejo.cantidadCartones){
+                    let suplementoChange = new CreateSuplementoChangeInput();
                     suplementoChange.idEmbarque = embarque.idEmbarque;
                     suplementoChange.orden = null;
                     suplementoChange.idCambio = 5;
@@ -1881,6 +2104,7 @@ export class ContratosService {
                     this.suplementoChangeService.save(suplementoChange);
                   }
                   if(desglose.cantidadPorCarton != desgloseViejo.cantidadPorCarton){
+                    let suplementoChange = new CreateSuplementoChangeInput();
                     suplementoChange.idEmbarque = embarque.idEmbarque;
                     suplementoChange.orden = null;
                     suplementoChange.idCambio = 5;
@@ -1891,6 +2115,7 @@ export class ContratosService {
                     this.suplementoChangeService.save(suplementoChange);
                   }
                   if(desglose.paquete != desgloseViejo.paquete){
+                    let suplementoChange = new CreateSuplementoChangeInput();
                     suplementoChange.idEmbarque = embarque.idEmbarque;
                     suplementoChange.orden = null;
                     suplementoChange.idCambio = 5;
@@ -1901,6 +2126,7 @@ export class ContratosService {
                     this.suplementoChangeService.save(suplementoChange);
                   }
                   if(desglose.precioPaquete != desgloseViejo.precioPaquete){
+                    let suplementoChange = new CreateSuplementoChangeInput();
                     suplementoChange.idEmbarque = embarque.idEmbarque;
                     suplementoChange.orden = null;
                     suplementoChange.idCambio = 5;
@@ -1911,6 +2137,7 @@ export class ContratosService {
                     this.suplementoChangeService.save(suplementoChange);
                   }
                   if(desglose.volumen != desgloseViejo.volumen){
+                    let suplementoChange = new CreateSuplementoChangeInput();
                     suplementoChange.idEmbarque = embarque.idEmbarque;
                     suplementoChange.orden = null;
                     suplementoChange.idCambio = 5;
@@ -1921,6 +2148,7 @@ export class ContratosService {
                     this.suplementoChangeService.save(suplementoChange);
                   }
                   if(desglose.precio != desgloseViejo.precio){
+                    let suplementoChange = new CreateSuplementoChangeInput();
                     suplementoChange.idEmbarque = embarque.idEmbarque;
                     suplementoChange.orden = null;
                     suplementoChange.idCambio = 5;
@@ -1931,6 +2159,7 @@ export class ContratosService {
                     this.suplementoChangeService.save(suplementoChange);
                   }
                   if(desglose.packing != desgloseViejo.packing){
+                    let suplementoChange = new CreateSuplementoChangeInput();
                     suplementoChange.idEmbarque = embarque.idEmbarque;
                     suplementoChange.orden = null;
                     suplementoChange.idCambio = 5;
@@ -1941,6 +2170,7 @@ export class ContratosService {
                     this.suplementoChangeService.save(suplementoChange);
                   }
                   if(desglose.cajas != desgloseViejo.cajas){
+                    let suplementoChange = new CreateSuplementoChangeInput();
                     suplementoChange.idEmbarque = embarque.idEmbarque;
                     suplementoChange.orden = null;
                     suplementoChange.idCambio = 5;
@@ -1953,20 +2183,23 @@ export class ContratosService {
                 }
             }
 
-            let pagos  = embarque.suplementoResumen.suplementoPagos.filter(pago2=> pago2.idEmbarque == embarque.idEmbarque);
-            let pagosViejos = embarqueViejo.suplementoResumen.suplementoPagos.filter(pago2=> pago2.idEmbarque == embarqueViejo.idEmbarque);
+            let pagos  = supRes.suplementoPagos.filter(pago2=> pago2.idEmbarque == embarque.idEmbarque);
+            let pagosViejos = supResViejo.suplementoPagos.filter(pago2=> pago2.idEmbarque == embarqueViejo.idEmbarque);
 
               for(let index = 0; index < pagos.length; index++){
                 const pago = pagos[index];
                 const pagoViejo = pagosViejos.find(pago2=> pago2.idPago == pago.idPago)
 
                 if(!pagoViejo){
+                    let suplementoChange = new CreateSuplementoChangeInput();
+                    let formPago = await this.formaPagoService.findOne(pago.idFormaPago);
+                    let pagoPartirDe = await this.pagoAPartirDeService.findOne(pago.aPartirDe);
                     suplementoChange.idEmbarque = embarque.idEmbarque;
                     suplementoChange.orden = null;
                     suplementoChange.idCambio = 2;
                     suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
                     suplementoChange.contenidoViejo = "-";
-                    suplementoChange.contenidoNuevo = "Forma de pago: "+pago.formasPago.formaPago.toString()," Pago a partir de: "+pago.pagoAPartirDe.aPartirDe.toString()+
+                    suplementoChange.contenidoNuevo = "Forma de pago: "+formPago.formaPago.toString()," Pago a partir de: "+pagoPartirDe.aPartirDe.toString()+
                     " Plazo pago: "+pago.plazoPago.toString()+" Porciento: "+pago.porciento.toString();    
                     suplementoChange.clausula = "Añadido un nuevo pago";
                     this.suplementoChangeService.save(suplementoChange);               
@@ -1974,28 +2207,35 @@ export class ContratosService {
 
                 if(pagoViejo){
                   if(pago.idFormaPago != pagoViejo.idFormaPago){
+                    let suplementoChange = new CreateSuplementoChangeInput();
+                    let formPago = await this.formaPagoService.findOne(pago.idFormaPago);
+                    let formPagoViejo = await this.formaPagoService.findOne(pagoViejo.idFormaPago);
                     suplementoChange.idEmbarque = embarque.idEmbarque;
                     suplementoChange.orden = null;
                     suplementoChange.idCambio = 2;
                     suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
-                    suplementoChange.contenidoViejo = pagoViejo.formasPago.formaPago.toString();
-                    suplementoChange.contenidoNuevo = pago.formasPago.formaPago.toString();    
+                    suplementoChange.contenidoViejo = formPagoViejo.formaPago.toString();
+                    suplementoChange.contenidoNuevo = formPago.formaPago.toString();    
                     suplementoChange.clausula = "Forma de pago";
                     this.suplementoChangeService.save(suplementoChange);
                   }
   
                   if(pago.aPartirDe != pagoViejo.aPartirDe){
+                    let suplementoChange = new CreateSuplementoChangeInput();
+                    let pagoPartirDe = await this.pagoAPartirDeService.findOne(pago.aPartirDe);
+                    let pagoPartirDeViejo = await this.pagoAPartirDeService.findOne(pagoViejo.aPartirDe);
                     suplementoChange.idEmbarque = embarque.idEmbarque;
                     suplementoChange.orden = null;
                     suplementoChange.idCambio = 2;
                     suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
-                    suplementoChange.contenidoViejo = pagoViejo.pagoAPartirDe.aPartirDe.toString();
-                    suplementoChange.contenidoNuevo = pago.pagoAPartirDe.aPartirDe.toString();    
+                    suplementoChange.contenidoViejo = pagoPartirDe.aPartirDe.toString();
+                    suplementoChange.contenidoNuevo = pagoPartirDeViejo.aPartirDe.toString();    
                     suplementoChange.clausula = "Pago a partir de";
                     this.suplementoChangeService.save(suplementoChange);
                   }
   
                   if(pago.plazoPago != pagoViejo.plazoPago){
+                    let suplementoChange = new CreateSuplementoChangeInput();
                     suplementoChange.idEmbarque = embarque.idEmbarque;
                     suplementoChange.orden = null;
                     suplementoChange.idCambio = 2;
@@ -2007,6 +2247,7 @@ export class ContratosService {
                   }
   
                   if(pago.porciento != pagoViejo.porciento){
+                    let suplementoChange = new CreateSuplementoChangeInput();
                     suplementoChange.idEmbarque = embarque.idEmbarque;
                     suplementoChange.orden = null;
                     suplementoChange.idCambio = 2;
@@ -2020,52 +2261,62 @@ export class ContratosService {
                 
               }
 
-              let puertoEmbarques  = embarque.suplementoResumen.suplementoPuertoEmbarques.filter(embarque2=> embarque2.idEmbarque == embarque.idEmbarque);;
-              let puertoEmbarquesViejos = embarqueViejo.suplementoResumen.suplementoPuertoEmbarques.filter(embarque2=> embarque2.idEmbarque == embarqueViejo.idEmbarque);
+              let puertoEmbarques  = supRes.suplementoPuertoEmbarques.filter(embarque2=> embarque2.idEmbarque == embarque.idEmbarque);
+              let puertoEmbarquesViejos = supResViejo.suplementoPuertoEmbarques.filter(embarque2=> embarque2.idEmbarque == embarqueViejo.idEmbarque);
 
               for(let index = 0; index < puertoEmbarques.length; index++){
                 const puertoEmbarque = puertoEmbarques[index];
                 const puertoEmbarqueViejo = puertoEmbarquesViejos.find(puertoEmbarque2=> puertoEmbarque2.idPuertoEmbarque == puertoEmbarque.idPuertoEmbarque)
 
                 if(!puertoEmbarqueViejo){
+                    let suplementoChange = new CreateSuplementoChangeInput();
+                    let puertoOrigen = await this.puertoService.findOne(puertoEmbarque.idPuertoOrigen)
+                    let puertoDestino = await this.puertoService.findOne(puertoEmbarque.idPuertoDestino)
                     suplementoChange.idEmbarque = embarque.idEmbarque;
                     suplementoChange.orden = null;
                     suplementoChange.idCambio = 3;
                     suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
                     suplementoChange.contenidoViejo = "-"
-                    suplementoChange.contenidoNuevo = puertoEmbarque.puertoDestino.nombre.toString();    
+                    suplementoChange.contenidoNuevo = puertoDestino.nombre.toString();    
                     suplementoChange.clausula = "Añadido nuevo puerto de destino";
                     this.suplementoChangeService.save(suplementoChange);
                   
-                    suplementoChange.idEmbarque = embarque.idEmbarque;
-                    suplementoChange.orden = null;
-                    suplementoChange.idCambio = 3;
-                    suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
-                    suplementoChange.contenidoViejo = "-"
-                    suplementoChange.contenidoNuevo = puertoEmbarque.puertoOrigen.nombre.toString();    
-                    suplementoChange.clausula = "Añadido nuevo puerto de origen";
-                    this.suplementoChangeService.save(suplementoChange);              
+                    let suplementoChange2 = new CreateSuplementoChangeInput();
+                    suplementoChange2.idEmbarque = embarque.idEmbarque;
+                    suplementoChange2.orden = null;
+                    suplementoChange2.idCambio = 3;
+                    suplementoChange2.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
+                    suplementoChange2.contenidoViejo = "-"
+                    suplementoChange2.contenidoNuevo = puertoOrigen.nombre.toString();    
+                    suplementoChange2.clausula = "Añadido nuevo puerto de origen";
+                    this.suplementoChangeService.save(suplementoChange2);              
                 }
                 
                 if(puertoEmbarqueViejo){
                   if(puertoEmbarque.idPuertoDestino != puertoEmbarqueViejo.idPuertoDestino){
+                    let suplementoChange = new CreateSuplementoChangeInput();
+                    let puertoDestino = await this.puertoService.findOne(puertoEmbarque.idPuertoDestino);
+                    let puertoDestinoViejo = await this.puertoService.findOne(puertoEmbarqueViejo.idPuertoDestino);
                     suplementoChange.idEmbarque = embarque.idEmbarque;
                     suplementoChange.orden = null;
                     suplementoChange.idCambio = 3;
                     suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
-                    suplementoChange.contenidoViejo = puertoEmbarqueViejo.puertoDestino.nombre.toString();
-                    suplementoChange.contenidoNuevo = puertoEmbarque.puertoDestino.nombre.toString();    
+                    suplementoChange.contenidoViejo = puertoDestinoViejo.nombre.toString();
+                    suplementoChange.contenidoNuevo = puertoDestino.nombre.toString();    
                     suplementoChange.clausula = "Cambiado puerto de destino";
                     this.suplementoChangeService.save(suplementoChange);
                   }
   
                   if(puertoEmbarque.idPuertoOrigen != puertoEmbarqueViejo.idPuertoOrigen){
+                    let suplementoChange = new CreateSuplementoChangeInput();
+                    let puertoOrigen = await this.puertoService.findOne(puertoEmbarque.idPuertoOrigen);
+                    let puertoOrigenViejo = await this.puertoService.findOne(puertoEmbarqueViejo.idPuertoOrigen);
                     suplementoChange.idEmbarque = embarque.idEmbarque;
                     suplementoChange.orden = null;
                     suplementoChange.idCambio = 3;
                     suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
-                    suplementoChange.contenidoViejo = puertoEmbarqueViejo.puertoOrigen.nombre.toString();
-                    suplementoChange.contenidoNuevo = puertoEmbarque.puertoOrigen.nombre.toString();    
+                    suplementoChange.contenidoViejo = puertoOrigenViejo.nombre.toString();
+                    suplementoChange.contenidoNuevo = puertoOrigen.nombre.toString();    
                     suplementoChange.clausula = "Cambiado puerto de origen";
                     this.suplementoChangeService.save(suplementoChange);
                   }
@@ -2237,6 +2488,7 @@ export class ContratosService {
           suplementoResumen.idPais = createContratoInput.idPais;
           suplementoResumen.idIncoterm = createContratoInput.idIncoterm;
           suplementoResumen.origen = ultimoSuplemento.origen;
+          suplementoResumen.idFormaEntrega = ultimoSuplemento.idFormaEntrega;
     
           let result2 = await this.suplementoResumenService.save(suplementoResumen);
     
@@ -2561,8 +2813,11 @@ export class ContratosService {
   }
 
   async findAll(): Promise<Contratos[]> {
-    let contratos = await this.contratoRepository.find({relations:['contratoClausulas','documentacionContratos','embarques','facturaResumen',
-    'suplementoEmbarques','suplementoResumen','suplementoClausulas']});
+    let contratos = await this.contratoRepository.find({relations:['contratoClausulas','documentacionContratos','embarques','embarques.puertoEmbarques',
+    'embarques.pagos','embarques.contratoDesgloses','facturaResumen','suplementoEmbarques','suplementoResumen','suplementoResumen.suplementoClausulas',
+    'suplementoResumen.suplementoEmbarques','suplementoResumen.suplementoPuertoEmbarques','suplementoResumen.suplementoDesgloses',
+    'suplementoResumen.suplementoPagos'
+    ,'suplementoClausulas']});
     contratos.forEach(element => {
       element.suplementoResumen.sort((a, b) => (b.fecha.getFullYear()+b.fecha.getMonth()+b.fecha.getDate()+b.fecha.getHours()+b.fecha.getMinutes()+b.fecha.getSeconds())
       - (a.fecha.getFullYear()+a.fecha.getMonth()+a.fecha.getDate()+a.fecha.getHours()+a.fecha.getMinutes()+a.fecha.getSeconds()));
@@ -2571,16 +2826,196 @@ export class ContratosService {
   }
 
   async findOne(id: number) : Promise<Contratos> {
-    return await this.contratoRepository.findOne(id,{relations:['contratoClausulas','documentacionContratos','embarques','facturaResumen',
-    'suplementoEmbarques','suplementoResumen','suplementoClausulas']});
+    return await this.contratoRepository.findOne(id,{relations:['contratoClausulas','documentacionContratos','embarques','embarques.puertoEmbarques',
+    'embarques.pagos','embarques.contratoDesgloses','facturaResumen','suplementoEmbarques','suplementoResumen','suplementoResumen.suplementoClausulas',
+    'suplementoResumen.suplementoEmbarques','suplementoResumen.suplementoPuertoEmbarques','suplementoResumen.suplementoDesgloses',
+    'suplementoResumen.suplementoPagos'
+    ,'suplementoClausulas']});
   }
 
-  async findOneActualizado(id: number, mostrar: number) : Promise<Contratos> {
+  async findOneUltimoSuplemento(id: number) : Promise<Contratos> {
     return new Promise<Contratos>(async (resolve, reject) => {
-      let contrato = await this.contratoRepository.findOne(id,{relations:['contratoClausulas','documentacionContratos','embarques','facturaResumen',
-      'suplementoEmbarques','suplementoResumen','suplementoClausulas']});
+      let contrato = await this.contratoRepository.findOne(id,{relations:['contratoClausulas','documentacionContratos','embarques','embarques.puertoEmbarques',
+      'embarques.pagos','embarques.contratoDesgloses','facturaResumen','suplementoEmbarques','suplementoResumen','suplementoResumen.suplementoClausulas',
+      'suplementoResumen.suplementoEmbarques','suplementoResumen.suplementoPuertoEmbarques','suplementoResumen.suplementoDesgloses',
+      'suplementoResumen.suplementoPagos'
+      ,'suplementoClausulas']});
 
-      if(contrato.suplementoResumen){
+      if(contrato.suplementoResumen.length == 0){
+        reject("El contrato seleccionado no tiene suplementos");
+      }
+
+      if(contrato.suplementoResumen.length > 0){
+          contrato.suplementoResumen.sort((a, b) => (a.fecha.getFullYear()+a.fecha.getMonth()+a.fecha.getDate()+a.fecha.getHours()+a.fecha.getMinutes()+a.fecha.getSeconds())
+        - (b.fecha.getFullYear()+b.fecha.getMonth()+b.fecha.getDate()+b.fecha.getHours()+b.fecha.getMinutes()+b.fecha.getSeconds()));
+
+          let ultimoSuplemento = contrato.suplementoResumen[contrato.suplementoResumen.length - 1];
+          contrato.idBasesGenerales = contrato.idBasesGenerales;
+          contrato.idCMarco = contrato.idCMarco;
+          contrato.idMoneda = ultimoSuplemento.idMoneda;
+          contrato.idFormaEntrega = ultimoSuplemento.idFormaEntrega;
+          contrato.idNegociacion = ultimoSuplemento.idNegociacion;
+          contrato.idIncoterm = ultimoSuplemento.idIncoterm;
+          contrato.realizadoPor = ultimoSuplemento.suplementadoPor;
+          contrato.firmadoPor = ultimoSuplemento.firma;
+          contrato.modificadoPor = ultimoSuplemento.suplementadoPor;
+          contrato.lugarFirma = ultimoSuplemento.lugarFirma;
+          contrato.consecutivo = ultimoSuplemento.consecutivo;
+          contrato.idPais = ultimoSuplemento.idPais
+          contrato.cancelado = ultimoSuplemento.cancelado;
+          contrato.terminado = ultimoSuplemento.terminadoS;
+          contrato.modificado = ultimoSuplemento.modificado;
+          contrato.idEmpresaSeguro = ultimoSuplemento.idEmpSeguro;
+          contrato.idEmpresaNaviera = ultimoSuplemento.idEmpNaviera;
+          contrato.lugarEntrega = ultimoSuplemento.lugarEntrega;
+          contrato.notas = ultimoSuplemento.notas;
+          contrato.permitirEmbarquesParciales = ultimoSuplemento.permitirEmbarquesParciales;
+          contrato.cantidadEp = ultimoSuplemento.cantidadEp;
+          contrato.permitirEntregas = ultimoSuplemento.permitirEntregas;
+          contrato.permitirTrasbordos = ultimoSuplemento.permitirTrasbordos;
+          contrato.producto = ultimoSuplemento.producto;
+          contrato.noEntregasParciales = ultimoSuplemento.noEntregasParciales;
+          contrato.fechaElaboracion = ultimoSuplemento.fecha;
+          contrato.fechaInicial = ultimoSuplemento.fInicial;
+          contrato.fechaFinal = ultimoSuplemento.fFinal;
+          contrato.fechaFirma = ultimoSuplemento.fFirma;
+          contrato.fechaRecepcion = ultimoSuplemento.fRecepcion;
+          contrato.fechaArribo = ultimoSuplemento.fArribo;
+          contrato.fechaPFirma = ultimoSuplemento.fechaPFirma;
+          contrato.financiamiento = ultimoSuplemento.financiamiento;
+          contrato.tasaMoneda = ultimoSuplemento.tasaMoneda;
+          contrato.fechaTasa = ultimoSuplemento.fechaTasa;
+          contrato.pFin = ultimoSuplemento.pFin;
+          contrato.gastosLogisticos = ultimoSuplemento.gastosLogisticos;
+
+          let clausulasContrato: ContratoClausulas[] = [];
+          let desglosesContrato: ContratoDesglose[] = [];
+          let embarquesContrato: Embarques[] = [];
+          let puertoEmbarques: PuertoEmbarque[] = [];
+          let pagosEmbarques: Pagos[] = [];
+          let clausulasSuplemento = ultimoSuplemento.suplementoClausulas;
+          
+          for (let index = 0; index < clausulasSuplemento.length; index++) {
+            const clausula = clausulasSuplemento[index];
+            
+            var contratoClausula = new ContratoClausulas();
+            contratoClausula.idContrato = clausula.idContrato;
+            contratoClausula.contenido = clausula.txClausula;
+            contratoClausula.noClausula = clausula.noClausula;
+            contratoClausula.idContratoClausulas = null;
+            
+            clausulasContrato.push(contratoClausula)        
+          }
+          contrato.contratoClausulas = clausulasContrato;
+
+          let embarquesSuplemento = ultimoSuplemento.suplementoEmbarques;
+            for (let index = 0; index < embarquesSuplemento.length; index++) {
+                const embarque = embarquesSuplemento[index];    
+                let supRes = await this.suplementoResumenService.findOne(embarque.idSuplementoResumen);          
+                
+                var contratoEmbarque = new Embarques();
+                contratoEmbarque.idEmbarque = embarque.idEmbarque;
+                contratoEmbarque.idContrato = embarque.idContrato;
+                contratoEmbarque.idEjecutivo = supRes.suplementadoPor;
+                contratoEmbarque.fechaEntrega = embarque.fechaEntrega;
+                contratoEmbarque.numero = embarque.numero;
+                contratoEmbarque.descuento = embarque.descuento;
+                contratoEmbarque.terminado = embarque.terminado;
+                contratoEmbarque.cancelado = embarque.cancelado;
+                contratoEmbarque.porFirmar = embarque.porFirmar;
+                contratoEmbarque.qtyCnt = embarque.qtyCnt;
+                contratoEmbarque.flete = embarque.flete;
+                contratoEmbarque.seguro = embarque.seguro;
+                contratoEmbarque.financiamiento = embarque.financiamiento;
+                contratoEmbarque.idEmpresaNaviera = embarque.idEmpresaNaviera;
+                contratoEmbarque.inspeccion = embarque.inspeccion;
+                contratoEmbarque.otros = embarque.otros;
+                contratoEmbarque.c20 = embarque.c20;
+                contratoEmbarque.c40 = embarque.c40;
+                contratoEmbarque.actSci = embarque.actSci;
+                
+                embarquesContrato.push(contratoEmbarque);
+
+                let puertoEmbarquesSuplemento = ultimoSuplemento.suplementoPuertoEmbarques.filter(desglose=> desglose.idEmbarque == embarque.idEmbarque);;
+                for(let index = 0; index < puertoEmbarquesSuplemento.length; index++){
+                  const puertoEmbarqueSuplemento = puertoEmbarquesSuplemento[index];
+                  var puertoEmbarque = new PuertoEmbarque();
+                  puertoEmbarque.idPuertoEmbarque = puertoEmbarqueSuplemento.idPuertoEmbarque;
+                  puertoEmbarque.idEmbarque = puertoEmbarqueSuplemento.idEmbarque;
+                  puertoEmbarque.idPuertoOrigen = puertoEmbarqueSuplemento.idPuertoOrigen;
+                  puertoEmbarque.idPuertoDestino = puertoEmbarqueSuplemento.idPuertoDestino;
+                  puertoEmbarques.push(puertoEmbarque);
+                }
+
+                let pagos = ultimoSuplemento.suplementoPagos.filter(desglose=> desglose.idEmbarque == embarque.idEmbarque);;
+                for(let index = 0; index < pagos.length; index++){
+                  const pago = pagos[index];
+                  var pagoEmbarque = new Pagos();
+                  pagoEmbarque.idPago = pago.idPago;
+                  pagoEmbarque.idEmbarque = pago.idEmbarque;
+                  pagoEmbarque.idFormaPago = pago.idFormaPago;
+                  pagoEmbarque.idPagosAPartirDe = pago.aPartirDe;
+                  pagoEmbarque.plazoPago = pago.plazoPago;
+                  pagoEmbarque.porciento = pago.porciento;
+                  pagosEmbarques.push(pagoEmbarque);
+                }
+                
+                
+                let desglosesSuplemento = ultimoSuplemento.suplementoDesgloses.filter(desglose=> desglose.idEmbarque == embarque.idEmbarque);
+                for (let index = 0; index < desglosesSuplemento.length; index++) {
+                  const desglose = desglosesSuplemento[index];
+                  var contratoDesglose = new ContratoDesglose();
+                  contratoDesglose.idContratoDesglose = null;
+                  contratoDesglose.idEmbarque = desglose.idEmbarque;
+                  contratoDesglose.idReferencia = desglose.idEmbarque;
+                  contratoDesglose.idCodigo = desglose.idCodigo;
+                  contratoDesglose.descripcionAx = desglose.descripcionSp;
+                  contratoDesglose.idUnidadMedida = desglose.idUnidadMedida;
+                  contratoDesglose.cantidadPorCarton = desglose.cantidadPorCarton;
+                  contratoDesglose.paquete = desglose.paquete;
+                  contratoDesglose.cantidadCartones = desglose.cantidadCartones;
+                  contratoDesglose.volumen = desglose.volumen;
+                  contratoDesglose.precio = desglose.precio;
+                  contratoDesglose.precioPaquete = desglose.precioPaquete;
+                  contratoDesglose.packing = desglose.packing;
+                  contratoDesglose.cajas = desglose.cajas;
+
+                  desglosesContrato.push(contratoDesglose);
+                }
+              }
+              contrato.embarques = embarquesContrato;
+              for(let index = 0; index < contrato.embarques.length; index++){
+                const embarque = contrato.embarques[index];
+                let desgloses = desglosesContrato.filter(desglose=> desglose.idEmbarque == embarque.idEmbarque);
+                contrato.embarques[index].contratoDesgloses = desgloses;
+              }
+
+              for(let index = 0; index < contrato.embarques.length; index++){
+                const embarque = contrato.embarques[index];
+                let listaPuertoEmbarque = puertoEmbarques.filter(puertoEmbarque=> puertoEmbarque.idEmbarque == embarque.idEmbarque);
+                contrato.embarques[index].puertoEmbarques = listaPuertoEmbarque;
+              }
+
+              for(let index = 0; index < contrato.embarques.length; index++){
+                const embarque = contrato.embarques[index];
+                let listaPagos = pagosEmbarques.filter(pagoEmbarque=> pagoEmbarque.idEmbarque == embarque.idEmbarque);
+                contrato.embarques[index].pagos = listaPagos;
+              }
+         
+      }
+    resolve(contrato);
+    });  
+  }
+
+  async findOneSuplementoEspecifico(id: number, mostrar: number) : Promise<Contratos> {
+    return new Promise<Contratos>(async (resolve, reject) => {
+      let contrato = await this.contratoRepository.findOne(id,{relations:['contratoClausulas','documentacionContratos','embarques','embarques.puertoEmbarques',
+      'embarques.pagos','embarques.contratoDesgloses','facturaResumen','suplementoEmbarques','suplementoResumen','suplementoResumen.suplementoClausulas',
+      'suplementoResumen.suplementoEmbarques','suplementoResumen.suplementoPuertoEmbarques','suplementoResumen.suplementoDesgloses',
+      'suplementoResumen.suplementoPagos'
+      ,'suplementoClausulas']});
+
+      if(contrato.suplementoResumen.length > 0){
         if(mostrar >= contrato.suplementoResumen.length || mostrar < 0){
           reject("Indice inválido");
         }
@@ -2651,11 +3086,12 @@ export class ContratosService {
           let embarquesSuplemento = ultimoSuplemento.suplementoEmbarques;
             for (let index = 0; index < embarquesSuplemento.length; index++) {
                 const embarque = embarquesSuplemento[index];
+                let supRes = await this.suplementoResumenService.findOne(embarque.idSuplementoResumen);
                 
                 var contratoEmbarque = new Embarques();
                 contratoEmbarque.idEmbarque = embarque.idEmbarque;
                 contratoEmbarque.idContrato = embarque.idContrato;
-                contratoEmbarque.idEjecutivo = embarque.suplementoResumen.suplementadoPor;
+                contratoEmbarque.idEjecutivo = supRes.suplementadoPor;
                 contratoEmbarque.fechaEntrega = embarque.fechaEntrega;
                 contratoEmbarque.numero = embarque.numero;
                 contratoEmbarque.descuento = embarque.descuento;
