@@ -2833,23 +2833,24 @@ export class ContratosService {
     ,'suplementoClausulas']});
   }
 
-  async findOneUltimoSuplemento(id: number) : Promise<Contratos> {
+  async findOneUltimoSuplementoParaUpdate(id: number) : Promise<Contratos> {
     return new Promise<Contratos>(async (resolve, reject) => {
-      let contrato = await this.contratoRepository.findOne(id,{relations:['contratoClausulas','documentacionContratos','embarques','embarques.puertoEmbarques',
+      let contratoViejo = await this.contratoRepository.findOne(id,{relations:['contratoClausulas','documentacionContratos','embarques','embarques.puertoEmbarques',
       'embarques.pagos','embarques.contratoDesgloses','facturaResumen','suplementoEmbarques','suplementoResumen','suplementoResumen.suplementoClausulas',
       'suplementoResumen.suplementoEmbarques','suplementoResumen.suplementoPuertoEmbarques','suplementoResumen.suplementoDesgloses',
       'suplementoResumen.suplementoPagos'
       ,'suplementoClausulas']});
 
-      if(contrato.suplementoResumen.length == 0){
-        reject("El contrato seleccionado no tiene suplementos");
+      if(contratoViejo.suplementoResumen.length == 0){
+        resolve(contratoViejo);
       }
 
-      if(contrato.suplementoResumen.length > 0){
-          contrato.suplementoResumen.sort((a, b) => (a.fecha.getFullYear()+a.fecha.getMonth()+a.fecha.getDate()+a.fecha.getHours()+a.fecha.getMinutes()+a.fecha.getSeconds())
+      if(contratoViejo.suplementoResumen.length > 0){
+        contratoViejo.suplementoResumen.sort((a, b) => (a.fecha.getFullYear()+a.fecha.getMonth()+a.fecha.getDate()+a.fecha.getHours()+a.fecha.getMinutes()+a.fecha.getSeconds())
         - (b.fecha.getFullYear()+b.fecha.getMonth()+b.fecha.getDate()+b.fecha.getHours()+b.fecha.getMinutes()+b.fecha.getSeconds()));
 
-          let ultimoSuplemento = contrato.suplementoResumen[contrato.suplementoResumen.length - 1];
+          let ultimoSuplemento = contratoViejo.suplementoResumen[contratoViejo.suplementoResumen.length - 1];
+          let contrato = new Contratos();
           contrato.idBasesGenerales = contrato.idBasesGenerales;
           contrato.idCMarco = contrato.idCMarco;
           contrato.idMoneda = ultimoSuplemento.idMoneda;
@@ -3001,30 +3002,209 @@ export class ContratosService {
                 let listaPagos = pagosEmbarques.filter(pagoEmbarque=> pagoEmbarque.idEmbarque == embarque.idEmbarque);
                 contrato.embarques[index].pagos = listaPagos;
               }
-         
+              resolve(contrato);
       }
-    resolve(contrato);
     });  
   }
 
-  async findOneSuplementoEspecifico(id: number, mostrar: number) : Promise<Contratos> {
+  async findOneUltimoSuplemento(id: number) : Promise<Contratos> {
     return new Promise<Contratos>(async (resolve, reject) => {
-      let contrato = await this.contratoRepository.findOne(id,{relations:['contratoClausulas','documentacionContratos','embarques','embarques.puertoEmbarques',
+      let contratoViejo = await this.contratoRepository.findOne(id,{relations:['contratoClausulas','documentacionContratos','embarques','embarques.puertoEmbarques',
       'embarques.pagos','embarques.contratoDesgloses','facturaResumen','suplementoEmbarques','suplementoResumen','suplementoResumen.suplementoClausulas',
       'suplementoResumen.suplementoEmbarques','suplementoResumen.suplementoPuertoEmbarques','suplementoResumen.suplementoDesgloses',
       'suplementoResumen.suplementoPagos'
       ,'suplementoClausulas']});
 
-      if(contrato.suplementoResumen.length > 0){
-        if(mostrar >= contrato.suplementoResumen.length || mostrar < 0){
+      if(contratoViejo.suplementoResumen.length == 0){
+        reject("El contrato seleccionado no tiene suplementos");
+      }
+
+      if(contratoViejo.suplementoResumen.length > 0){
+        contratoViejo.suplementoResumen.sort((a, b) => (a.fecha.getFullYear()+a.fecha.getMonth()+a.fecha.getDate()+a.fecha.getHours()+a.fecha.getMinutes()+a.fecha.getSeconds())
+        - (b.fecha.getFullYear()+b.fecha.getMonth()+b.fecha.getDate()+b.fecha.getHours()+b.fecha.getMinutes()+b.fecha.getSeconds()));
+
+          let ultimoSuplemento = contratoViejo.suplementoResumen[contratoViejo.suplementoResumen.length - 1];
+          let contrato = new Contratos();
+          contrato.idBasesGenerales = contrato.idBasesGenerales;
+          contrato.idCMarco = contrato.idCMarco;
+          contrato.idMoneda = ultimoSuplemento.idMoneda;
+          contrato.idFormaEntrega = ultimoSuplemento.idFormaEntrega;
+          contrato.idNegociacion = ultimoSuplemento.idNegociacion;
+          contrato.idIncoterm = ultimoSuplemento.idIncoterm;
+          contrato.realizadoPor = ultimoSuplemento.suplementadoPor;
+          contrato.firmadoPor = ultimoSuplemento.firma;
+          contrato.modificadoPor = ultimoSuplemento.suplementadoPor;
+          contrato.lugarFirma = ultimoSuplemento.lugarFirma;
+          contrato.consecutivo = ultimoSuplemento.consecutivo;
+          contrato.idPais = ultimoSuplemento.idPais
+          contrato.cancelado = ultimoSuplemento.cancelado;
+          contrato.terminado = ultimoSuplemento.terminadoS;
+          contrato.modificado = ultimoSuplemento.modificado;
+          contrato.idEmpresaSeguro = ultimoSuplemento.idEmpSeguro;
+          contrato.idEmpresaNaviera = ultimoSuplemento.idEmpNaviera;
+          contrato.lugarEntrega = ultimoSuplemento.lugarEntrega;
+          contrato.notas = ultimoSuplemento.notas;
+          contrato.permitirEmbarquesParciales = ultimoSuplemento.permitirEmbarquesParciales;
+          contrato.cantidadEp = ultimoSuplemento.cantidadEp;
+          contrato.permitirEntregas = ultimoSuplemento.permitirEntregas;
+          contrato.permitirTrasbordos = ultimoSuplemento.permitirTrasbordos;
+          contrato.producto = ultimoSuplemento.producto;
+          contrato.noEntregasParciales = ultimoSuplemento.noEntregasParciales;
+          contrato.fechaElaboracion = ultimoSuplemento.fecha;
+          contrato.fechaInicial = ultimoSuplemento.fInicial;
+          contrato.fechaFinal = ultimoSuplemento.fFinal;
+          contrato.fechaFirma = ultimoSuplemento.fFirma;
+          contrato.fechaRecepcion = ultimoSuplemento.fRecepcion;
+          contrato.fechaArribo = ultimoSuplemento.fArribo;
+          contrato.fechaPFirma = ultimoSuplemento.fechaPFirma;
+          contrato.financiamiento = ultimoSuplemento.financiamiento;
+          contrato.tasaMoneda = ultimoSuplemento.tasaMoneda;
+          contrato.fechaTasa = ultimoSuplemento.fechaTasa;
+          contrato.pFin = ultimoSuplemento.pFin;
+          contrato.gastosLogisticos = ultimoSuplemento.gastosLogisticos;
+
+          let clausulasContrato: ContratoClausulas[] = [];
+          let desglosesContrato: ContratoDesglose[] = [];
+          let embarquesContrato: Embarques[] = [];
+          let puertoEmbarques: PuertoEmbarque[] = [];
+          let pagosEmbarques: Pagos[] = [];
+          let clausulasSuplemento = ultimoSuplemento.suplementoClausulas;
+          
+          for (let index = 0; index < clausulasSuplemento.length; index++) {
+            const clausula = clausulasSuplemento[index];
+            
+            var contratoClausula = new ContratoClausulas();
+            contratoClausula.idContrato = clausula.idContrato;
+            contratoClausula.contenido = clausula.txClausula;
+            contratoClausula.noClausula = clausula.noClausula;
+            contratoClausula.idContratoClausulas = null;
+            
+            clausulasContrato.push(contratoClausula)        
+          }
+          contrato.contratoClausulas = clausulasContrato;
+
+          let embarquesSuplemento = ultimoSuplemento.suplementoEmbarques;
+            for (let index = 0; index < embarquesSuplemento.length; index++) {
+                const embarque = embarquesSuplemento[index];    
+                let supRes = await this.suplementoResumenService.findOne(embarque.idSuplementoResumen);          
+                
+                var contratoEmbarque = new Embarques();
+                contratoEmbarque.idEmbarque = embarque.idEmbarque;
+                contratoEmbarque.idContrato = embarque.idContrato;
+                contratoEmbarque.idEjecutivo = supRes.suplementadoPor;
+                contratoEmbarque.fechaEntrega = embarque.fechaEntrega;
+                contratoEmbarque.numero = embarque.numero;
+                contratoEmbarque.descuento = embarque.descuento;
+                contratoEmbarque.terminado = embarque.terminado;
+                contratoEmbarque.cancelado = embarque.cancelado;
+                contratoEmbarque.porFirmar = embarque.porFirmar;
+                contratoEmbarque.qtyCnt = embarque.qtyCnt;
+                contratoEmbarque.flete = embarque.flete;
+                contratoEmbarque.seguro = embarque.seguro;
+                contratoEmbarque.financiamiento = embarque.financiamiento;
+                contratoEmbarque.idEmpresaNaviera = embarque.idEmpresaNaviera;
+                contratoEmbarque.inspeccion = embarque.inspeccion;
+                contratoEmbarque.otros = embarque.otros;
+                contratoEmbarque.c20 = embarque.c20;
+                contratoEmbarque.c40 = embarque.c40;
+                contratoEmbarque.actSci = embarque.actSci;
+                
+                embarquesContrato.push(contratoEmbarque);
+
+                let puertoEmbarquesSuplemento = ultimoSuplemento.suplementoPuertoEmbarques.filter(desglose=> desglose.idEmbarque == embarque.idEmbarque);;
+                for(let index = 0; index < puertoEmbarquesSuplemento.length; index++){
+                  const puertoEmbarqueSuplemento = puertoEmbarquesSuplemento[index];
+                  var puertoEmbarque = new PuertoEmbarque();
+                  puertoEmbarque.idPuertoEmbarque = puertoEmbarqueSuplemento.idPuertoEmbarque;
+                  puertoEmbarque.idEmbarque = puertoEmbarqueSuplemento.idEmbarque;
+                  puertoEmbarque.idPuertoOrigen = puertoEmbarqueSuplemento.idPuertoOrigen;
+                  puertoEmbarque.idPuertoDestino = puertoEmbarqueSuplemento.idPuertoDestino;
+                  puertoEmbarques.push(puertoEmbarque);
+                }
+
+                let pagos = ultimoSuplemento.suplementoPagos.filter(desglose=> desglose.idEmbarque == embarque.idEmbarque);;
+                for(let index = 0; index < pagos.length; index++){
+                  const pago = pagos[index];
+                  var pagoEmbarque = new Pagos();
+                  pagoEmbarque.idPago = pago.idPago;
+                  pagoEmbarque.idEmbarque = pago.idEmbarque;
+                  pagoEmbarque.idFormaPago = pago.idFormaPago;
+                  pagoEmbarque.idPagosAPartirDe = pago.aPartirDe;
+                  pagoEmbarque.plazoPago = pago.plazoPago;
+                  pagoEmbarque.porciento = pago.porciento;
+                  pagosEmbarques.push(pagoEmbarque);
+                }
+                
+                
+                let desglosesSuplemento = ultimoSuplemento.suplementoDesgloses.filter(desglose=> desglose.idEmbarque == embarque.idEmbarque);
+                for (let index = 0; index < desglosesSuplemento.length; index++) {
+                  const desglose = desglosesSuplemento[index];
+                  var contratoDesglose = new ContratoDesglose();
+                  contratoDesglose.idContratoDesglose = null;
+                  contratoDesglose.idEmbarque = desglose.idEmbarque;
+                  contratoDesglose.idReferencia = desglose.idEmbarque;
+                  contratoDesglose.idCodigo = desglose.idCodigo;
+                  contratoDesglose.descripcionAx = desglose.descripcionSp;
+                  contratoDesglose.idUnidadMedida = desglose.idUnidadMedida;
+                  contratoDesglose.cantidadPorCarton = desglose.cantidadPorCarton;
+                  contratoDesglose.paquete = desglose.paquete;
+                  contratoDesglose.cantidadCartones = desglose.cantidadCartones;
+                  contratoDesglose.volumen = desglose.volumen;
+                  contratoDesglose.precio = desglose.precio;
+                  contratoDesglose.precioPaquete = desglose.precioPaquete;
+                  contratoDesglose.packing = desglose.packing;
+                  contratoDesglose.cajas = desglose.cajas;
+
+                  desglosesContrato.push(contratoDesglose);
+                }
+              }
+              contrato.embarques = embarquesContrato;
+              for(let index = 0; index < contrato.embarques.length; index++){
+                const embarque = contrato.embarques[index];
+                let desgloses = desglosesContrato.filter(desglose=> desglose.idEmbarque == embarque.idEmbarque);
+                contrato.embarques[index].contratoDesgloses = desgloses;
+              }
+
+              for(let index = 0; index < contrato.embarques.length; index++){
+                const embarque = contrato.embarques[index];
+                let listaPuertoEmbarque = puertoEmbarques.filter(puertoEmbarque=> puertoEmbarque.idEmbarque == embarque.idEmbarque);
+                contrato.embarques[index].puertoEmbarques = listaPuertoEmbarque;
+              }
+
+              for(let index = 0; index < contrato.embarques.length; index++){
+                const embarque = contrato.embarques[index];
+                let listaPagos = pagosEmbarques.filter(pagoEmbarque=> pagoEmbarque.idEmbarque == embarque.idEmbarque);
+                contrato.embarques[index].pagos = listaPagos;
+              }
+              resolve(contrato);   
+      }
+    resolve(contratoViejo);
+    });  
+  }
+
+  async findOneSuplementoEspecifico(id: number, mostrar: number) : Promise<Contratos> {
+    return new Promise<Contratos>(async (resolve, reject) => {
+      let contratoViejo = await this.contratoRepository.findOne(id,{relations:['contratoClausulas','documentacionContratos','embarques','embarques.puertoEmbarques',
+      'embarques.pagos','embarques.contratoDesgloses','facturaResumen','suplementoEmbarques','suplementoResumen','suplementoResumen.suplementoClausulas',
+      'suplementoResumen.suplementoEmbarques','suplementoResumen.suplementoPuertoEmbarques','suplementoResumen.suplementoDesgloses',
+      'suplementoResumen.suplementoPagos'
+      ,'suplementoClausulas']});
+
+      if(contratoViejo.suplementoResumen.length == 0){
+        reject("El contrato seleccionado no tiene suplementos");
+      }
+
+      if(contratoViejo.suplementoResumen.length > 0){
+        if(mostrar >= contratoViejo.suplementoResumen.length || mostrar < 0){
           reject("Indice inválido");
         }
 
         else{
-          contrato.suplementoResumen.sort((a, b) => (a.fecha.getFullYear()+a.fecha.getMonth()+a.fecha.getDate()+a.fecha.getHours()+a.fecha.getMinutes()+a.fecha.getSeconds())
+          contratoViejo.suplementoResumen.sort((a, b) => (a.fecha.getFullYear()+a.fecha.getMonth()+a.fecha.getDate()+a.fecha.getHours()+a.fecha.getMinutes()+a.fecha.getSeconds())
         - (b.fecha.getFullYear()+b.fecha.getMonth()+b.fecha.getDate()+b.fecha.getHours()+b.fecha.getMinutes()+b.fecha.getSeconds()));
 
-          let ultimoSuplemento = contrato.suplementoResumen[mostrar];
+          let ultimoSuplemento = contratoViejo.suplementoResumen[mostrar];
+          let contrato = new Contratos();
           contrato.idBasesGenerales = contrato.idBasesGenerales;
           contrato.idCMarco = contrato.idCMarco;
           contrato.idMoneda = ultimoSuplemento.idMoneda;
@@ -3176,9 +3356,10 @@ export class ContratosService {
                 let listaPagos = pagosEmbarques.filter(pagoEmbarque=> pagoEmbarque.idEmbarque == embarque.idEmbarque);
                 contrato.embarques[index].pagos = listaPagos;
               }
+              resolve(contrato);
         } 
       }
-    resolve(contrato);
+    resolve(contratoViejo);
     });  
   }
 

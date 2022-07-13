@@ -59,6 +59,12 @@ export class ContratosResolver {
 
   @Query(() => Contratos)
   @UseGuards(new AuthGuard())
+  findOneContratosUltimoSuplementoParaUpdate(@Args('id', { type: () => Int }) id: number) {
+    return this.contratosService.findOneUltimoSuplementoParaUpdate(id);
+  }
+
+  @Query(() => Contratos)
+  @UseGuards(new AuthGuard())
   findOneContratosUltimoSuplemento(@Args('id', { type: () => Int }) id: number) {
     return this.contratosService.findOneUltimoSuplemento(id);
   }
