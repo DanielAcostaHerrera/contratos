@@ -12,14 +12,5 @@ export class CreateTiposDeClausulaInput {
   orden: number;
 
   @Field()
-  basesG: boolean;
-
-  @Field()
-  compras: boolean;
-
-  @Field()
-  cMarco: boolean;
-
-  @Field()
   excepcional: boolean;
 }

@@ -23,21 +23,9 @@ export class TiposDeClausulas {
   @Field()
   nombre: string;
 
-  @Column("int", { name: "Orden", default: () => "(0)" })
-  @Field(() => Int)
+  @Column("int", { name: "Orden" })
+  @Field()
   orden: number;
-
-  @Column("bit", { name: "BasesG", default: () => "(1)" })
-  @Field()
-  basesG: boolean;
-
-  @Column("bit", { name: "Compras", default: () => "(1)" })
-  @Field()
-  compras: boolean;
-
-  @Column("bit", { name: "CMarco", default: () => "(1)" })
-  @Field()
-  cMarco: boolean;
 
   @Column("bit", { name: "Excepcional", default: () => "(0)" })
   @Field()
