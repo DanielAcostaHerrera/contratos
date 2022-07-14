@@ -102,7 +102,7 @@ export class ContratosService {
         suplementoResumen.operacion = negociacion.operacion;
         suplementoResumen.modificado = false;
         suplementoResumen.terminadoS = false;
-        suplementoResumen.idEjecutivo = ultimoSuplemento.suplementadoPor;
+        suplementoResumen.idEjecutivo = ultimoSuplemento.idEjecutivo;
         suplementoResumen.firma = ultimoSuplemento.firma;
         suplementoResumen.idMoneda = ultimoSuplemento.idMoneda;
         suplementoResumen.idEmpSeguro = ultimoSuplemento.idEmpSeguro;
@@ -2307,7 +2307,7 @@ export class ContratosService {
         var contratoViejo = await this.findOne(createContratoInput.idContrato);
         var negociacion = await this.negociacionResumenService.findOne(createContratoInput.idNegociacion);
 
-        if(!contratoViejo.suplementoResumen){
+        if(contratoViejo.suplementoResumen.length == 0){
           await this.contratoClausulaService.removeSeveralByContratoId(createContratoInput.idContrato);
           
           createContratoInput.modificado = true;
@@ -2409,7 +2409,7 @@ export class ContratosService {
           }
         }
 
-        if(contratoViejo.suplementoResumen){
+        if(contratoViejo.suplementoResumen.length > 0){
           contratoViejo.suplementoResumen.sort((a, b) => (b.fecha.getFullYear()+b.fecha.getMonth()+b.fecha.getDate()+b.fecha.getHours()+b.fecha.getMinutes()+b.fecha.getSeconds())
         - (a.fecha.getFullYear()+a.fecha.getMonth()+a.fecha.getDate()+a.fecha.getHours()+a.fecha.getMinutes()+a.fecha.getSeconds()));
          let ultimoSuplemento = contratoViejo.suplementoResumen[0];
@@ -2423,7 +2423,7 @@ export class ContratosService {
           suplementoResumen.operacion = negociacion.operacion;
           suplementoResumen.modificado = true;
           suplementoResumen.terminadoS = false;
-          suplementoResumen.idEjecutivo = createContratoInput.firmadoPor;
+          suplementoResumen.idEjecutivo = createContratoInput.realizadoPor;
           suplementoResumen.firma = createContratoInput.firmadoPor;
           suplementoResumen.idMoneda = createContratoInput.idMoneda;
           suplementoResumen.idEmpSeguro = createContratoInput.idEmpresaSeguro;
@@ -2658,116 +2658,6 @@ export class ContratosService {
             }
           }
         }
-      }
- 
-      if(result && esNuevo){
-        await this.logsService.save(usuarioToken.ejecutivo.nombre, "Insertado un nuevo contrato con número consecutivo "+result.consecutivo+"");
-      }
-      if(result && !esNuevo){
-        var texto = "Modificado el contrato con número consecutivo "+result.consecutivo+"";
-          if(contratoViejo.idBasesGenerales != result.idBasesGenerales){
-            texto += ", cambiada la base general empleada";
-          }
-          if(contratoViejo.idCMarco != result.idCMarco){
-            texto += ", cambiada la base de contrato marco empleada";
-          }
-          if(contratoViejo.idMoneda != result.idMoneda){
-            texto += ", cambiada la moneda";
-          }
-          if(contratoViejo.idFormaEntrega != result.idFormaEntrega){
-            texto += ", cambiada la forma de entrega";
-          }
-          if(contratoViejo.realizadoPor != result.realizadoPor){
-            texto += ", cambiado el ejecutivo que realiza el contrato";
-          }
-          if(contratoViejo.firmadoPor != result.firmadoPor){
-            texto += ", cambiado el ejecutivo que firma el contrato";
-          }
-          if(contratoViejo.modificadoPor != result.modificadoPor){
-            texto += ", cambiado el ejecutivo que modifica el contrato";
-          }
-          if(contratoViejo.lugarFirma != result.lugarFirma){
-            texto += ", cambiado el lugar de firma";
-          }
-          if(contratoViejo.idIncoterm != result.idIncoterm){
-            texto += ", cambiada la condición de compra";
-          }
-          if(contratoViejo.cancelado != result.cancelado){
-            texto += ", cambiado el estado de cancelado";
-          }
-          if(contratoViejo.terminado != result.terminado){
-            texto += ", cambiado el estado de terminado";
-          }
-          if(contratoViejo.modificado != result.modificado){
-            texto += ", cambiada la fecha de modificado";
-          }
-          if(contratoViejo.idEmpresaSeguro != result.idEmpresaSeguro){
-            texto += ", cambiada la empresa de seguros";
-          }
-          if(contratoViejo.idEmpresaNaviera != result.idEmpresaNaviera){
-            texto += ", cambiada la empresa naviera";
-          }
-          if(contratoViejo.lugarEntrega != result.lugarEntrega){
-            texto += ", cambiado el lugar de entrega";
-          }
-          if(contratoViejo.notas != result.notas){
-            texto += ", cambiadas las notas";
-          }
-          if(contratoViejo.permitirEmbarquesParciales != result.permitirEmbarquesParciales){
-            texto += ", cambiada la capacidad de permitir embarques parciales";
-          }
-          if(contratoViejo.cantidadEp != result.cantidadEp){
-            texto += ", cambiada la cantidadEP";
-          }
-          if(contratoViejo.permitirEntregas != result.permitirEntregas){
-            texto += ", cambiada la capacidad de permitir entregas";
-          }
-          if(contratoViejo.permitirTrasbordos != result.permitirTrasbordos){
-            texto += ", cambiada la capacidad de permitir trasbordos";
-          }
-          if(contratoViejo.producto != result.producto){
-            texto += ", cambiados los productos";
-          }
-          if(contratoViejo.noEntregasParciales != result.noEntregasParciales){
-            texto += ", cambiado el número de entregas parciales";
-          }
-          if(contratoViejo.fechaElaboracion != result.fechaElaboracion){
-            texto += ", cambiada la fecha de elaboración";
-          }
-          if(contratoViejo.fechaInicial != result.fechaInicial){
-            texto += ", cambiada la fecha inicial";
-          }
-          if(contratoViejo.fechaFinal != result.fechaFinal){
-            texto += ", cambiada la fecha final";
-          }
-          if(contratoViejo.fechaFirma != result.fechaFirma){
-            texto += ", cambiada la fecha de firma";
-          }
-          if(contratoViejo.fechaRecepcion != result.fechaRecepcion){
-            texto += ", cambiada la fecha de recepción";
-          }
-          if(contratoViejo.fechaArribo != result.fechaArribo){
-            texto += ", cambiada la fecha de arribo";
-          }
-          if(contratoViejo.fechaPFirma != result.fechaPFirma){
-            texto += ", cambiada la fechaPFirma";
-          }
-          if(contratoViejo.financiamiento != result.financiamiento){
-            texto += ", cambiado el financiamiento";
-          }
-          if(contratoViejo.tasaMoneda != result.tasaMoneda){
-            texto += ", cambiada la tasa de la moneda";
-          }
-          if(contratoViejo.fechaTasa != result.fechaTasa){
-            texto += ", cambiada la fecha de la tasa";
-          }
-          if(contratoViejo.pFin != result.pFin){
-            texto += ", cambiado el precio final";
-          }
-          if(contratoViejo.gastosLogisticos != result.gastosLogisticos){
-            texto += ", cambiados los gastos logísticos";
-          }
-          await this.logsService.save(usuarioToken.ejecutivo.nombre, texto);
       }
      resolve(result);
   });
