@@ -37,9 +37,9 @@ export class Contratos {
   @Field(() => Int)
   idBasesGenerales: number;
 
-  @Column("int", { name: "IdCMarco" })
-  @Field(() => Int)
-  idCMarco: number;
+  @Column("int", { name: "IdCMarco", nullable: true })
+  @Field(() => Int, {nullable: true})
+  idCMarco?: number;
 
   @Column("int", { name: "IdMoneda" })
   @Field(() => Int)
