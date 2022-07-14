@@ -28,10 +28,6 @@ export class Incoterm {
   @Field()
   abreviatura: string;
 
-  @Column("nvarchar", { name: "Nota", nullable: true, length: 500 })
-  @Field()
-  nota: string | null;
-
   @Column("bit", { name: "Activo", default: () => "(1)" })
   @Field()
   activo: boolean;

@@ -11,9 +11,6 @@ export class CreateIncotermInput {
   @Field()
   abreviatura: string;
 
-  @Field({nullable: true})
-  nota: string | null;
-
   @Field()
   activo: boolean;
 }
