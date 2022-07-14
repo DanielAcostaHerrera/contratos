@@ -24,6 +24,9 @@ export class CreateContratoInput {
   idNegociacion: number;
 
   @Field(() => Int)
+  idEjecutivo: number;
+
+  @Field(() => Int)
   realizadoPor: number;
 
   @Field(() => Int)

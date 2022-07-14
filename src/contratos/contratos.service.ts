@@ -240,7 +240,7 @@ export class ContratosService {
         suplementoResumen.operacion = negociacion.operacion;
         suplementoResumen.modificado = false;
         suplementoResumen.terminadoS = false;
-        suplementoResumen.idEjecutivo = contrato.realizadoPor;
+        suplementoResumen.idEjecutivo = contrato.idEjecutivo;
         suplementoResumen.firma = contrato.firmadoPor;
         suplementoResumen.idMoneda = contrato.idMoneda;
         suplementoResumen.idEmpSeguro = contrato.idEmpresaSeguro;
@@ -380,7 +380,7 @@ export class ContratosService {
 
         this.suplementoChangeService.removeSeveralBySuplementoResumenId(suplementoResumen.idSuplementoResumen);
 
-          idEjecutivo = suplementoResumen.suplementadoPor;
+          idEjecutivo = suplementoResumen.idEjecutivo;
           firma = suplementoResumen.firma;
           idMoneda = suplementoResumen.idMoneda;
           idEmpSeguro = suplementoResumen.idEmpSeguro;
@@ -409,17 +409,17 @@ export class ContratosService {
           lugarFirma = suplementoResumen.lugarFirma;
           idIncoterm = suplementoResumen.idIncoterm;
 
-        if(contrato.realizadoPor != idEjecutivo){
+        if(contrato.idEjecutivo != idEjecutivo){
           let suplementoChange = new CreateSuplementoChangeInput();
           let ejecutivoNuevo = await this.ejecutivoService.findOne(idEjecutivo);
-          let ejecutivoViejo = await this.ejecutivoService.findOne(contrato.realizadoPor);
+          let ejecutivoViejo = await this.ejecutivoService.findOne(contrato.idEjecutivo);
           suplementoChange.idEmbarque = null;
           suplementoChange.orden = null;
           suplementoChange.idCambio = 0;
           suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
           suplementoChange.contenidoViejo = ejecutivoViejo.nombre.toString();
           suplementoChange.contenidoNuevo = ejecutivoNuevo.nombre.toString();    
-          suplementoChange.clausula = "Realizado por";
+          suplementoChange.clausula = "Ejecutivo";
           this.suplementoChangeService.save(suplementoChange);
         }
 
@@ -1340,11 +1340,11 @@ export class ContratosService {
 
       let idEjecutivo,firma,idMoneda,idEmpSeguro,idEmpNaviera,lugarEntrega,cancelado,notas,permitirEmbarquesParciales,cantidadEp,permitirEntregas,permitirTrasbordos,
       producto,noEntregasParciales,fInicial: Date,fFinal: Date,fFirma: Date,fRecepcion: Date,fArribo: Date,financiamiento,tasaMoneda,fechaTasa: Date,fechaPFirma,pFin,idNegociacion,gastosLogisticos,
-      lugarFirma,idPais,idIncoterm;
+      lugarFirma,idIncoterm;
 
       this.suplementoChangeService.removeSeveralBySuplementoResumenId(suplementoResumen.idSuplementoResumen);
 
-        idEjecutivo = suplementoResumen.suplementadoPor;
+        idEjecutivo = suplementoResumen.idEjecutivo;
         firma = suplementoResumen.firma;
         idMoneda = suplementoResumen.idMoneda;
         idEmpSeguro = suplementoResumen.idEmpSeguro;
@@ -1373,17 +1373,17 @@ export class ContratosService {
         lugarFirma = suplementoResumen.lugarFirma;
         idIncoterm = suplementoResumen.idIncoterm;
 
-      if(suplementoAnterior.suplementadoPor != idEjecutivo){
+      if(suplementoAnterior.idEjecutivo != idEjecutivo){
         let suplementoChange = new CreateSuplementoChangeInput();
         let ejecutivoNuevo = await this.ejecutivoService.findOne(idEjecutivo);
-        let ejecutivoViejo = await this.ejecutivoService.findOne(suplementoAnterior.suplementadoPor);
+        let ejecutivoViejo = await this.ejecutivoService.findOne(suplementoAnterior.idEjecutivo);
         suplementoChange.idEmbarque = null;
         suplementoChange.orden = null;
         suplementoChange.idCambio = 0;
         suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
         suplementoChange.contenidoViejo = ejecutivoViejo.nombre.toString();
         suplementoChange.contenidoNuevo = ejecutivoNuevo.nombre.toString();    
-        suplementoChange.clausula = "Realizado por";
+        suplementoChange.clausula = "Ejecutivo";
         this.suplementoChangeService.save(suplementoChange);
       }
 
@@ -2299,11 +2299,9 @@ export class ContratosService {
   
   async save(usuarioToken: Usuarios,createContratoInput: CreateContratoInput) : Promise<Contratos> {
     return new Promise<Contratos>(async (resolve, reject) => {
-      var esNuevo = true;
       var result: Contratos;
       var suplementoResumen = new CreateSuplementoResumanInput();
       if(createContratoInput.idContrato){
-        esNuevo = false;
         var contratoViejo = await this.findOne(createContratoInput.idContrato);
         var negociacion = await this.negociacionResumenService.findOne(createContratoInput.idNegociacion);
 
@@ -2339,7 +2337,6 @@ export class ContratosService {
               var contratoEmbarque = new CreateEmbarqueInput();
               contratoEmbarque.idEmbarque = embarque.idEmbarque;
               contratoEmbarque.idContrato = embarque.idContrato;
-              contratoEmbarque.idEjecutivo = embarque.idEjecutivo;
               contratoEmbarque.fechaEntrega = embarque.fechaEntrega;
               contratoEmbarque.numero = embarque.numero;
               contratoEmbarque.descuento = embarque.descuento;
@@ -2423,7 +2420,7 @@ export class ContratosService {
           suplementoResumen.operacion = negociacion.operacion;
           suplementoResumen.modificado = true;
           suplementoResumen.terminadoS = false;
-          suplementoResumen.idEjecutivo = createContratoInput.realizadoPor;
+          suplementoResumen.idEjecutivo = createContratoInput.idEjecutivo;
           suplementoResumen.firma = createContratoInput.firmadoPor;
           suplementoResumen.idMoneda = createContratoInput.idMoneda;
           suplementoResumen.idEmpSeguro = createContratoInput.idEmpresaSeguro;
@@ -2554,7 +2551,6 @@ export class ContratosService {
       }
 
       if(!createContratoInput.idContrato){
-        esNuevo = true;
         var baseGeneral = await this.basesGeneralesService.findOne(createContratoInput.idBasesGenerales);
         var negociacion = await this.negociacionResumenService.findOne(createContratoInput.idNegociacion);
         var cantContratos = baseGeneral.contratos.length;
@@ -2566,6 +2562,7 @@ export class ContratosService {
         createContratoInput.realizadoPor = usuarioToken.idEjecutivo;
         createContratoInput.modificadoPor = null;
         createContratoInput.fechaElaboracion = new Date();
+        
 
         if(createContratoInput.idCMarco){
           var contratoMarco = await this.contratoMarcoService.findOne(createContratoInput.idCMarco);
@@ -2604,7 +2601,6 @@ export class ContratosService {
             var contratoEmbarque = new CreateEmbarqueInput();
             contratoEmbarque.idEmbarque = embarque.idEmbarque;
             contratoEmbarque.idContrato = embarque.idContrato;
-            contratoEmbarque.idEjecutivo = embarque.idEjecutivo;
             contratoEmbarque.fechaEntrega = embarque.fechaEntrega;
             contratoEmbarque.numero = embarque.numero;
             contratoEmbarque.descuento = embarque.descuento;
@@ -2702,6 +2698,7 @@ export class ContratosService {
           contrato.idFormaEntrega = ultimoSuplemento.idFormaEntrega;
           contrato.idNegociacion = ultimoSuplemento.idNegociacion;
           contrato.idIncoterm = ultimoSuplemento.idIncoterm;
+          contrato.idEjecutivo = ultimoSuplemento.idEjecutivo;
           contrato.realizadoPor = ultimoSuplemento.suplementadoPor;
           contrato.firmadoPor = ultimoSuplemento.firma;
           contrato.modificadoPor = ultimoSuplemento.suplementadoPor;
@@ -2761,7 +2758,6 @@ export class ContratosService {
                 var contratoEmbarque = new Embarques();
                 contratoEmbarque.idEmbarque = embarque.idEmbarque;
                 contratoEmbarque.idContrato = embarque.idContrato;
-                contratoEmbarque.idEjecutivo = supRes.suplementadoPor;
                 contratoEmbarque.fechaEntrega = embarque.fechaEntrega;
                 contratoEmbarque.numero = embarque.numero;
                 contratoEmbarque.descuento = embarque.descuento;
@@ -2872,6 +2868,7 @@ export class ContratosService {
           contrato.idBasesGenerales = contrato.idBasesGenerales;
           contrato.idCMarco = contrato.idCMarco;
           contrato.idMoneda = ultimoSuplemento.idMoneda;
+          contrato.idEjecutivo = ultimoSuplemento.idEjecutivo;
           contrato.idFormaEntrega = ultimoSuplemento.idFormaEntrega;
           contrato.idNegociacion = ultimoSuplemento.idNegociacion;
           contrato.idIncoterm = ultimoSuplemento.idIncoterm;
@@ -2934,7 +2931,6 @@ export class ContratosService {
                 var contratoEmbarque = new Embarques();
                 contratoEmbarque.idEmbarque = embarque.idEmbarque;
                 contratoEmbarque.idContrato = embarque.idContrato;
-                contratoEmbarque.idEjecutivo = supRes.suplementadoPor;
                 contratoEmbarque.fechaEntrega = embarque.fechaEntrega;
                 contratoEmbarque.numero = embarque.numero;
                 contratoEmbarque.descuento = embarque.descuento;
@@ -3050,6 +3046,7 @@ export class ContratosService {
           let contrato = new Contratos();
           contrato.idBasesGenerales = contrato.idBasesGenerales;
           contrato.idCMarco = contrato.idCMarco;
+          contrato.idEjecutivo = ultimoSuplemento.idEjecutivo;
           contrato.idMoneda = ultimoSuplemento.idMoneda;
           contrato.idFormaEntrega = ultimoSuplemento.idFormaEntrega;
           contrato.idNegociacion = ultimoSuplemento.idNegociacion;
@@ -3113,7 +3110,6 @@ export class ContratosService {
                 var contratoEmbarque = new Embarques();
                 contratoEmbarque.idEmbarque = embarque.idEmbarque;
                 contratoEmbarque.idContrato = embarque.idContrato;
-                contratoEmbarque.idEjecutivo = supRes.suplementadoPor;
                 contratoEmbarque.fechaEntrega = embarque.fechaEntrega;
                 contratoEmbarque.numero = embarque.numero;
                 contratoEmbarque.descuento = embarque.descuento;
@@ -3250,6 +3246,10 @@ export class ContratosService {
 
   async getNegociacionResumen (Id: number) : Promise<NegociacionResumen>{
     return this.negociacionResumenService.findOne(Id);
+  }
+
+  async getEjecutivo (Id: number) : Promise<Ejecutivos>{
+    return this.ejecutivoService.findOne(Id);
   }
 
   async getEjecutivoRealiza (Id: number) : Promise<Ejecutivos>{

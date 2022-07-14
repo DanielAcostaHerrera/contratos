@@ -119,6 +119,11 @@ export class ContratosResolver {
   }
 
   @ResolveField(() => Ejecutivos, {nullable: true})
+  ejecutivo(@Parent() contratos: Contratos): Promise<Ejecutivos> {
+    return this.contratosService.getEjecutivoRealiza(contratos.idEjecutivo);
+  }
+
+  @ResolveField(() => Ejecutivos, {nullable: true})
   ejecutivoRealiza(@Parent() contratos: Contratos): Promise<Ejecutivos> {
     return this.contratosService.getEjecutivoRealiza(contratos.realizadoPor);
   }

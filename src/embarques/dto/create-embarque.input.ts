@@ -13,9 +13,6 @@ export class CreateEmbarqueInput {
 
   @Field(() => Int,{nullable: true})
   idContrato: number | null;
-  
-  @Field(() => Int,{nullable: true})
-  idEjecutivo: number | null;
 
   @Field(() => Int)
   numero: number;

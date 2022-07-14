@@ -55,6 +55,10 @@ export class Ejecutivos {
   @ManyToOne(() => GruposDeCompras, (grupos) => grupos.ejecutivos)
   @JoinColumn([{ name: "IdGrupo", referencedColumnName: "idGrupo" }])
   grupo: GruposDeCompras;
+
+  @Field(() => [Contratos], {nullable: true})
+  @OneToMany(() => Contratos, (contratos) => contratos.ejecutivo)
+  contratos: Contratos[];
   
   @Field(() => [Contratos], {nullable: true})
   @OneToMany(() => Contratos, (contratos) => contratos.ejecutivoRealiza)
@@ -67,10 +71,6 @@ export class Ejecutivos {
   @Field(() => [Contratos], {nullable: true})
   @OneToMany(() => Contratos, (contratos) => contratos.ejecutivoModifica)
   contratosModifica: Contratos[];
-
-  @Field(() => [Embarques], {nullable: true})
-  @OneToMany(() => Embarques, (embarques) => embarques.ejecutivos)
-  embarques: Embarques[];
 
   @Field(() => [FacturaResumen], {nullable: true})
   @OneToMany(() => FacturaResumen,(facturaResumen) => facturaResumen.ejecutivos)

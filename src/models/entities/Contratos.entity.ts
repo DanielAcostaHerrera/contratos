@@ -53,6 +53,10 @@ export class Contratos {
   @Field(() => Int)
   idNegociacion: number;
 
+  @Column("int", { name: "IdEjecutivo" })
+  @Field(() => Int)
+  idEjecutivo: number;
+
   @Column("int", { name: "RealizadoPor" })
   @Field(() => Int)
   realizadoPor: number;
@@ -221,6 +225,11 @@ export class Contratos {
   @ManyToOne(() => NegociacionResumen,(negociacionResumen) => negociacionResumen.contratos)
   @JoinColumn([{ name: "IdNegociacion", referencedColumnName: "idNegociacion" }])
   negociacionResumen: NegociacionResumen;
+
+  @Field(() => Ejecutivos, {nullable: true})
+  @ManyToOne(() => Ejecutivos, (ejecutivos) => ejecutivos.contratosRealiza)
+  @JoinColumn([{ name: "IdEjecutivo", referencedColumnName: "idEjecutivo" }])
+  ejecutivo: Ejecutivos;
 
   @Field(() => Ejecutivos, {nullable: true})
   @ManyToOne(() => Ejecutivos, (ejecutivos) => ejecutivos.contratosRealiza)

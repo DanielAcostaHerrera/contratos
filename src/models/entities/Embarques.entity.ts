@@ -36,10 +36,6 @@ export class Embarques {
   @Column("int", { name: "IdContrato" ,nullable: true})
   @Field(() => Int,{nullable: true})
   idContrato: number | null;
-  
-  @Column("int", { name: "IdEjecutivo",nullable: true})
-  @Field(() => Int,{nullable: true})
-  idEjecutivo: number | null;
 
   @Column("int", { name: "Numero" })
   @Field(() => Int)
@@ -118,11 +114,6 @@ export class Embarques {
   @ManyToOne(() => Contratos, (contratos) => contratos.embarques)
   @JoinColumn([{ name: "IdContrato", referencedColumnName: "idContrato" }])
   contratos: Contratos;
-
-  @Field(() => Ejecutivos, {nullable: true})
-  @ManyToOne(() => Ejecutivos, (ejecutivos) => ejecutivos.embarques)
-  @JoinColumn([{ name: "IdEjecutivo", referencedColumnName: "idEjecutivo" }])
-  ejecutivos: Ejecutivos;
 
   @Field(() => [FacturaResumen], {nullable: true})
   @OneToMany(() => FacturaResumen,(facturaResumen) => facturaResumen.embarques)

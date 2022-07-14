@@ -6,7 +6,6 @@ import { Ejecutivos } from 'src/models/entities/Ejecutivos.entity';
 import { CompaniasNavieras } from 'src/modelsNomgen/entities/CompaniasNavieras.entity';
 import { UseGuards } from '@nestjs/common';
 import { AuthGuard, DEFAULT_GRAPHQL_CONTEXT } from 'src/auth.guard';
-import { Usuarios } from 'src/models/entities/Usuarios.entity';
 
 @Resolver(() => Embarques)
 export class EmbarquesResolver {
@@ -41,11 +40,6 @@ export class EmbarquesResolver {
   @UseGuards(new AuthGuard())
   removeSeveralEmbarque(@Args('id', { type: () => [Int] }) id: number[]) {
     return this.embarquesService.removeSeveral(id);
-  }
-
-  @ResolveField(() => Ejecutivos, {nullable: true})
-  ejecutivos(@Parent() embarques: Embarques): Promise<Ejecutivos> {
-    return this.embarquesService.getEjecutivo(embarques.idEjecutivo);
   }
 
   @ResolveField(() => CompaniasNavieras, {nullable: true})
