@@ -14,11 +14,11 @@ export class TipoContratoService {
   }
 
   async findAll(): Promise<TipoContrato[]> {
-    return await this.tipoContratoRepository.find({ relations: ['basesGenerales','proformas']});
+    return await this.tipoContratoRepository.find({ relations: ['basesGenerales','proformaClausulas']});
   }
 
   async findOne(id: number) : Promise<TipoContrato> {
-    return await this.tipoContratoRepository.findOne(id,{ relations: ['basesGenerales','proformas']});
+    return await this.tipoContratoRepository.findOne(id,{ relations: ['basesGenerales','proformaClausulas']});
   }
 
   async remove(id: number) : Promise<any> {

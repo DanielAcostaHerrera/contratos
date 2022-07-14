@@ -12,7 +12,6 @@ import { TipoContrato } from "./TipoContrato.entity";
 import { Incoterm } from "./Incoterm.entity";
 import { BasesGeneralesClausulas } from "./BasesGeneralesClausulas.entity";
 import { Field, Int, ObjectType } from "@nestjs/graphql";
-import { Proformas } from "./Proformas.entity";
 import { Contratos } from "./Contratos.entity";
 import { Compradores } from "./Compradores.entity";
 import { Proveedores } from './../../modelsMercurio/entities/Proveedores.entity';
@@ -23,7 +22,6 @@ import { Paises } from './../../modelsMercurio/entities/Paises.entity';
 @Index("IX_CTO_BasesGeneralesConsecutivo", ["consecutivo"], {})
 @Index("IX_CTO_BasesGeneralesIncoterm", ["idIncoterm"], {})
 @Index("IX_CTO_BasesGeneralesPais", ["pais"], {})
-@Index("IX_CTO_BasesGeneralesProforma", ["idProforma"], {})
 @Index("IX_CTO_BasesGeneralesProveedor", ["idProveedor"], {})
 @Index("IX_CTO_BasesGeneralesTipoContrato", ["idTipoContrato"], {})
 @Index("PK_CTO_BasesGenerales", ["idBasesGenerales"], { unique: true })
@@ -48,10 +46,6 @@ export class BasesGenerales {
   @Column("int", { name: "IdIncoterm" })
   @Field(() => Int)
   idIncoterm: number;
-
-  @Column("int", { name: "IdProforma" })
-  @Field(() => Int)
-  idProforma: number;
 
   @Column("nvarchar", { name: "LugardeFirma", length: 60 })
   @Field()
@@ -109,11 +103,6 @@ export class BasesGenerales {
   @ManyToOne(() => Incoterm, (incoterm) => incoterm.basesGenerales)
   @JoinColumn([{ name: "IdIncoterm", referencedColumnName: "idIncoterm" }])
   incoterm: Incoterm;
-
-  @Field(() => Proformas , {nullable: true})
-  @ManyToOne(() => Proformas, (proforma) => proforma.basesGenerales)
-  @JoinColumn([{ name: "IdProforma", referencedColumnName: "idProforma" }])
-  proforma: Proformas;
 
   @Field(() => Compradores , {nullable: true})
   @ManyToOne(() => Compradores, (compradores) => compradores.basesGenerales)

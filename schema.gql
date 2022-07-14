@@ -44,19 +44,6 @@ type CampanaEtapasContratacion {
   pais: Paises
 }
 
-type Incoterm {
-  idIncoterm: Int!
-  nombre: String!
-  abreviatura: String!
-  nota: String!
-  activo: Boolean!
-  basesGenerales: [BasesGenerales!]
-  pliegoConcurrenciaResumen: [PliegoConcurrenciaResumen!]
-  contratos: [Contratos!]
-  suplementoResumen: [SuplementoResumen!]
-  proformas: [Proformas!]
-}
-
 type TiposDeClausulas {
   idTipoClausula: Int!
   nombre: String!
@@ -89,26 +76,28 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
-type ProformaClausulas {
-  idProformaClausula: Int!
-  idProforma: Int!
-  idTipoClausula: Int!
-  orden: Int!
-  clausula: String!
-  basesGeneralesClausulas: [BasesGeneralesClausulas!]
-  tiposDeClausulas: TiposDeClausulas
-  proformas: Proformas
+type Incoterm {
+  idIncoterm: Int!
+  nombre: String!
+  abreviatura: String!
+  nota: String!
+  activo: Boolean!
+  basesGenerales: [BasesGenerales!]
+  pliegoConcurrenciaResumen: [PliegoConcurrenciaResumen!]
+  contratos: [Contratos!]
+  suplementoResumen: [SuplementoResumen!]
+  proformaClausulas: [ProformaClausulas!]
 }
 
-type Proformas {
-  idProforma: Int!
-  idTipoContrato: Int!
-  idIncoterm: Int!
-  nombreProfoma: String!
-  activa: Boolean!
-  cMarcoF: Boolean!
-  proformaClausulas: [ProformaClausulas!]
-  basesGenerales: [BasesGenerales!]
+type ProformaClausulas {
+  idProformaClausula: Int!
+  idTipoContrato: Int
+  idIncoterm: Int
+  idTipoClausula: Int
+  orden: Int!
+  clausula: String
+  basesGeneralesClausulas: [BasesGeneralesClausulas!]
+  tiposDeClausulas: TiposDeClausulas
   tipoDeContrato: TipoContrato
   incoterm: Incoterm
 }
@@ -120,7 +109,7 @@ type TipoContrato {
   ambasPartes: String
   visible: Boolean!
   basesGenerales: [BasesGenerales!]
-  proformas: [Proformas!]
+  proformaClausulas: [ProformaClausulas!]
 }
 
 type Configuracion {
@@ -296,7 +285,6 @@ type BasesGenerales {
   fecha: DateTime!
   idTipoContrato: Int!
   idIncoterm: Int!
-  idProforma: Int!
   lugardeFirma: String!
   idPais: Int!
   idProveedor: Int!
@@ -311,7 +299,6 @@ type BasesGenerales {
   clausulas: [BasesGeneralesClausulas!]
   tipoDeContrato: TipoContrato
   incoterm: Incoterm
-  proforma: Proformas
   compradores: Compradores
   basesGeneralesClausulas: [BasesGeneralesClausulas!]
   contratos: [Contratos!]
@@ -1219,12 +1206,6 @@ type Query {
   findOneTipoContrato(id: Int!): TipoContrato!
   findAllIncoterm: [Incoterm!]!
   findOneIncoterm(id: Int!): Incoterm!
-  findAllProforma: [Proformas!]!
-  findOneProforma(id: Int!): Proformas!
-  findAllProformaClausulas: [ProformaClausulas!]!
-  findOneProformaClausulas(id: Int!): ProformaClausulas!
-  findAllTiposDeClausulas: [TiposDeClausulas!]!
-  findOneTiposDeClausulas(id: Int!): TiposDeClausulas!
   findAllCompradores: [Compradores!]!
   findOneCompradores(id: Int!): Compradores!
   findAllDatosEntidad: [DatosEntidad!]!
@@ -1235,6 +1216,10 @@ type Query {
   findOneProveedor(id: Int!): Proveedores!
   findAllLog: [Logs!]!
   findOneLog(id: Int!): Logs!
+  findAllProformaClausulas: [ProformaClausulas!]!
+  findOneProformaClausulas(id: Int!): ProformaClausulas!
+  findAllTiposDeClausulas: [TiposDeClausulas!]!
+  findOneTiposDeClausulas(id: Int!): TiposDeClausulas!
   findAllBasesGeneralesClausulas: [BasesGeneralesClausulas!]!
   findOneBasesGeneralesClausulas(id: Int!): BasesGeneralesClausulas!
   findAllPuertos: [Puertos!]!
@@ -1246,6 +1231,7 @@ type Query {
   findOneDocumentacionContrato(id: Int!): DocumentacionContrato!
   findAllContratos: [Contratos!]!
   findOneContratos(id: Int!): Contratos!
+  findOneContratosUltimoSuplementoParaUpdate(id: Int!): Contratos!
   findOneContratosUltimoSuplemento(id: Int!): Contratos!
   findOneContratosSuplementoEspecifico(mostrar: Int!, id: Int!): Contratos!
   findAllContratoMarco: [ContratoMarco!]!
@@ -1373,15 +1359,6 @@ type Mutation {
   createIncoterm(createIncotermInput: CreateIncotermInput!): Incoterm!
   removeIncoterm(id: Int!): Incoterm!
   removeSeveralIncoterm(id: [Int!]!): [Incoterm!]!
-  createProforma(createProformaInput: CreateProformaInput!): Proformas!
-  removeProforma(id: Int!): Proformas!
-  removeSeveralProforma(id: [Int!]!): [Proformas!]!
-  createProformaClausula(createProformaClausulaInput: CreateProformaClausulaInput!): ProformaClausulas!
-  removeProformaClausula(id: Int!): ProformaClausulas!
-  removeSeveralProformaClausula(id: [Int!]!): [ProformaClausulas!]!
-  createTiposDeClausulas(createTiposDeClausulaInput: CreateTiposDeClausulaInput!): TiposDeClausulas!
-  removeTiposDeClausulas(id: Int!): TiposDeClausulas!
-  removeSeveralTiposDeClausulas(id: [Int!]!): [TiposDeClausulas!]!
   createCompradore(createCompradoreInput: CreateCompradoresInput!): Compradores!
   removeCompradores(id: Int!): Compradores!
   removeSeveralCompradores(id: [Int!]!): [Compradores!]!
@@ -1389,6 +1366,12 @@ type Mutation {
   removeDatosEntidad(id: Int!): DatosEntidad!
   removeSeveralDatosEntidad(id: [Int!]!): [DatosEntidad!]!
   removeLog(id: Int!): Logs!
+  createProformaClausula(createProformaClausulaInput: CreateProformaClausulaInput!): ProformaClausulas!
+  removeProformaClausula(id: Int!): ProformaClausulas!
+  removeSeveralProformaClausula(id: [Int!]!): [ProformaClausulas!]!
+  createTiposDeClausulas(createTiposDeClausulaInput: CreateTiposDeClausulaInput!): TiposDeClausulas!
+  removeTiposDeClausulas(id: Int!): TiposDeClausulas!
+  removeSeveralTiposDeClausulas(id: [Int!]!): [TiposDeClausulas!]!
   createBasesGeneralesClausula(createBasesGeneralesClausulaInput: CreateBasesGeneralesClausulaInput!): BasesGeneralesClausulas!
   removeBasesGeneralesClausula(id: Int!): BasesGeneralesClausulas!
   removeSeveralBasesGeneralesClausula(id: [Int!]!): [BasesGeneralesClausulas!]!
@@ -1627,34 +1610,6 @@ input CreateIncotermInput {
   activo: Boolean!
 }
 
-input CreateProformaInput {
-  idProforma: Int
-  idTipoContrato: Int!
-  idIncoterm: Int!
-  nombreProfoma: String!
-  activa: Boolean!
-  cMarcoF: Boolean!
-  proformaClausulas: [CreateProformaClausulaInput!]
-}
-
-input CreateProformaClausulaInput {
-  idProformaClausula: Int
-  idProforma: Int!
-  idTipoClausula: Int!
-  orden: Int!
-  clausula: String!
-}
-
-input CreateTiposDeClausulaInput {
-  idTipoClausula: Int
-  nombre: String!
-  orden: Int!
-  basesG: Boolean!
-  compras: Boolean!
-  cMarco: Boolean!
-  excepcional: Boolean!
-}
-
 input CreateCompradoresInput {
   idComprador: Int
   idEntidad: Int!
@@ -1681,6 +1636,25 @@ input CreateDatosEntidadInput {
   licCComercio: String
   nombre: String
   compaIa: String
+}
+
+input CreateProformaClausulaInput {
+  idProformaClausula: Int
+  idTipoContrato: Int!
+  idIncoterm: Int!
+  idTipoClausula: Int!
+  orden: Int!
+  clausula: String!
+}
+
+input CreateTiposDeClausulaInput {
+  idTipoClausula: Int
+  nombre: String!
+  orden: Int!
+  basesG: Boolean!
+  compras: Boolean!
+  cMarco: Boolean!
+  excepcional: Boolean!
 }
 
 input CreatePuertoInput {

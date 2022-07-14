@@ -2,10 +2,8 @@ import { Resolver, Query, Mutation, Args, Int, ResolveField, Parent, Context } f
 import { BasesGeneralesService } from './bases-generales.service';
 import { BasesGenerales } from 'src/models/entities/BasesGenerales.entity';
 import { CreateBasesGeneralesInput } from './dto/create-bases-generales.input';
-import { Clasificaciones } from 'src/models/entities/Clasificaciones.entity';
 import { TipoContrato } from 'src/models/entities/TipoContrato.entity';
 import { Incoterm } from 'src/models/entities/Incoterm.entity';
-import { Proformas } from 'src/models/entities/Proformas.entity';
 import { Compradores } from 'src/models/entities/Compradores.entity';
 import { Paises } from 'src/modelsMercurio/entities/Paises.entity';
 import { Proveedores } from 'src/modelsMercurio/entities/Proveedores.entity';
@@ -77,11 +75,6 @@ export class BasesGeneralesResolver {
   @ResolveField(() => Incoterm, {nullable: true})
   incoterm(@Parent() basesGenerales: BasesGenerales): Promise<Incoterm> {
     return this.basesGeneralesService.getIncoterm(basesGenerales.idIncoterm);
-  }
-
-  @ResolveField(() => Proformas, {nullable: true})
-  proforma(@Parent() basesGenerales: BasesGenerales): Promise<Proformas> {
-    return this.basesGeneralesService.getProforma(basesGenerales.idProforma);
   }
 
   @ResolveField(() => Compradores, {nullable: true})

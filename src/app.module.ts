@@ -15,7 +15,6 @@ import { BasesGeneralesModule } from './bases-generales/bases-generales.module';
 import { BasesGeneralesClausulasModule } from './bases-generales-clausulas/bases-generales-clausulas.module';
 import { ClasificacionesModule } from './clasificaciones/clasificaciones.module';
 import { IncotermModule } from './incoterm/incoterm.module';
-import { ProformasModule } from './proformas/proformas.module';
 import { ProformaClausulasModule } from './proforma-clausulas/proforma-clausulas.module';
 import { PuertosModule } from './puertos/puertos.module';
 import { TipoContratoModule } from './tipo-contrato/tipo-contrato.module';
@@ -126,7 +125,6 @@ import { SuplementoPuertoEmbarqueModule } from './suplemento-puerto-embarque/sup
     BasesGeneralesClausulasModule,
     ClasificacionesModule,
     IncotermModule,
-    ProformasModule,
     ProformaClausulasModule,
     PuertosModule,
     TipoContratoModule,

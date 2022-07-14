@@ -6,7 +6,10 @@ export class CreateProformaClausulaInput {
   idProformaClausula?: number;
 
   @Field(() => Int)
-  idProforma: number;
+  idTipoContrato: number;
+
+  @Field(() => Int)
+  idIncoterm: number;
 
   @Field(() => Int)
   idTipoClausula: number;

@@ -9,9 +9,7 @@ import { BasesGenerales } from 'src/models/entities/BasesGenerales.entity';
 import { Clasificaciones } from 'src/models/entities/Clasificaciones.entity';
 import { Compradores } from 'src/models/entities/Compradores.entity';
 import { Incoterm } from 'src/models/entities/Incoterm.entity';
-import { Proformas } from 'src/models/entities/Proformas.entity';
 import { TipoContrato } from 'src/models/entities/TipoContrato.entity';
-import { ProformasService } from 'src/proformas/proformas.service';
 import { TipoContratoService } from 'src/tipo-contrato/tipo-contrato.service';
 import { Repository } from 'typeorm';
 import { CreateBasesGeneralesInput } from './dto/create-bases-generales.input';
@@ -28,7 +26,7 @@ import { Usuarios } from 'src/models/entities/Usuarios.entity';
 @Injectable()
 export class BasesGeneralesService {
   constructor(@InjectRepository(BasesGenerales) public readonly basesGeneralesRepository: Repository<BasesGenerales>, private clasificacionesService: ClasificacionesService,
-  private tipoContratoService: TipoContratoService, private incotermService: IncotermService, private proformasService: ProformasService, 
+  private tipoContratoService: TipoContratoService, private incotermService: IncotermService,
   private compradoresService: CompradoresService, private paisesService: PaisesService, private proveedoresService: ProveedoresService,
   private logsService: LogsService,private basesGeneralesClausulasService: BasesGeneralesClausulasService,private proformaClausulasService: ProformaClausulasService) {}
 
@@ -114,9 +112,6 @@ export class BasesGeneralesService {
         }
         if(baseVieja.idIncoterm != result.idIncoterm){
           texto += ", cambiado el incoterm";
-        }
-        if(baseVieja.idProforma != result.idProforma){
-          texto += ", cambiada la proforma empleada";
         }
         if(baseVieja.lugardeFirma != result.lugardeFirma){
           texto += ", cambiado el lugar de firma";
@@ -213,10 +208,6 @@ export class BasesGeneralesService {
     return this.incotermService.findOne(incotermId);
   }
 
-  async getProforma (proformaId: number) : Promise<Proformas>{
-    return this.proformasService.findOne(proformaId);
-  }
-
   async getComprador (compradorId: number) : Promise<Compradores>{
     return this.compradoresService.findOne(compradorId);
   }
@@ -254,7 +245,7 @@ export class BasesGeneralesService {
       }
       
       else{
-        const proformaClausulas = await this.proformaClausulasService.findAllById(basesGenerales.idProforma)
+        const proformaClausulas = await this.proformaClausulasService.findAllById(basesGenerales.idTipoContrato, basesGenerales.idIncoterm)
         if(!proformaClausulas){
           reject('Esta base general no tiene una proforma predefinida');
         }

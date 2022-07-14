@@ -9,11 +9,10 @@ import {
 import { BasesGenerales } from "./BasesGenerales.entity";
 import { Contratos } from "./Contratos.entity";
 import { PliegoConcurrenciaResumen } from "./PliegoConcurrenciaResumen.entity";
-import { Proformas } from "./Proformas.entity";
+import { ProformaClausulas } from "./ProformaClausulas.entity";
 import { SuplementoResumen } from "./SuplementoResumen.entity";
 
 @ObjectType()
-@Index("IX_Incoterm", ["abreviatura"], { unique: true })
 @Index("PK_Incoterm", ["idIncoterm"], { unique: true })
 @Entity("NOM_Incoterm", { schema: "CONTRATO.dbo" })
 export class Incoterm {
@@ -53,8 +52,8 @@ export class Incoterm {
   @OneToMany(() => SuplementoResumen,(suplementoResumen) => suplementoResumen.incoterm)
   suplementoResumen: SuplementoResumen[];
 
-  @Field(() => [Proformas], { nullable: true })
-  @OneToMany(() => Proformas, (proformas) => proformas.incoterm)
-  proformas: Proformas[];
+  @Field(() => [ProformaClausulas], { nullable: true })
+  @OneToMany(() => ProformaClausulas, (proformaClausulas) => proformaClausulas.incoterm)
+  proformaClausulas: ProformaClausulas[];
 }
 
