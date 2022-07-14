@@ -14,11 +14,11 @@ export class TiposContenedorService {
   }
 
   async findAll(): Promise<TiposContenedor[]> {
-    return await this.tiposContenedorRepository.find({relations:['pliegoConcurrenciaResumen']});
+    return await this.tiposContenedorRepository.find();
   }
 
   async findOne(id: number) : Promise<TiposContenedor> {
-    return await this.tiposContenedorRepository.findOne(id,{relations:['pliegoConcurrenciaResumen']});
+    return await this.tiposContenedorRepository.findOne(id);
   }
 
   async remove(id: number) : Promise<any> {

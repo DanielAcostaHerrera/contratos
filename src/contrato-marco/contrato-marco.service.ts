@@ -5,7 +5,6 @@ import { Proveedores } from '../modelsMercurio/entities/Proveedores.entity';
 import { ProveedoresService } from '../proveedores/proveedores.service';
 import { Repository } from 'typeorm';
 import { CreateContratoMarcoInput } from './dto/create-contrato-marco.input';
-import { Int } from '@nestjs/graphql';
 
 @Injectable()
 export class ContratoMarcoService {

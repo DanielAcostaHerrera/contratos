@@ -1,8 +1,6 @@
 import { CambiosSuplementos } from 'src/models/entities/CambiosSuplementos.entity';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { EmbarquesService } from 'src/embarques/embarques.service';
-import { Embarques } from 'src/models/entities/Embarques.entity';
 import { SuplementoChange } from 'src/models/entities/SuplementoChange.entity';
 import { SuplementoResumen } from 'src/models/entities/SuplementoResumen.entity';
 import { SuplementoResumenService } from 'src/suplemento-resumen/suplemento-resumen.service';
@@ -21,11 +19,11 @@ export class SuplementoChangeService {
   }
 
   async findAll(): Promise<SuplementoChange[]> {
-    return await this.suplementoChangeRepository.find({relations:['embarques']});
+    return await this.suplementoChangeRepository.find();
   }
 
   async findOne(id: number) : Promise<SuplementoChange> {
-    return await this.suplementoChangeRepository.findOne(id,{relations:['embarques']});
+    return await this.suplementoChangeRepository.findOne(id);
   }
 
   async remove(id: number) : Promise<any> {

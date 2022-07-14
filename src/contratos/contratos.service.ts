@@ -2774,11 +2774,7 @@ export class ContratosService {
   }
 
   async findAll(): Promise<Contratos[]> {
-    let contratos = await this.contratoRepository.find({relations:['contratoClausulas','documentacionContratos','embarques','embarques.puertoEmbarques',
-    'embarques.pagos','embarques.contratoDesgloses','facturaResumen','suplementoEmbarques','suplementoResumen','suplementoResumen.suplementoClausulas',
-    'suplementoResumen.suplementoEmbarques','suplementoResumen.suplementoPuertoEmbarques','suplementoResumen.suplementoDesgloses',
-    'suplementoResumen.suplementoPagos'
-    ,'suplementoClausulas']});
+    let contratos = await this.contratoRepository.find({relations:['embarques']});
     contratos.forEach(element => {
       element.suplementoResumen.sort((a, b) => (b.fecha.getFullYear()+b.fecha.getMonth()+b.fecha.getDate()+b.fecha.getHours()+b.fecha.getMinutes()+b.fecha.getSeconds())
       - (a.fecha.getFullYear()+a.fecha.getMonth()+a.fecha.getDate()+a.fecha.getHours()+a.fecha.getMinutes()+a.fecha.getSeconds()));
@@ -2787,20 +2783,18 @@ export class ContratosService {
   }
 
   async findOne(id: number) : Promise<Contratos> {
-    return await this.contratoRepository.findOne(id,{relations:['contratoClausulas','documentacionContratos','embarques','embarques.puertoEmbarques',
+    return await this.contratoRepository.findOne(id,{relations:['contratoClausulas','embarques','embarques.puertoEmbarques',
     'embarques.pagos','embarques.contratoDesgloses','facturaResumen','suplementoEmbarques','suplementoResumen','suplementoResumen.suplementoClausulas',
     'suplementoResumen.suplementoEmbarques','suplementoResumen.suplementoPuertoEmbarques','suplementoResumen.suplementoDesgloses',
-    'suplementoResumen.suplementoPagos'
-    ,'suplementoClausulas']});
+    'suplementoResumen.suplementoPagos','suplementoClausulas']});
   }
 
   async findOneUltimoSuplementoParaUpdate(id: number) : Promise<Contratos> {
     return new Promise<Contratos>(async (resolve, reject) => {
-      let contratoViejo = await this.contratoRepository.findOne(id,{relations:['contratoClausulas','documentacionContratos','embarques','embarques.puertoEmbarques',
+      let contratoViejo = await this.contratoRepository.findOne(id,{relations:['contratoClausulas','embarques','embarques.puertoEmbarques',
       'embarques.pagos','embarques.contratoDesgloses','facturaResumen','suplementoEmbarques','suplementoResumen','suplementoResumen.suplementoClausulas',
       'suplementoResumen.suplementoEmbarques','suplementoResumen.suplementoPuertoEmbarques','suplementoResumen.suplementoDesgloses',
-      'suplementoResumen.suplementoPagos'
-      ,'suplementoClausulas']});
+      'suplementoResumen.suplementoPagos','suplementoClausulas']});
 
       if(contratoViejo.suplementoResumen.length == 0){
         resolve(contratoViejo);

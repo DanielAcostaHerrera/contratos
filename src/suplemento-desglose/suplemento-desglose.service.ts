@@ -25,11 +25,11 @@ export class SuplementoDesgloseService {
   }
 
   async findAll(): Promise<SuplementoDesglose[]> {
-    return await this.suplementoDesgloseRepository.find({relations:['embarques']});
+    return await this.suplementoDesgloseRepository.find();
   }
 
   async findOne(id: number) : Promise<SuplementoDesglose> {
-    return await this.suplementoDesgloseRepository.findOne(id,{relations:['embarques']});
+    return await this.suplementoDesgloseRepository.findOne(id);
   }
 
   async remove(id: number) : Promise<any> {

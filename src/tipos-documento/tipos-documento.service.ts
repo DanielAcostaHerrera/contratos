@@ -15,11 +15,11 @@ export class TiposDocumentoService {
   }
 
   async findAll(): Promise<TiposDocumento[]> {
-    return await this.tiposDocumentoRepository.find({ relations: ['documentaciones']});
+    return await this.tiposDocumentoRepository.find();
   }
 
   async findOne(id: number) : Promise<TiposDocumento> {
-    return await this.tiposDocumentoRepository.findOne(id,{ relations: ['documentaciones']});
+    return await this.tiposDocumentoRepository.findOne(id);
   }
 
   async remove(id: number) : Promise<any> {

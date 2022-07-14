@@ -13,11 +13,11 @@ export class PagosApartirDeService {
   }
 
   async findAll(): Promise<PagosAPartirDe[]> {
-    return await this.pagosAPartirDeRepository.find({relations:['pagos']});
+    return await this.pagosAPartirDeRepository.find();
   }
 
   async findOne(id: number) : Promise<PagosAPartirDe> {
-    return await this.pagosAPartirDeRepository.findOne(id,{relations:['pagos']});
+    return await this.pagosAPartirDeRepository.findOne(id);
   }
 
   async remove(id: number) : Promise<any> {

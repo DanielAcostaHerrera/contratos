@@ -17,11 +17,11 @@ export class SuplementoClausulasService {
   }
 
   async findAll(): Promise<SuplementoClausulas[]> {
-    return await this.suplementoClausulaRepository.find({relations:['contrato']});
+    return await this.suplementoClausulaRepository.find();
   }
 
   async findOne(id: number) : Promise<SuplementoClausulas> {
-    return await this.suplementoClausulaRepository.findOne(id,{relations:['contrato']});
+    return await this.suplementoClausulaRepository.findOne(id);
   }
 
   async remove(id: number) : Promise<any> {

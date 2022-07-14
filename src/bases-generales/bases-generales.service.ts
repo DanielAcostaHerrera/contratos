@@ -146,7 +146,7 @@ export class BasesGeneralesService {
   async findAll(): Promise<BasesGenerales[]> { 
     let bases = await this.basesGeneralesRepository.find({order: {
         fecha : "DESC",
-      }, relations: ['basesGeneralesClausulas','contratos'],});
+      }, relations: ['contratos'],});
       bases.forEach(element => {
         element.basesGeneralesClausulas.sort((a, b) => a.orden - b.orden);
         let clausulas = element.basesGeneralesClausulas;

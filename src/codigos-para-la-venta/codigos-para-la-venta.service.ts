@@ -8,12 +8,10 @@ export class CodigosParaLaVentaService {
   constructor(@InjectRepository(CodigosParaLaVenta) public readonly codigosParaLaVentaRepository: Repository<CodigosParaLaVenta>) {}
 
   async findAll(): Promise<CodigosParaLaVenta[]> {
-    return await this.codigosParaLaVentaRepository.find({ relations: ['contratoDesgloses','facturaDesgloses','suplementoDesgloses',
-    'solicitudOfertasEntradas']});
+    return await this.codigosParaLaVentaRepository.find();
   }
 
   async findOne(id: number) : Promise<CodigosParaLaVenta> {
-    return await this.codigosParaLaVentaRepository.findOne(id, { relations: ['contratoDesgloses','facturaDesgloses','suplementoDesgloses',
-    'solicitudOfertasEntradas']});
+    return await this.codigosParaLaVentaRepository.findOne(id);
   }
 }

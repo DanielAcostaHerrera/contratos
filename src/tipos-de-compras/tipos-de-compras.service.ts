@@ -14,11 +14,11 @@ export class TiposDeComprasService {
   }
 
   async findAll(): Promise<TiposDeCompras[]> {
-    return await this.tiposDeCompraRepository.find({ relations: ['negociacionResumen']});
+    return await this.tiposDeCompraRepository.find();
   }
 
   async findOne(id: number) : Promise<TiposDeCompras> {
-    return await this.tiposDeCompraRepository.findOne(id,{ relations: ['negociacionResumen']});
+    return await this.tiposDeCompraRepository.findOne(id);
   }
 
   async remove(id: number) : Promise<any> {

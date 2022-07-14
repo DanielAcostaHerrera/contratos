@@ -14,11 +14,11 @@ export class EtapasContratacionService {
   }
 
   async findAll(): Promise<EtapasContratacion[]> { 
-    return await this.etapasContratacionRepository.find({relations:['campanaEtapasContratacion','tiemposTravesias']});
+    return await this.etapasContratacionRepository.find();
   }
 
   async findOne(id: number) : Promise<EtapasContratacion> {
-    return await this.etapasContratacionRepository.findOne(id,{relations:['campanaEtapasContratacion','tiemposTravesias']});
+    return await this.etapasContratacionRepository.findOne(id);
   }
 
   async remove(id: number) : Promise<any> {
