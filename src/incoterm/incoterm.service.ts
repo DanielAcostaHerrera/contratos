@@ -13,13 +13,11 @@ export class IncotermService {
   }
 
   async findAll(): Promise<Incoterm[]> {
-    return await this.grupoRepository.find({ relations: ['basesGenerales','pliegoConcurrenciaResumen','contratos','proformaClausulas',
-  'suplementoResumen']});
+    return await this.grupoRepository.find({ relations: []});
   }
 
   async findOne(id: number) : Promise<Incoterm> {
-    return await this.grupoRepository.findOne(id, { relations: ['basesGenerales','pliegoConcurrenciaResumen','contratos',
-    'proformaClausulas','suplementoResumen']});
+    return await this.grupoRepository.findOne(id);
   }
 
   async remove(id: number) : Promise<any> {
