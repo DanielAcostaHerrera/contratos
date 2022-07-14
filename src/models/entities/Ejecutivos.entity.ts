@@ -18,7 +18,6 @@ import { SuplementoResumen } from "./SuplementoResumen.entity";
 import { Usuarios } from "./Usuarios.entity";
 
 @ObjectType()
-@Index("IX_CTO_Ejecutivos", ["nombre"], { unique: true })
 @Index("IX_CTO_Ejecutivos_Grupo", ["idGrupo"], {})
 @Index("PK_CTO_Ejecutivos", ["idEjecutivo"], { unique: true })
 @Entity("Ejecutivos", { schema: "CONTRATO.dbo" })

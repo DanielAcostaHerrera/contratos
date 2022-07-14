@@ -2,7 +2,6 @@ import { CampanaEtapasContratacion } from './../../models/entities/CampanaEtapas
 import { Field, Float, Int, ObjectType } from "@nestjs/graphql";
 import { Column, Entity, Index, OneToMany } from "typeorm";
 import { BasesGenerales } from "../../models/entities/BasesGenerales.entity";
-import { Contratos } from '../../models/entities/Contratos.entity';
 import { PliegoConcurrenciaResumen } from '../../models/entities/PliegoConcurrenciaResumen.entity';
 import { FacturaDesglose } from '../../models/entities/FacturaDesglose.entity';
 import { TiemposTravesia } from '../../models/entities/TiemposTravesia.entity';
@@ -94,14 +93,6 @@ export class Paises {
   @Field(() => [CampanaEtapasContratacion], { nullable: true })
   @OneToMany(() => CampanaEtapasContratacion,(campanaEtapasContratacion) => campanaEtapasContratacion.pais)
   campanaEtapasContratacion: CampanaEtapasContratacion[];
-
-  @Field(() => [Contratos], { nullable: true })
-  @OneToMany(() => Contratos,(contratos) => contratos.pais)
-  contratos: Contratos[];
-
-  @Field(() => [SuplementoResumen], { nullable: true })
-  @OneToMany(() => SuplementoResumen,(suplementoResumen) => suplementoResumen.pais)
-  suplementoResumen: SuplementoResumen[];
 
   @Field(() => [PliegoConcurrenciaResumen], { nullable: true })
   @OneToMany(() => PliegoConcurrenciaResumen,(pliegoConcurrenciaResumen) => pliegoConcurrenciaResumen.paisOrigenMercancia)

@@ -19,7 +19,6 @@ import { Ejecutivos } from "./Ejecutivos.entity";
 import { Monedas } from "./Monedas.entity";
 import { Field, Float, Int, ObjectType } from "@nestjs/graphql";
 import { CompaniasNavieras } from '../../modelsNomgen/entities/CompaniasNavieras.entity';
-import { Paises } from '../../modelsMercurio/entities/Paises.entity';
 import { Incoterm } from './Incoterm.entity';
 import { FormasEntrega } from './FormasEntrega.entity';
 import { SuplementoPuertoEmbarque } from './SuplementoPuertoEmbarque.entity';
@@ -172,10 +171,6 @@ export class SuplementoResumen {
   @Field()
   lugarFirma: string;
 
-  @Column("int", { name: "Pais" })
-  @Field(() => Int)
-  idPais: number;
-
   @Column("int", { name: "IdIncoterm" })
   @Field(() => Int)
   idIncoterm: number;
@@ -193,11 +188,6 @@ export class SuplementoResumen {
   @ManyToOne(() => Incoterm, (incoterm) => incoterm.contratos)
   @JoinColumn([{ name: "IdIncoterm", referencedColumnName: "idIncoterm" }])
   incoterm: Incoterm;
-
-  @Field(() => Paises, {nullable: true})
-  @ManyToOne(() => Paises, (paises) => paises.suplementoResumen)
-  @JoinColumn([{ name: "Pais", referencedColumnName: "pais" }])
-  pais: Paises;
 
   @Field(() => [SuplementoChange], {nullable: true})
   @OneToMany(() => SuplementoChange,(suplementoChange) => suplementoChange.suplementoResumen)

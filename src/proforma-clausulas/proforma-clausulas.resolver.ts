@@ -18,6 +18,12 @@ export class ProformaClausulasResolver {
     return this.proformaClausulasService.save(createProformaClausulaInput);
   }
 
+  @Mutation(() => [ProformaClausulas])
+  @UseGuards(new AuthGuard())
+  createSeveralProformaClausula(@Args('createProformaClausulaInput',{ type: () => [CreateProformaClausulaInput] }) createProformaClausulaInput: CreateProformaClausulaInput[]) {
+    return this.proformaClausulasService.saveSeveral(createProformaClausulaInput);
+  }
+
   @Query(() => [ProformaClausulas])
   @UseGuards(new AuthGuard())
   findAllProformaClausulas() {

@@ -15,7 +15,7 @@ import { FormasEntregaModule } from 'src/formas-entrega/formas-entrega.module';
 @Module({
   imports:[TypeOrmModule.forFeature([
     SuplementoResumen
-  ]),EjecutivoModule,MonedaModule,AgenciasAseguradorasModule,CompaniasNavierasModule,NegociacionResumenModule,PaisesModule,
+  ]),EjecutivoModule,MonedaModule,AgenciasAseguradorasModule,CompaniasNavierasModule,NegociacionResumenModule,
   IncotermModule,FormasEntregaModule],
   providers: [SuplementoResumenResolver, SuplementoResumenService],
   exports: [SuplementoResumenService]

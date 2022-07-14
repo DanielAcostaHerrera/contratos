@@ -395,8 +395,6 @@ type Paises {
   idCircularAct: Int
   basesGenerales: [BasesGenerales!]
   campanaEtapasContratacion: [CampanaEtapasContratacion!]
-  contratos: [Contratos!]
-  suplementoResumen: [SuplementoResumen!]
   pliegoConcurrenciaResumen: [PliegoConcurrenciaResumen!]
   facturaDesgloses: [FacturaDesglose!]
   tiemposTravesias: [TiemposTravesia!]
@@ -1021,12 +1019,10 @@ type SuplementoResumen {
   terminadoS: Boolean!
   gastosLogisticos: Float!
   lugarFirma: String!
-  idPais: Int!
   idIncoterm: Int!
   idFormaEntrega: Int!
   formaEntrega: FormasEntrega
   incoterm: Incoterm
-  pais: Paises
   suplementoChanges: [SuplementoChange!]
   suplementoClausulas: [SuplementoClausulas!]
   suplementoDesgloses: [SuplementoDesglose!]
@@ -1101,7 +1097,6 @@ type Contratos {
   lugarFirma: String
   consecutivo: Int!
   idIncoterm: Int!
-  idPais: Int!
   cancelado: Boolean!
   terminado: Boolean!
   modificado: Boolean!
@@ -1142,7 +1137,6 @@ type Contratos {
   suplementoEmbarques: [SuplementoEmbarques!]
   suplementoResumen: [SuplementoResumen!]
   suplementoClausulas: [SuplementoClausulas!]
-  pais: Paises
   companiaNaviera: CompaniasNavieras
   agenciaAseguradora: AgenciasAseguradoras
   incoterm: Incoterm
@@ -1361,6 +1355,7 @@ type Mutation {
   removeSeveralDatosEntidad(id: [Int!]!): [DatosEntidad!]!
   removeLog(id: Int!): Logs!
   createProformaClausula(createProformaClausulaInput: CreateProformaClausulaInput!): ProformaClausulas!
+  createSeveralProformaClausula(createProformaClausulaInput: [CreateProformaClausulaInput!]!): [ProformaClausulas!]!
   removeProformaClausula(id: Int!): ProformaClausulas!
   removeSeveralProformaClausula(id: [Int!]!): [ProformaClausulas!]!
   createTiposDeClausulas(createTiposDeClausulaInput: CreateTiposDeClausulaInput!): TiposDeClausulas!
@@ -1687,7 +1682,6 @@ input CreateContratoInput {
   lugarFirma: String!
   consecutivo: Int
   idIncoterm: Int!
-  idPais: Int!
   cancelado: Boolean!
   terminado: Boolean
   modificado: Boolean

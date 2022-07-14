@@ -9,7 +9,6 @@ import { CompaniasNavieras } from 'src/modelsNomgen/entities/CompaniasNavieras.e
 import { UseGuards } from '@nestjs/common';
 import { AuthGuard } from 'src/auth.guard';
 import { NegociacionResumen } from 'src/models/entities/NegociacionResumen.entity';
-import { Paises } from 'src/modelsMercurio/entities/Paises.entity';
 import { Incoterm } from 'src/models/entities/Incoterm.entity';
 import { FormasEntrega } from 'src/models/entities/FormasEntrega.entity';
 
@@ -55,11 +54,6 @@ export class SuplementoResumenResolver {
   @ResolveField(() => Incoterm, {nullable: true})
   incoterm(@Parent() suplementoResumen: SuplementoResumen): Promise<Incoterm> {
     return this.suplementoResumenService.getIncoterm(suplementoResumen.idIncoterm);
-  }
-
-  @ResolveField(() => Paises, {nullable: true})
-  pais(@Parent() suplementoResumen: SuplementoResumen): Promise<Paises> {
-    return this.suplementoResumenService.getPais(suplementoResumen.idPais);
   }
 
   @ResolveField(() => Ejecutivos, {nullable: true})

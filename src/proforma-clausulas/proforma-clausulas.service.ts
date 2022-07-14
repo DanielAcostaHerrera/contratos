@@ -20,6 +20,14 @@ export class ProformaClausulasService {
     return await this.proformaRepository.save(createProformaClausulaInput);
   }
 
+  async saveSeveral(createProformaClausulaInput: CreateProformaClausulaInput[]) : Promise<ProformaClausulas[]> {
+    let result: ProformaClausulas[] = []
+    for (let index = 0; index < createProformaClausulaInput.length; index++) {
+      result.push(await this.proformaRepository.save(createProformaClausulaInput[index]));
+    }
+    return result
+  }
+
   async findAll(): Promise<ProformaClausulas[]> {
     return await this.proformaRepository.find();
   }

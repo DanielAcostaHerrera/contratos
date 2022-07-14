@@ -41,9 +41,6 @@ export class CreateContratoInput {
   @Field(() => Int)
   idIncoterm: number;
 
-  @Field(() => Int)
-  idPais: number;
-
   @Field()
   cancelado: boolean;
 

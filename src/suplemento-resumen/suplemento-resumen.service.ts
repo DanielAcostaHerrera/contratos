@@ -11,12 +11,10 @@ import { Incoterm } from 'src/models/entities/Incoterm.entity';
 import { Monedas } from 'src/models/entities/Monedas.entity';
 import { NegociacionResumen } from 'src/models/entities/NegociacionResumen.entity';
 import { SuplementoResumen } from 'src/models/entities/SuplementoResumen.entity';
-import { Paises } from 'src/modelsMercurio/entities/Paises.entity';
 import { AgenciasAseguradoras } from 'src/modelsNomgen/entities/AgenciasAseguradoras.entity';
 import { CompaniasNavieras } from 'src/modelsNomgen/entities/CompaniasNavieras.entity';
 import { MonedaService } from 'src/moneda/moneda.service';
 import { NegociacionResumenService } from 'src/negociacion-resumen/negociacion-resumen.service';
-import { PaisesService } from 'src/paises/paises.service';
 import { Repository } from 'typeorm';
 import { CreateSuplementoResumanInput } from './dto/create-suplemento-resuman.input';
 
@@ -25,7 +23,7 @@ export class SuplementoResumenService {
   constructor(@InjectRepository(SuplementoResumen) public readonly suplementoResumenRepository: Repository<SuplementoResumen>,
   private ejecutivoService: EjecutivoService,private monedaService: MonedaService,
   private agenciasAseguradorasService: AgenciasAseguradorasService,private companiasNavierasService: CompaniasNavierasService,
-  private negociacionResumenService: NegociacionResumenService, private paisesService: PaisesService,
+  private negociacionResumenService: NegociacionResumenService,
   private incotermService: IncotermService, private formasEntregaService: FormasEntregaService) {}
 
 
@@ -59,10 +57,6 @@ export class SuplementoResumenService {
 
   async getIncoterm (id: number) : Promise<Incoterm>{
     return this.incotermService.findOne(id);
-  }
-
-  async getPais (id: number) : Promise<Paises>{
-    return this.paisesService.findOne(id);
   }
 
   async getEjecutivoSuplementa (id: number) : Promise<Ejecutivos>{

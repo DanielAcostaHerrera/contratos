@@ -133,10 +133,6 @@ export class ContratosResolver {
     return this.contratosService.getEjecutivoModifica(contratos.modificadoPor);
   }
 
-  @ResolveField(() => Paises, {nullable: true})
-  pais(@Parent() contratos: Contratos): Promise<Paises> {
-    return this.contratosService.getPais(contratos.idPais);
-  }
 
   @ResolveField(() => CompaniasNavieras, {nullable: true})
   companiaNaviera(@Parent() contratos: Contratos): Promise<CompaniasNavieras> {
