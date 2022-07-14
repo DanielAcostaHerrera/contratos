@@ -13,7 +13,7 @@ export class IncotermService {
   }
 
   async findAll(): Promise<Incoterm[]> {
-    return await this.grupoRepository.find({ relations: []});
+    return await this.grupoRepository.find();
   }
 
   async findOne(id: number) : Promise<Incoterm> {

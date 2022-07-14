@@ -24,6 +24,15 @@ export class ProformaClausulasResolver {
     return this.proformaClausulasService.findAll();
   }
 
+  @Query(() => [ProformaClausulas])
+  @UseGuards(new AuthGuard())
+  findAllProformaClausulasById(
+    @Args('idTipoContrato', { type: () => Int }) idTipoContrato: number,
+    @Args('idIncoterm', { type: () => Int }) idIncoterm: number) {
+    return this.proformaClausulasService.findAllById(idTipoContrato,idIncoterm);
+  }
+
+
   @Query(() => ProformaClausulas)
   @UseGuards(new AuthGuard())
   findOneProformaClausulas(@Args('id', { type: () => Int }) id: number) {
