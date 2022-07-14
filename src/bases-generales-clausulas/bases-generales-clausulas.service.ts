@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { BasesGeneralesClausulas } from 'src/models/entities/BasesGeneralesClausulas.entity';
-import { ProformaClausulas } from 'src/models/entities/ProformaClausulas.entity';
 import { TiposDeClausulas } from 'src/models/entities/TiposDeClausulas.entity';
 import { ProformaClausulasService } from 'src/proforma-clausulas/proforma-clausulas.service';
 import { TiposDeClausulasService } from 'src/tipos-de-clausulas/tipos-de-clausulas.service';
@@ -11,7 +10,7 @@ import { CreateBasesGeneralesClausulaInput } from './dto/create-bases-generales-
 @Injectable()
 export class BasesGeneralesClausulasService {
   constructor(@InjectRepository(BasesGeneralesClausulas) public readonly basesGeneralesClausulasRepository: Repository<BasesGeneralesClausulas>,
-  private tiposDeClausulasService: TiposDeClausulasService, private proformaClausulasService: ProformaClausulasService) {}
+  private tiposDeClausulasService: TiposDeClausulasService) {}
 
 
   async save(createBasesGeneralesClausulaInput: CreateBasesGeneralesClausulaInput) : Promise<BasesGeneralesClausulas> {
@@ -45,9 +44,5 @@ export class BasesGeneralesClausulasService {
 
   async getTipoClausula (tipoClausulaId: number) : Promise<TiposDeClausulas>{
     return this.tiposDeClausulasService.findOne(tipoClausulaId);
-  }
-
-  async getProformaClausulas (proformaClausulasId: number) : Promise<ProformaClausulas>{
-    return this.proformaClausulasService.findOne(proformaClausulasId);
   }
 }

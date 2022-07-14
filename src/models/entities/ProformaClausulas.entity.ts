@@ -43,10 +43,6 @@ export class ProformaClausulas {
   @Field({nullable: true})
   clausula?: string;
 
-  @Field(() => [BasesGeneralesClausulas] , {nullable: true})
-  @OneToMany(() => BasesGeneralesClausulas,(basesGeneralesClausulas) => basesGeneralesClausulas.proformaClausula)
-  basesGeneralesClausulas: BasesGeneralesClausulas[];
-
   @Field(() => TiposDeClausulas , {nullable: true})
   @ManyToOne(() => TiposDeClausulas,(tiposDeClausulas) => tiposDeClausulas.proformaClausulas)
   @JoinColumn([{ name: "IdTipoClausula", referencedColumnName: "idTipoClausula" }])

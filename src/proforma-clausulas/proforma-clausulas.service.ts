@@ -21,17 +21,17 @@ export class ProformaClausulasService {
   }
 
   async findAll(): Promise<ProformaClausulas[]> {
-    return await this.proformaRepository.find({ relations: ['basesGeneralesClausulas']});
+    return await this.proformaRepository.find();
   }
 
   async findAllById(idTipoContrato: number, idIncoterm: number): Promise<ProformaClausulas[]> {
-    return await this.proformaRepository.find({ where: {idTipoContrato, idIncoterm}, relations: ['basesGeneralesClausulas'], order: {
+    return await this.proformaRepository.find({ where: {idTipoContrato, idIncoterm}, order: {
       orden: "ASC"
     }});
   }
 
   async findOne(id: number) : Promise<ProformaClausulas> {
-    return await this.proformaRepository.findOne(id,{ relations: ['basesGeneralesClausulas']});
+    return await this.proformaRepository.findOne(id);
   }
 
   async remove(id: number) : Promise<any> {

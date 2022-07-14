@@ -9,9 +9,6 @@ export class CreateBasesGeneralesClausulaInput {
   idBasesGenerales?: number;
 
   @Field(() => Int)
-  idProformaClausula: number;
-
-  @Field(() => Int)
   idTipoClausula: number;
 
   @Field(() => Int)

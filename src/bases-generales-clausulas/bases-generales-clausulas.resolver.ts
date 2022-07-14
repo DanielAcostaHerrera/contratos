@@ -3,7 +3,6 @@ import { BasesGeneralesClausulasService } from './bases-generales-clausulas.serv
 import { CreateBasesGeneralesClausulaInput } from './dto/create-bases-generales-clausula.input';
 import { BasesGeneralesClausulas } from 'src/models/entities/BasesGeneralesClausulas.entity';
 import { TiposDeClausulas } from 'src/models/entities/TiposDeClausulas.entity';
-import { ProformaClausulas } from 'src/models/entities/ProformaClausulas.entity';
 import { UseGuards } from '@nestjs/common';
 import { AuthGuard } from 'src/auth.guard';
 
@@ -50,10 +49,5 @@ export class BasesGeneralesClausulasResolver {
   @ResolveField(() => TiposDeClausulas, {nullable: true})
   tiposDeClausulas(@Parent() basesGeneralesClausulas: BasesGeneralesClausulas): Promise<TiposDeClausulas> {
     return this.basesGeneralesClausulasService.getTipoClausula(basesGeneralesClausulas.idTipoClausula);
-  }
-
-  @ResolveField(() => ProformaClausulas, {nullable: true})
-  proformaClausula(@Parent() basesGeneralesClausulas: BasesGeneralesClausulas): Promise<ProformaClausulas> {
-    return this.basesGeneralesClausulasService.getProformaClausulas(basesGeneralesClausulas.idProformaClausula);
   }
 }

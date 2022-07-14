@@ -18,10 +18,6 @@ export class BasesGeneralesClausulas {
   @Field(() => Int)
   idBasesGenerales: number;
 
-  @Column("int", { name: "IdProformaClausula" })
-  @Field(() => Int)
-  idProformaClausula: number;
-
   @Column("int", { name: "IdTipoClausula" })
   @Field(() => Int)
   idTipoClausula: number;
@@ -54,9 +50,4 @@ export class BasesGeneralesClausulas {
   @ManyToOne(() => BasesGenerales,(basesGenerales) => basesGenerales.basesGeneralesClausulas,{ onDelete: "CASCADE", onUpdate: "CASCADE" })
   @JoinColumn([{ name: "IdBasesGenerales", referencedColumnName: "idBasesGenerales" }])
   basesGenerales: BasesGenerales;
-
-  @Field(() => ProformaClausulas , {nullable: true})
-  @ManyToOne(() => ProformaClausulas,(proformaClausulas) => proformaClausulas.basesGeneralesClausulas)
-  @JoinColumn([{ name: "IdProformaClausula", referencedColumnName: "idProformaClausula" }])
-  proformaClausula: ProformaClausulas;
 }

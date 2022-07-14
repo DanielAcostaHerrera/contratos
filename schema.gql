@@ -44,19 +44,9 @@ type CampanaEtapasContratacion {
   pais: Paises
 }
 
-type TiposDeClausulas {
-  idTipoClausula: Int!
-  nombre: String!
-  orden: Float!
-  excepcional: Boolean!
-  basesGeneralesClausulas: [BasesGeneralesClausulas!]
-  proformaClausulas: [ProformaClausulas!]
-}
-
 type BasesGeneralesClausulas {
   idBasesGeneralesClausulas: Int!
   idBasesGenerales: Int!
-  idProformaClausula: Int!
   idTipoClausula: Int!
   orden: Int!
   clausula: String!
@@ -65,13 +55,21 @@ type BasesGeneralesClausulas {
   numero: Int!
   tiposDeClausulas: TiposDeClausulas
   basesGenerales: BasesGenerales
-  proformaClausula: ProformaClausulas
 }
 
 """
 A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
 """
 scalar DateTime
+
+type TiposDeClausulas {
+  idTipoClausula: Int!
+  nombre: String!
+  orden: Float!
+  excepcional: Boolean!
+  basesGeneralesClausulas: [BasesGeneralesClausulas!]
+  proformaClausulas: [ProformaClausulas!]
+}
 
 type Incoterm {
   idIncoterm: Int!
@@ -92,7 +90,6 @@ type ProformaClausulas {
   idTipoClausula: Int
   orden: Int!
   clausula: String
-  basesGeneralesClausulas: [BasesGeneralesClausulas!]
   tiposDeClausulas: TiposDeClausulas
   tipoDeContrato: TipoContrato
   incoterm: Incoterm
@@ -1213,6 +1210,7 @@ type Query {
   findAllLog: [Logs!]!
   findOneLog(id: Int!): Logs!
   findAllProformaClausulas: [ProformaClausulas!]!
+  findAllProformaClausulasById(idIncoterm: Int!, idTipoContrato: Int!): [ProformaClausulas!]!
   findOneProformaClausulas(id: Int!): ProformaClausulas!
   findAllTiposDeClausulas: [TiposDeClausulas!]!
   findOneTiposDeClausulas(id: Int!): TiposDeClausulas!
@@ -1576,7 +1574,6 @@ input CreateBasesGeneralesInput {
 input CreateBasesGeneralesClausulaInput {
   idBasesGeneralesClausulas: Int
   idBasesGenerales: Int
-  idProformaClausula: Int!
   idTipoClausula: Int!
   orden: Int!
   clausula: String!

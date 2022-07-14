@@ -54,7 +54,6 @@ export class BasesGeneralesService {
             basesGeneralesClausula.clausula = proformaClausula.clausula; 
             basesGeneralesClausula.excepcional = proformaClausula.excepcional;
             basesGeneralesClausula.idBasesGenerales = result.idBasesGenerales;
-            basesGeneralesClausula.idProformaClausula = proformaClausula.idProformaClausula;
             basesGeneralesClausula.idTipoClausula = proformaClausula.idTipoClausula;
             basesGeneralesClausula.orden = proformaClausula.orden;
             basesGeneralesClausula.modificado = new Date();
@@ -90,7 +89,6 @@ export class BasesGeneralesService {
           basesGeneralesClausula.clausula = proformaClausula.clausula;
           basesGeneralesClausula.excepcional = proformaClausula.excepcional;
           basesGeneralesClausula.idBasesGenerales = result.idBasesGenerales;
-          basesGeneralesClausula.idProformaClausula = proformaClausula.idProformaClausula;
           basesGeneralesClausula.idTipoClausula = proformaClausula.idTipoClausula;
           basesGeneralesClausula.orden = proformaClausula.orden;
           basesGeneralesClausula.modificado = new Date();
@@ -261,7 +259,6 @@ export class BasesGeneralesService {
             basesGeneralesClausula.clausula = proformaClausula.clausula;
             basesGeneralesClausula.excepcional = false;
             basesGeneralesClausula.idBasesGenerales = basesGenerales.idBasesGenerales;
-            basesGeneralesClausula.idProformaClausula = proformaClausula.idProformaClausula;
             basesGeneralesClausula.idTipoClausula = proformaClausula.idTipoClausula;
             basesGeneralesClausula.orden = proformaClausula.orden;
             basesGeneralesClausula.modificado = new Date(); 
