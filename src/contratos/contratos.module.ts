@@ -9,7 +9,6 @@ import { BasesGeneralesModule } from 'src/bases-generales/bases-generales.module
 import { MonedaModule } from 'src/moneda/moneda.module';
 import { FormasEntregaModule } from 'src/formas-entrega/formas-entrega.module';
 import { NegociacionResumenModule } from 'src/negociacion-resumen/negociacion-resumen.module';
-import { AgenciasAseguradorasModule } from 'src/agencias-aseguradoras/agencias-aseguradoras.module';
 import { CompaniasNavierasModule } from 'src/companias-navieras/companias-navieras.module';
 import { LogsModule } from 'src/logs/logs.module';
 import { IncotermModule } from 'src/incoterm/incoterm.module';
@@ -36,7 +35,7 @@ import { UnidadMedidaModule } from 'src/unidad-medida/unidad-medida.module';
   imports: [TypeOrmModule.forFeature(
     [Contratos]
   ),BasesGeneralesModule,ContratoMarcoModule,MonedaModule,FormasEntregaModule,NegociacionResumenModule,EjecutivoModule,
-  AgenciasAseguradorasModule,CompaniasNavierasModule,LogsModule,IncotermModule,ContratoClausulaModule,SuplementoResumenModule,
+  CompaniasNavierasModule,LogsModule,IncotermModule,ContratoClausulaModule,SuplementoResumenModule,
   SuplementoClausulasModule, SuplementoChangeModule, SuplementoEmbarquesModule, SuplementoDesgloseModule,EmbarquesModule,ContratoDesgloseModule,
   CodigosParaLaVentaModule,PuertoEmbarqueModule, SuplementoPuertoEmbarqueModule, SuplementoPagosModule, PagosModule, FormasPagoModule, PagosApartirDeModule,
   PuertosModule, ReferenciasModule, UnidadMedidaModule],

@@ -76,11 +76,6 @@ export class SuplementoResumenResolver {
     return this.suplementoResumenService.getMoneda(suplementoResumen.idMoneda);
   }
 
-  @ResolveField(() => AgenciasAseguradoras, {nullable: true})
-  empresaAseguradora(@Parent() suplementoResumen: SuplementoResumen): Promise<AgenciasAseguradoras> {
-    return this.suplementoResumenService.getEmpresaAseguradora(suplementoResumen.idEmpSeguro);
-  }
-
   @ResolveField(() => CompaniasNavieras, {nullable: true})
   empresaNaviera(@Parent() suplementoResumen: SuplementoResumen): Promise<CompaniasNavieras> {
     return this.suplementoResumenService.getEmpresaNaviera(suplementoResumen.idEmpNaviera);

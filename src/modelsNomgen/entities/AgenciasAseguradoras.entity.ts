@@ -30,12 +30,4 @@ export class AgenciasAseguradoras {
   @Column("float", { name: "Valor", precision: 53 })
   @Field(() => Float,{nullable: true})
   valor: number;
-
-  @Field(() => [Contratos], { nullable: true })
-  @OneToMany(() => Contratos,(contratos) => contratos.agenciaAseguradora)
-  contratos: Contratos[];
-
-  @Field(() => [SuplementoResumen], { nullable: true })
-  @OneToMany(() => SuplementoResumen,(suplementoResumen) => suplementoResumen.empresaAseguradora)
-  suplementoResumen: SuplementoResumen[];
 }

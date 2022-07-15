@@ -60,8 +60,8 @@ export class SuplementoResumen {
   fecha: Date;
 
   @Column("int", { name: "EmpSeguro", nullable: true})
-  @Field(() => Int,{nullable: true})
-  idEmpSeguro: number | null;
+  @Field({nullable: true})
+  empSeguro: string | null;
 
   @Column("int", { name: "EmpNaviera", nullable: true })
   @Field(() => Int,{nullable: true})
@@ -233,12 +233,6 @@ export class SuplementoResumen {
   @ManyToOne(() => Monedas, (monedas) => monedas.suplementoResumen)
   @JoinColumn([{ name: "IdMoneda", referencedColumnName: "idMoneda" }])
   moneda: Monedas;
-
-
-  @Field(() => AgenciasAseguradoras, {nullable: true})
-  @ManyToOne(() => AgenciasAseguradoras, (agenciasAseguradoras) => agenciasAseguradoras.suplementoResumen)
-  @JoinColumn([{ name: "EmpSeguro", referencedColumnName: "idAgenciaS" }])
-  empresaAseguradora: AgenciasAseguradoras;
 
   @Field(() => CompaniasNavieras, {nullable: true})
   @ManyToOne(() => CompaniasNavieras, (companiasNavieras) => companiasNavieras.suplementoResumen)

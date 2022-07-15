@@ -11,7 +11,6 @@ import { Incoterm } from 'src/models/entities/Incoterm.entity';
 import { Monedas } from 'src/models/entities/Monedas.entity';
 import { NegociacionResumen } from 'src/models/entities/NegociacionResumen.entity';
 import { SuplementoResumen } from 'src/models/entities/SuplementoResumen.entity';
-import { AgenciasAseguradoras } from 'src/modelsNomgen/entities/AgenciasAseguradoras.entity';
 import { CompaniasNavieras } from 'src/modelsNomgen/entities/CompaniasNavieras.entity';
 import { MonedaService } from 'src/moneda/moneda.service';
 import { NegociacionResumenService } from 'src/negociacion-resumen/negociacion-resumen.service';
@@ -22,7 +21,7 @@ import { CreateSuplementoResumanInput } from './dto/create-suplemento-resuman.in
 export class SuplementoResumenService {
   constructor(@InjectRepository(SuplementoResumen) public readonly suplementoResumenRepository: Repository<SuplementoResumen>,
   private ejecutivoService: EjecutivoService,private monedaService: MonedaService,
-  private agenciasAseguradorasService: AgenciasAseguradorasService,private companiasNavierasService: CompaniasNavierasService,
+  private companiasNavierasService: CompaniasNavierasService,
   private negociacionResumenService: NegociacionResumenService,
   private incotermService: IncotermService, private formasEntregaService: FormasEntregaService) {}
 
@@ -32,8 +31,7 @@ export class SuplementoResumenService {
   }
 
   async findAll(): Promise<SuplementoResumen[]> {
-    return await this.suplementoResumenRepository.find({ relations: ['suplementoChanges','suplementoClausulas','suplementoDesgloses','suplementoEmbarques',
-    'suplementoPagos','contrato','suplementoPuertoEmbarques']});
+    return await this.suplementoResumenRepository.find({ relations: ['contrato']});
   }
 
   async findOne(id: number) : Promise<SuplementoResumen> {
@@ -73,10 +71,6 @@ export class SuplementoResumenService {
 
   async getMoneda (id: number) : Promise<Monedas>{
     return this.monedaService.findOne(id);
-  }
-
-  async getEmpresaAseguradora (id: number) : Promise<AgenciasAseguradoras>{
-    return this.agenciasAseguradorasService.findOne(id);
   }
 
   async getEmpresaNaviera (id: number) : Promise<CompaniasNavieras>{

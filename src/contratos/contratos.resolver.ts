@@ -1,4 +1,3 @@
-import { AgenciasAseguradoras } from './../modelsNomgen/entities/AgenciasAseguradoras.entity';
 import { CompaniasNavieras } from './../modelsNomgen/entities/CompaniasNavieras.entity';
 import { Resolver, Query, Mutation, Args, Int, ResolveField, Parent, Context } from '@nestjs/graphql';
 import { BasesGenerales } from 'src/models/entities/BasesGenerales.entity';
@@ -7,7 +6,6 @@ import { Ejecutivos } from 'src/models/entities/Ejecutivos.entity';
 import { FormasEntrega } from 'src/models/entities/FormasEntrega.entity';
 import { Monedas } from 'src/models/entities/Monedas.entity';
 import { NegociacionResumen } from 'src/models/entities/NegociacionResumen.entity';
-import { Paises } from 'src/modelsMercurio/entities/Paises.entity';
 import { ContratosService } from './contratos.service';
 import { CreateContratoInput } from './dto/create-contrato.input';
 import { Incoterm } from 'src/models/entities/Incoterm.entity';
@@ -142,11 +140,6 @@ export class ContratosResolver {
   @ResolveField(() => CompaniasNavieras, {nullable: true})
   companiaNaviera(@Parent() contratos: Contratos): Promise<CompaniasNavieras> {
     return this.contratosService.getEmpresaNaviera(contratos.idEmpresaNaviera);
-  }
-
-  @ResolveField(() => AgenciasAseguradoras, {nullable: true})
-  agenciaAseguradora(@Parent() contratos: Contratos): Promise<AgenciasAseguradoras> {
-    return this.contratosService.getEmpresaAseguradora(contratos.idEmpresaSeguro);
   }
 
   @ResolveField(() => Incoterm, {nullable: true})

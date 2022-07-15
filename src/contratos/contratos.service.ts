@@ -67,8 +67,7 @@ export class ContratosService {
   private basesGeneralesService: BasesGeneralesService,private contratoMarcoService: ContratoMarcoService,private monedaService: MonedaService,
   private formasEntregaService: FormasEntregaService,private negociacionResumenService: NegociacionResumenService,
   private ejecutivoService: EjecutivoService,private logsService: LogsService, private suplementoEmbarquesService: SuplementoEmbarquesService,
-  private agenciasAseguradorasService: AgenciasAseguradorasService, private incotermService: IncotermService,
-  private contratoClausulaService: ContratoClausulaService, private suplementoResumenService: SuplementoResumenService,
+  private incotermService: IncotermService,private contratoClausulaService: ContratoClausulaService, private suplementoResumenService: SuplementoResumenService,
   private suplementoClausulasService: SuplementoClausulasService, private suplementoChangeService: SuplementoChangeService,
   private suplementoDesgloseService: SuplementoDesgloseService, private embarquesService: EmbarquesService,
   private contratoDesgloseService: ContratoDesgloseService, private codigosParaLaVentaService: CodigosParaLaVentaService,
@@ -105,7 +104,7 @@ export class ContratosService {
         suplementoResumen.idEjecutivo = ultimoSuplemento.idEjecutivo;
         suplementoResumen.firma = ultimoSuplemento.firma;
         suplementoResumen.idMoneda = ultimoSuplemento.idMoneda;
-        suplementoResumen.idEmpSeguro = ultimoSuplemento.idEmpSeguro;
+        suplementoResumen.empSeguro = ultimoSuplemento.empSeguro;
         suplementoResumen.idEmpNaviera = ultimoSuplemento.idEmpNaviera;
         suplementoResumen.lugarEntrega = ultimoSuplemento.lugarEntrega;
         suplementoResumen.cancelado = ultimoSuplemento.cancelado;
@@ -243,7 +242,7 @@ export class ContratosService {
         suplementoResumen.idEjecutivo = contrato.idEjecutivo;
         suplementoResumen.firma = contrato.firmadoPor;
         suplementoResumen.idMoneda = contrato.idMoneda;
-        suplementoResumen.idEmpSeguro = contrato.idEmpresaSeguro;
+        suplementoResumen.empSeguro = contrato.empresaSeguro;
         suplementoResumen.idEmpNaviera = contrato.idEmpresaNaviera;
         suplementoResumen.lugarEntrega = contrato.lugarEntrega;
         suplementoResumen.cancelado = contrato.cancelado;
@@ -374,7 +373,7 @@ export class ContratosService {
       if(contrato.suplementoResumen.length == 1){
         let suplementoResumen = contrato.suplementoResumen[0];
 
-        let idEjecutivo,firma,idMoneda,idEmpSeguro,idEmpNaviera,lugarEntrega,cancelado,notas,permitirEmbarquesParciales,cantidadEp,permitirEntregas,permitirTrasbordos,
+        let idEjecutivo,firma,idMoneda,idEmpSeguro: string,idEmpNaviera,lugarEntrega,cancelado,notas,permitirEmbarquesParciales,cantidadEp,permitirEntregas,permitirTrasbordos,
         producto,noEntregasParciales,fInicial: Date,fFinal: Date,fFirma: Date,fRecepcion: Date,fArribo: Date,financiamiento,tasaMoneda,fechaTasa: Date,
         fechaPFirma: Date,pFin,idNegociacion,gastosLogisticos, lugarFirma,idPais,idIncoterm;
 
@@ -383,7 +382,7 @@ export class ContratosService {
           idEjecutivo = suplementoResumen.idEjecutivo;
           firma = suplementoResumen.firma;
           idMoneda = suplementoResumen.idMoneda;
-          idEmpSeguro = suplementoResumen.idEmpSeguro;
+          idEmpSeguro = suplementoResumen.empSeguro;
           idEmpNaviera = suplementoResumen.idEmpNaviera;
           lugarEntrega = suplementoResumen.lugarEntrega;
           cancelado = suplementoResumen.cancelado;
@@ -451,16 +450,14 @@ export class ContratosService {
           this.suplementoChangeService.save(suplementoChange);
         }
 
-        if(contrato.idEmpresaSeguro != idEmpSeguro){
+        if(contrato.empresaSeguro != idEmpSeguro){
           let suplementoChange = new CreateSuplementoChangeInput();
-          let seguroNueva = await this.agenciasAseguradorasService.findOne(idEmpSeguro);
-          let seguroVieja = await this.agenciasAseguradorasService.findOne(contrato.idEmpresaSeguro);
           suplementoChange.idEmbarque = null;
           suplementoChange.orden = null;
           suplementoChange.idCambio = 0;
           suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
-          suplementoChange.contenidoViejo = seguroVieja.nombre.toString();
-          suplementoChange.contenidoNuevo = seguroNueva.nombre.toString();    
+          suplementoChange.contenidoViejo = contrato.empresaSeguro.toString();
+          suplementoChange.contenidoNuevo = idEmpSeguro.toString();    
           suplementoChange.clausula = "Empresa de seguros";
           this.suplementoChangeService.save(suplementoChange);
         }
@@ -1338,7 +1335,7 @@ export class ContratosService {
       let suplementoResumen = contrato.suplementoResumen[0];
       let suplementoAnterior = contrato.suplementoResumen[1];
 
-      let idEjecutivo,firma,idMoneda,idEmpSeguro,idEmpNaviera,lugarEntrega,cancelado,notas,permitirEmbarquesParciales,cantidadEp,permitirEntregas,permitirTrasbordos,
+      let idEjecutivo,firma,idMoneda,idEmpSeguro: string,idEmpNaviera,lugarEntrega,cancelado,notas,permitirEmbarquesParciales,cantidadEp,permitirEntregas,permitirTrasbordos,
       producto,noEntregasParciales,fInicial: Date,fFinal: Date,fFirma: Date,fRecepcion: Date,fArribo: Date,financiamiento,tasaMoneda,fechaTasa: Date,fechaPFirma,pFin,idNegociacion,gastosLogisticos,
       lugarFirma,idIncoterm;
 
@@ -1347,7 +1344,7 @@ export class ContratosService {
         idEjecutivo = suplementoResumen.idEjecutivo;
         firma = suplementoResumen.firma;
         idMoneda = suplementoResumen.idMoneda;
-        idEmpSeguro = suplementoResumen.idEmpSeguro;
+        idEmpSeguro = suplementoResumen.empSeguro;
         idEmpNaviera = suplementoResumen.idEmpNaviera;
         lugarEntrega = suplementoResumen.lugarEntrega;
         cancelado = suplementoResumen.cancelado;
@@ -1415,16 +1412,14 @@ export class ContratosService {
         this.suplementoChangeService.save(suplementoChange);
       }
 
-      if(suplementoAnterior.idEmpSeguro != idEmpSeguro){
+      if(suplementoAnterior.empSeguro != idEmpSeguro){
         let suplementoChange = new CreateSuplementoChangeInput();
-        let seguroNueva = await this.agenciasAseguradorasService.findOne(idEmpSeguro);
-        let seguroVieja = await this.agenciasAseguradorasService.findOne(suplementoAnterior.idEmpSeguro);
         suplementoChange.idEmbarque = null;
         suplementoChange.orden = null;
         suplementoChange.idCambio = 0;
         suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
-        suplementoChange.contenidoViejo = seguroVieja.nombre.toString();
-        suplementoChange.contenidoNuevo = seguroNueva.nombre.toString();    
+        suplementoChange.contenidoViejo = suplementoAnterior.empSeguro.toString();
+        suplementoChange.contenidoNuevo = idEmpSeguro.toString();    
         suplementoChange.clausula = "Empresa de seguros";
         this.suplementoChangeService.save(suplementoChange);
       }
@@ -2423,7 +2418,7 @@ export class ContratosService {
           suplementoResumen.idEjecutivo = createContratoInput.idEjecutivo;
           suplementoResumen.firma = createContratoInput.firmadoPor;
           suplementoResumen.idMoneda = createContratoInput.idMoneda;
-          suplementoResumen.idEmpSeguro = createContratoInput.idEmpresaSeguro;
+          suplementoResumen.empSeguro = createContratoInput.empresaSeguro;
           suplementoResumen.idEmpNaviera = createContratoInput.idEmpresaNaviera;
           suplementoResumen.lugarEntrega = createContratoInput.lugarEntrega;
           suplementoResumen.cancelado = createContratoInput.cancelado;
@@ -2707,7 +2702,7 @@ export class ContratosService {
           contrato.cancelado = ultimoSuplemento.cancelado;
           contrato.terminado = ultimoSuplemento.terminadoS;
           contrato.modificado = ultimoSuplemento.modificado;
-          contrato.idEmpresaSeguro = ultimoSuplemento.idEmpSeguro;
+          contrato.empresaSeguro = ultimoSuplemento.empSeguro;
           contrato.idEmpresaNaviera = ultimoSuplemento.idEmpNaviera;
           contrato.lugarEntrega = ultimoSuplemento.lugarEntrega;
           contrato.notas = ultimoSuplemento.notas;
@@ -2880,7 +2875,7 @@ export class ContratosService {
           contrato.cancelado = ultimoSuplemento.cancelado;
           contrato.terminado = ultimoSuplemento.terminadoS;
           contrato.modificado = ultimoSuplemento.modificado;
-          contrato.idEmpresaSeguro = ultimoSuplemento.idEmpSeguro;
+          contrato.empresaSeguro = ultimoSuplemento.empSeguro;
           contrato.idEmpresaNaviera = ultimoSuplemento.idEmpNaviera;
           contrato.lugarEntrega = ultimoSuplemento.lugarEntrega;
           contrato.notas = ultimoSuplemento.notas;
@@ -3059,7 +3054,7 @@ export class ContratosService {
           contrato.cancelado = ultimoSuplemento.cancelado;
           contrato.terminado = ultimoSuplemento.terminadoS;
           contrato.modificado = ultimoSuplemento.modificado;
-          contrato.idEmpresaSeguro = ultimoSuplemento.idEmpSeguro;
+          contrato.empresaSeguro = ultimoSuplemento.empSeguro;
           contrato.idEmpresaNaviera = ultimoSuplemento.idEmpNaviera;
           contrato.lugarEntrega = ultimoSuplemento.lugarEntrega;
           contrato.notas = ultimoSuplemento.notas;
@@ -3262,10 +3257,6 @@ export class ContratosService {
 
   async getEjecutivoModifica (Id: number) : Promise<Ejecutivos>{
     return this.ejecutivoService.findOne(Id);
-  }
-
-  async getEmpresaAseguradora (Id: number) : Promise<AgenciasAseguradoras>{
-    return this.agenciasAseguradorasService.findOne(Id);
   }
 
   async getEmpresaNaviera (Id: number) : Promise<CompaniasNavieras>{

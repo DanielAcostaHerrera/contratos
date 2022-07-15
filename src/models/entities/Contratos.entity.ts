@@ -93,13 +93,9 @@ export class Contratos {
   @Field()
   modificado: boolean;
 
-  @Column("int", {
-    name: "EmpresaSeguro",
-    nullable: true,
-    default: () => "(1)",
-  })
+  @Column("nvarchar", {name: "EmpresaSeguro",nullable: true,})
   @Field({nullable: true})
-  idEmpresaSeguro: number | null;
+  empresaSeguro: string | null;
 
   @Column("int", {
     name: "EmpresaNaviera",
@@ -274,11 +270,6 @@ export class Contratos {
   @ManyToOne(() => CompaniasNavieras, (companiasNavieras) => companiasNavieras.contratos)
   @JoinColumn([{ name: "EmpresaNaviera", referencedColumnName: "id" }])
   companiaNaviera: CompaniasNavieras;
-
-  @Field(() => AgenciasAseguradoras, {nullable: true})
-  @ManyToOne(() => AgenciasAseguradoras, (agenciasAseguradoras) => agenciasAseguradoras.contratos)
-  @JoinColumn([{ name: "EmpresaSeguro", referencedColumnName: "idAgenciaS" }])
-  agenciaAseguradora: AgenciasAseguradoras;
 
   @Field(() => Incoterm, {nullable: true})
   @ManyToOne(() => Incoterm, (incoterm) => incoterm.contratos)

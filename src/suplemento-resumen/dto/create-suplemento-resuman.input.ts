@@ -28,8 +28,8 @@ export class CreateSuplementoResumanInput {
   @Field()
   fecha: Date;
 
-  @Field(() => Int,{nullable: true})
-  idEmpSeguro: number | null;
+  @Field({nullable: true})
+  empSeguro: string | null;
 
   @Field(() => Int,{nullable: true})
   idEmpNaviera: number | null;
