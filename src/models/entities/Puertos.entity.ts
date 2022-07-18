@@ -7,7 +7,6 @@ import { PuertoEmbarque } from "./PuertoEmbarque.entity";
 import { SuplementoPuertoEmbarque } from "./SuplementoPuertoEmbarque.entity";
 
 @ObjectType()
-@Index("IX_NOM_Puertos", ["idPais", "nombre"], { unique: true })
 @Index("IX_NOM_Puertos_Nombre", ["nombre"], {})
 @Index("PK_NOM_Puertos", ["idPuerto"], { unique: true })
 @Entity("NOM_Puertos", { schema: "CONTRATO.dbo" })
@@ -16,15 +15,15 @@ export class Puertos {
   @Field(() => Int)
   idPuerto: number;
 
-  @Column("nvarchar", { name: "Nombre", length: 50 })
+  @Column("nvarchar", { name: "Nombre", length: 100 })
   @Field()
   nombre: string;
 
-  @Column("int", { name: "Pais" })
-  @Field(() => Int)
-  idPais: number;
+  @Column("int", { name: "Pais", nullable: true })
+  @Field(() => Int,{nullable: true})
+  idPais?: number;
 
-  @Column("nvarchar", { name: "Deposito", nullable: true, length: 10 })
+  @Column("nvarchar", { name: "Deposito", nullable: true, length: 100 })
   @Field({nullable: true})
   deposito: string | null;
 

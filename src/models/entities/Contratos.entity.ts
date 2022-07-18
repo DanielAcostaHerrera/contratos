@@ -223,7 +223,7 @@ export class Contratos {
   negociacionResumen: NegociacionResumen;
 
   @Field(() => Ejecutivos, {nullable: true})
-  @ManyToOne(() => Ejecutivos, (ejecutivos) => ejecutivos.contratosRealiza)
+  @ManyToOne(() => Ejecutivos, (ejecutivos) => ejecutivos.contratos)
   @JoinColumn([{ name: "IdEjecutivo", referencedColumnName: "idEjecutivo" }])
   ejecutivo: Ejecutivos;
 
