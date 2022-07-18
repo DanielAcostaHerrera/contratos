@@ -147,13 +147,6 @@ export class BasesGeneralesService {
     let bases = await this.basesGeneralesRepository.find({order: {
         fecha : "DESC",
       }, relations: ['contratos'],});
-      bases.forEach(element => {
-        element.basesGeneralesClausulas.sort((a, b) => a.orden - b.orden);
-        let clausulas = element.basesGeneralesClausulas;
-        for (let index = 0; index < clausulas.length; index++) {
-          clausulas[index].numero = index+1; 
-        }
-      });
       return bases;
   }
 
