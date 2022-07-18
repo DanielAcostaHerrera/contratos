@@ -498,7 +498,7 @@ type SuplementoResumen {
   financiamiento: Float!
   tasaMoneda: Float!
   fechaTasa: DateTime!
-  fechaPFirma: DateTime!
+  fechaPFirma: DateTime
   pFin: Float!
   operacion: Boolean!
   idNegociacion: Int!
@@ -1180,7 +1180,7 @@ type Query {
   findAllGrupos: [GruposDeCompras!]!
   findOneGrupo(id: Int!): GruposDeCompras!
   actualizarClausulasFromBaseGeneral(idBaseGeneral: Float!): [BasesGeneralesClausulas!]!
-  findAllBasesGenerales: [BasesGenerales!]!
+  findAllBasesGenerales(skip: Int!, take: Int!): [BasesGenerales!]!
   findOneBasesGenerales(id: Int!): BasesGenerales!
   getClausulasFromBaseGeneral(idProveedor: Int!, idIncoterm: Int!): [BasesGeneralesClausulas!]!
   findAllClasificaciones: [Clasificaciones!]!
@@ -1854,7 +1854,7 @@ input CreateSuplementoResumanInput {
   financiamiento: Float!
   tasaMoneda: Float!
   fechaTasa: DateTime!
-  fechaPFirma: DateTime!
+  fechaPFirma: DateTime
   pFin: Float!
   operacion: Boolean!
   idNegociacion: Int!

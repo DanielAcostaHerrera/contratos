@@ -64,7 +64,7 @@ export class BasesGeneralesService {
 
     if(!createBasesGeneralesInput.idBasesGenerales){
       esNuevo = true;
-      var basesAnteriores = await this.findAll();
+      var basesAnteriores = await this.findAll(5,0);
       var ultimaBase = basesAnteriores[0];
      
       if(ultimaBase.fecha.getFullYear() === today.getFullYear()){
@@ -143,10 +143,12 @@ export class BasesGeneralesService {
     return result;
   }
 
-  async findAll(): Promise<BasesGenerales[]> { 
+  async findAll(take: number, skip: number): Promise<BasesGenerales[]> { 
     let bases = await this.basesGeneralesRepository.find({order: {
         fecha : "DESC",
-      }, relations: ['contratos'],});
+      }, relations: ['contratos'],
+      take: take,
+      skip: skip});
       return bases;
   }
 
