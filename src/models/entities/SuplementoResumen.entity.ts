@@ -1,5 +1,4 @@
 import { NegociacionResumen } from './NegociacionResumen.entity';
-import { AgenciasAseguradoras } from './../../modelsNomgen/entities/AgenciasAseguradoras.entity';
 import {
   Column,
   Entity,
@@ -59,7 +58,7 @@ export class SuplementoResumen {
   @Field()
   fecha: Date;
 
-  @Column("int", { name: "EmpSeguro", nullable: true})
+  @Column("nvarchar", { name: "EmpSeguro", nullable: true})
   @Field({nullable: true})
   empSeguro: string | null;
 
@@ -135,9 +134,9 @@ export class SuplementoResumen {
   @Field()
   fechaTasa: Date;
 
-  @Column("smalldatetime", { name: "FechaPFirma" })
-  @Field()
-  fechaPFirma: Date;
+  @Column("smalldatetime", { name: "FechaPFirma", nullable: true })
+  @Field({nullable: true})
+  fechaPFirma?: Date;
 
   @Column("float", { name: "PFin", precision: 53 })
   @Field(() => Float)

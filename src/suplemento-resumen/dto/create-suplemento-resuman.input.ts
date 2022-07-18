@@ -85,8 +85,8 @@ export class CreateSuplementoResumanInput {
   @Field()
   fechaTasa: Date;
 
-  @Field()
-  fechaPFirma: Date;
+  @Field({nullable: true})
+  fechaPFirma?: Date;
 
   @Field(() => Float)
   pFin: number;
