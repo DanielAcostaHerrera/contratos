@@ -143,12 +143,15 @@ export class BasesGeneralesService {
     return result;
   }
 
-  async findAll(take: number, skip: number): Promise<BasesGenerales[]> { 
-    let bases = await this.basesGeneralesRepository.find({order: {
+  async findAll(take: number, skip: number, _where?: string): Promise<BasesGenerales[]> { 
+    let bases = await this.basesGeneralesRepository.find(
+      {order: {
         fecha : "DESC",
-      }, relations: ['contratos'],
+      },
+      where: _where
+      ,relations: ['contratos'],
       take: take,
-      skip: skip});
+      skip: skip}); 
       return bases;
   }
 

@@ -34,8 +34,9 @@ export class BasesGeneralesResolver {
   @UseGuards(new AuthGuard())
   findAllBasesGenerales(
     @Args('take', { type: () => Int }) take: number,
-    @Args('skip', { type: () => Int }) skip: number) {
-    return this.basesGeneralesService.findAll(take,skip);
+    @Args('skip', { type: () => Int }) skip: number,
+    @Args('where', { type: () => String, nullable: true }) where: string) {
+    return this.basesGeneralesService.findAll(take,skip,where);
   }
 
   @Query(() => BasesGenerales)

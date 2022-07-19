@@ -19,9 +19,6 @@ export class CreateBasesGeneralesInput {
   @Field(() => Int)
   idIncoterm: number;
 
-  @Field(() => Int)
-  idProforma: number;
-
   @Field()
   lugardeFirma: string;
 
