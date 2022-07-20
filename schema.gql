@@ -1185,7 +1185,7 @@ type Query {
   findOneGrupo(id: Int!): GruposDeCompras!
   actualizarClausulasFromBaseGeneral(idBaseGeneral: Float!): [BasesGeneralesClausulas!]!
   countBasesGenerales(where: FilterBasesGeneralesInput): CountBasesGenerales!
-  findAllBasesGenerales(orden: String, campo: String, where: FilterBasesGeneralesInput, skip: Int!, take: Int!): [BasesGenerales!]!
+  findAllBasesGenerales(orden: Int, campo: String, where: FilterBasesGeneralesInput, skip: Int!, take: Int!): [BasesGenerales!]!
   findOneBasesGenerales(id: Int!): BasesGenerales!
   getClausulasFromBaseGeneral(idProveedor: Int!, idIncoterm: Int!): [BasesGeneralesClausulas!]!
   findAllClasificaciones: [Clasificaciones!]!

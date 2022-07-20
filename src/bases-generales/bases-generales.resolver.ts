@@ -46,7 +46,7 @@ export class BasesGeneralesResolver {
     @Args('skip', { type: () => Int }) skip: number,
     @Args('where', { type: () => FilterBasesGeneralesInput, nullable: true }) where: FilterBasesGeneralesInput,
     @Args('campo', { type: () => String, nullable: true }) campo: string,
-    @Args('orden', { type: () => String, nullable: true }) orden: string) {
+    @Args('orden', { type: () => Int, nullable: true }) orden: number) {
     return this.basesGeneralesService.findAll(take,skip,where,campo,orden);
   }
 

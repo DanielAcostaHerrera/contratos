@@ -174,7 +174,7 @@ export class BasesGeneralesService {
     return count;
   }
 
-  async findAll(take: number, skip: number, _where?: FilterBasesGeneralesInput, campo?: string, orden?: string): Promise<BasesGenerales[]> { 
+  async findAll(take: number, skip: number, _where?: FilterBasesGeneralesInput, campo?: string, orden?: number): Promise<BasesGenerales[]> { 
     let bases: BasesGenerales[];
     if(campo && orden && _where){
       bases = await this.basesGeneralesRepository.find(
@@ -195,6 +195,16 @@ export class BasesGeneralesService {
           ...(_where.noContrato && { noContrato: Like(`%${_where.noContrato}%`)}),
           ...(_where.fechaDesde && _where.fechaHasta && { fecha: Between(_where.fechaDesde, _where.fechaHasta) }),
           ...(_where.actualizadoDesde && _where.actualizadoHasta && { actualizado: Between(_where.actualizadoDesde, _where.actualizadoHasta) }),
+          }
+          ,relations: ['contratos'],
+          take: take,
+          skip: skip}); 
+    }
+    if(campo && orden && !_where){
+      bases = await this.basesGeneralesRepository.find(
+        {
+          order: {
+            [campo]: orden
           }
           ,relations: ['contratos'],
           take: take,
