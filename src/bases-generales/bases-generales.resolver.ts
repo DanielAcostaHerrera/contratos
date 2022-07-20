@@ -11,6 +11,7 @@ import { BasesGeneralesClausulas } from 'src/models/entities/BasesGeneralesClaus
 import { AuthGuard, DEFAULT_GRAPHQL_CONTEXT } from 'src/auth.guard';
 import { Usuarios } from 'src/models/entities/Usuarios.entity';
 import { StreamableFile, UseGuards } from '@nestjs/common';
+import { FilterBasesGeneralesInput } from './dto/filter-bases-generales.input';
 
 @Resolver(() => BasesGenerales)
 export class BasesGeneralesResolver {
@@ -35,8 +36,10 @@ export class BasesGeneralesResolver {
   findAllBasesGenerales(
     @Args('take', { type: () => Int }) take: number,
     @Args('skip', { type: () => Int }) skip: number,
-    @Args('where', { type: () => String, nullable: true }) where: string) {
-    return this.basesGeneralesService.findAll(take,skip,where);
+    @Args('where', { type: () => FilterBasesGeneralesInput, nullable: true }) where: FilterBasesGeneralesInput,
+    @Args('campo', { type: () => String, nullable: true }) campo: string,
+    @Args('orden', { type: () => String, nullable: true }) orden: string) {
+    return this.basesGeneralesService.findAll(take,skip,where,campo,orden);
   }
 
   @Query(() => BasesGenerales)

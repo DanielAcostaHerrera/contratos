@@ -1,6 +1,5 @@
 import { InputType, Int, Field } from '@nestjs/graphql';
 import { CreateBasesGeneralesClausulaInput } from 'src/bases-generales-clausulas/dto/create-bases-generales-clausula.input';
-import { BasesGeneralesClausulas } from 'src/models/entities/BasesGeneralesClausulas.entity';
 
 @InputType()
 export class CreateBasesGeneralesInput {

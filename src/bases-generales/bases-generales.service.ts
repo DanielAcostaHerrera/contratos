@@ -11,7 +11,7 @@ import { Compradores } from 'src/models/entities/Compradores.entity';
 import { Incoterm } from 'src/models/entities/Incoterm.entity';
 import { TipoContrato } from 'src/models/entities/TipoContrato.entity';
 import { TipoContratoService } from 'src/tipo-contrato/tipo-contrato.service';
-import { Repository } from 'typeorm';
+import { Between, Repository } from 'typeorm';
 import { CreateBasesGeneralesInput } from './dto/create-bases-generales.input';
 import { ProveedoresService } from 'src/proveedores/proveedores.service';
 import { Paises } from 'src/modelsMercurio/entities/Paises.entity';
@@ -21,6 +21,7 @@ import { BasesGeneralesClausulas } from 'src/models/entities/BasesGeneralesClaus
 import { ProformaClausulasService } from 'src/proforma-clausulas/proforma-clausulas.service';
 import { CreateBasesGeneralesClausulaInput } from 'src/bases-generales-clausulas/dto/create-bases-generales-clausula.input';
 import { Usuarios } from 'src/models/entities/Usuarios.entity';
+import { FilterBasesGeneralesInput } from './dto/filter-bases-generales.input';
 
 
 @Injectable()
@@ -143,15 +144,61 @@ export class BasesGeneralesService {
     return result;
   }
 
-  async findAll(take: number, skip: number, _where?: string): Promise<BasesGenerales[]> { 
-    let bases = await this.basesGeneralesRepository.find(
-      {order: {
-        fecha : "DESC",
-      },
-      where: _where
-      ,relations: ['contratos'],
-      take: take,
-      skip: skip}); 
+  async findAll(take: number, skip: number, _where?: FilterBasesGeneralesInput, campo?: string, orden?: string): Promise<BasesGenerales[]> { 
+    let bases: BasesGenerales[];
+    if(campo && orden && _where){
+      bases = await this.basesGeneralesRepository.find(
+        {
+          order: {
+            [campo]: orden
+          }
+          ,where: {
+          ...(_where.idTipoContrato && { idTipoContrato: _where.idTipoContrato }),
+          ...(_where.idIncoterm && { idIncoterm: _where.idIncoterm }),
+          ...(_where.lugardeFirma && { lugardeFirma: _where.lugardeFirma }),
+          ...(_where.idPais && { idPais: _where.idPais }),
+          ...(_where.idProveedor && { idProveedor: _where.idProveedor }),
+          ...(_where.idComprador && { idComprador: _where.idComprador }),
+          ...(_where.vigencia && { vigencia: _where.vigencia }),
+          ...(_where.aprobado && { aprobado: _where.aprobado }),
+          ...(_where.activo && { activo: _where.activo }),
+          ...(_where.fechaDesde && _where.fechaHasta && { fecha: Between(_where.fechaDesde, _where.fechaHasta) }),
+          ...(_where.actualizadoDesde && _where.actualizadoHasta && { actualizado: Between(_where.actualizadoDesde, _where.actualizadoHasta) }),
+          }
+          ,relations: ['contratos'],
+          take: take,
+          skip: skip}); 
+    }
+    if((!campo || !orden) && _where){
+      bases = await this.basesGeneralesRepository.find(
+        {
+          where: {
+          ...(_where.idTipoContrato && { idTipoContrato: _where.idTipoContrato }),
+          ...(_where.idIncoterm && { idIncoterm: _where.idIncoterm }),
+          ...(_where.lugardeFirma && { lugardeFirma: _where.lugardeFirma }),
+          ...(_where.idPais && { idPais: _where.idPais }),
+          ...(_where.idProveedor && { idProveedor: _where.idProveedor }),
+          ...(_where.idComprador && { idComprador: _where.idComprador }),
+          ...(_where.vigencia && { vigencia: _where.vigencia }),
+          ...(_where.aprobado && { aprobado: _where.aprobado }),
+          ...(_where.activo && { activo: _where.activo }),
+          ...(_where.fechaDesde && _where.fechaHasta && { fecha: Between(_where.fechaDesde, _where.fechaHasta) }),
+          ...(_where.actualizadoDesde && _where.actualizadoHasta && { actualizado: Between(_where.actualizadoDesde, _where.actualizadoHasta) }),
+          }
+        ,relations: ['contratos'],
+        take: take,
+        skip: skip}); 
+    }
+    if((!campo || !orden) && !_where){
+      bases = await this.basesGeneralesRepository.find(
+        {
+          order: {
+            fecha : "DESC"
+        }
+        ,relations: ['contratos'],
+        take: take,
+        skip: skip}); 
+    }
       return bases;
   }
 
