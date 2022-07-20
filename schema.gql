@@ -1153,6 +1153,10 @@ type Logs {
   usuario: String!
 }
 
+type CountBasesGenerales {
+  cantidad: Int
+}
+
 type Contenedores {
   idContenedor: Int!
   idFactura: String!
@@ -1180,6 +1184,7 @@ type Query {
   findAllGrupos: [GruposDeCompras!]!
   findOneGrupo(id: Int!): GruposDeCompras!
   actualizarClausulasFromBaseGeneral(idBaseGeneral: Float!): [BasesGeneralesClausulas!]!
+  countBasesGenerales(where: FilterBasesGeneralesInput): CountBasesGenerales!
   findAllBasesGenerales(orden: String, campo: String, where: FilterBasesGeneralesInput, skip: Int!, take: Int!): [BasesGenerales!]!
   findOneBasesGenerales(id: Int!): BasesGenerales!
   getClausulasFromBaseGeneral(idProveedor: Int!, idIncoterm: Int!): [BasesGeneralesClausulas!]!

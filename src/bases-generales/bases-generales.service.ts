@@ -22,6 +22,7 @@ import { ProformaClausulasService } from 'src/proforma-clausulas/proforma-clausu
 import { CreateBasesGeneralesClausulaInput } from 'src/bases-generales-clausulas/dto/create-bases-generales-clausula.input';
 import { Usuarios } from 'src/models/entities/Usuarios.entity';
 import { FilterBasesGeneralesInput } from './dto/filter-bases-generales.input';
+import { CountBasesGenerales} from './dto/count-bases-generales.input';
 
 
 @Injectable()
@@ -144,8 +145,9 @@ export class BasesGeneralesService {
     return result;
   }
 
-  async countBasesGenerales(_where?: FilterBasesGeneralesInput): Promise<number> { 
+  async countBasesGenerales(_where?: FilterBasesGeneralesInput): Promise<CountBasesGenerales> { 
     let bases: BasesGenerales[];
+    let count = new CountBasesGenerales();
     if(_where){
       bases = await this.basesGeneralesRepository.find(
         {
@@ -168,7 +170,8 @@ export class BasesGeneralesService {
     if(!_where){
       bases = await this.basesGeneralesRepository.find(); 
     }
-      return bases.length;
+    count.cantidad = bases.length;
+    return count;
   }
 
   async findAll(take: number, skip: number, _where?: FilterBasesGeneralesInput, campo?: string, orden?: string): Promise<BasesGenerales[]> { 

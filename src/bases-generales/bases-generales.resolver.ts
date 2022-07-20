@@ -12,6 +12,7 @@ import { AuthGuard, DEFAULT_GRAPHQL_CONTEXT } from 'src/auth.guard';
 import { Usuarios } from 'src/models/entities/Usuarios.entity';
 import { StreamableFile, UseGuards } from '@nestjs/common';
 import { FilterBasesGeneralesInput } from './dto/filter-bases-generales.input';
+import { CountBasesGenerales } from './dto/count-bases-generales.input';
 
 @Resolver(() => BasesGenerales)
 export class BasesGeneralesResolver {
@@ -31,7 +32,7 @@ export class BasesGeneralesResolver {
     return this.basesGeneralesService.actualizarClausulasFromBaseGeneral(idBaseGeneral);
   }
 
-  @Query(() => Int)
+  @Query(() => CountBasesGenerales)
   @UseGuards(new AuthGuard())
   countBasesGenerales(
     @Args('where', { type: () => FilterBasesGeneralesInput, nullable: true }) where: FilterBasesGeneralesInput) {
