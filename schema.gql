@@ -1180,7 +1180,7 @@ type Query {
   findAllGrupos: [GruposDeCompras!]!
   findOneGrupo(id: Int!): GruposDeCompras!
   actualizarClausulasFromBaseGeneral(idBaseGeneral: Float!): [BasesGeneralesClausulas!]!
-  findAllBasesGenerales(where: String, skip: Int!, take: Int!): [BasesGenerales!]!
+  findAllBasesGenerales(orden: String, campo: String, where: FilterBasesGeneralesInput, skip: Int!, take: Int!): [BasesGenerales!]!
   findOneBasesGenerales(id: Int!): BasesGenerales!
   getClausulasFromBaseGeneral(idProveedor: Int!, idIncoterm: Int!): [BasesGeneralesClausulas!]!
   findAllClasificaciones: [Clasificaciones!]!
@@ -1313,6 +1313,24 @@ type Query {
   findOneUsuarioRol(id: Int!): UsuarioRol!
   findAllAgenciasAseguradoras: [AgenciasAseguradoras!]!
   findOneAgenciasAseguradoras(id: Int!): AgenciasAseguradoras!
+}
+
+input FilterBasesGeneralesInput {
+  fechaDesde: DateTime
+  fechaHasta: DateTime
+  idTipoContrato: Int
+  idIncoterm: Int
+  lugardeFirma: String
+  idPais: Int
+  idProveedor: Int
+  idComprador: Int
+  vigencia: Int
+  aprobado: Boolean
+  cancelado: Boolean
+  activo: Boolean
+  actualizadoDesde: DateTime
+  actualizadoHasta: DateTime
+  noContrato: String
 }
 
 type Mutation {
