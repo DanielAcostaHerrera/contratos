@@ -43,4 +43,7 @@ export class FilterBasesGeneralesInput {
 
   @Field({ nullable: true})
   actualizadoHasta?: Date;
+
+  @Field({ nullable: true})
+  noContrato?: string;
 }

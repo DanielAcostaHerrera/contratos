@@ -11,7 +11,7 @@ import { Compradores } from 'src/models/entities/Compradores.entity';
 import { Incoterm } from 'src/models/entities/Incoterm.entity';
 import { TipoContrato } from 'src/models/entities/TipoContrato.entity';
 import { TipoContratoService } from 'src/tipo-contrato/tipo-contrato.service';
-import { Between, Repository } from 'typeorm';
+import { Between, Like, Repository } from 'typeorm';
 import { CreateBasesGeneralesInput } from './dto/create-bases-generales.input';
 import { ProveedoresService } from 'src/proveedores/proveedores.service';
 import { Paises } from 'src/modelsMercurio/entities/Paises.entity';
@@ -155,13 +155,14 @@ export class BasesGeneralesService {
           ,where: {
           ...(_where.idTipoContrato && { idTipoContrato: _where.idTipoContrato }),
           ...(_where.idIncoterm && { idIncoterm: _where.idIncoterm }),
-          ...(_where.lugardeFirma && { lugardeFirma: _where.lugardeFirma }),
+          ...(_where.lugardeFirma && { lugardeFirma: Like(`%${_where.lugardeFirma}%`)}),
           ...(_where.idPais && { idPais: _where.idPais }),
           ...(_where.idProveedor && { idProveedor: _where.idProveedor }),
           ...(_where.idComprador && { idComprador: _where.idComprador }),
           ...(_where.vigencia && { vigencia: _where.vigencia }),
           ...(_where.aprobado && { aprobado: _where.aprobado }),
           ...(_where.activo && { activo: _where.activo }),
+          ...(_where.noContrato && { noContrato: Like(`%${_where.noContrato}%`)}),
           ...(_where.fechaDesde && _where.fechaHasta && { fecha: Between(_where.fechaDesde, _where.fechaHasta) }),
           ...(_where.actualizadoDesde && _where.actualizadoHasta && { actualizado: Between(_where.actualizadoDesde, _where.actualizadoHasta) }),
           }
@@ -173,18 +174,19 @@ export class BasesGeneralesService {
       bases = await this.basesGeneralesRepository.find(
         {
           where: {
-          ...(_where.idTipoContrato && { idTipoContrato: _where.idTipoContrato }),
-          ...(_where.idIncoterm && { idIncoterm: _where.idIncoterm }),
-          ...(_where.lugardeFirma && { lugardeFirma: _where.lugardeFirma }),
-          ...(_where.idPais && { idPais: _where.idPais }),
-          ...(_where.idProveedor && { idProveedor: _where.idProveedor }),
-          ...(_where.idComprador && { idComprador: _where.idComprador }),
-          ...(_where.vigencia && { vigencia: _where.vigencia }),
-          ...(_where.aprobado && { aprobado: _where.aprobado }),
-          ...(_where.activo && { activo: _where.activo }),
-          ...(_where.fechaDesde && _where.fechaHasta && { fecha: Between(_where.fechaDesde, _where.fechaHasta) }),
-          ...(_where.actualizadoDesde && _where.actualizadoHasta && { actualizado: Between(_where.actualizadoDesde, _where.actualizadoHasta) }),
-          }
+            ...(_where.idTipoContrato && { idTipoContrato: _where.idTipoContrato }),
+            ...(_where.idIncoterm && { idIncoterm: _where.idIncoterm }),
+            ...(_where.lugardeFirma && { lugardeFirma: Like(`%${_where.lugardeFirma}%`)}),
+            ...(_where.idPais && { idPais: _where.idPais }),
+            ...(_where.idProveedor && { idProveedor: _where.idProveedor }),
+            ...(_where.idComprador && { idComprador: _where.idComprador }),
+            ...(_where.vigencia && { vigencia: _where.vigencia }),
+            ...(_where.aprobado && { aprobado: _where.aprobado }),
+            ...(_where.activo && { activo: _where.activo }),
+            ...(_where.noContrato && { noContrato: Like(`%${_where.noContrato}%`)}),
+            ...(_where.fechaDesde && _where.fechaHasta && { fecha: Between(_where.fechaDesde, _where.fechaHasta) }),
+            ...(_where.actualizadoDesde && _where.actualizadoHasta && { actualizado: Between(_where.actualizadoDesde, _where.actualizadoHasta) }),
+            }
         ,relations: ['contratos'],
         take: take,
         skip: skip}); 
