@@ -31,6 +31,13 @@ export class BasesGeneralesResolver {
     return this.basesGeneralesService.actualizarClausulasFromBaseGeneral(idBaseGeneral);
   }
 
+  @Query(() => Int)
+  @UseGuards(new AuthGuard())
+  countBasesGenerales(
+    @Args('where', { type: () => FilterBasesGeneralesInput, nullable: true }) where: FilterBasesGeneralesInput) {
+    return this.basesGeneralesService.countBasesGenerales(where);
+  }
+  
   @Query(() => [BasesGenerales])
   @UseGuards(new AuthGuard())
   findAllBasesGenerales(

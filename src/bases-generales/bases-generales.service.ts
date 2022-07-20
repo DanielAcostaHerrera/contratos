@@ -144,6 +144,33 @@ export class BasesGeneralesService {
     return result;
   }
 
+  async countBasesGenerales(_where?: FilterBasesGeneralesInput): Promise<number> { 
+    let bases: BasesGenerales[];
+    if(_where){
+      bases = await this.basesGeneralesRepository.find(
+        {
+          where: {
+            ...(_where.idTipoContrato && { idTipoContrato: _where.idTipoContrato }),
+            ...(_where.idIncoterm && { idIncoterm: _where.idIncoterm }),
+            ...(_where.lugardeFirma && { lugardeFirma: Like(`%${_where.lugardeFirma}%`)}),
+            ...(_where.idPais && { idPais: _where.idPais }),
+            ...(_where.idProveedor && { idProveedor: _where.idProveedor }),
+            ...(_where.idComprador && { idComprador: _where.idComprador }),
+            ...(_where.vigencia && { vigencia: _where.vigencia }),
+            ...(_where.aprobado && { aprobado: _where.aprobado }),
+            ...(_where.activo && { activo: _where.activo }),
+            ...(_where.noContrato && { noContrato: Like(`%${_where.noContrato}%`)}),
+            ...(_where.fechaDesde && _where.fechaHasta && { fecha: Between(_where.fechaDesde, _where.fechaHasta) }),
+            ...(_where.actualizadoDesde && _where.actualizadoHasta && { actualizado: Between(_where.actualizadoDesde, _where.actualizadoHasta) }),
+            }
+        }); 
+    }
+    if(!_where){
+      bases = await this.basesGeneralesRepository.find(); 
+    }
+      return bases.length;
+  }
+
   async findAll(take: number, skip: number, _where?: FilterBasesGeneralesInput, campo?: string, orden?: string): Promise<BasesGenerales[]> { 
     let bases: BasesGenerales[];
     if(campo && orden && _where){
