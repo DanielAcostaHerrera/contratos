@@ -23,6 +23,7 @@ import { CreateBasesGeneralesClausulaInput } from 'src/bases-generales-clausulas
 import { Usuarios } from 'src/models/entities/Usuarios.entity';
 import { FilterBasesGeneralesInput } from './dto/filter-bases-generales.input';
 import { CountBasesGenerales} from './dto/count-bases-generales.input';
+import {orderBy} from 'lodash'
 
 
 @Injectable()
@@ -179,10 +180,7 @@ export class BasesGeneralesService {
     if(campo && orden && _where){
       bases = await this.basesGeneralesRepository.find(
         {
-          order: {
-            [campo]: orden
-          }
-          ,where: {
+          where: {
           ...(_where.idTipoContrato && { idTipoContrato: _where.idTipoContrato }),
           ...(_where.idIncoterm && { idIncoterm: _where.idIncoterm }),
           ...(_where.lugardeFirma && { lugardeFirma: Like(`%${_where.lugardeFirma}%`)}),
@@ -196,19 +194,18 @@ export class BasesGeneralesService {
           ...(_where.fechaDesde && _where.fechaHasta && { fecha: Between(_where.fechaDesde, _where.fechaHasta) }),
           ...(_where.actualizadoDesde && _where.actualizadoHasta && { actualizado: Between(_where.actualizadoDesde, _where.actualizadoHasta) }),
           }
-          ,relations: ['contratos'],
+          ,relations: ['incoterm','tipoDeContrato','compradores','pais','proveedor'],
           take: take,
           skip: skip}); 
+          bases = orderBy(bases, [campo],[orden === 1 ? "asc" : "desc"] );
     }
     if(campo && orden && !_where){
       bases = await this.basesGeneralesRepository.find(
         {
-          order: {
-            [campo]: orden
-          }
-          ,relations: ['contratos'],
+          relations: ['incoterm','tipoDeContrato','compradores','pais','proveedor'],
           take: take,
           skip: skip}); 
+          bases = orderBy(bases, [campo],[orden === 1 ? "asc" : "desc"] );
     }
     if((!campo || !orden) && _where){
       bases = await this.basesGeneralesRepository.find(
@@ -226,8 +223,7 @@ export class BasesGeneralesService {
             ...(_where.noContrato && { noContrato: Like(`%${_where.noContrato}%`)}),
             ...(_where.fechaDesde && _where.fechaHasta && { fecha: Between(_where.fechaDesde, _where.fechaHasta) }),
             ...(_where.actualizadoDesde && _where.actualizadoHasta && { actualizado: Between(_where.actualizadoDesde, _where.actualizadoHasta) }),
-            }
-        ,relations: ['contratos'],
+            },
         take: take,
         skip: skip}); 
     }
@@ -236,8 +232,7 @@ export class BasesGeneralesService {
         {
           order: {
             fecha : "DESC"
-        }
-        ,relations: ['contratos'],
+        },
         take: take,
         skip: skip}); 
     }

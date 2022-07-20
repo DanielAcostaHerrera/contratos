@@ -16,7 +16,8 @@ import { LogsModule } from 'src/logs/logs.module';
 @Module({
   imports:[TypeOrmModule.forFeature([
     BasesGenerales
-  ]),ClasificacionesModule,TipoContratoModule,IncotermModule,CompradoresModule,PaisesModule,ProveedoresModule,LogsModule,ProformaClausulasModule,BasesGeneralesClausulasModule],
+  ]),ClasificacionesModule,TipoContratoModule,IncotermModule,CompradoresModule,PaisesModule,ProveedoresModule,LogsModule,ProformaClausulasModule,
+  BasesGeneralesClausulasModule],
   providers: [BasesGeneralesResolver, BasesGeneralesService],
   exports: [BasesGeneralesService]
 })
