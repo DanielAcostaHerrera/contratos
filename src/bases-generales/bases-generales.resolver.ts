@@ -42,12 +42,9 @@ export class BasesGeneralesResolver {
   @Query(() => [BasesGenerales])
   @UseGuards(new AuthGuard())
   findAllBasesGenerales(
-    @Args('take', { type: () => Int }) take: number,
-    @Args('skip', { type: () => Int }) skip: number,
-    @Args('where', { type: () => FilterBasesGeneralesInput, nullable: true }) where: FilterBasesGeneralesInput,
-    @Args('campo', { type: () => String, nullable: true }) campo: string,
-    @Args('orden', { type: () => Int, nullable: true }) orden: number) {
-    return this.basesGeneralesService.findAll(take,skip,where,campo,orden);
+    @Args('take', { type: () => Int, nullable: true }) take: number,
+    @Args('skip', { type: () => Int, nullable: true }) skip: number) {
+    return this.basesGeneralesService.findAll(take,skip);
   }
 
   @Query(() => BasesGenerales)

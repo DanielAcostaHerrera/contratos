@@ -1185,7 +1185,7 @@ type Query {
   findOneGrupo(id: Int!): GruposDeCompras!
   actualizarClausulasFromBaseGeneral(idBaseGeneral: Float!): [BasesGeneralesClausulas!]!
   countBasesGenerales(where: FilterBasesGeneralesInput): CountBasesGenerales!
-  findAllBasesGenerales(orden: Int, campo: String, where: FilterBasesGeneralesInput, skip: Int!, take: Int!): [BasesGenerales!]!
+  findAllBasesGenerales(skip: Int, take: Int): [BasesGenerales!]!
   findOneBasesGenerales(id: Int!): BasesGenerales!
   getClausulasFromBaseGeneral(idProveedor: Int!, idIncoterm: Int!): [BasesGeneralesClausulas!]!
   findAllClasificaciones: [Clasificaciones!]!
@@ -1223,6 +1223,7 @@ type Query {
   findOneContratosUltimoSuplementoParaUpdate(id: Int!): Contratos!
   findOneContratosUltimoSuplemento(id: Int!): Contratos!
   findOneContratosSuplementoEspecifico(mostrar: Int!, id: Int!): Contratos!
+  findContratosByIdBaseGeneral(id: Int!): [Contratos!]!
   findAllContratoMarco: [ContratoMarco!]!
   findOneContratoMarco(id: Int!): ContratoMarco!
   findAllFormasEntrega: [FormasEntrega!]!
@@ -1257,6 +1258,7 @@ type Query {
   findOneReferencias(id: Int!): Referencias!
   findAllEmbarques: [Embarques!]!
   findOneEmbarques(id: Int!): Embarques!
+  findEmbarquesByIdContrato(id: Int!): [Embarques!]!
   findAllContratoDesglose: [ContratoDesglose!]!
   findOneContratoDesglose(id: Int!): ContratoDesglose!
   findAllPuertoEmbarque: [PuertoEmbarque!]!

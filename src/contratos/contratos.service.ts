@@ -3223,6 +3223,10 @@ export class ContratosService {
     return result;
   }
 
+  async findContratosByIdBaseGeneral(idBasesGenerales: number) : Promise<Contratos[]> {
+    return await this.contratoRepository.find({where: {idBasesGenerales}});
+  }
+
   async getBasesGenerales (Id: number) : Promise<BasesGenerales>{
     return this.basesGeneralesService.findOne(Id);
   }

@@ -30,6 +30,12 @@ export class EmbarquesResolver {
     return this.embarquesService.findOne(id);
   }
 
+  @Query(() => [Embarques])
+  @UseGuards(new AuthGuard())
+  findEmbarquesByIdContrato(@Args('id', { type: () => Int }) id: number) {
+    return this.embarquesService.findEmbarquesByIdContrato(id);
+  }
+
   @Mutation(() => Embarques)
   @UseGuards(new AuthGuard())
   removeEmbarque(@Args('id', { type: () => Int }) id: number) {

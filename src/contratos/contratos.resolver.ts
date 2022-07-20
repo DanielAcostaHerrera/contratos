@@ -75,6 +75,12 @@ export class ContratosResolver {
     return this.contratosService.findOneSuplementoEspecifico(id,mostrar);
   }
 
+  @Query(() => [Contratos])
+  @UseGuards(new AuthGuard())
+  findContratosByIdBaseGeneral(@Args('id', { type: () => Int }) id: number) {
+    return this.contratosService.findContratosByIdBaseGeneral(id);
+  }
+
   @Mutation(() => Contratos)
   @UseGuards(new AuthGuard())
   removeContrato(

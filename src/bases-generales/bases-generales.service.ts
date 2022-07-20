@@ -175,59 +175,18 @@ export class BasesGeneralesService {
     return count;
   }
 
-  async findAll(take: number, skip: number, _where?: FilterBasesGeneralesInput, campo?: string, orden?: number): Promise<BasesGenerales[]> { 
+  async findAll(take?: number, skip?: number): Promise<BasesGenerales[]> { 
     let bases: BasesGenerales[];
-    if(campo && orden && _where){
+    if(!take || !skip){
       bases = await this.basesGeneralesRepository.find(
         {
-          where: {
-          ...(_where.idTipoContrato && { idTipoContrato: _where.idTipoContrato }),
-          ...(_where.idIncoterm && { idIncoterm: _where.idIncoterm }),
-          ...(_where.lugardeFirma && { lugardeFirma: Like(`%${_where.lugardeFirma}%`)}),
-          ...(_where.idPais && { idPais: _where.idPais }),
-          ...(_where.idProveedor && { idProveedor: _where.idProveedor }),
-          ...(_where.idComprador && { idComprador: _where.idComprador }),
-          ...(_where.vigencia && { vigencia: _where.vigencia }),
-          ...(_where.aprobado && { aprobado: _where.aprobado }),
-          ...(_where.activo && { activo: _where.activo }),
-          ...(_where.noContrato && { noContrato: Like(`%${_where.noContrato}%`)}),
-          ...(_where.fechaDesde && _where.fechaHasta && { fecha: Between(_where.fechaDesde, _where.fechaHasta) }),
-          ...(_where.actualizadoDesde && _where.actualizadoHasta && { actualizado: Between(_where.actualizadoDesde, _where.actualizadoHasta) }),
-          }
-          ,relations: ['incoterm','tipoDeContrato','compradores','pais','proveedor'],
-          take: take,
-          skip: skip}); 
-          bases = orderBy(bases, [campo],[orden === 1 ? "asc" : "desc"] );
-    }
-    if(campo && orden && !_where){
-      bases = await this.basesGeneralesRepository.find(
-        {
-          relations: ['incoterm','tipoDeContrato','compradores','pais','proveedor'],
-          take: take,
-          skip: skip}); 
-          bases = orderBy(bases, [campo],[orden === 1 ? "asc" : "desc"] );
-    }
-    if((!campo || !orden) && _where){
-      bases = await this.basesGeneralesRepository.find(
-        {
-          where: {
-            ...(_where.idTipoContrato && { idTipoContrato: _where.idTipoContrato }),
-            ...(_where.idIncoterm && { idIncoterm: _where.idIncoterm }),
-            ...(_where.lugardeFirma && { lugardeFirma: Like(`%${_where.lugardeFirma}%`)}),
-            ...(_where.idPais && { idPais: _where.idPais }),
-            ...(_where.idProveedor && { idProveedor: _where.idProveedor }),
-            ...(_where.idComprador && { idComprador: _where.idComprador }),
-            ...(_where.vigencia && { vigencia: _where.vigencia }),
-            ...(_where.aprobado && { aprobado: _where.aprobado }),
-            ...(_where.activo && { activo: _where.activo }),
-            ...(_where.noContrato && { noContrato: Like(`%${_where.noContrato}%`)}),
-            ...(_where.fechaDesde && _where.fechaHasta && { fecha: Between(_where.fechaDesde, _where.fechaHasta) }),
-            ...(_where.actualizadoDesde && _where.actualizadoHasta && { actualizado: Between(_where.actualizadoDesde, _where.actualizadoHasta) }),
-            },
+          order: {
+            fecha : "DESC"
+        },
         take: take,
-        skip: skip}); 
+        skip: skip});   
     }
-    if((!campo || !orden) && !_where){
+    if(take && skip){
       bases = await this.basesGeneralesRepository.find(
         {
           order: {
@@ -235,7 +194,7 @@ export class BasesGeneralesService {
         },
         take: take,
         skip: skip}); 
-    }
+    }  
       return bases;
   }
 

@@ -40,6 +40,10 @@ export class EmbarquesService {
     return await this.embarquesRepository.findOne(id,{relations:['contratoDesgloses']}); 
   }
 
+  async findEmbarquesByIdContrato(idContrato: number) : Promise<any> {
+    return await this.embarquesRepository.find({where: {idContrato}});
+  }
+
   async remove(id: number) : Promise<any> {
     const embarques = await this.findOne(id);
     return await this.embarquesRepository.remove(embarques);
