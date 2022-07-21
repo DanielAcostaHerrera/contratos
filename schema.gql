@@ -1887,7 +1887,6 @@ input CreateSuplementoResumanInput {
   terminadoS: Boolean!
   gastosLogisticos: Float!
   lugarFirma: String!
-  idPais: Int!
   idIncoterm: Int!
   idFormaEntrega: Int!
   suplementoClausulas: [CreateSuplementoClausulaInput!]

@@ -113,9 +113,6 @@ export class CreateSuplementoResumanInput {
   lugarFirma: string;
 
   @Field(() => Int)
-  idPais: number;
-
-  @Field(() => Int)
   idIncoterm: number;
   
   @Field(() => Int)

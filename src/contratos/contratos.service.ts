@@ -584,7 +584,7 @@ export class ContratosService {
           this.suplementoChangeService.save(suplementoChange);
         }
 
-        if(contrato.fechaInicial.getTime() != fInicial.getTime()){
+        if(contrato.fechaInicial && fInicial && contrato.fechaInicial.getTime() != fInicial.getTime()){
           let suplementoChange = new CreateSuplementoChangeInput();
           suplementoChange.idEmbarque = null;
           suplementoChange.orden = null;
@@ -596,7 +596,7 @@ export class ContratosService {
           this.suplementoChangeService.save(suplementoChange);
         }
 
-        if(contrato.fechaFinal.getTime() != fFinal.getTime()){
+        if(contrato.fechaFinal && fFinal && contrato.fechaFinal.getTime() != fFinal.getTime()){
           let suplementoChange = new CreateSuplementoChangeInput();
           suplementoChange.idEmbarque = null;
           suplementoChange.orden = null;
@@ -608,7 +608,7 @@ export class ContratosService {
           this.suplementoChangeService.save(suplementoChange);
         }
 
-        if(contrato.fechaFirma.getTime() != fFirma.getTime()){
+        if(contrato.fechaFirma && fFirma && contrato.fechaFirma.getTime() != fFirma.getTime()){
           let suplementoChange = new CreateSuplementoChangeInput();
           suplementoChange.idEmbarque = null;
           suplementoChange.orden = null;
@@ -620,7 +620,7 @@ export class ContratosService {
           this.suplementoChangeService.save(suplementoChange);
         }
 
-        if(contrato.fechaRecepcion.getTime() != fRecepcion.getTime()){
+        if(contrato.fechaRecepcion && fRecepcion && contrato.fechaRecepcion.getTime() != fRecepcion.getTime()){
           let suplementoChange = new CreateSuplementoChangeInput();
           suplementoChange.idEmbarque = null;
           suplementoChange.orden = null;
@@ -632,7 +632,7 @@ export class ContratosService {
           this.suplementoChangeService.save(suplementoChange);
         }
 
-        if(contrato.fechaArribo.getTime() != fArribo.getTime()){
+        if(contrato.fechaArribo && fArribo && contrato.fechaArribo.getTime() != fArribo.getTime()){
           let suplementoChange = new CreateSuplementoChangeInput();
           suplementoChange.idEmbarque = null;
           suplementoChange.orden = null;
@@ -680,7 +680,7 @@ export class ContratosService {
           this.suplementoChangeService.save(suplementoChange);
         }
 
-        if(contrato.fechaPFirma.getTime() != fechaPFirma.getTime()){
+        if(contrato.fechaPFirma && fechaPFirma && contrato.fechaPFirma.getTime() != fechaPFirma.getTime()){
           let suplementoChange = new CreateSuplementoChangeInput();
           suplementoChange.idEmbarque = null;
           suplementoChange.orden = null;
@@ -845,7 +845,7 @@ export class ContratosService {
             }
 
             if(embarqueViejo){
-              if(embarqueViejo.fechaEntrega.getTime() != embarque.fechaEntrega.getTime()){
+              if(embarqueViejo.fechaEntrega && embarque.fechaEntrega && embarqueViejo.fechaEntrega.getTime() != embarque.fechaEntrega.getTime()){
                 let suplementoChange = new CreateSuplementoChangeInput();
                 suplementoChange.idEmbarque = embarque.idEmbarque;
                 suplementoChange.orden = null;
@@ -1546,7 +1546,7 @@ export class ContratosService {
         this.suplementoChangeService.save(suplementoChange);
       }
 
-      if(suplementoAnterior.fInicial.getTime() != fInicial.getTime()){
+      if(suplementoAnterior.fInicial && fInicial && suplementoAnterior.fInicial.getTime() != fInicial.getTime()){
         let suplementoChange = new CreateSuplementoChangeInput();
         suplementoChange.idEmbarque = null;
         suplementoChange.orden = null;
@@ -1558,7 +1558,7 @@ export class ContratosService {
         this.suplementoChangeService.save(suplementoChange);
       }
 
-      if(suplementoAnterior.fFinal.getTime() != fFinal.getTime()){
+      if(suplementoAnterior.fFinal && fFinal && suplementoAnterior.fFinal.getTime() != fFinal.getTime()){
         let suplementoChange = new CreateSuplementoChangeInput();
         suplementoChange.idEmbarque = null;
         suplementoChange.orden = null;
@@ -1570,7 +1570,7 @@ export class ContratosService {
         this.suplementoChangeService.save(suplementoChange);
       }
 
-      if(suplementoAnterior.fFirma.getTime() != fFirma.getTime()){
+      if(suplementoAnterior.fFirma && fFirma && suplementoAnterior.fFirma.getTime() != fFirma.getTime()){
         let suplementoChange = new CreateSuplementoChangeInput();
         suplementoChange.idEmbarque = null;
         suplementoChange.orden = null;
@@ -1582,7 +1582,7 @@ export class ContratosService {
         this.suplementoChangeService.save(suplementoChange);
       }
 
-      if(suplementoAnterior.fRecepcion.getTime() != fRecepcion.getTime()){
+      if(suplementoAnterior.fRecepcion && fRecepcion && suplementoAnterior.fRecepcion.getTime() != fRecepcion.getTime()){
         let suplementoChange = new CreateSuplementoChangeInput();
         suplementoChange.idEmbarque = null;
         suplementoChange.orden = null;
@@ -1594,7 +1594,7 @@ export class ContratosService {
         this.suplementoChangeService.save(suplementoChange);
       }
 
-      if(suplementoAnterior.fArribo.getTime() != fArribo.getTime()){
+      if(suplementoAnterior.fArribo && fArribo && suplementoAnterior.fArribo.getTime() != fArribo.getTime()){
         let suplementoChange = new CreateSuplementoChangeInput();
         suplementoChange.idEmbarque = null;
         suplementoChange.orden = null;
@@ -1630,7 +1630,7 @@ export class ContratosService {
         this.suplementoChangeService.save(suplementoChange);
       }
 
-      if(suplementoAnterior.fechaTasa.getTime() != fechaTasa.getTime()){
+      if(suplementoAnterior.fechaTasa && fechaTasa && suplementoAnterior.fechaTasa.getTime() != fechaTasa.getTime()){
         let suplementoChange = new CreateSuplementoChangeInput();
         suplementoChange.idEmbarque = null;
         suplementoChange.orden = null;
@@ -1642,7 +1642,7 @@ export class ContratosService {
         this.suplementoChangeService.save(suplementoChange);
       }
 
-      if(suplementoAnterior.fechaPFirma.getTime() != fechaPFirma.getTime()){
+      if(suplementoAnterior.fechaPFirma && fechaPFirma && suplementoAnterior.fechaPFirma.getTime() != fechaPFirma.getTime()){
         let suplementoChange = new CreateSuplementoChangeInput();
         suplementoChange.idEmbarque = null;
         suplementoChange.orden = null;
@@ -1807,7 +1807,7 @@ export class ContratosService {
           }
 
           if(embarqueViejo){
-            if(embarqueViejo.fechaEntrega.getTime() != embarque.fechaEntrega.getTime()){
+            if(embarqueViejo.fechaEntrega && embarque.fechaEntrega && embarqueViejo.fechaEntrega.getTime() != embarque.fechaEntrega.getTime()){
               let suplementoChange = new CreateSuplementoChangeInput();
               suplementoChange.idEmbarque = embarque.idEmbarque;
               suplementoChange.orden = null;
