@@ -175,28 +175,136 @@ export class BasesGeneralesService {
     return count;
   }
 
-  async findAll(take?: number, skip?: number): Promise<BasesGenerales[]> { 
+  async findAll(take?: number, skip?: number, _where?: FilterBasesGeneralesInput, campo?: string, orden?: number): Promise<BasesGenerales[]> { 
     let bases: BasesGenerales[];
-    if(!take || !skip){
-      bases = await this.basesGeneralesRepository.find(
-        {
-          relations : ['tipoDeContrato','incoterm','compradores','pais','proveedor'],
-          order: {
-            fecha : "DESC"
-        },
-        take: take,
-        skip: skip});   
-    }
     if(take && skip){
-      bases = await this.basesGeneralesRepository.find(
-        {
-          relations : ['tipoDeContrato','incoterm','compradores','pais','proveedor'],
-          order: {
-            fecha : "DESC"
-        },
-        take: take,
-        skip: skip}); 
-    }  
+      if(campo && orden && _where){
+        bases = await this.basesGeneralesRepository.find(
+          {
+            order: {
+              [campo]: orden
+            }
+            ,where: {
+            ...(_where.idTipoContrato && { idTipoContrato: _where.idTipoContrato }),
+            ...(_where.idIncoterm && { idIncoterm: _where.idIncoterm }),
+            ...(_where.lugardeFirma && { lugardeFirma: Like(`%${_where.lugardeFirma}%`)}),
+            ...(_where.idPais && { idPais: _where.idPais }),
+            ...(_where.idProveedor && { idProveedor: _where.idProveedor }),
+            ...(_where.idComprador && { idComprador: _where.idComprador }),
+            ...(_where.vigencia && { vigencia: _where.vigencia }),
+            ...(_where.aprobado && { aprobado: _where.aprobado }),
+            ...(_where.activo && { activo: _where.activo }),
+            ...(_where.noContrato && { noContrato: Like(`%${_where.noContrato}%`)}),
+            ...(_where.fechaDesde && _where.fechaHasta && { fecha: Between(_where.fechaDesde, _where.fechaHasta) }),
+            ...(_where.actualizadoDesde && _where.actualizadoHasta && { actualizado: Between(_where.actualizadoDesde, _where.actualizadoHasta) }),
+            }
+            ,relations: ['tipoDeContrato','incoterm','compradores','pais','proveedor'],
+            take: take,
+            skip: skip}); 
+      }
+      if(campo && orden && !_where){
+        bases = await this.basesGeneralesRepository.find(
+          {
+            order: {
+              [campo]: orden
+            }
+            ,relations: ['tipoDeContrato','incoterm','compradores','pais','proveedor'],
+            take: take,
+            skip: skip}); 
+      }
+      if((!campo || !orden) && _where){
+        bases = await this.basesGeneralesRepository.find(
+          {
+            where: {
+              ...(_where.idTipoContrato && { idTipoContrato: _where.idTipoContrato }),
+              ...(_where.idIncoterm && { idIncoterm: _where.idIncoterm }),
+              ...(_where.lugardeFirma && { lugardeFirma: Like(`%${_where.lugardeFirma}%`)}),
+              ...(_where.idPais && { idPais: _where.idPais }),
+              ...(_where.idProveedor && { idProveedor: _where.idProveedor }),
+              ...(_where.idComprador && { idComprador: _where.idComprador }),
+              ...(_where.vigencia && { vigencia: _where.vigencia }),
+              ...(_where.aprobado && { aprobado: _where.aprobado }),
+              ...(_where.activo && { activo: _where.activo }),
+              ...(_where.noContrato && { noContrato: Like(`%${_where.noContrato}%`)}),
+              ...(_where.fechaDesde && _where.fechaHasta && { fecha: Between(_where.fechaDesde, _where.fechaHasta) }),
+              ...(_where.actualizadoDesde && _where.actualizadoHasta && { actualizado: Between(_where.actualizadoDesde, _where.actualizadoHasta) }),
+              }
+              ,relations: ['tipoDeContrato','incoterm','compradores','pais','proveedor'],
+          take: take,
+          skip: skip}); 
+      }
+      if((!campo || !orden) && !_where){
+        bases = await this.basesGeneralesRepository.find(
+          {
+            order: {
+              fecha : "DESC"
+          }
+          ,relations: ['tipoDeContrato','incoterm','compradores','pais','proveedor'],
+          take: take,
+          skip: skip}); 
+      }
+
+    }
+    if(!take || !skip){
+      if(campo && orden && _where){
+        bases = await this.basesGeneralesRepository.find(
+          {
+            order: {
+              [campo]: orden
+            }
+            ,where: {
+            ...(_where.idTipoContrato && { idTipoContrato: _where.idTipoContrato }),
+            ...(_where.idIncoterm && { idIncoterm: _where.idIncoterm }),
+            ...(_where.lugardeFirma && { lugardeFirma: Like(`%${_where.lugardeFirma}%`)}),
+            ...(_where.idPais && { idPais: _where.idPais }),
+            ...(_where.idProveedor && { idProveedor: _where.idProveedor }),
+            ...(_where.idComprador && { idComprador: _where.idComprador }),
+            ...(_where.vigencia && { vigencia: _where.vigencia }),
+            ...(_where.aprobado && { aprobado: _where.aprobado }),
+            ...(_where.activo && { activo: _where.activo }),
+            ...(_where.noContrato && { noContrato: Like(`%${_where.noContrato}%`)}),
+            ...(_where.fechaDesde && _where.fechaHasta && { fecha: Between(_where.fechaDesde, _where.fechaHasta) }),
+            ...(_where.actualizadoDesde && _where.actualizadoHasta && { actualizado: Between(_where.actualizadoDesde, _where.actualizadoHasta) }),
+            }
+            ,relations: ['tipoDeContrato','incoterm','compradores','pais','proveedor']}); 
+      }
+      if(campo && orden && !_where){
+        bases = await this.basesGeneralesRepository.find(
+          {
+            order: {
+              [campo]: orden
+            }
+            ,relations: ['tipoDeContrato','incoterm','compradores','pais','proveedor']}); 
+      }
+      if((!campo || !orden) && _where){
+        bases = await this.basesGeneralesRepository.find(
+          {
+            where: {
+              ...(_where.idTipoContrato && { idTipoContrato: _where.idTipoContrato }),
+              ...(_where.idIncoterm && { idIncoterm: _where.idIncoterm }),
+              ...(_where.lugardeFirma && { lugardeFirma: Like(`%${_where.lugardeFirma}%`)}),
+              ...(_where.idPais && { idPais: _where.idPais }),
+              ...(_where.idProveedor && { idProveedor: _where.idProveedor }),
+              ...(_where.idComprador && { idComprador: _where.idComprador }),
+              ...(_where.vigencia && { vigencia: _where.vigencia }),
+              ...(_where.aprobado && { aprobado: _where.aprobado }),
+              ...(_where.activo && { activo: _where.activo }),
+              ...(_where.noContrato && { noContrato: Like(`%${_where.noContrato}%`)}),
+              ...(_where.fechaDesde && _where.fechaHasta && { fecha: Between(_where.fechaDesde, _where.fechaHasta) }),
+              ...(_where.actualizadoDesde && _where.actualizadoHasta && { actualizado: Between(_where.actualizadoDesde, _where.actualizadoHasta) }),
+              }
+              ,relations: ['tipoDeContrato','incoterm','compradores','pais','proveedor']}); 
+      }
+      if((!campo || !orden) && !_where){
+        bases = await this.basesGeneralesRepository.find(
+          {
+            order: {
+              fecha : "DESC"
+          }
+          ,relations: ['tipoDeContrato','incoterm','compradores','pais','proveedor']}); 
+      }
+
+    }
       return bases;
   }
 
