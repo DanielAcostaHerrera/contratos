@@ -39,9 +39,4 @@ export class CompradoresResolver {
   removeSeveralCompradores(@Args('id', { type: () => [Int] }) id: number[]) {
     return this.compradoresService.removeSeveral(id);
   }
-
-  @ResolveField(() => DatosEntidad, {nullable: true})
-  entidad(@Parent() compradores: Compradores): Promise<DatosEntidad> {
-    return this.compradoresService.getEntidad(compradores.idEntidad);
-  }
 }

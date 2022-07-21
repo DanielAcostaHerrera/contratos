@@ -177,7 +177,7 @@ export class BasesGeneralesService {
 
   async findAll(take?: number, skip?: number, _where?: FilterBasesGeneralesInput, campo?: string, orden?: number): Promise<BasesGenerales[]> { 
     let bases: BasesGenerales[];
-    if(take && skip){
+    if(take > 0){
       if(campo && orden && _where){
         bases = await this.basesGeneralesRepository.find(
           {
@@ -198,8 +198,8 @@ export class BasesGeneralesService {
             ...(_where.fechaDesde && _where.fechaHasta && { fecha: Between(_where.fechaDesde, _where.fechaHasta) }),
             ...(_where.actualizadoDesde && _where.actualizadoHasta && { actualizado: Between(_where.actualizadoDesde, _where.actualizadoHasta) }),
             }
-            ,relations: ['tipoDeContrato','incoterm','compradores','pais','proveedor'],
-            take: take,
+            ,relations: ['tipoDeContrato','incoterm','compradores','pais','proveedor']
+            ,take: take,
             skip: skip}); 
       }
       if(campo && orden && !_where){
@@ -208,8 +208,8 @@ export class BasesGeneralesService {
             order: {
               [campo]: orden
             }
-            ,relations: ['tipoDeContrato','incoterm','compradores','pais','proveedor'],
-            take: take,
+            ,relations: ['tipoDeContrato','incoterm','compradores','pais','proveedor']
+            ,take: take,
             skip: skip}); 
       }
       if((!campo || !orden) && _where){
@@ -229,8 +229,8 @@ export class BasesGeneralesService {
               ...(_where.fechaDesde && _where.fechaHasta && { fecha: Between(_where.fechaDesde, _where.fechaHasta) }),
               ...(_where.actualizadoDesde && _where.actualizadoHasta && { actualizado: Between(_where.actualizadoDesde, _where.actualizadoHasta) }),
               }
-              ,relations: ['tipoDeContrato','incoterm','compradores','pais','proveedor'],
-          take: take,
+              ,relations: ['tipoDeContrato','incoterm','compradores','pais','proveedor']
+          ,take: take,
           skip: skip}); 
       }
       if((!campo || !orden) && !_where){
@@ -239,13 +239,13 @@ export class BasesGeneralesService {
             order: {
               fecha : "DESC"
           }
-          ,relations: ['tipoDeContrato','incoterm','compradores','pais','proveedor'],
-          take: take,
+          ,relations: ['tipoDeContrato','incoterm','compradores','pais','proveedor']
+          ,take: take,
           skip: skip}); 
       }
 
     }
-    if(!take || !skip){
+    else if(!take || !skip){
       if(campo && orden && _where){
         bases = await this.basesGeneralesRepository.find(
           {
@@ -266,7 +266,8 @@ export class BasesGeneralesService {
             ...(_where.fechaDesde && _where.fechaHasta && { fecha: Between(_where.fechaDesde, _where.fechaHasta) }),
             ...(_where.actualizadoDesde && _where.actualizadoHasta && { actualizado: Between(_where.actualizadoDesde, _where.actualizadoHasta) }),
             }
-            ,relations: ['tipoDeContrato','incoterm','compradores','pais','proveedor']}); 
+            ,relations: ['tipoDeContrato','incoterm','compradores','pais','proveedor']
+          }); 
       }
       if(campo && orden && !_where){
         bases = await this.basesGeneralesRepository.find(
@@ -274,7 +275,8 @@ export class BasesGeneralesService {
             order: {
               [campo]: orden
             }
-            ,relations: ['tipoDeContrato','incoterm','compradores','pais','proveedor']}); 
+            ,relations: ['tipoDeContrato','incoterm','compradores','pais','proveedor']
+          }); 
       }
       if((!campo || !orden) && _where){
         bases = await this.basesGeneralesRepository.find(
@@ -293,7 +295,8 @@ export class BasesGeneralesService {
               ...(_where.fechaDesde && _where.fechaHasta && { fecha: Between(_where.fechaDesde, _where.fechaHasta) }),
               ...(_where.actualizadoDesde && _where.actualizadoHasta && { actualizado: Between(_where.actualizadoDesde, _where.actualizadoHasta) }),
               }
-              ,relations: ['tipoDeContrato','incoterm','compradores','pais','proveedor']}); 
+              ,relations: ['tipoDeContrato','incoterm','compradores','pais','proveedor']
+            }); 
       }
       if((!campo || !orden) && !_where){
         bases = await this.basesGeneralesRepository.find(
@@ -301,7 +304,8 @@ export class BasesGeneralesService {
             order: {
               fecha : "DESC"
           }
-          ,relations: ['tipoDeContrato','incoterm','compradores','pais','proveedor']}); 
+          ,relations: ['tipoDeContrato','incoterm','compradores','pais','proveedor']
+        }); 
       }
 
     }

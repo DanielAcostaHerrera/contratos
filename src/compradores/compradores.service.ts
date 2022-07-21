@@ -16,11 +16,11 @@ export class CompradoresService {
   }
 
   async findAll(): Promise<Compradores[]> {
-    return await this.compradoresRepository.find();
+    return await this.compradoresRepository.find({relations: ['entidad']});
   }
 
   async findOne(id: number) : Promise<Compradores> {
-    return await this.compradoresRepository.findOne(id);
+    return await this.compradoresRepository.findOne(id,{relations: ['entidad']});
   }
 
   async remove(id: number) : Promise<any> {
