@@ -375,21 +375,21 @@ export class BasesGeneralesService {
 
   async getClausulasFromBaseGeneral(idIncoterm: number,idProveedor: number) : Promise<BasesGeneralesClausulas[]> {
     return new Promise<BasesGeneralesClausulas[]>(async (resolve, reject) => {
-      const basesGenerales = await this.basesGeneralesRepository.find({ where: {idIncoterm,idProveedor}, relations:['basesGeneralesClausulas','contratos'], order: {
+      const basesGenerales = await this.basesGeneralesRepository.find({ where: {idIncoterm,idProveedor, aprobado: true}, order: {
         fecha: "DESC"
       }});
-      if(!basesGenerales){
-        reject('No existe una base general anterior para ese proveedor y ese incoterm');
+      if(basesGenerales.length == 0){
+        reject('No existe una base general anterior aprobada para ese proveedor y ese incoterm');
       }
       else{ 
-        resolve(basesGenerales[0].basesGeneralesClausulas);
+        resolve(this.basesGeneralesClausulasService.findAllByIdBaseGeneral(basesGenerales[0].idBasesGenerales));
       }
     }); 
   }
 
   async actualizarClausulasFromBaseGeneral(idBasesGenerales: number) : Promise<BasesGeneralesClausulas[]> {
     return new Promise<BasesGeneralesClausulas[]>(async (resolve, reject) => {
-      const basesGenerales = await this.basesGeneralesRepository.findOne({ where: {idBasesGenerales}, relations:['basesGeneralesClausulas','contratos'], order: {
+      const basesGenerales = await this.basesGeneralesRepository.findOne({ where: {idBasesGenerales}, order: {
         fecha: "DESC"
       }});
 
@@ -399,7 +399,7 @@ export class BasesGeneralesService {
       
       else{
         const proformaClausulas = await this.proformaClausulasService.findAllById(basesGenerales.idTipoContrato, basesGenerales.idIncoterm)
-        if(!proformaClausulas){
+        if(proformaClausulas.length == 0){
           reject('Esta base general no tiene una proforma predefinida');
         }
         else{
