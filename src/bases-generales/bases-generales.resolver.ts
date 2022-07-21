@@ -77,29 +77,4 @@ export class BasesGeneralesResolver {
     @Args('id', { type: () => [Int] }) id: number[]) {
     return this.basesGeneralesService.removeSeveral(usuario,id);
   }
-
-  @ResolveField(() => TipoContrato, {nullable: true})
-  tipoDeContrato(@Parent() basesGenerales: BasesGenerales): Promise<TipoContrato> {
-    return this.basesGeneralesService.getTipoContrato(basesGenerales.idTipoContrato);
-  }
-
-  @ResolveField(() => Incoterm, {nullable: true})
-  incoterm(@Parent() basesGenerales: BasesGenerales): Promise<Incoterm> {
-    return this.basesGeneralesService.getIncoterm(basesGenerales.idIncoterm);
-  }
-
-  @ResolveField(() => Compradores, {nullable: true})
-  compradores(@Parent() basesGenerales: BasesGenerales): Promise<Compradores> {
-    return this.basesGeneralesService.getComprador(basesGenerales.idComprador);
-  }
-
-  @ResolveField(() => Paises, {nullable: true})
-  pais(@Parent() basesGenerales: BasesGenerales): Promise<Paises> {
-    return this.basesGeneralesService.getPais(basesGenerales.idPais);
-  }
-
-  @ResolveField(() => Proveedores, {nullable: true})
-  proveedor(@Parent() basesGenerales: BasesGenerales): Promise<Proveedores> {
-    return this.basesGeneralesService.getProveedor(basesGenerales.idProveedor);
-  }
 }

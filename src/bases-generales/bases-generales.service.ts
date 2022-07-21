@@ -180,6 +180,7 @@ export class BasesGeneralesService {
     if(!take || !skip){
       bases = await this.basesGeneralesRepository.find(
         {
+          relations : ['tipoDeContrato','incoterm','compradores','pais','proveedor'],
           order: {
             fecha : "DESC"
         },
@@ -189,6 +190,7 @@ export class BasesGeneralesService {
     if(take && skip){
       bases = await this.basesGeneralesRepository.find(
         {
+          relations : ['tipoDeContrato','incoterm','compradores','pais','proveedor'],
           order: {
             fecha : "DESC"
         },

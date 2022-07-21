@@ -85,7 +85,7 @@ import { SuplementoPuertoEmbarqueModule } from './suplemento-puerto-embarque/sup
     }),
     TypeOrmModule.forRoot({
       type: 'mssql',
-      host: '10.128.19.54',
+      host: '10.128.32.45',
       port: 1433,
       username: 'sa',
       password: 'sa',
