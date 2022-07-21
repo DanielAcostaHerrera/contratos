@@ -33,11 +33,11 @@ export class EmbarquesService {
   }
 
   async findAll(): Promise<Embarques[]> {
-    return await this.embarquesRepository.find();
+    return await this.embarquesRepository.find({relations:['companiaNaviera']});
   }
 
   async findOne(id: number) : Promise<Embarques> {
-    return await this.embarquesRepository.findOne(id,{relations:['contratoDesgloses']}); 
+    return await this.embarquesRepository.findOne(id,{relations:['contratoDesgloses','companiaNaviera']}); 
   }
 
   async findEmbarquesByIdContrato(idContrato: number) : Promise<any> {

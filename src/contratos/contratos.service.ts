@@ -2655,7 +2655,8 @@ export class ContratosService {
   }
 
   async findAll(): Promise<Contratos[]> {
-    let contratos = await this.contratoRepository.find({relations:['embarques']});
+    let contratos = await this.contratoRepository.find({relations:['contratoMarco','moneda','formaEntrega','negociacionResumen',
+  'ejecutivo','ejecutivoRealiza','ejecutivoFirma','ejecutivoModifica','companiaNaviera','incoterm','basesGenerales']});
     contratos.forEach(element => {
       element.suplementoResumen.sort((a, b) => (b.fecha.getFullYear()+b.fecha.getMonth()+b.fecha.getDate()+b.fecha.getHours()+b.fecha.getMinutes()+b.fecha.getSeconds())
       - (a.fecha.getFullYear()+a.fecha.getMonth()+a.fecha.getDate()+a.fecha.getHours()+a.fecha.getMinutes()+a.fecha.getSeconds()));
@@ -2667,7 +2668,8 @@ export class ContratosService {
     return await this.contratoRepository.findOne(id,{relations:['contratoClausulas','embarques','embarques.puertoEmbarques',
     'embarques.pagos','embarques.contratoDesgloses','facturaResumen','suplementoEmbarques','suplementoResumen','suplementoResumen.suplementoClausulas',
     'suplementoResumen.suplementoEmbarques','suplementoResumen.suplementoPuertoEmbarques','suplementoResumen.suplementoDesgloses',
-    'suplementoResumen.suplementoPagos','suplementoClausulas']});
+    'suplementoResumen.suplementoPagos','suplementoClausulas','contratoMarco','moneda','formaEntrega','negociacionResumen',
+    'ejecutivo','ejecutivoRealiza','ejecutivoFirma','ejecutivoModifica','companiaNaviera','incoterm','basesGenerales']});
   }
 
   async findOneUltimoSuplementoParaUpdate(id: number) : Promise<Contratos> {
@@ -2675,7 +2677,8 @@ export class ContratosService {
       let contratoViejo = await this.contratoRepository.findOne(id,{relations:['contratoClausulas','embarques','embarques.puertoEmbarques',
       'embarques.pagos','embarques.contratoDesgloses','facturaResumen','suplementoEmbarques','suplementoResumen','suplementoResumen.suplementoClausulas',
       'suplementoResumen.suplementoEmbarques','suplementoResumen.suplementoPuertoEmbarques','suplementoResumen.suplementoDesgloses',
-      'suplementoResumen.suplementoPagos','suplementoClausulas']});
+      'suplementoResumen.suplementoPagos','suplementoClausulas','contratoMarco','moneda','formaEntrega','negociacionResumen',
+      'ejecutivo','ejecutivoRealiza','ejecutivoFirma','ejecutivoModifica','companiaNaviera','incoterm','basesGenerales']});
 
       if(contratoViejo.suplementoResumen.length == 0){
         resolve(contratoViejo);
@@ -2847,8 +2850,8 @@ export class ContratosService {
       let contratoViejo = await this.contratoRepository.findOne(id,{relations:['contratoClausulas','documentacionContratos','embarques','embarques.puertoEmbarques',
       'embarques.pagos','embarques.contratoDesgloses','facturaResumen','suplementoEmbarques','suplementoResumen','suplementoResumen.suplementoClausulas',
       'suplementoResumen.suplementoEmbarques','suplementoResumen.suplementoPuertoEmbarques','suplementoResumen.suplementoDesgloses',
-      'suplementoResumen.suplementoPagos'
-      ,'suplementoClausulas']});
+      'suplementoResumen.suplementoPagos','suplementoClausulas','contratoMarco','moneda','formaEntrega','negociacionResumen',
+      'ejecutivo','ejecutivoRealiza','ejecutivoFirma','ejecutivoModifica','companiaNaviera','incoterm','basesGenerales']});
 
       if(contratoViejo.suplementoResumen.length == 0){
         reject("El contrato seleccionado no tiene suplementos");
@@ -3021,8 +3024,8 @@ export class ContratosService {
       let contratoViejo = await this.contratoRepository.findOne(id,{relations:['contratoClausulas','documentacionContratos','embarques','embarques.puertoEmbarques',
       'embarques.pagos','embarques.contratoDesgloses','facturaResumen','suplementoEmbarques','suplementoResumen','suplementoResumen.suplementoClausulas',
       'suplementoResumen.suplementoEmbarques','suplementoResumen.suplementoPuertoEmbarques','suplementoResumen.suplementoDesgloses',
-      'suplementoResumen.suplementoPagos'
-      ,'suplementoClausulas']});
+      'suplementoResumen.suplementoPagos','suplementoClausulas','contratoMarco','moneda','formaEntrega','negociacionResumen',
+      'ejecutivo','ejecutivoRealiza','ejecutivoFirma','ejecutivoModifica','companiaNaviera','incoterm','basesGenerales']});
 
       if(contratoViejo.suplementoResumen.length == 0){
         reject("El contrato seleccionado no tiene suplementos");

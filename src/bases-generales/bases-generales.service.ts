@@ -313,7 +313,7 @@ export class BasesGeneralesService {
   }
 
   async findOne(id: number) : Promise<BasesGenerales> {
-    let bases = await this.basesGeneralesRepository.findOne(id, { relations: ['basesGeneralesClausulas','contratos']});
+    let bases = await this.basesGeneralesRepository.findOne(id, { relations: ['basesGeneralesClausulas','contratos','tipoDeContrato','incoterm','compradores','pais','proveedor']});
     bases.basesGeneralesClausulas.sort((a, b) => a.orden - b.orden);
     let clausulas = bases.basesGeneralesClausulas;
     for (let index = 0; index < clausulas.length; index++) {
