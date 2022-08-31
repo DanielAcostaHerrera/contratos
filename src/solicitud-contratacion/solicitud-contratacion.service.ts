@@ -57,7 +57,7 @@ export class SolicitudContratacionService {
   }
 
   async findOne(id: number) : Promise<SolicitudContratacion> {
-    return await this.solicitudContratacionRepository.findOne(id,{relations:['solicitudOfertas']});
+    return await this.solicitudContratacionRepository.findOne({where: {idSolicitudContrato: id},relations:['solicitudOfertas']});
   }
 
   async remove(usuarioToken: Usuarios,id: number) : Promise<any> {

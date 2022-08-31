@@ -17,7 +17,7 @@ export class PagosApartirDeService {
   }
 
   async findOne(id: number) : Promise<PagosAPartirDe> {
-    return await this.pagosAPartirDeRepository.findOne(id);
+    return await this.pagosAPartirDeRepository.findOne({where: {idPartir: id},});
   }
 
   async remove(id: number) : Promise<any> {

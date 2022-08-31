@@ -18,7 +18,7 @@ export class FormasPagoService {
   }
 
   async findOne(id: number) : Promise<FormasPago> {
-    return await this.formasPagoRepository.findOne(id);
+    return await this.formasPagoRepository.findOne({where: {idFormaPago: id},});
   }
 
   async remove(id: number) : Promise<any> {

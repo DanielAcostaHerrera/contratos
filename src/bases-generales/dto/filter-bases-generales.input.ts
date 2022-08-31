@@ -1,31 +1,33 @@
 import { InputType, Int, Field } from '@nestjs/graphql';
 
+interface FilterConstraint {
+  value: string,
+  matchMode: string
+}
+
 @InputType()
 export class FilterBasesGeneralesInput {
   @Field({ nullable: true})
-  fechaDesde?: Date;
+  fecha?: Date;
 
   @Field({ nullable: true})
-  fechaHasta?: Date;
+  fechaVencimiento?: Date;
 
-  @Field(() => Int,{ nullable: true})
-  idTipoContrato?: number;
-
-  @Field(() => Int,{ nullable: true})
-  idIncoterm?: number;
+  @Field(() => [Int],{ nullable: true})
+  idIncoterm?: [number];
+  
+  @Field(() => [Int],{ nullable: true})
+  idPais?: [number];
+  
+  @Field(() => [Int],{ nullable: true})
+  idProveedor?: [number];
+  
+  @Field(() => [Int],{ nullable: true})
+  idComprador?: [number];
 
   @Field({ nullable: true})
   lugardeFirma?: string;
-
-  @Field(() => Int,{ nullable: true})
-  idPais?: number;
-
-  @Field(() => Int,{ nullable: true})
-  idProveedor?: number;
-
-  @Field(() => Int,{ nullable: true})
-  idComprador?: number;
-
+  
   @Field(() => Int,{ nullable: true})
   vigencia?: number;
 

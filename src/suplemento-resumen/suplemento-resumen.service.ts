@@ -35,7 +35,7 @@ export class SuplementoResumenService {
   }
 
   async findOne(id: number) : Promise<SuplementoResumen> {
-    return await this.suplementoResumenRepository.findOne(id,{ relations: ['suplementoChanges','suplementoClausulas','suplementoDesgloses','suplementoEmbarques',
+    return await this.suplementoResumenRepository.findOne({where: {idSuplementoResumen: id}, relations: ['suplementoChanges','suplementoClausulas','suplementoDesgloses','suplementoEmbarques',
     'suplementoPagos','contrato','suplementoPuertoEmbarques']});
   }
 

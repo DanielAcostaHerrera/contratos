@@ -18,7 +18,7 @@ export class TiposDeClausulasService {
   }
 
   async findOne(id: number) : Promise<TiposDeClausulas> {
-    return await this.tiposDeClausulaRepository.findOne(id);
+    return await this.tiposDeClausulaRepository.findOne({where: {idTipoClausula: id},});
   }
 
   async remove(id: number) : Promise<any> {

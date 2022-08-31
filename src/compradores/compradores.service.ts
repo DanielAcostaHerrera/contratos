@@ -20,7 +20,7 @@ export class CompradoresService {
   }
 
   async findOne(id: number) : Promise<Compradores> {
-    return await this.compradoresRepository.findOne(id,{relations: ['entidad']});
+    return await this.compradoresRepository.findOne({where: {idComprador: id},relations: ['entidad']});
   }
 
   async remove(id: number) : Promise<any> {

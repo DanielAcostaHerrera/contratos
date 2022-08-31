@@ -12,6 +12,6 @@ export class UnidadMedidaService {
   }
 
   async findOne(id: number) : Promise<UnidadMedida> {
-    return await this.unidadMedidaRepository.findOne(id);
+    return await this.unidadMedidaRepository.findOne({where: {id: id},});
   }
 }

@@ -20,7 +20,7 @@ export class UsuarioRolService {
   }
 
   async findOne(id: number) : Promise<UsuarioRol> {
-    return await this.usuarioRolRepository.findOne(id,{relations:['usuario']});
+    return await this.usuarioRolRepository.findOne({where: {idUsuarioRol: id},relations:['usuario']});
   }
 
   async remove(id: number) : Promise<any> {

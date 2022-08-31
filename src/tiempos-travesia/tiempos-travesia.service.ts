@@ -23,7 +23,7 @@ export class TiemposTravesiaService {
   }
 
   async findOne(id: number) : Promise<TiemposTravesia> {
-    return await this.tiemposTravesiaRepository.findOne(id);
+    return await this.tiemposTravesiaRepository.findOne({where: {idTiemposTravesia: id},});
   }
 
   async remove(id: number) : Promise<any> {

@@ -23,7 +23,7 @@ export class SolicitudOfertasProveedorService {
   }
 
   async findOne(id: number) : Promise<SolicitudOfertasProveedor> {
-    return await this.solicitudOfertasProveedorRepository.findOne(id,{relations:['solicitudOfertasEntradas']});
+    return await this.solicitudOfertasProveedorRepository.findOne({where: {idOfertasProveedor: id},relations:['solicitudOfertasEntradas']});
   }
 
   async remove(id: number) : Promise<any> {

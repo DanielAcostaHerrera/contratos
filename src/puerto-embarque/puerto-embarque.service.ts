@@ -22,7 +22,7 @@ export class PuertoEmbarqueService {
   }
 
   async findOne(id: number) : Promise<PuertoEmbarque> {
-    return await this.puertoEmbarqueRepository.findOne(id);
+    return await this.puertoEmbarqueRepository.findOne({where: {idPuertoEmbarque: id},});
   }
 
   async remove(id: number) : Promise<any> {

@@ -29,7 +29,7 @@ export class SuplementoDesgloseService {
   }
 
   async findOne(id: number) : Promise<SuplementoDesglose> {
-    return await this.suplementoDesgloseRepository.findOne(id);
+    return await this.suplementoDesgloseRepository.findOne({where: {idSuplementoDesglose: id},});
   }
 
   async remove(id: number) : Promise<any> {

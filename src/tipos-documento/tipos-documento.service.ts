@@ -19,7 +19,7 @@ export class TiposDocumentoService {
   }
 
   async findOne(id: number) : Promise<TiposDocumento> {
-    return await this.tiposDocumentoRepository.findOne(id);
+    return await this.tiposDocumentoRepository.findOne({where: {idTipoDoc: id},});
   }
 
   async remove(id: number) : Promise<any> {

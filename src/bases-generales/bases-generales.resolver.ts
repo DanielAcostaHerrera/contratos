@@ -13,6 +13,7 @@ import { Usuarios } from 'src/models/entities/Usuarios.entity';
 import { StreamableFile, UseGuards } from '@nestjs/common';
 import { FilterBasesGeneralesInput } from './dto/filter-bases-generales.input';
 import { CountBasesGenerales } from './dto/count-bases-generales.input';
+import { BasesGeneralesPagination } from 'src/pagination/PaginationDto';
 
 @Resolver(() => BasesGenerales)
 export class BasesGeneralesResolver {
@@ -39,7 +40,7 @@ export class BasesGeneralesResolver {
     return this.basesGeneralesService.countBasesGenerales(where);
   }
   
-  @Query(() => [BasesGenerales])
+  @Query(() => BasesGeneralesPagination)
   @UseGuards(new AuthGuard())
   findAllBasesGenerales(
     @Args('take', { type: () => Int, nullable: true }) take: number,

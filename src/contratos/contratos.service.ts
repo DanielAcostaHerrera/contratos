@@ -2665,7 +2665,7 @@ export class ContratosService {
   }
 
   async findOne(id: number) : Promise<Contratos> {
-    return await this.contratoRepository.findOne(id,{relations:['contratoClausulas','embarques','embarques.puertoEmbarques',
+    return await this.contratoRepository.findOne({where: {idContrato: id},relations:['contratoClausulas','embarques','embarques.puertoEmbarques',
     'embarques.pagos','embarques.contratoDesgloses','facturaResumen','suplementoEmbarques','suplementoResumen','suplementoResumen.suplementoClausulas',
     'suplementoResumen.suplementoEmbarques','suplementoResumen.suplementoPuertoEmbarques','suplementoResumen.suplementoDesgloses',
     'suplementoResumen.suplementoPagos','suplementoClausulas','contratoMarco','moneda','formaEntrega','negociacionResumen',
@@ -2674,7 +2674,7 @@ export class ContratosService {
 
   async findOneUltimoSuplementoParaUpdate(id: number) : Promise<Contratos> {
     return new Promise<Contratos>(async (resolve, reject) => {
-      let contratoViejo = await this.contratoRepository.findOne(id,{relations:['contratoClausulas','embarques','embarques.puertoEmbarques',
+      let contratoViejo = await this.contratoRepository.findOne({where: {idContrato: id},relations:['contratoClausulas','embarques','embarques.puertoEmbarques',
       'embarques.pagos','embarques.contratoDesgloses','facturaResumen','suplementoEmbarques','suplementoResumen','suplementoResumen.suplementoClausulas',
       'suplementoResumen.suplementoEmbarques','suplementoResumen.suplementoPuertoEmbarques','suplementoResumen.suplementoDesgloses',
       'suplementoResumen.suplementoPagos','suplementoClausulas','contratoMarco','moneda','formaEntrega','negociacionResumen',
@@ -2847,7 +2847,7 @@ export class ContratosService {
 
   async findOneUltimoSuplemento(id: number) : Promise<Contratos> {
     return new Promise<Contratos>(async (resolve, reject) => {
-      let contratoViejo = await this.contratoRepository.findOne(id,{relations:['contratoClausulas','documentacionContratos','embarques','embarques.puertoEmbarques',
+      let contratoViejo = await this.contratoRepository.findOne({where: {idContrato: id},relations:['contratoClausulas','documentacionContratos','embarques','embarques.puertoEmbarques',
       'embarques.pagos','embarques.contratoDesgloses','facturaResumen','suplementoEmbarques','suplementoResumen','suplementoResumen.suplementoClausulas',
       'suplementoResumen.suplementoEmbarques','suplementoResumen.suplementoPuertoEmbarques','suplementoResumen.suplementoDesgloses',
       'suplementoResumen.suplementoPagos','suplementoClausulas','contratoMarco','moneda','formaEntrega','negociacionResumen',
@@ -3021,7 +3021,7 @@ export class ContratosService {
 
   async findOneSuplementoEspecifico(id: number, mostrar: number) : Promise<Contratos> {
     return new Promise<Contratos>(async (resolve, reject) => {
-      let contratoViejo = await this.contratoRepository.findOne(id,{relations:['contratoClausulas','documentacionContratos','embarques','embarques.puertoEmbarques',
+      let contratoViejo = await this.contratoRepository.findOne({where: {idContrato: id},relations:['contratoClausulas','documentacionContratos','embarques','embarques.puertoEmbarques',
       'embarques.pagos','embarques.contratoDesgloses','facturaResumen','suplementoEmbarques','suplementoResumen','suplementoResumen.suplementoClausulas',
       'suplementoResumen.suplementoEmbarques','suplementoResumen.suplementoPuertoEmbarques','suplementoResumen.suplementoDesgloses',
       'suplementoResumen.suplementoPagos','suplementoClausulas','contratoMarco','moneda','formaEntrega','negociacionResumen',

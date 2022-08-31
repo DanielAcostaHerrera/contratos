@@ -28,7 +28,7 @@ export class SuplementoEmbarquesService {
   }
 
   async findOne(id: number) : Promise<SuplementoEmbarques> {
-    return await this.suplementoEmbarqueRepository.findOne(id,{relations:['suplementoResumen']});
+    return await this.suplementoEmbarqueRepository.findOne({where: {idSuplementoEmbarques: id},relations:['suplementoResumen']});
   }
 
   async remove(id: number) : Promise<any> {

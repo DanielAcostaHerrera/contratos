@@ -12,6 +12,6 @@ export class ProveedoresService {
   }
 
   async findOne(id: number) : Promise<Proveedores> {
-    return await this.proveedoresRepository.findOne(id);
+    return await this.proveedoresRepository.findOne({where: {codigo: id},});
   }
 }

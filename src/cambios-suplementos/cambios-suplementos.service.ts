@@ -18,7 +18,7 @@ export class CambiosSuplementosService {
   }
 
   async findOne(id: number) : Promise<CambiosSuplementos> {
-    return await this.cambiosSuplementosRepository.findOne(id);
+    return await this.cambiosSuplementosRepository.findOne({where: {idCambio: id},});
   }
 
   async remove(id: number) : Promise<any> {

@@ -1157,6 +1157,11 @@ type CountBasesGenerales {
   cantidad: Int
 }
 
+type BasesGeneralesPagination {
+  data: [BasesGenerales!]!
+  count: Int!
+}
+
 type Contenedores {
   idContenedor: Int!
   idFactura: String!
@@ -1172,6 +1177,326 @@ type AgenciasAseguradoras {
   valor: Float
 }
 
+type BasesCMarcoClausulas {
+  idBasesCMarcoClausulas: Int!
+  idBaseCMarco: Int!
+  idProformaClausula: Int!
+  idTipoClausula: Int!
+  orden: Int!
+  clausula: String!
+  modificado: DateTime!
+  proformaClausulas: ProformaClausulas
+  basesCMarco: BasesCMarco
+  tipoDeClausula: TiposDeClausulas
+}
+
+type BasesCMarcoEspecificos {
+  idBaseCMarcoEspecificos: Int!
+  idBaseCMarco: Int!
+  idEspecifico: Int!
+  idPadre: Int!
+  pDisponible: Float
+  pReservado: Float
+  pEjecutado: Float
+  pPendiente: Float
+  baseCMarco: BasesCMarco
+  especifico: Especificos
+}
+
+type Proformas {
+  idProforma: Int!
+  idTipoContrato: Int!
+  idIncoterm: Int!
+  nombreProfoma: String!
+  activa: Boolean!
+  cMarcoF: Boolean!
+  proformaClausulas: [ProformaClausulas!]
+  basesGenerales: [BasesGenerales!]
+  tipoDeContrato: TipoContrato
+  incoterm: Incoterm
+}
+
+type FichaCostoResumen {
+  idFicha: Int!
+  idCCosto: Int!
+  idCMarco: Int!
+  idMoneda: Int!
+  idFormaPago: Int!
+  idIncoterm: Int!
+  idPuerto: Int!
+  idEmbalaje: Int!
+  idProveedor: Int!
+  bl: String
+  cantAnexos: Int!
+  viaTransporte: Int
+  idPais: Int!
+  destino: String
+  contenedores: String
+  pesoBruto: Float
+  pesoNeto: Float
+  cantidadEmbalaje: Float
+  cantidad: Float
+  idCodigo: Float
+  descripcion: String
+  valorContratacion: Float
+  gastoAlmacenOrigen: Float
+  gastoTranspOrigen: Float
+  gastoAduanaOrigen: Float
+  gastoManipulacionOrigen: Float
+  otrosGastosOrigen: Float
+  totalGastoOrigen: Float
+  recargoContratacion: Float
+  descuentoContratacion: Float
+  totalRecDescContrato: Float
+  totalAdquisicion: Float
+  difCambioMoneda: Float
+  tasaCambioContratacion: Float
+  valorMercancia: Float
+  tarifaFlete: Float
+  recargoFlete: Float
+  descuentoFlete: Float
+  totalFlete: Float
+  costoFleteUsd: Float
+  seguro: Float
+  tasaSeguro: Float
+  costoCifFleteUsd: Float
+  tasaCambioMn: Float
+  costoFleteSeguroMn: Float
+  factorConversion: Float
+  tasaArancelaria: Float
+  valorArancel: Float
+  gastoManipulacion: Float
+  gastoDoc: Float
+  gastoEmisionBl: Float
+  gastoMovContenedores: Float
+  gastoAsistenciaTecn: Float
+  gastoSeguridadCont: Float
+  gastoFumigacion: Float
+  gastoSupervisiones: Float
+  gastoFitosanitario: Float
+  oGastosPortuariosAduanales: Float
+  gastosImportacion: Float
+  otrosGastos: Float
+  totalGastos: Float
+  indicePGasto: Float
+  tasaMaxRecargo: Float
+  margenComercial: Float
+  tasaImpuestoVentas: Float
+  tasaContibucion: Float
+  tasaImpuetoProducto: Float
+  totalImpuestoContrib: Float
+  pVentaImportador: Float
+  fecha: DateTime
+  nota: String
+  elaborado: Int
+  aprobado: Int
+  moneda: Monedas
+  formaPago: FormasPago
+  incoterm: Incoterm
+  puerto: Puertos
+  embalaje: Embalajes
+  contratos: [Contratos!]
+  proveedor: Proveedores
+  pais: Paises
+  codigo: CodigosParaLaVenta
+}
+
+type BasesCMarco {
+  idBaseCMarco: Int!
+  idBasesGenerales: Int!
+  idProveedor: Int!
+  consecutivo: Int!
+  directivaTrd: String
+  directivaGae: String
+  fecha: DateTime!
+  idProforma: Int!
+  periodoInic: DateTime!
+  periodoFin: DateTime!
+  importeTotal: Float!
+  importeFinanciamiento: Float!
+  importeConFinanciamiento: Float!
+  idPuerto: Int!
+  aprobado: Boolean!
+  cancelado: Boolean!
+  activo: Boolean!
+  actualizado: DateTime!
+  importeTotalLetras: String
+  importeFinanciamientoLetras: String
+  importeTotalFinanciamientoLetras: String
+  periodoInicV: DateTime
+  periodoFinV: DateTime
+  idComprador: Int
+  noCMarco: String
+  basesCMarcoClausulas: [BasesCMarcoClausulas!]
+  basesCMarcoEspecificos: [BasesCMarcoEspecificos!]
+  basesGenerales: BasesGenerales
+  puerto: Puertos
+  proveedor: Proveedores
+  proforma: Proformas
+  compradores: Compradores
+  fichaCostoResumen: [FichaCostoResumen!]
+  contratos: [Contratos!]
+}
+
+type FichaCompraResumen {
+  idFicha: Int!
+  idProveedor: Int!
+  idMoneda: Int!
+  idIncoterm: Int!
+  idContrato: Int!
+  idNegociacion: Int!
+  idPais: Int!
+  contenedores: Int!
+  pesoBruto: Float
+  pesoNeto: Float
+  idEmbalaje: String
+  cantidadEmbalaje: Float
+  cantidad: Float
+  valorContratacion: Float!
+  gastoAlmacenOrigen: Float!
+  gastoTranspOrigen: Float!
+  gastoAduanaOrigen: Float!
+  gastoManipulacionOrigen: Float!
+  otrosGastosOrigen: Float!
+  totalGastoOrigen: Float!
+  recargoContratacion: Float!
+  descuentoContratacion: Float!
+  totalRecDescContrato: Float!
+  totalAdquisicion: Float!
+  indicePpCosto: Float!
+  difCambioMoneda: Float!
+  tasaCambioContratacion: Float!
+  valorMercancia: Float!
+  tarifaFlete: Float!
+  recargoFlete: Float!
+  descuentoFlete: Float!
+  totalFlete: Float!
+  costoFleteUsd: Float!
+  seguroContrato: Float!
+  seguro: Float
+  tasaSeguro: Float
+  costoCifFleteUsd: Float
+  tasaCambioMn: Float!
+  costoFleteSeguroMn: Float
+  factorConversion: Float
+  tasaArancelaria: Float!
+  valorArancel: Float
+  gastoManipulacion: Float!
+  gastoDoc: Float!
+  gastoEmisionBl: Float!
+  gastoMovContenedores: Float!
+  gastoAsistenciaTecn: Float!
+  gastoSeguridadCont: Float!
+  gastoFumigacion: Float!
+  gastoSupervisiones: Float!
+  gastoFitosanitario: Float!
+  oGastosPortuariosAduanales: Float!
+  gastosImportacion: Float!
+  otrosGastos: Float!
+  financiamiento: Float!
+  totalGastos: Float!
+  indicePGasto: Float
+  indGastoAdquisicion: Float
+  tasaMaxRecargo: Float!
+  margenComercial: Float
+  tasaImpuestoVentas: Float!
+  tasaContibucion: Float!
+  tasaImpuestoProducto: Float!
+  totalImpuestoContrib: Float!
+  pVentaImportador: Float
+  tasaCircMayorista: Float!
+  tasaCircMinorista: Float!
+  tasaImpuestoVentasMin: Float!
+  tasaContibucionMin: Float!
+  tasaImpuestoProductoMin: Float!
+  totalImpuestoContribMin: Float!
+  fecha: DateTime!
+  nota: String
+  realizadoPor: Int
+  aprobado: Boolean!
+  terminado: Boolean!
+  fechaAprobado: DateTime
+  cancelado: Boolean!
+  canceladoPor: Int
+  fechaCancelacion: DateTime
+  chkRecepcion: Boolean!
+  noFicha: String
+  fichaCompraDetalles: [FichaCompraDetalle!]
+  moneda: Monedas
+  incoterm: Incoterm
+  contrato: Contratos
+  negociacionResumen: NegociacionResumen
+  pais: Paises
+  proveedor: Proveedores
+}
+
+type FichaCompraDetalle {
+  idFichaCompraDetalle: Int!
+  idFicha: Int!
+  idCodigo: Int!
+  idUm: Int!
+  pack: Int!
+  cantidad: Float!
+  pCosto: Float!
+  pcProv: Float
+  pCostoCif: Float
+  partida: String
+  tasaArancel: Float!
+  valorArancel: Float
+  importeArancel: Float
+  valorGastos: Float
+  tasaMargenComercial: Float!
+  valorTmc: Float
+  pCostoImportacion: Float
+  impPCostoProv: Float
+  impPCostoCif: Float
+  impPCostoImp: Float
+  valorCircMayorista: Float
+  pCostoMayorista: Float
+  impMayorista: Float
+  valorCircMinorista: Float
+  pCostoMinorista: Float
+  impMinorista: Float
+  fichaCompraAtributos: [FichaCompraAtributos!]
+  fichaCompraResumen: FichaCompraResumen
+  codigo: CodigosParaLaVenta
+  unidadMedida: UnidadMedida
+}
+
+type FichaCompraAtributos {
+  idFichaCompraAtributos: Int!
+  idFichaCompraDetalle: Int!
+  descripcion: String
+  marca: String
+  naturaleza: String
+  colores: String
+  corte: String
+  suela: String
+  tallas: String
+  pack: Int
+  blts: Int
+  umbto: String
+  cubbtopies: Float
+  cubbtom3: Float
+  pc: Float
+  flete: Float
+  seguro: Float
+  pv: Float
+  um: Float
+  embalaje: String
+  paisorigen: String
+  partida: String
+  pesombkg: Float
+  volemb: Float
+  ean: String
+  descripEan: String
+  gastaduan: Float
+  gastbanc: Float
+  mcmn: Float
+  mccuc: Float
+  fichaCompraDetalle: FichaCompraDetalle
+}
+
 type Query {
   findAllMoneda: [Monedas!]!
   findOneMoneda(id: Int!): Monedas!
@@ -1185,7 +1510,7 @@ type Query {
   findOneGrupo(id: Int!): GruposDeCompras!
   actualizarClausulasFromBaseGeneral(idBaseGeneral: Float!): [BasesGeneralesClausulas!]!
   countBasesGenerales(where: FilterBasesGeneralesInput): CountBasesGenerales!
-  findAllBasesGenerales(orden: Int, campo: String, where: FilterBasesGeneralesInput, skip: Int, take: Int): [BasesGenerales!]!
+  findAllBasesGenerales(orden: Int, campo: String, where: FilterBasesGeneralesInput, skip: Int, take: Int): BasesGeneralesPagination!
   findOneBasesGenerales(id: Int!): BasesGenerales!
   getClausulasFromBaseGeneral(idProveedor: Int!, idIncoterm: Int!): [BasesGeneralesClausulas!]!
   findAllClasificaciones: [Clasificaciones!]!
@@ -1323,14 +1648,13 @@ type Query {
 }
 
 input FilterBasesGeneralesInput {
-  fechaDesde: DateTime
-  fechaHasta: DateTime
-  idTipoContrato: Int
-  idIncoterm: Int
+  fecha: DateTime
+  fechaVencimiento: DateTime
+  idIncoterm: [Int!]
+  idPais: [Int!]
+  idProveedor: [Int!]
+  idComprador: [Int!]
   lugardeFirma: String
-  idPais: Int
-  idProveedor: Int
-  idComprador: Int
   vigencia: Int
   aprobado: Boolean
   cancelado: Boolean

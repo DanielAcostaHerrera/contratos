@@ -26,7 +26,7 @@ export class FacturaDesgloseService {
   }
 
   async findOne(id: number) : Promise<FacturaDesglose> {
-    return await this.facturaDesgloseRepository.findOne(id,{relations:['facturaResumen']});
+    return await this.facturaDesgloseRepository.findOne({where: {idFacturaDesglose: id},relations:['facturaResumen']});
   }
 
   async remove(id: number) : Promise<any> {

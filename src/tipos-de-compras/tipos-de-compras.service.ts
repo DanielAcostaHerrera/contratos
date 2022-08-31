@@ -18,7 +18,7 @@ export class TiposDeComprasService {
   }
 
   async findOne(id: number) : Promise<TiposDeCompras> {
-    return await this.tiposDeCompraRepository.findOne(id);
+    return await this.tiposDeCompraRepository.findOne({where: {idTipoCompras: id},});
   }
 
   async remove(id: number) : Promise<any> {

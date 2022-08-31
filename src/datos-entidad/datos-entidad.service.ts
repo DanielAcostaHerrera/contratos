@@ -18,7 +18,7 @@ export class DatosEntidadService {
   }
 
   async findOne(id: number) : Promise<DatosEntidad> {
-    return await this.datosEntidadRepository.findOne(id,{relations: ['configuracion','compradores']});
+    return await this.datosEntidadRepository.findOne({where: {idEntidad: id},relations: ['configuracion','compradores']});
   }
 
   async remove(id: number) : Promise<any> {

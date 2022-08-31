@@ -12,6 +12,6 @@ export class CodigosParaLaVentaService {
   }
 
   async findOne(id: number) : Promise<CodigosParaLaVenta> {
-    return await this.codigosParaLaVentaRepository.findOne(id);
+    return await this.codigosParaLaVentaRepository.findOne({where: {idCodigo: id},});
   }
 }

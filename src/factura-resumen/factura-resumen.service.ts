@@ -119,7 +119,7 @@ export class FacturaResumenService {
   }
 
   async findOne(id: number) : Promise<FacturaResumen> {
-    return await this.facturaResumenRepository.findOne(id,{relations:['facturaContenedores','facturaDesgloses']});
+    return await this.facturaResumenRepository.findOne({where: {idFactura: id},relations:['facturaContenedores','facturaDesgloses']});
   }
 
   async remove(id: number) : Promise<any> {

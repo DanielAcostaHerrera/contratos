@@ -23,7 +23,7 @@ export class EjecutivoService {
   }
 
   async findOne(id: number) : Promise<Ejecutivos> {
-    return await this.ejecutivosRepository.findOne(id,{relations:['usuarios']});
+    return await this.ejecutivosRepository.findOne({where: {idEjecutivo: id},relations:['usuarios']});
   }
 
   async remove(id: number) : Promise<any> {

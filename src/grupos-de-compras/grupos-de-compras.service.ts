@@ -17,7 +17,7 @@ export class GruposDeComprasService {
   }
 
   async findOne(id: number) : Promise<GruposDeCompras> {
-    return await this.grupoRepository.findOne(id);
+    return await this.grupoRepository.findOne({where: {idGrupo: id},});
   }
 
   async remove(id: number) : Promise<any> {

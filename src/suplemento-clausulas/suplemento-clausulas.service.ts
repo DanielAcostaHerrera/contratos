@@ -21,7 +21,7 @@ export class SuplementoClausulasService {
   }
 
   async findOne(id: number) : Promise<SuplementoClausulas> {
-    return await this.suplementoClausulaRepository.findOne(id);
+    return await this.suplementoClausulaRepository.findOne({where: {idSuplementoClausulas: id},});
   }
 
   async remove(id: number) : Promise<any> {

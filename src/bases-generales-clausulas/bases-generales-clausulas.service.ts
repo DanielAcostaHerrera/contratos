@@ -30,7 +30,7 @@ export class BasesGeneralesClausulasService {
   }
 
   async findOne(id: number) : Promise<BasesGeneralesClausulas> {
-    return await this.basesGeneralesClausulasRepository.findOne(id,{relations : ['basesGenerales']});
+    return await this.basesGeneralesClausulasRepository.findOne({where: {idBasesGeneralesClausulas: id},relations : ['basesGenerales']});
   }
 
   async remove(id: number) : Promise<any> {

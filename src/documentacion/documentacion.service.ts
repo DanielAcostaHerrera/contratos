@@ -20,7 +20,7 @@ export class DocumentacionService {
   }
 
   async findOne(id: number) : Promise<Documentacion> {
-    return await this.documentacionRepository.findOne(id, { relations: ['documentacionContratos']});
+    return await this.documentacionRepository.findOne({where: {idDocumento: id}, relations: ['documentacionContratos']});
   }
 
   async remove(id: number) : Promise<any> {

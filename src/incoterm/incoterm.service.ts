@@ -17,7 +17,7 @@ export class IncotermService {
   }
 
   async findOne(id: number) : Promise<Incoterm> {
-    return await this.grupoRepository.findOne(id);
+    return await this.grupoRepository.findOne({where: {idIncoterm: id},});
   }
 
   async remove(id: number) : Promise<any> {

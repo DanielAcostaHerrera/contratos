@@ -18,7 +18,7 @@ export class FormasEntregaService {
   }
 
   async findOne(id: number) : Promise<FormasEntrega> {
-    return await this.formasEntregaRepository.findOne(id);
+    return await this.formasEntregaRepository.findOne({where: {idFormaEntrega: id},});
   }
 
   async remove(id: number) : Promise<any> {

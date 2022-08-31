@@ -37,7 +37,7 @@ export class EmbarquesService {
   }
 
   async findOne(id: number) : Promise<Embarques> {
-    return await this.embarquesRepository.findOne(id,{relations:['contratoDesgloses','companiaNaviera']}); 
+    return await this.embarquesRepository.findOne({where: {idEmbarque: id},relations:['contratoDesgloses','companiaNaviera']}); 
   }
 
   async findEmbarquesByIdContrato(idContrato: number) : Promise<any> {

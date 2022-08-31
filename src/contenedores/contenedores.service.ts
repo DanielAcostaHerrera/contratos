@@ -18,7 +18,7 @@ export class ContenedoresService {
   }
 
   async findOne(id: number) : Promise<Contenedores> {
-    return await this.contenedoresRepository.findOne(id);
+    return await this.contenedoresRepository.findOne({where: {idContenedor: id},});
   }
 
   async remove(id: number) : Promise<any> {

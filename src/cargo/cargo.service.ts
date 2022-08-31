@@ -18,7 +18,7 @@ export class CargoService {
   }
 
   async findOne(id: number) : Promise<Cargos> {
-    return await this.cargoRepository.findOne(id);
+    return await this.cargoRepository.findOne({where: {idCargo: id},});
   }
 
   async remove(id: number) : Promise<any> {

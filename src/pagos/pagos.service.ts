@@ -24,7 +24,7 @@ export class PagosService {
   }
 
   async findOne(id: number) : Promise<Pagos> {
-    return await this.pagosRepository.findOne(id);
+    return await this.pagosRepository.findOne({where: {idPago: id},});
   }
 
   async remove(id: number) : Promise<any> {

@@ -17,7 +17,7 @@ export class RolesService {
   }
 
   async findOne(id: number) : Promise<Roles> {
-    return await this.rolesRepository.findOne(id,{ relations: ['usuarioRoles']});
+    return await this.rolesRepository.findOne({where: {idRol: id}, relations: ['usuarioRoles']});
   }
 
   async remove(id: number) : Promise<any> {

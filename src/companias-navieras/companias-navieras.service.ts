@@ -12,6 +12,6 @@ export class CompaniasNavierasService {
   }
 
   async findOne(id: number) : Promise<CompaniasNavieras> {
-    return await this.companiasNavierasRepository.findOne(id);
+    return await this.companiasNavierasRepository.findOne({where: {id: id},});
   }
 }

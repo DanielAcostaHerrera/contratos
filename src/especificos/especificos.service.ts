@@ -12,6 +12,6 @@ export class EspecificosService {
   }
 
   async findOne(id: number) : Promise<Especificos> {
-    return await this.especificosRepository.findOne(id,{relations: ['pliegoConcurrenciaDetalles']});
+    return await this.especificosRepository.findOne({where: {id: id},relations: ['pliegoConcurrenciaDetalles']});
   }
 }

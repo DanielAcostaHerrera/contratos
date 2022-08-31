@@ -18,7 +18,7 @@ export class ConfiguracionService {
   }
 
   async findOne(id: number) : Promise<Configuracion> {
-    return await this.configuracionRepository.findOne(id,{relations:['entidad']});
+    return await this.configuracionRepository.findOne({where: {idConfig: id},relations:['entidad']});
   }
 
   async remove(id: number) : Promise<any> {

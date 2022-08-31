@@ -22,7 +22,7 @@ export class LogsService {
   }
 
   async findOne(id: number) : Promise<Logs> {
-    return await this.logsRepository.findOne(id);
+    return await this.logsRepository.findOne({where: {idLog: id},});
   }
 
   async remove(id: number) : Promise<any> {

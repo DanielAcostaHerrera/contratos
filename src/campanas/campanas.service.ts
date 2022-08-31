@@ -18,7 +18,7 @@ export class CampanasService {
   }
 
   async findOne(id: number) : Promise<Campanas> {
-    return await this.campanaRepository.findOne(id,{relations:['campanaEtapasContratacion']});
+    return await this.campanaRepository.findOne({where: {idCampana: id},relations:['campanaEtapasContratacion']});
   }
 
   async remove(id: number) : Promise<any> {

@@ -18,7 +18,7 @@ export class MonedaService {
   }
 
   async findOne(id: number) : Promise<Monedas> {
-    return await this.monedaRepository.findOne(id);
+    return await this.monedaRepository.findOne({where: {idMoneda: id},});
   }
 
   async remove(id: number) : Promise<any> {

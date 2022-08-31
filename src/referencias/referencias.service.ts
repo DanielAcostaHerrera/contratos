@@ -12,6 +12,6 @@ export class ReferenciasService {
   }
 
   async findOne(id: number) : Promise<Referencias> {
-    return await this.referenciasRepository.findOne(id);
+    return await this.referenciasRepository.findOne({where: {referenciaId: id},});
   }
 }

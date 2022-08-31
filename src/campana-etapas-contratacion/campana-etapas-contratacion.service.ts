@@ -25,7 +25,7 @@ export class CampanaEtapasContratacionService {
   }
 
   async findOne(id: number) : Promise<CampanaEtapasContratacion> {
-    return await this.campanaEtapasContratacionRepository.findOne(id);
+    return await this.campanaEtapasContratacionRepository.findOne({where: {idCampanaEtapas: id},});
   }
 
   async remove(id: number) : Promise<any> {

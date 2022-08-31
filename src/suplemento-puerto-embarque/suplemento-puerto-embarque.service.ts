@@ -24,7 +24,7 @@ export class SuplementoPuertoEmbarqueService {
   }
 
   async findOne(id: number) : Promise<SuplementoPuertoEmbarque> {
-    return await this.suplementoPuertoEmbarqueRepository.findOne(id);
+    return await this.suplementoPuertoEmbarqueRepository.findOne({where: {idSuplementoPuertoEmbarque: id},});
   }
 
   async remove(id: number) : Promise<any> {

@@ -12,6 +12,6 @@ export class AgenciasAseguradorasService {
   }
 
   async findOne(id: number) : Promise<AgenciasAseguradoras> {
-    return await this.agenciasAseguradorasRepository.findOne(id);
+    return await this.agenciasAseguradorasRepository.findOne({where: {idAgenciaS: id},});
   }
 }

@@ -28,7 +28,7 @@ export class PliegoConcurrenciaDetalleService {
   }
 
   async findOne(id: number) : Promise<PliegoConcurrenciaDetalle> {
-    return await this.pliegoConcurrenciaDetalleRepository.findOne(id);
+    return await this.pliegoConcurrenciaDetalleRepository.findOne({where: {idPliegoDetalle: id},});
   }
 
   async remove(id: number) : Promise<any> {

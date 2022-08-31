@@ -16,6 +16,6 @@ export class PaisesService {
   }
 
   async findOne(id: number) : Promise<Paises> {
-    return await this.paisesRepository.findOne(id);
+    return await this.paisesRepository.findOne({where: {pais: id},});
   }
 }

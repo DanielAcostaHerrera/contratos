@@ -50,7 +50,7 @@ export class UsuariosService {
       this.usuarioRolService.save(usuarioRolInput);
     });
     
-    return await this.usuariosRepository.findOne(createUsuarioInput.idUsuario);
+    return await this.usuariosRepository.findOne({where: {idUsuario: createUsuarioInput.idUsuario},});
   }
 
   async forcePassword(usuarioToken: Usuarios,idUsuario: number) : Promise<Usuarios> {
@@ -90,7 +90,7 @@ export class UsuariosService {
   async autenticar(nombreUsuario: string, contrasena: string) : Promise<Usuarios>{
 
     return new Promise<Usuarios>(async (resolve, reject) => {
-      const usuario = await this.usuariosRepository.findOne({nombreUsuario},{ relations: ['usuarioRoles', 'ejecutivo']});
+      const usuario = await this.usuariosRepository.findOne({ where: {nombreUsuario: nombreUsuario},relations: ['usuarioRoles', 'ejecutivo']});
       if(!usuario){
         reject('Usuario o contraseña incorrectos');
       }
@@ -117,7 +117,7 @@ export class UsuariosService {
   }
 
   async findOne(id: number) : Promise<Usuarios> {
-    return await this.usuariosRepository.findOne(id,{ relations: ['usuarioRoles']});
+    return await this.usuariosRepository.findOne({ where: {idUsuario: id},relations: ['usuarioRoles']});
   }
 
   async remove(usuarioToken: Usuarios,id: number) : Promise<any> {

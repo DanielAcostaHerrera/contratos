@@ -23,7 +23,7 @@ export class SuplementoChangeService {
   }
 
   async findOne(id: number) : Promise<SuplementoChange> {
-    return await this.suplementoChangeRepository.findOne(id);
+    return await this.suplementoChangeRepository.findOne({where: {idClausulaChange: id},});
   }
 
   async remove(id: number) : Promise<any> {
