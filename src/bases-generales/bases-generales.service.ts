@@ -280,6 +280,7 @@ export class BasesGeneralesService {
         },
       }),
       relations: [
+        'tipoDeContrato',
         'incoterm',
         'compradores',
         'pais',

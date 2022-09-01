@@ -76,6 +76,8 @@ import { StreamingController } from './streaming/streaming.controller';
 import { PagosModule } from './pagos/pagos.module';
 import { PagosApartirDeModule } from './pagos-apartir-de/pagos-apartir-de.module';
 import { SuplementoPuertoEmbarqueModule } from './suplemento-puerto-embarque/suplemento-puerto-embarque.module';
+import { APP_FILTER } from '@nestjs/core';
+import { AllExceptionsFilter } from './all-exceptions.filter';
 
 
 @Module({
@@ -201,6 +203,9 @@ import { SuplementoPuertoEmbarqueModule } from './suplemento-puerto-embarque/sup
     SuplementoPuertoEmbarqueModule,
   ],
   controllers: [AppController, StreamingController],
-  providers: [AppService],
+  providers: [AppService,{
+    provide: APP_FILTER,
+    useClass: AllExceptionsFilter
+}],
 })
 export class AppModule {}

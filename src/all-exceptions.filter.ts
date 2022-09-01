@@ -10,13 +10,20 @@ export class AllExceptionsFilter implements ExceptionFilter {
         const status = exception instanceof HttpException
         ? exception.getStatus()
         : HttpStatus.INTERNAL_SERVER_ERROR;
+        
+        const pathRoute = request 
+        ? request.url
+        : " ";
 
-        response
+        if(!response){
+            response
             .status(status)
             .json({
                 statusCode: status,
-                timestamp: new Date().toISOString(),
-                path: request.url,
+                timestamp: new Date().toISOString(),              
+                path: pathRoute,
             });
+        }
+        
     }
 }
