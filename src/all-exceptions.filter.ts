@@ -14,16 +14,5 @@ export class AllExceptionsFilter implements ExceptionFilter {
         const pathRoute = request 
         ? request.url
         : " ";
-
-        if(!response){
-            response
-            .status(status)
-            .json({
-                statusCode: status,
-                timestamp: new Date().toISOString(),              
-                path: pathRoute,
-            });
-        }
-        
     }
 }

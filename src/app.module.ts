@@ -203,9 +203,11 @@ import { AllExceptionsFilter } from './all-exceptions.filter';
     SuplementoPuertoEmbarqueModule,
   ],
   controllers: [AppController, StreamingController],
-  providers: [AppService,{
+  providers: [AppService,
+    {
     provide: APP_FILTER,
     useClass: AllExceptionsFilter
-}],
+  }
+],
 })
 export class AppModule {}

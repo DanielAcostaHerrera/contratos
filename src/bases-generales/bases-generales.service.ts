@@ -304,6 +304,13 @@ export class BasesGeneralesService {
         'pais',
         'proveedor',
       ],
+      order: {
+        basesGeneralesClausulas: {
+          orden : "ASC"
+        }
+      }
+        
+      ,
     });
     bases.basesGeneralesClausulas.sort((a, b) => a.orden - b.orden);
     let clausulas = bases.basesGeneralesClausulas;
