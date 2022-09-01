@@ -280,7 +280,6 @@ export class BasesGeneralesService {
         },
       }),
       relations: [
-        'tipoDeContrato',
         'incoterm',
         'compradores',
         'pais',
@@ -297,7 +296,6 @@ export class BasesGeneralesService {
       where: { idBasesGenerales: id },
       relations: [
         'basesGeneralesClausulas',
-        'contratos',
         'tipoDeContrato',
         'incoterm',
         'compradores',
@@ -308,11 +306,8 @@ export class BasesGeneralesService {
         basesGeneralesClausulas: {
           orden : "ASC"
         }
-      }
-        
-      ,
+      },
     });
-    bases.basesGeneralesClausulas.sort((a, b) => a.orden - b.orden);
     let clausulas = bases.basesGeneralesClausulas;
     for (let index = 0; index < clausulas.length; index++) {
       clausulas[index].numero = index + 1;
