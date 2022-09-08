@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Cargos } from 'src/models/entities/Cargos.entity';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { CreateCargoInput } from './dto/create-cargo.input';
 
 @Injectable()
@@ -27,7 +27,9 @@ export class CargoService {
   }
 
   async removeSeveral(id: number[]) : Promise<any> {
-    const cargos = await this.cargoRepository.findByIds(id);
+    const cargos = await this.cargoRepository.findBy({
+      idCargo: In(id)
+  });
     return await this.cargoRepository.remove(cargos);
   }
 }

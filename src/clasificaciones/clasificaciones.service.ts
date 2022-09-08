@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Clasificaciones } from 'src/models/entities/Clasificaciones.entity';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { CreateClasificacioneInput } from './dto/create-clasificacione.input';
 
 @Injectable()
@@ -27,7 +27,9 @@ export class ClasificacionesService {
   }
 
   async removeSeveral(id: number[]) : Promise<any> {
-    const clasificaciones = await this.clasificacionesRepository.findByIds(id);
+    const clasificaciones = await this.clasificacionesRepository.findBy({
+      idClasificacion: In(id)
+  });
     return await this.clasificacionesRepository.remove(clasificaciones);
   }
 }

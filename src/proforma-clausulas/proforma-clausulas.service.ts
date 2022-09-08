@@ -7,7 +7,7 @@ import { TipoContrato } from 'src/models/entities/TipoContrato.entity';
 import { TiposDeClausulas } from 'src/models/entities/TiposDeClausulas.entity';
 import { TipoContratoService } from 'src/tipo-contrato/tipo-contrato.service';
 import { TiposDeClausulasService } from 'src/tipos-de-clausulas/tipos-de-clausulas.service';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { CreateProformaClausulaInput } from './dto/create-proforma-clausula.input';
 
 @Injectable()
@@ -48,7 +48,9 @@ export class ProformaClausulasService {
   }
 
   async removeSeveral(id: number[]) : Promise<any> {
-    const proformaClausulas = await this.proformaRepository.findByIds(id);
+    const proformaClausulas = await this.proformaRepository.findBy({
+      idProformaClausula: In(id)
+  });
     return await this.proformaRepository.remove(proformaClausulas);
   }
 

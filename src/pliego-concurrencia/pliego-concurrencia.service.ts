@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { PliegoConcurrencia } from 'src/models/entities/PliegoConcurrencia.entity';
 import { SolicitudOfertas } from 'src/models/entities/SolicitudOfertas.entity';
 import { SolicitudOfertasService } from 'src/solicitud-ofertas/solicitud-ofertas.service';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { CreatePliegoConcurrenciaInput } from './dto/create-pliego-concurrencia.input';
 
 @Injectable()
@@ -30,7 +30,9 @@ export class PliegoConcurrenciaService {
   }
 
   async removeSeveral(id: number[]) : Promise<any> {
-    const pliegoConcurrencia = await this.pliegoConcurrenciaRepository.findByIds(id);
+    const pliegoConcurrencia = await this.pliegoConcurrenciaRepository.findBy({
+      idPliego: In(id)
+  });
     return await this.pliegoConcurrenciaRepository.remove(pliegoConcurrencia);
   }
 

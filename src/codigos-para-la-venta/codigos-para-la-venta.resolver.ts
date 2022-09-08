@@ -19,4 +19,10 @@ export class CodigosParaLaVentaResolver {
   findOneCodigosParaLaVenta(@Args('id', { type: () => Int }) id: number) {
     return this.codigosParaLaVentaService.findOne(id);
   }
+
+  @Query(() => [CodigosParaLaVenta])
+  @UseGuards(new AuthGuard())
+  findCodigosParaLaVentaByListaCodigos(@Args('id', { type: () => [Int] }) id: number[]) {
+    return this.codigosParaLaVentaService.findByListaCodigos(id);
+  }
 }

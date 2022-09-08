@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { FormasEntrega } from 'src/models/entities/FormasEntrega.entity';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { CreateFormasEntregaInput } from './dto/create-formas-entrega.input';
 
 @Injectable()
@@ -27,7 +27,9 @@ export class FormasEntregaService {
   }
 
   async removeSeveral(id: number[]) : Promise<any> {
-    const formasEntrega = await this.formasEntregaRepository.findByIds(id);
+    const formasEntrega = await this.formasEntregaRepository.findBy({
+      idFormaEntrega: In(id)
+  });
     return await this.formasEntregaRepository.remove(formasEntrega);
   }
 }

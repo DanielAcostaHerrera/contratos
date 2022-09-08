@@ -9,7 +9,7 @@ import { CodigosParaLaVenta } from 'src/modelsMercurio/entities/CodigosParaLaVen
 import { Referencias } from 'src/modelsMercurio/entities/Referencias.entity';
 import { UnidadMedida } from 'src/modelsMercurio/entities/UnidadMedida.entity';
 import { SuplementoResumenService } from 'src/suplemento-resumen/suplemento-resumen.service';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { CreateSuplementoDesgloseInput } from './dto/create-suplemento-desglose.input';
 
 @Injectable()
@@ -38,7 +38,9 @@ export class SuplementoDesgloseService {
   }
 
   async removeSeveral(id: number[]) : Promise<any> {
-    const suplementoDesglose = await this.suplementoDesgloseRepository.findByIds(id);
+    const suplementoDesglose = await this.suplementoDesgloseRepository.findBy({
+      idSuplementoDesglose: In(id)
+  });
     return await this.suplementoDesgloseRepository.remove(suplementoDesglose);
   }
 

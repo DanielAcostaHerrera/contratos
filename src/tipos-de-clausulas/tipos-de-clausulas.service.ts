@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { TiposDeClausulas } from 'src/models/entities/TiposDeClausulas.entity';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { CreateTiposDeClausulaInput } from './dto/create-tipos-de-clausula.input';
 
 @Injectable()
@@ -27,7 +27,9 @@ export class TiposDeClausulasService {
   }
 
   async removeSeveral(id: number[]) : Promise<any> {
-    const tiposDeClausulas = await this.tiposDeClausulaRepository.findByIds(id);
+    const tiposDeClausulas = await this.tiposDeClausulaRepository.findBy({
+      idTipoClausula: In(id)
+  });
     return await this.tiposDeClausulaRepository.remove(tiposDeClausulas);
   }
 }

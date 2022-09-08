@@ -14,7 +14,7 @@ import { SuplementoResumen } from 'src/models/entities/SuplementoResumen.entity'
 import { CompaniasNavieras } from 'src/modelsNomgen/entities/CompaniasNavieras.entity';
 import { MonedaService } from 'src/moneda/moneda.service';
 import { NegociacionResumenService } from 'src/negociacion-resumen/negociacion-resumen.service';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { CreateSuplementoResumanInput } from './dto/create-suplemento-resuman.input';
 
 @Injectable()
@@ -45,7 +45,9 @@ export class SuplementoResumenService {
   }
 
   async removeSeveral(id: number[]) : Promise<any> {
-    const suplementoResumen = await this.suplementoResumenRepository.findByIds(id);
+    const suplementoResumen = await this.suplementoResumenRepository.findBy({
+      idSuplementoResumen: In(id)
+  });
     return await this.suplementoResumenRepository.remove(suplementoResumen);
   }
 

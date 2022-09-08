@@ -15,7 +15,7 @@ import { Monedas } from 'src/models/entities/Monedas.entity';
 import { NegociacionResumen } from 'src/models/entities/NegociacionResumen.entity';
 import { MonedaService } from 'src/moneda/moneda.service';
 import { NegociacionResumenService } from 'src/negociacion-resumen/negociacion-resumen.service';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { CreateContratoInput } from './dto/create-contrato.input';
 import { LogsService } from 'src/logs/logs.service';
 import { IncotermService } from 'src/incoterm/incoterm.service';
@@ -3210,7 +3210,9 @@ export class ContratosService {
   }
 
   async removeSeveral(usuarioToken: Usuarios,id: number[]) : Promise<any> {
-    const contratos = await this.contratoRepository.findByIds(id);
+    const contratos = await this.contratoRepository.findBy({
+      idContrato: In(id)
+  });
     var result = await this.contratoRepository.remove(contratos);
     if(result){
       var texto = "Eliminados los contratos con números consecutivos ";

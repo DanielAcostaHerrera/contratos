@@ -2,7 +2,7 @@ import { TiposDeComprasService } from './../tipos-de-compras/tipos-de-compras.se
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { NegociacionResumen } from 'src/models/entities/NegociacionResumen.entity';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { CreateNegociacionResumenInput } from './dto/create-negociacion-resumen.input';
 import { LogsService } from 'src/logs/logs.service';
 import { Usuarios } from 'src/models/entities/Usuarios.entity';
@@ -214,7 +214,9 @@ export class NegociacionResumenService {
   }
 
   async removeSeveral(usuarioToken: Usuarios,id: number[]) : Promise<any> {
-    const negociacionResumen = await this.negociacionResumenRepository.findByIds(id);
+    const negociacionResumen = await this.negociacionResumenRepository.findBy({
+      idNegociacion: In(id)
+  });
     var result = await this.negociacionResumenRepository.remove(negociacionResumen);
     if(result){
       var texto = "Eliminados las negociaciones con números ";

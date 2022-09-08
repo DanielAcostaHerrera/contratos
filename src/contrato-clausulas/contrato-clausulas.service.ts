@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ContratoClausulas } from 'src/models/entities/ContratoClausulas.entity';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { CreateContratoClausulaInput } from './dto/create-contrato-clausulas.input';
 
 @Injectable()
@@ -27,7 +27,9 @@ export class ContratoClausulaService {
   }
 
   async removeSeveral(id: number[]) : Promise<any> {
-    const contratoClausulas = await this.contratoClausulasRepository.findByIds(id);
+    const contratoClausulas = await this.contratoClausulasRepository.findBy({
+      idContratoClausulas: In(id)
+  });
     return await this.contratoClausulasRepository.remove(contratoClausulas);
   }
 

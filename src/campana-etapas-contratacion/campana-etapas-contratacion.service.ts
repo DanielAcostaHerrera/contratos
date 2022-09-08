@@ -7,7 +7,7 @@ import { Campanas } from 'src/models/entities/Campanas.entity';
 import { EtapasContratacion } from 'src/models/entities/EtapasContratacion.entity';
 import { Paises } from 'src/modelsMercurio/entities/Paises.entity';
 import { PaisesService } from 'src/paises/paises.service';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { CreateCampanaEtapasContratacionInput } from './dto/create-campana-etapas-contratacion.input';
 
 @Injectable()
@@ -34,7 +34,9 @@ export class CampanaEtapasContratacionService {
   }
 
   async removeSeveral(id: number[]) : Promise<any> {
-    const campanaEtapasContratacion = await this.campanaEtapasContratacionRepository.findByIds(id);
+    const campanaEtapasContratacion = await this.campanaEtapasContratacionRepository.findBy({
+      idCampanaEtapas: In(id)
+  });
     return await this.campanaEtapasContratacionRepository.remove(campanaEtapasContratacion);
   }
 

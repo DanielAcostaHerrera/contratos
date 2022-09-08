@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DatosEntidad } from 'src/models/entities/DatosEntidad.entity';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { CreateDatosEntidadInput } from './dto/create-datos-entidad.input';
 
 @Injectable()
@@ -27,7 +27,9 @@ export class DatosEntidadService {
   }
 
   async removeSeveral(id: number[]) : Promise<any> {
-    const datosEntidad = await this.datosEntidadRepository.findByIds(id);
+    const datosEntidad = await this.datosEntidadRepository.findBy({
+      idEntidad: In(id)
+  });
     return await this.datosEntidadRepository.remove(datosEntidad);
   }
 }

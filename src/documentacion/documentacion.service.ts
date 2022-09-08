@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Documentacion } from 'src/models/entities/Documentacion.entity';
 import { TiposDocumento } from 'src/models/entities/TiposDocumento.entity';
 import { TiposDocumentoService } from 'src/tipos-documento/tipos-documento.service';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { CreateDocumentacionInput } from './dto/create-documentacion.input';
 
 @Injectable()
@@ -29,7 +29,9 @@ export class DocumentacionService {
   }
 
   async removeSeveral(id: number[]) : Promise<any> {
-    const documentacion = await this.documentacionRepository.findByIds(id);
+    const documentacion = await this.documentacionRepository.findBy({
+      idDocumento: In(id)
+  });
     return await this.documentacionRepository.remove(documentacion);
   }
 

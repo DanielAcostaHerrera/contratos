@@ -13,7 +13,7 @@ import { Embarques } from 'src/models/entities/Embarques.entity';
 import { FacturaResumen } from 'src/models/entities/FacturaResumen.entity';
 import { Puertos } from 'src/models/entities/Puertos.entity';
 import { PuertosService } from 'src/puertos/puertos.service';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { CreateFacturaResumanInput } from './dto/create-factura-resuman.input';
 
 @Injectable()
@@ -128,7 +128,9 @@ export class FacturaResumenService {
   }
 
   async removeSeveral(id: number[]) : Promise<any> {
-    const facturaResumen = await this.facturaResumenRepository.findByIds(id);
+    const facturaResumen = await this.facturaResumenRepository.findBy({
+      idFactura: In(id)
+  });
     return await this.facturaResumenRepository.remove(facturaResumen);
   }
 

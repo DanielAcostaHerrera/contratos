@@ -5,7 +5,7 @@ import { Embarques } from 'src/models/entities/Embarques.entity';
 import { PuertoEmbarque } from 'src/models/entities/PuertoEmbarque.entity';
 import { Puertos } from 'src/models/entities/Puertos.entity';
 import { PuertosService } from 'src/puertos/puertos.service';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { CreatePuertoEmbarqueInput } from './dto/create-puerto-embarque.input';
 
 @Injectable()
@@ -26,13 +26,15 @@ export class PuertoEmbarqueService {
   }
 
   async remove(id: number) : Promise<any> {
-    const proformas = await this.findOne(id);
-    return await this.puertoEmbarqueRepository.remove(proformas);
+    const puertoEmbarques = await this.findOne(id);
+    return await this.puertoEmbarqueRepository.remove(puertoEmbarques);
   }
 
   async removeSeveral(id: number[]) : Promise<any> {
-    const proformas = await this.puertoEmbarqueRepository.findByIds(id);
-    return await this.puertoEmbarqueRepository.remove(proformas);
+    const puertoEmbarques = await this.puertoEmbarqueRepository.findBy({
+      idPuertoEmbarque: In(id)
+  });
+    return await this.puertoEmbarqueRepository.remove(puertoEmbarques);
   }
 
   async getEmbarque (id: number) : Promise<Embarques>{

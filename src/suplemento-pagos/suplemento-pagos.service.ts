@@ -7,7 +7,7 @@ import { FormasPago } from 'src/models/entities/FormasPago.entity';
 import { SuplementoPagos } from 'src/models/entities/SuplementoPagos.entity';
 import { SuplementoResumen } from 'src/models/entities/SuplementoResumen.entity';
 import { SuplementoResumenService } from 'src/suplemento-resumen/suplemento-resumen.service';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { CreateSuplementoPagoInput } from './dto/create-suplemento-pago.input';
 
 @Injectable()
@@ -34,7 +34,9 @@ export class SuplementoPagosService {
   }
 
   async removeSeveral(id: number[]) : Promise<any> {
-    const suplementoPagos = await this.suplementoPagosRepository.findByIds(id);
+    const suplementoPagos = await this.suplementoPagosRepository.findBy({
+      idSuplementoPagos: In(id)
+  });
     return await this.suplementoPagosRepository.remove(suplementoPagos);
   }
 

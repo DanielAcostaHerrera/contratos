@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Roles } from 'src/models/entities/Roles.entity';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { CreateRoleInput } from './dto/create-role.input';
 
 @Injectable()
@@ -26,7 +26,9 @@ export class RolesService {
   }
 
   async removeSeveral(id: number[]) : Promise<any> {
-    const roles = await this.rolesRepository.findByIds(id);
+    const roles = await this.rolesRepository.findBy({
+      idRol: In(id)
+  });
     return await this.rolesRepository.remove(roles);
   }
 }

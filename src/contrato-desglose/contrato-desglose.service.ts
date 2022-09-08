@@ -7,7 +7,7 @@ import { UnidadMedida } from 'src/modelsMercurio/entities/UnidadMedida.entity';
 import { CodigosParaLaVenta } from 'src/modelsMercurio/entities/CodigosParaLaVenta.entity';
 import { ReferenciasService } from 'src/referencias/referencias.service';
 import { UnidadMedidaService } from 'src/unidad-medida/unidad-medida.service';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { CreateContratoDesgloseInput } from './dto/create-contrato-desglose.input';
 
 @Injectable()
@@ -34,7 +34,9 @@ export class ContratoDesgloseService {
   }
 
   async removeSeveral(id: number[]) : Promise<any> {
-    const contratoDesglose = await this.contratoDesgloseRepository.findByIds(id);
+    const contratoDesglose = await this.contratoDesgloseRepository.findBy({
+      idContratoDesglose: In(id)
+  });
     return await this.contratoDesgloseRepository.remove(contratoDesglose);
   }
 

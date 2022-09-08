@@ -7,7 +7,7 @@ import { Paises } from 'src/modelsMercurio/entities/Paises.entity';
 import { Referencias } from 'src/modelsMercurio/entities/Referencias.entity';
 import { PaisesService } from 'src/paises/paises.service';
 import { ReferenciasService } from 'src/referencias/referencias.service';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { CreateFacturaDesgloseInput } from './dto/create-factura-desglose.input';
 
 @Injectable()
@@ -35,7 +35,9 @@ export class FacturaDesgloseService {
   }
 
   async removeSeveral(id: number[]) : Promise<any> {
-    const facturaDesglose = await this.facturaDesgloseRepository.findByIds(id);
+    const facturaDesglose = await this.facturaDesgloseRepository.findBy({
+      idFacturaDesglose: In(id)
+  });
     return await this.facturaDesgloseRepository.remove(facturaDesglose);
   }
 

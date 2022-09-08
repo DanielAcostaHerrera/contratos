@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Logs } from 'src/models/entities/Logs.entity';
 import { MyLogger } from 'src/MyLogger';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { CreateLogInput } from './dto/create-log.input';
 
 @Injectable()
@@ -31,7 +31,9 @@ export class LogsService {
   }
 
   async removeSeveral(id: number[]) : Promise<any> {
-    const logs = await this.logsRepository.findByIds(id);
+    const logs = await this.logsRepository.findBy({
+      idLog: In(id)
+  });
     return await this.logsRepository.remove(logs);
   }
 }

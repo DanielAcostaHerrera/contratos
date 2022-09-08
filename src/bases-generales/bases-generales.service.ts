@@ -331,7 +331,9 @@ export class BasesGeneralesService {
   }
 
   async removeSeveral(usuarioToken: Usuarios, id: number[]): Promise<any> {
-    const basesGenerales = await this.basesGeneralesRepository.findByIds(id);
+    const basesGenerales = await this.basesGeneralesRepository.findBy({
+      idBasesGenerales: In(id)
+  });
     var result = await this.basesGeneralesRepository.remove(basesGenerales);
     if (result) {
       var texto = 'Eliminadas las bases generales con números consecutivos ';

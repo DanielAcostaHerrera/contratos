@@ -5,7 +5,7 @@ import { SuplementoEmbarques } from 'src/models/entities/SuplementoEmbarques.ent
 import { SuplementoResumen } from 'src/models/entities/SuplementoResumen.entity';
 import { CompaniasNavieras } from 'src/modelsNomgen/entities/CompaniasNavieras.entity';
 import { SuplementoResumenService } from 'src/suplemento-resumen/suplemento-resumen.service';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { CreateSuplementoEmbarqueInput } from './dto/create-suplemento-embarque.input';
 
 @Injectable()
@@ -37,7 +37,9 @@ export class SuplementoEmbarquesService {
   }
 
   async removeSeveral(id: number[]) : Promise<any> {
-    const suplementoEmbarques = await this.suplementoEmbarqueRepository.findByIds(id);
+    const suplementoEmbarques = await this.suplementoEmbarqueRepository.findBy({
+      idSuplementoEmbarques: In(id)
+  });
     return await this.suplementoEmbarqueRepository.remove(suplementoEmbarques);
   }
 

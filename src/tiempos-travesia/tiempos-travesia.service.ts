@@ -5,7 +5,7 @@ import { EtapasContratacion } from 'src/models/entities/EtapasContratacion.entit
 import { TiemposTravesia } from 'src/models/entities/TiemposTravesia.entity';
 import { Paises } from 'src/modelsMercurio/entities/Paises.entity';
 import { PaisesService } from 'src/paises/paises.service';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { CreateTiemposTravesiaInput } from './dto/create-tiempos-travesia.input';
 
 @Injectable()
@@ -32,7 +32,9 @@ export class TiemposTravesiaService {
   }
 
   async removeSeveral(id: number[]) : Promise<any> {
-    const tiemposTravesia = await this.tiemposTravesiaRepository.findByIds(id);
+    const tiemposTravesia = await this.tiemposTravesiaRepository.findBy({
+      idTiemposTravesia: In(id)
+  });
     return await this.tiemposTravesiaRepository.remove(tiemposTravesia);
   }
 

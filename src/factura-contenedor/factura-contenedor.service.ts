@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { FacturaContenedor } from 'src/models/entities/FacturaContenedor.entity';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { CreateFacturaContenedorInput } from './dto/create-factura-contenedor.input';
 
 @Injectable()
@@ -27,7 +27,9 @@ export class FacturaContenedorService {
   }
 
   async removeSeveral(id: number[]) : Promise<any> {
-    const facturaContenedor = await this.facturaContenedorRepository.findByIds(id);
+    const facturaContenedor = await this.facturaContenedorRepository.findBy({
+      idFacturaContenedor: In(id)
+  });
     return await this.facturaContenedorRepository.remove(facturaContenedor);
   }
 

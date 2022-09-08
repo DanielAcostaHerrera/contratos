@@ -5,7 +5,7 @@ import { SolicitudOfertasProveedor } from 'src/models/entities/SolicitudOfertasP
 import { Proveedores } from 'src/modelsMercurio/entities/Proveedores.entity';
 import { ProveedoresService } from 'src/proveedores/proveedores.service';
 import { SolicitudOfertasService } from 'src/solicitud-ofertas/solicitud-ofertas.service';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { CreateSolicitudOfertasProveedorInput } from './dto/create-solicitud-ofertas-proveedor.input';
 
 @Injectable()
@@ -32,7 +32,9 @@ export class SolicitudOfertasProveedorService {
   }
 
   async removeSeveral(id: number[]) : Promise<any> {
-    const solicitudOfertasProveedor = await this.solicitudOfertasProveedorRepository.findByIds(id);
+    const solicitudOfertasProveedor = await this.solicitudOfertasProveedorRepository.findBy({
+      idOfertasProveedor: In(id)
+  });
     return await this.solicitudOfertasProveedorRepository.remove(solicitudOfertasProveedor);
   }
 

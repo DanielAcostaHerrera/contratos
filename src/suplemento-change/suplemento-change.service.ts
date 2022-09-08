@@ -4,7 +4,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { SuplementoChange } from 'src/models/entities/SuplementoChange.entity';
 import { SuplementoResumen } from 'src/models/entities/SuplementoResumen.entity';
 import { SuplementoResumenService } from 'src/suplemento-resumen/suplemento-resumen.service';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { CreateSuplementoChangeInput } from './dto/create-suplemento-change.input';
 import { CambiosSuplementosService } from 'src/cambios-suplementos/cambios-suplementos.service';
 
@@ -32,7 +32,9 @@ export class SuplementoChangeService {
   }
 
   async removeSeveral(id: number[]) : Promise<any> {
-    const suplementoChange = await this.suplementoChangeRepository.findByIds(id);
+    const suplementoChange = await this.suplementoChangeRepository.findBy({
+      idClausulaChange: In(id)
+  });
     return await this.suplementoChangeRepository.remove(suplementoChange);
   }
 

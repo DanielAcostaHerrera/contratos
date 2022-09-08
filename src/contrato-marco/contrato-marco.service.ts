@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { ContratoMarco } from '../models/entities/ContratoMarco.entity';
 import { Proveedores } from '../modelsMercurio/entities/Proveedores.entity';
 import { ProveedoresService } from '../proveedores/proveedores.service';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { CreateContratoMarcoInput } from './dto/create-contrato-marco.input';
 
 @Injectable()
@@ -57,7 +57,9 @@ export class ContratoMarcoService {
   }
 
   async removeSeveral(id: number[]) : Promise<any> {
-    const contratoMarco = await this.contratoMarcoRepository.findByIds(id);
+    const contratoMarco = await this.contratoMarcoRepository.findBy({
+      idCMarco: In(id)
+  });
     return await this.contratoMarcoRepository.remove(contratoMarco);
   }
 

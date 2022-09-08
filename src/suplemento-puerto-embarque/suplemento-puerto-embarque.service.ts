@@ -7,7 +7,7 @@ import { SuplementoPuertoEmbarque } from 'src/models/entities/SuplementoPuertoEm
 import { SuplementoResumen } from 'src/models/entities/SuplementoResumen.entity';
 import { PuertosService } from 'src/puertos/puertos.service';
 import { SuplementoResumenService } from 'src/suplemento-resumen/suplemento-resumen.service';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { CreateSuplementoPuertoEmbarqueInput } from './dto/create-suplemento-puerto-embarque.input';
 
 @Injectable()
@@ -28,13 +28,15 @@ export class SuplementoPuertoEmbarqueService {
   }
 
   async remove(id: number) : Promise<any> {
-    const puertos = await this.findOne(id);
-    return await this.suplementoPuertoEmbarqueRepository.remove(puertos);
+    const suplementoPuertoEmbarque = await this.findOne(id);
+    return await this.suplementoPuertoEmbarqueRepository.remove(suplementoPuertoEmbarque);
   }
 
   async removeSeveral(id: number[]) : Promise<any> {
-    const puertos = await this.suplementoPuertoEmbarqueRepository.findByIds(id);
-    return await this.suplementoPuertoEmbarqueRepository.remove(puertos);
+    const suplementoPuertoEmbarque = await this.suplementoPuertoEmbarqueRepository.findBy({
+      idSuplementoPuertoEmbarque: In(id)
+  });
+    return await this.suplementoPuertoEmbarqueRepository.remove(suplementoPuertoEmbarque);
   }
 
   async getSuplementoResumen (Id: number) : Promise<SuplementoResumen>{

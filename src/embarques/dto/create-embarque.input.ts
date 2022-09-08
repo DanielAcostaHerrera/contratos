@@ -14,8 +14,8 @@ export class CreateEmbarqueInput {
   @Field(() => Int,{nullable: true})
   idContrato: number | null;
 
-  @Field(() => Int)
-  numero: number;
+  @Field(() => Int,{nullable: true})
+  numero: number| null;
 
   @Field(() => Float,{nullable: true})
   descuento: number | null;

@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CambiosSuplementos } from 'src/models/entities/CambiosSuplementos.entity';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { CreateCambiosSuplementoInput } from './dto/create-cambios-suplemento.input';
 
 @Injectable()
@@ -27,7 +27,9 @@ export class CambiosSuplementosService {
   }
 
   async removeSeveral(id: number[]) : Promise<any> {
-    const cambiosSuplementos = await this.cambiosSuplementosRepository.findByIds(id);
+    const cambiosSuplementos = await this.cambiosSuplementosRepository.findBy({
+      idCambio: In(id)
+  });
     return await this.cambiosSuplementosRepository.remove(cambiosSuplementos);
   }
 }

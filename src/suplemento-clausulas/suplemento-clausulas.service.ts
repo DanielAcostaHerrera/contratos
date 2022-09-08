@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { SuplementoClausulas } from 'src/models/entities/SuplementoClausulas.entity';
 import { SuplementoResumen } from 'src/models/entities/SuplementoResumen.entity';
 import { SuplementoResumenService } from 'src/suplemento-resumen/suplemento-resumen.service';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { CreateSuplementoClausulaInput } from './dto/create-suplemento-clausula.input';
 
 @Injectable()
@@ -30,7 +30,9 @@ export class SuplementoClausulasService {
   }
 
   async removeSeveral(id: number[]) : Promise<any> {
-    const suplementoClausulas = await this.suplementoClausulaRepository.findByIds(id);
+    const suplementoClausulas = await this.suplementoClausulaRepository.findBy({
+      idSuplementoClausulas: In(id)
+  });
     return await this.suplementoClausulaRepository.remove(suplementoClausulas);
   }
 

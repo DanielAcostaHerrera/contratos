@@ -9,7 +9,7 @@ import { UnidadMedida } from 'src/modelsMercurio/entities/UnidadMedida.entity';
 import { ReferenciasService } from 'src/referencias/referencias.service';
 import { SolicitudOfertasProveedorService } from 'src/solicitud-ofertas-proveedor/solicitud-ofertas-proveedor.service';
 import { UnidadMedidaService } from 'src/unidad-medida/unidad-medida.service';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { CreateSolicitudOfertasEntradaInput } from './dto/create-solicitud-ofertas-entrada.input';
 
 @Injectable()
@@ -37,7 +37,9 @@ export class SolicitudOfertasEntradasService {
   }
 
   async removeSeveral(id: number[]) : Promise<any> {
-    const solicitudOfertasEntradas = await this.solicitudOfertaEntradaRepository.findByIds(id);
+    const solicitudOfertasEntradas = await this.solicitudOfertaEntradaRepository.findBy({
+      idOfertasEntradas: In(id)
+  });
     return await this.solicitudOfertaEntradaRepository.remove(solicitudOfertasEntradas);
   }
 

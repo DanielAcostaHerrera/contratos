@@ -4,7 +4,7 @@ import { Hash } from 'crypto';
 import { EjecutivoService } from 'src/ejecutivo/ejecutivo.service';
 import { Ejecutivos } from 'src/models/entities/Ejecutivos.entity';
 import { Usuarios } from 'src/models/entities/Usuarios.entity';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { CreateUsuarioInput } from './dto/create-usuario.input';
 import * as bcrypt from 'bcryptjs';
 import { MyLogger } from 'src/MyLogger';
@@ -139,7 +139,9 @@ export class UsuariosService {
 
   async removeSeveral(usuarioToken: Usuarios,id: number[]) : Promise<any> {
     return new Promise<any>(async (resolve, reject) => {
-      const usuarios = await this.usuariosRepository.findByIds(id);
+      const usuarios = await this.usuariosRepository.findBy({
+        idUsuario: In(id)
+    });
       var estaLoggeado = false;
       usuarios.forEach(usuario =>{
         if(usuario.idUsuario == usuarioToken.idUsuario){

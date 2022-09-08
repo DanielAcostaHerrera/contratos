@@ -1257,6 +1257,7 @@ type Query {
   findOneUnidadMedida(id: Int!): UnidadMedida!
   findAllCodigosParaLaVenta: [CodigosParaLaVenta!]!
   findOneCodigosParaLaVenta(id: Int!): CodigosParaLaVenta!
+  findCodigosParaLaVentaByListaCodigos(id: [Int!]!): [CodigosParaLaVenta!]!
   findAllReferencias: [Referencias!]!
   findOneReferencias(id: Int!): Referencias!
   findAllEmbarques: [Embarques!]!
@@ -1748,7 +1749,7 @@ input CreateEmbarqueInput {
   idEmbarque: Int
   fechaEntrega: DateTime!
   idContrato: Int
-  numero: Int!
+  numero: Int
   descuento: Float
   terminado: Boolean!
   cancelado: Boolean!

@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Monedas } from '../models/entities/Monedas.entity';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { CreateMonedaInput } from './dto/create-moneda.input';
 
 @Injectable()
@@ -27,7 +27,9 @@ export class MonedaService {
   }
 
   async removeSeveral(id: number[]) : Promise<any> {
-    const monedas = await this.monedaRepository.findByIds(id);
+    const monedas = await this.monedaRepository.findBy({
+      idMoneda: In(id)
+  });
     return await this.monedaRepository.remove(monedas);
   }
 }

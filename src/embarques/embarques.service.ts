@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { CompaniasNavierasService } from 'src/companias-navieras/companias-navieras.service';
 import { Embarques } from 'src/models/entities/Embarques.entity';
 import { CompaniasNavieras } from 'src/modelsNomgen/entities/CompaniasNavieras.entity';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { CreateEmbarqueInput } from './dto/create-embarque.input';
 
 @Injectable()
@@ -50,7 +50,9 @@ export class EmbarquesService {
   }
 
   async removeSeveral(id: number[]) : Promise<any> {
-    const embarques = await this.embarquesRepository.findByIds(id);
+    const embarques = await this.embarquesRepository.findBy({
+      idEmbarque: In(id)
+  });
     return await this.embarquesRepository.remove(embarques);
   }
 

@@ -21,7 +21,7 @@ import { PliegoConcurrenciaService } from 'src/pliego-concurrencia/pliego-concur
 import { ProveedoresService } from 'src/proveedores/proveedores.service';
 import { PuertosService } from 'src/puertos/puertos.service';
 import { TiposContenedorService } from 'src/tipos-contenedor/tipos-contenedor.service';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { CreatePliegoConcurrenciaResumanInput } from './dto/create-pliego-concurrencia-resuman.input';
 
 @Injectable()
@@ -54,7 +54,9 @@ export class PliegoConcurrenciaResumenService {
   }
 
   async removeSeveral(id: number[]) : Promise<any> {
-    const pliegoConcurrenciaResumen = await this.pliegoConcurrenciaResumenRepository.findByIds(id);
+    const pliegoConcurrenciaResumen = await this.pliegoConcurrenciaResumenRepository.findBy({
+      idPliegoResumen: In(id)
+  });
     return await this.pliegoConcurrenciaResumenRepository.remove(pliegoConcurrenciaResumen);
   }
 

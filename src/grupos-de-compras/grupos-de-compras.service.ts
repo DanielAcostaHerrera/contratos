@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { GruposDeCompras } from 'src/models/entities/GruposDeCompras.entity';
 import { CreateGruposDeCompraInput } from './dto/create-grupos-de-compra.input';
 
@@ -26,7 +26,9 @@ export class GruposDeComprasService {
   }
 
   async removeSeveral(id: number[]) : Promise<any> {
-    const gruposDeCompras = await this.grupoRepository.findByIds(id);
+    const gruposDeCompras = await this.grupoRepository.findBy({
+      idGrupo: In(id)
+  });
     return await this.grupoRepository.remove(gruposDeCompras);
   }
 }

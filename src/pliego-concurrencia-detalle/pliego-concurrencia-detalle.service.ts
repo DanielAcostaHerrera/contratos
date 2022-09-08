@@ -9,7 +9,7 @@ import { Especificos } from 'src/modelsMercurio/entities/Especificos.entity';
 import { UnidadMedida } from 'src/modelsMercurio/entities/UnidadMedida.entity';
 import { PliegoConcurrenciaResumenService } from 'src/pliego-concurrencia-resumen/pliego-concurrencia-resumen.service';
 import { UnidadMedidaService } from 'src/unidad-medida/unidad-medida.service';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { CreatePliegoConcurrenciaDetalleInput } from './dto/create-pliego-concurrencia-detalle.input';
 
 @Injectable()
@@ -37,7 +37,9 @@ export class PliegoConcurrenciaDetalleService {
   }
 
   async removeSeveral(id: number[]) : Promise<any> {
-    const pliegoConcurrenciaDetalle = await this.pliegoConcurrenciaDetalleRepository.findByIds(id);
+    const pliegoConcurrenciaDetalle = await this.pliegoConcurrenciaDetalleRepository.findBy({
+      idPliegoDetalle: In(id)
+  });
     return await this.pliegoConcurrenciaDetalleRepository.remove(pliegoConcurrenciaDetalle);
   }
 

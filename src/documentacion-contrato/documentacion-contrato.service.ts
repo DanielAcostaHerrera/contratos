@@ -5,7 +5,7 @@ import { DocumentacionService } from 'src/documentacion/documentacion.service';
 import { Contratos } from 'src/models/entities/Contratos.entity';
 import { Documentacion } from 'src/models/entities/Documentacion.entity';
 import { DocumentacionContrato } from 'src/models/entities/DocumentacionContrato.entity';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { CreateDocumentacionContratoInput } from './dto/create-documentacion-contrato.input';
 
 @Injectable()
@@ -32,7 +32,9 @@ export class DocumentacionContratoService {
   }
 
   async removeSeveral(id: number[]) : Promise<any> {
-    const documentacionContrato = await this.documentacionContratoRepository.findByIds(id);
+    const documentacionContrato = await this.documentacionContratoRepository.findBy({
+      idDocumentacionContrato: In(id)
+  });
     return await this.documentacionContratoRepository.remove(documentacionContrato);
   }
 

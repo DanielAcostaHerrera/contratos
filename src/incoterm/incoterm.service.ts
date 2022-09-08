@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Incoterm } from 'src/models/entities/Incoterm.entity';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { CreateIncotermInput } from './dto/create-incoterm.input';
 
 @Injectable()
@@ -26,7 +26,9 @@ export class IncotermService {
   }
 
   async removeSeveral(id: number[]) : Promise<any> {
-    const incoterm = await this.grupoRepository.findByIds(id);
+    const incoterm = await this.grupoRepository.findBy({
+      idIncoterm: In(id)
+  });
     return await this.grupoRepository.remove(incoterm);
   }
 }

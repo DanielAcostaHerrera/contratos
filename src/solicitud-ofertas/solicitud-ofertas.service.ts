@@ -6,7 +6,7 @@ import { SolicitudOfertas } from 'src/models/entities/SolicitudOfertas.entity';
 import { Usuarios } from 'src/models/entities/Usuarios.entity';
 import { MyLogger } from 'src/MyLogger';
 import { SolicitudContratacionService } from 'src/solicitud-contratacion/solicitud-contratacion.service';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { CreateSolicitudOfertaInput } from './dto/create-solicitud-oferta.input';
 
 @Injectable()
@@ -87,7 +87,9 @@ export class SolicitudOfertasService {
   }
 
   async removeSeveral(usuarioToken: Usuarios,id: number[]) : Promise<any> {
-    const solicitudOfertas = await this.solicitudOfertaRepository.findByIds(id);
+    const solicitudOfertas = await this.solicitudOfertaRepository.findBy({
+      idOferta: In(id)
+  });
     var result = await this.solicitudOfertaRepository.remove(solicitudOfertas);
     if(result){
       var texto = "Eliminadas las solicitudes de ofertas con números consecutivos ";

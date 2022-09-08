@@ -4,7 +4,7 @@ import { BasesGeneralesClausulas } from 'src/models/entities/BasesGeneralesClaus
 import { TiposDeClausulas } from 'src/models/entities/TiposDeClausulas.entity';
 import { ProformaClausulasService } from 'src/proforma-clausulas/proforma-clausulas.service';
 import { TiposDeClausulasService } from 'src/tipos-de-clausulas/tipos-de-clausulas.service';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { CreateBasesGeneralesClausulaInput } from './dto/create-bases-generales-clausula.input';
 
 @Injectable()
@@ -39,7 +39,9 @@ export class BasesGeneralesClausulasService {
   }
 
   async removeSeveral(id: number[]) : Promise<any> {
-    const basesGeneralesClausulas = await this.basesGeneralesClausulasRepository.findByIds(id);
+    const basesGeneralesClausulas = await this.basesGeneralesClausulasRepository.findBy({
+      idBasesGenerales: In(id)
+  });
     return await this.basesGeneralesClausulasRepository.remove(basesGeneralesClausulas);
   }
 

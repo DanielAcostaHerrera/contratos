@@ -4,7 +4,7 @@ import { LogsService } from 'src/logs/logs.service';
 import { Puertos } from 'src/models/entities/Puertos.entity';
 import { Paises } from 'src/modelsMercurio/entities/Paises.entity';
 import { PaisesService } from 'src/paises/paises.service';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { CreatePuertoInput } from './dto/create-puerto.input';
 
 @Injectable()
@@ -30,7 +30,9 @@ export class PuertosService {
   }
 
   async removeSeveral(id: number[]) : Promise<any> {
-    const puertos = await this.puertoRepository.findByIds(id);
+    const puertos = await this.puertoRepository.findBy({
+      idPuerto: In(id)
+  });
     return await this.puertoRepository.remove(puertos);
   }
 

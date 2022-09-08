@@ -5,7 +5,7 @@ import { GruposDeComprasService } from 'src/grupos-de-compras/grupos-de-compras.
 import { Cargos } from 'src/models/entities/Cargos.entity';
 import { Ejecutivos } from 'src/models/entities/Ejecutivos.entity';
 import { GruposDeCompras } from 'src/models/entities/GruposDeCompras.entity';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { CreateEjecutivoInput } from './dto/create-ejecutivo.input';
 
 @Injectable()
@@ -32,7 +32,9 @@ export class EjecutivoService {
   }
 
   async removeSeveral(id: number[]) : Promise<any> {
-    const ejecutivos = await this.ejecutivosRepository.findByIds(id);
+    const ejecutivos = await this.ejecutivosRepository.findBy({
+      idEjecutivo: In(id)
+  });
     return await this.ejecutivosRepository.remove(ejecutivos);
   }
 

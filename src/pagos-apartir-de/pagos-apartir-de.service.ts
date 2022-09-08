@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { PagosAPartirDe } from 'src/models/entities/PagosAPartirDe.entity';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { CreatePagosApartirDeInput } from './dto/create-pagos-apartir-de.input';
 
 @Injectable()
@@ -26,7 +26,9 @@ export class PagosApartirDeService {
   }
 
   async removeSeveral(id: number[]) : Promise<any> {
-    const puertos = await this.pagosAPartirDeRepository.findByIds(id);
+    const puertos = await this.pagosAPartirDeRepository.findBy({
+      idPartir: In(id)
+  });
     return await this.pagosAPartirDeRepository.remove(puertos);
   }
 }
