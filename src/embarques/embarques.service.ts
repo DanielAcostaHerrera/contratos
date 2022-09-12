@@ -24,7 +24,7 @@ export class EmbarquesService {
       createEmbarqueInput.cancelado = false;
 
       let embarques = await this.findAll()
-      createEmbarqueInput.numero = embarques.filter(embarque=> embarque.idContrato == createEmbarqueInput.idContrato).length;
+      createEmbarqueInput.numero = embarques.filter(embarque=> embarque.idContrato == createEmbarqueInput.idContrato).length + 1;
       
       result = await this.embarquesRepository.save(createEmbarqueInput);
     }
