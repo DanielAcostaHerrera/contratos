@@ -1257,7 +1257,6 @@ type Query {
   findOneUnidadMedida(id: Int!): UnidadMedida!
   findAllCodigosParaLaVenta: [CodigosParaLaVenta!]!
   findOneCodigosParaLaVenta(id: Int!): CodigosParaLaVenta!
-  findCodigosParaLaVentaByListaCodigos(filename: String!): [CodigosParaLaVenta!]!
   findAllReferencias: [Referencias!]!
   findOneReferencias(id: Int!): Referencias!
   findAllEmbarques: [Embarques!]!
