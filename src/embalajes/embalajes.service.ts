@@ -9,16 +9,16 @@ export class EmbalajesService {
   constructor(@InjectRepository(Embalajes) public readonly embalajesRepository: Repository<Embalajes>) {}
 
 
-  async save(createMonedaInput: CreateEmbalajeInput) : Promise<Embalajes> {
-    return await this.embalajesRepository.save(createMonedaInput);
+  async save(createEmbalajeInput: CreateEmbalajeInput) : Promise<Embalajes> {
+    return await this.embalajesRepository.save(createEmbalajeInput);
   }
 
   async findAll(): Promise<Embalajes[]> {
-    return await this.embalajesRepository.find({relations:['pliegoConcurrenciaDetalles','solicitudCodificacion']});
+    return await this.embalajesRepository.find({relations:['pliegoConcurrenciaDetalles','solicitudCodificacion','codigo']});
   }
 
   async findOne(id: number) : Promise<Embalajes> {
-    return await this.embalajesRepository.findOne({where: {idEmbalaje: id},relations:['pliegoConcurrenciaDetalles','solicitudCodificacion']});
+    return await this.embalajesRepository.findOne({where: {idEmbalaje: id},relations:['pliegoConcurrenciaDetalles','solicitudCodificacion','codigo']});
   }
 
   async remove(id: number) : Promise<any> {

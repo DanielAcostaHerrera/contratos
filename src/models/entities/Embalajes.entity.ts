@@ -1,5 +1,6 @@
 import { Field, Int, ObjectType } from "@nestjs/graphql";
-import { Column, Entity, Index, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, Index, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { CodigosParaLaVenta } from "../../modelsMercurio/entities/CodigosParaLaVenta.entity";
 import { PliegoConcurrenciaDetalle } from "./PliegoConcurrenciaDetalle.entity";
 import { SolicitudCodificacion } from "./SolicitudCodificacion.entity";
 
@@ -26,4 +27,8 @@ export class Embalajes {
   @Field(() => [SolicitudCodificacion], {nullable: true})
   @OneToMany(() => SolicitudCodificacion,(solicitudCodificacion) => solicitudCodificacion.embalaje)
   solicitudCodificacion: SolicitudCodificacion[];
+
+  @Field(() => [CodigosParaLaVenta], {nullable: true})
+  @OneToOne(() => CodigosParaLaVenta,(codigo) => codigo.embalaje)
+  codigo: CodigosParaLaVenta;
 }

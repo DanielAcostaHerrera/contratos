@@ -6,7 +6,7 @@ export class CreateEmbalajeInput {
   idEmbalaje?: number;
 
   @Field({nullable: true})
-  codigo: string | null;
+  idCodigo: string | null;
 
   @Field({nullable: true})
   descripcion: string | null;

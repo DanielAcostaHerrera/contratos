@@ -1,9 +1,11 @@
 import { Field, Float, Int, ObjectType } from "@nestjs/graphql";
-import { Column, Entity, Index, OneToMany, OneToOne } from "typeorm";
+import { Column, Entity, Index, JoinColumn, OneToMany, OneToOne } from "typeorm";
 import { ContratoDesglose } from "../../models/entities/ContratoDesglose.entity";
+import { Embalajes } from "../../models/entities/Embalajes.entity";
 import { FacturaDesglose } from "../../models/entities/FacturaDesglose.entity";
 import { SolicitudOfertasEntradas } from "../../models/entities/SolicitudOfertasEntradas.entity";
 import { SuplementoDesglose } from "../../models/entities/SuplementoDesglose.entity";
+import { Referencias } from "./Referencias.entity";
 
 @ObjectType()
 @Index("ActualizacionesCODIGOS_para_la_Venta", ["idActualizacion"], {})
@@ -304,7 +306,7 @@ export class CodigosParaLaVenta {
 
   @Column("int", { name: "Embalaje", nullable: true })
   @Field(()=>Int,{nullable:true})
-  embalaje: number | null;
+  idEembalaje: number | null;
 
   @Column("float", {
     name: "PesoEmbKG",
@@ -680,4 +682,13 @@ export class CodigosParaLaVenta {
   @Field(() => [SolicitudOfertasEntradas], { nullable: true })
   @OneToMany(() => SolicitudOfertasEntradas,(solicitudOfertasEntradas) => solicitudOfertasEntradas.codigo)
   solicitudOfertasEntradas: SolicitudOfertasEntradas[];
+
+  @Field(() => Embalajes, {nullable: true})
+  @OneToOne(() => Embalajes, (embalaje) => embalaje.codigo)
+  @JoinColumn([{ name: "Embalaje", referencedColumnName: "embalaje" }])
+  embalaje: Embalajes;
+
+  @Field(() => [Referencias], {nullable: true})
+  @OneToOne(() => Referencias,(referencia) => referencia.codigo)
+  referencia: Referencias;
 }

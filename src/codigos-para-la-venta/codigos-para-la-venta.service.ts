@@ -9,11 +9,11 @@ export class CodigosParaLaVentaService {
   constructor(@InjectRepository(CodigosParaLaVenta) public readonly codigosParaLaVentaRepository: Repository<CodigosParaLaVenta>) {}
 
   async findAll(): Promise<CodigosParaLaVenta[]> {
-    return await this.codigosParaLaVentaRepository.find();
+    return await this.codigosParaLaVentaRepository.find({relations: ['embalaje','referencia']});
   }
 
   async findOne(id: number) : Promise<CodigosParaLaVenta> {
-    return await this.codigosParaLaVentaRepository.findOne({where: {idCodigo: id},});
+    return await this.codigosParaLaVentaRepository.findOne({where: {idCodigo: id},relations: ['embalaje','referencia']});
   }
 
   async findByListaCodigos(listaCodigos: string[]) : Promise<CodigosParaLaVenta[]> {

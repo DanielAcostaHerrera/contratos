@@ -3,7 +3,9 @@ import {
   Column,
   Entity,
   Index,
+  JoinColumn,
   OneToMany,
+  OneToOne,
   PrimaryGeneratedColumn,
 } from "typeorm";
 import { ContratoDesglose } from "../../models/entities/ContratoDesglose.entity";
@@ -11,6 +13,7 @@ import { FacturaDesglose } from "../../models/entities/FacturaDesglose.entity";
 import { SolicitudCodificacion } from "../../models/entities/SolicitudCodificacion.entity";
 import { SolicitudOfertasEntradas } from "../../models/entities/SolicitudOfertasEntradas.entity";
 import { SuplementoDesglose } from "../../models/entities/SuplementoDesglose.entity";
+import { CodigosParaLaVenta } from "./CodigosParaLaVenta.entity";
 
 @ObjectType()
 @Index("aaaaaReferencias_PK", ["referenciaId"], { unique: true })
@@ -67,4 +70,9 @@ export class Referencias {
   @Field(() => [SolicitudCodificacion], { nullable: true })
   @OneToMany(() => SolicitudCodificacion,(solicitudCodificacion) => solicitudCodificacion.referencia)
   solicitudCodificacion: SolicitudCodificacion[];
+
+  @Field(() => CodigosParaLaVenta, {nullable: true})
+  @OneToOne(() => CodigosParaLaVenta, (codigo) => codigo.referencia)
+  @JoinColumn([{ name: "IdCodigo", referencedColumnName: "idCodigo" }])
+  codigo: CodigosParaLaVenta;
 }
