@@ -22,7 +22,7 @@ export class CodigosParaLaVentaResolver {
 
   @Query(() => [CodigosParaLaVenta])
   @UseGuards(new AuthGuard())
-  findCodigosParaLaVentaByListaCodigos(@Args('id', { type: () => [Int] }) id: number[]) {
-    return this.codigosParaLaVentaService.findByListaCodigos(id);
+  findCodigosParaLaVentaByListaCodigos(@Args('filename') filename: string) {
+    return this.codigosParaLaVentaService.findByListaCodigos(filename);
   }
 }

@@ -1,5 +1,7 @@
-import { Controller, Get, StreamableFile,Response } from '@nestjs/common';
-import { createReadStream } from 'fs';
+import { CodigosParaLaVentaService } from 'src/codigos-para-la-venta/codigos-para-la-venta.service';
+import { Controller, Get, StreamableFile,Response, Post, UploadedFile, UseInterceptors } from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { createReadStream, createWriteStream } from 'fs';
 import { join } from 'path';
 
 @Controller('streaming')
@@ -54,8 +56,13 @@ export class StreamingController {
     });
     return new StreamableFile(file);
   }
-
-    
+  
+  @Post('upload')
+  @UseInterceptors(FileInterceptor('file'))
+  async uploadFile(@UploadedFile() file: Express.Multer.File){
+  const path = "./" + file.originalname
+  let fileStream = createWriteStream(path)
+  fileStream.write(file.buffer)
+  fileStream.end()
+  }
 }
-
-
