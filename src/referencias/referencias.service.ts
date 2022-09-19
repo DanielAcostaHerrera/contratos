@@ -19,7 +19,7 @@ export class ReferenciasService {
     let referencias: Referencias[] = []
     for(let i = 0; i < listaCodigos.length; i++){
       try{
-        referencias.push(await this.referenciasRepository.findOne({ where: {referencia: listaCodigos[i].toString(), proveedorRef: idProveedor}}))
+        referencias.push(await this.referenciasRepository.findOne({ where: {referencia: listaCodigos[i].toString(), proveedorRef: idProveedor},relations:['codigo']}))
       }
       catch (err) { 
         console.log(err) 
