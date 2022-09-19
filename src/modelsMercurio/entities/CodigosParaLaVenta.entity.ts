@@ -685,10 +685,10 @@ export class CodigosParaLaVenta {
 
   @Field(() => Embalajes, {nullable: true})
   @OneToOne(() => Embalajes, (embalaje) => embalaje.codigo)
-  @JoinColumn([{ name: "Embalaje", referencedColumnName: "embalaje" }])
+  @JoinColumn([{ name: "Embalaje", referencedColumnName: "idEmbalaje" }])
   embalaje: Embalajes;
 
   @Field(() => [Referencias], {nullable: true})
-  @OneToOne(() => Referencias,(referencia) => referencia.codigo)
+  @OneToMany(() => Referencias,(referencia) => referencia.codigo)
   referencia: Referencias;
 }

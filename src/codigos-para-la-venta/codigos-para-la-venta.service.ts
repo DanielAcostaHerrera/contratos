@@ -13,14 +13,14 @@ export class CodigosParaLaVentaService {
   }
 
   async findOne(id: number) : Promise<CodigosParaLaVenta> {
-    return await this.codigosParaLaVentaRepository.findOne({where: {idCodigo: id},relations: ['embalaje','referencia']});
-  }
-
-  async findByListaCodigos(listaCodigos: string[]) : Promise<CodigosParaLaVenta[]> {
-    let codigos: CodigosParaLaVenta[] = []
-    for(let i = 0; i < listaCodigos.length; i++){
-      codigos.push(await this.codigosParaLaVentaRepository.findOne({ where: {codigo: listaCodigos[i].toString().padStart(13,"0") }}))
-    }
-    return codigos;
+    return new Promise<CodigosParaLaVenta>(async (resolve, reject) => {
+      const codigo = await this.codigosParaLaVentaRepository.findOne({where: {idCodigo: id},relations: ['embalaje','referencia']});
+      if(!codigo){
+        reject('El codigo con id '+ id +' no existe');
+      }
+      else{ 
+        resolve(codigo); 
+      }
+    });
   }
 }

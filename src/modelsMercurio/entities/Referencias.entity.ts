@@ -4,6 +4,7 @@ import {
   Entity,
   Index,
   JoinColumn,
+  ManyToOne,
   OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
@@ -72,7 +73,7 @@ export class Referencias {
   solicitudCodificacion: SolicitudCodificacion[];
 
   @Field(() => CodigosParaLaVenta, {nullable: true})
-  @OneToOne(() => CodigosParaLaVenta, (codigo) => codigo.referencia)
+  @ManyToOne(() => CodigosParaLaVenta, (codigo) => codigo.referencia)
   @JoinColumn([{ name: "IdCodigo", referencedColumnName: "idCodigo" }])
   codigo: CodigosParaLaVenta;
 }

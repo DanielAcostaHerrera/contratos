@@ -14,4 +14,17 @@ export class ReferenciasService {
   async findOne(id: number) : Promise<Referencias> {
     return await this.referenciasRepository.findOne({where: {referenciaId: id},relations:['codigo']});
   }
+
+  async findByListaCodigos(listaCodigos: string[], idProveedor: number) : Promise<Referencias[]> {
+    let referencias: Referencias[] = []
+    for(let i = 0; i < listaCodigos.length; i++){
+      try{
+        referencias.push(await this.referenciasRepository.findOne({ where: {referencia: listaCodigos[i].toString(), proveedorRef: idProveedor}}))
+      }
+      catch (err) { 
+        console.log(err) 
+      };
+    }
+    return referencias;
+  }
 }

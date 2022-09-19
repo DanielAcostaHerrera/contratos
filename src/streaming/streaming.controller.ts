@@ -4,11 +4,13 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { createReadStream, createWriteStream } from 'fs';
 import { join } from 'path';
 import { CodigosParaLaVenta } from 'src/modelsMercurio/entities/CodigosParaLaVenta.entity';
+import { ReferenciasService } from 'src/referencias/referencias.service';
+import { Referencias } from 'src/modelsMercurio/entities/Referencias.entity';
 
 
 @Controller('streaming')
 export class StreamingController {
-  constructor(private readonly codigosParaLaVentaService: CodigosParaLaVentaService) { }
+  constructor(private readonly referenciasService: ReferenciasService) { }
 
   @Get('base-general-internacional')
   getFileBGInternacional(@Response({ passthrough: true }) res): StreamableFile {
@@ -62,7 +64,7 @@ export class StreamingController {
 
   @Post('upload')
   @UseInterceptors(FileInterceptor('file'))
-  async uploadFile(@UploadedFile() file: Express.Multer.File): Promise<CodigosParaLaVenta[]> {
+  async uploadFile(@UploadedFile() file: Express.Multer.File, idProveedor: number): Promise<Referencias[]> {
     const ExcelJS = require('exceljs');
     let listaCodigos: string[] = []
     const workbook = new ExcelJS.Workbook();
@@ -77,7 +79,7 @@ export class StreamingController {
     catch (err) { 
       console.log(err) };
 
-    let result = await this.codigosParaLaVentaService.findByListaCodigos(listaCodigos)
+    let result = await this.referenciasService.findByListaCodigos(listaCodigos,idProveedor)
 
     return result
   }
