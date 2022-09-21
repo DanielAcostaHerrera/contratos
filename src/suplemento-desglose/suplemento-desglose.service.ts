@@ -14,11 +14,11 @@ export class SuplementoDesgloseService {
   }
 
   async findAll(): Promise<SuplementoDesglose[]> {
-    return await this.suplementoDesgloseRepository.find({relations:['suplementoResumen','unidadMedida','codigo','referencia']});
+    return await this.suplementoDesgloseRepository.find({relations:['suplementoResumen','embalaje','codigo','referencia']});
   }
 
   async findOne(id: number) : Promise<SuplementoDesglose> {
-    return await this.suplementoDesgloseRepository.findOne({where: {idSuplementoDesglose: id},relations:['suplementoResumen','unidadMedida','codigo','referencia']});
+    return await this.suplementoDesgloseRepository.findOne({where: {idSuplementoDesglose: id},relations:['suplementoResumen','embalaje','codigo','referencia']});
   }
 
   async remove(id: number) : Promise<any> {

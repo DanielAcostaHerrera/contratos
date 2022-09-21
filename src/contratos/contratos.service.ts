@@ -59,7 +59,7 @@ import { FormasPagoService } from 'src/formas-pago/formas-pago.service';
 import { PagosApartirDeService } from 'src/pagos-apartir-de/pagos-apartir-de.service';
 import { PuertosService } from 'src/puertos/puertos.service';
 import { ReferenciasService } from 'src/referencias/referencias.service';
-import { UnidadMedidaService } from 'src/unidad-medida/unidad-medida.service';
+import { EmbalajesService } from 'src/embalajes/Embalajes.service';
 
 @Injectable()
 export class ContratosService {
@@ -74,7 +74,7 @@ export class ContratosService {
   private puertoEmbarqueService: PuertoEmbarqueService, private suplementoPuertoEmbarqueService: SuplementoPuertoEmbarqueService,
   private suplementoPagosService: SuplementoPagosService, private pagosService: PagosService, private formaPagoService: FormasPagoService,
   private pagoAPartirDeService: PagosApartirDeService, private puertoService: PuertosService, private referenciasService: ReferenciasService,
-  private unidadMedidaService: UnidadMedidaService) {}
+  private embalajesService: EmbalajesService) {}
 
 
   async anadirSuplemento(usuarioToken: Usuarios, idContrato: number) : Promise<SuplementoResumen>{
@@ -1082,9 +1082,9 @@ export class ContratosService {
                       suplementoChange.orden = null;
                       suplementoChange.idCambio = 5;
                       suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
-                      suplementoChange.contenidoViejo = desgloseViejo.unidadMedida.nombre.toString();
-                      suplementoChange.contenidoNuevo = desglose.unidadMedida.nombre.toString();    
-                      suplementoChange.clausula = "Unidad de medida";
+                      suplementoChange.contenidoViejo = desgloseViejo.embalaje.abreviatura.toString();
+                      suplementoChange.contenidoNuevo = desglose.embalaje.abreviatura.toString();    
+                      suplementoChange.clausula = "Embalaje";
                       this.suplementoChangeService.save(suplementoChange);
                     }
                     if(desglose.cantidadCartones != desgloseViejo.cantidadCartones){
@@ -2041,15 +2041,15 @@ export class ContratosService {
                   }
                   if(desglose.idUnidadMedida != desgloseViejo.idUnidadMedida){
                     let suplementoChange = new CreateSuplementoChangeInput();
-                    let unidadMedidaVieja = await this.unidadMedidaService.findOne(desgloseViejo.idUnidadMedida);
-                    let unidadMedidaNueva = await this.unidadMedidaService.findOne(desglose.idUnidadMedida);
+                    let embalajeViejo = await this.embalajesService.findOne(desgloseViejo.idUnidadMedida);
+                    let embalajeNuevo = await this.embalajesService.findOne(desglose.idUnidadMedida);
                     suplementoChange.idEmbarque = embarque.idEmbarque;
                     suplementoChange.orden = null;
                     suplementoChange.idCambio = 5;
                     suplementoChange.idSuplementoResumen = suplementoResumen.idSuplementoResumen;
-                    suplementoChange.contenidoViejo = unidadMedidaVieja.nombre.toString();
-                    suplementoChange.contenidoNuevo = unidadMedidaNueva.nombre.toString();    
-                    suplementoChange.clausula = "Unidad de medida";
+                    suplementoChange.contenidoViejo = embalajeViejo.abreviatura.toString();
+                    suplementoChange.contenidoNuevo = embalajeNuevo.abreviatura.toString();    
+                    suplementoChange.clausula = "Embalaje";
                     this.suplementoChangeService.save(suplementoChange);
                   }
                   if(desglose.cantidadCartones != desgloseViejo.cantidadCartones){

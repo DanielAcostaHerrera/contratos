@@ -1,8 +1,10 @@
 import { Field, Int, ObjectType } from "@nestjs/graphql";
 import { Column, Entity, Index, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { CodigosParaLaVenta } from "../../modelsMercurio/entities/CodigosParaLaVenta.entity";
+import { ContratoDesglose } from "./ContratoDesglose.entity";
 import { PliegoConcurrenciaDetalle } from "./PliegoConcurrenciaDetalle.entity";
 import { SolicitudCodificacion } from "./SolicitudCodificacion.entity";
+import { SuplementoDesglose } from "./SuplementoDesglose.entity";
 
 @ObjectType()
 @Index("PK_CTO_Embalajes", ["idEmbalaje"], { unique: true })
@@ -31,4 +33,12 @@ export class Embalajes {
   @Field(() => [CodigosParaLaVenta], {nullable: true})
   @OneToOne(() => CodigosParaLaVenta,(codigo) => codigo.embalaje)
   codigo: CodigosParaLaVenta;
+
+  @Field(() => [ContratoDesglose], { nullable: true })
+  @OneToMany(() => ContratoDesglose,(contratoDesglose) => contratoDesglose.embalaje)
+  contratoDesgloses: ContratoDesglose[];
+
+  @Field(() => [SuplementoDesglose], { nullable: true })
+  @OneToMany(() => SuplementoDesglose,(suplementoDesgloses) => suplementoDesgloses.embalaje)
+  suplementoDesgloses: SuplementoDesglose[];
 }

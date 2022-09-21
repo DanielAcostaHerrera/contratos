@@ -1,10 +1,8 @@
 import { Field, Int, ObjectType } from "@nestjs/graphql";
 import { Column, Entity, Index, OneToMany, PrimaryGeneratedColumn } from "typeorm";
-import { ContratoDesglose } from "../../models/entities/ContratoDesglose.entity";
 import { PliegoConcurrenciaDetalle } from "../../models/entities/PliegoConcurrenciaDetalle.entity";
 import { SolicitudCodificacion } from "../../models/entities/SolicitudCodificacion.entity";
 import { SolicitudOfertasEntradas } from "../../models/entities/SolicitudOfertasEntradas.entity";
-import { SuplementoDesglose } from "../../models/entities/SuplementoDesglose.entity";
 
 @ObjectType()
 @Index("aaaaaUnidadMedida_PK", ["id"], { unique: true })
@@ -39,14 +37,6 @@ export class UnidadMedida {
   })
   @Field(() => Int,{nullable: true})
   idCircularAct: number | null;
-
-  @Field(() => [ContratoDesglose], { nullable: true })
-  @OneToMany(() => ContratoDesglose,(contratoDesglose) => contratoDesglose.unidadMedida)
-  contratoDesgloses: ContratoDesglose[];
-
-  @Field(() => [SuplementoDesglose], { nullable: true })
-  @OneToMany(() => SuplementoDesglose,(suplementoDesgloses) => suplementoDesgloses.unidadMedida)
-  suplementoDesgloses: SuplementoDesglose[];
 
   @Field(() => [SolicitudOfertasEntradas], { nullable: true })
   @OneToMany(() => SolicitudOfertasEntradas,(solicitudOfertasEntradas) => solicitudOfertasEntradas.unidadMedida)

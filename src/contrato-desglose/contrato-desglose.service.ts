@@ -17,11 +17,11 @@ export class ContratoDesgloseService {
   }
 
   async findAll(): Promise<ContratoDesglose[]> {
-    return await this.contratoDesgloseRepository.find({relations:['embarques','referencia','codigo','unidadMedida']});
+    return await this.contratoDesgloseRepository.find({relations:['embarques','referencia','codigo','embalaje']});
   }
 
   async findOne(id: number) : Promise<ContratoDesglose> {
-    return await this.contratoDesgloseRepository.findOne({where: {idContratoDesglose: id},relations:['embarques','referencia','codigo','unidadMedida']});
+    return await this.contratoDesgloseRepository.findOne({where: {idContratoDesglose: id},relations:['embarques','referencia','codigo','embalaje']});
   }
 
   async remove(id: number) : Promise<any> {

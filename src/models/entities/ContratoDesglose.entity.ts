@@ -1,9 +1,9 @@
-import { UnidadMedida } from './../../modelsMercurio/entities/UnidadMedida.entity';
 import { Referencias } from './../../modelsMercurio/entities/Referencias.entity';
 import { CodigosParaLaVenta } from './../../modelsMercurio/entities/CodigosParaLaVenta.entity';
 import { Field, Float, Int, ObjectType } from "@nestjs/graphql";
 import { Column, Entity, Index, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { Embarques } from "./Embarques.entity";
+import { Embalajes } from './Embalajes.entity';
 
 @ObjectType()
 @Index("PK_ContratoDesglose", ["idContratoDesglose"], { unique: true })
@@ -85,8 +85,8 @@ export class ContratoDesglose {
   @JoinColumn([{ name: "Codigo", referencedColumnName: "idCodigo" }])
   codigo: CodigosParaLaVenta;
 
-  @Field(() => UnidadMedida, {nullable: true})
-  @ManyToOne(() => UnidadMedida, (unidadMedida) => unidadMedida.contratoDesgloses)
-  @JoinColumn([{ name: "UnidadMedidaCarton", referencedColumnName: "id" }])
-  unidadMedida: UnidadMedida;
+  @Field(() => Embalajes, {nullable: true})
+  @ManyToOne(() => Embalajes, (embalaje) => embalaje.contratoDesgloses)
+  @JoinColumn([{ name: "UnidadMedidaCarton", referencedColumnName: "idEmbalaje" }])
+  embalaje: Embalajes;
 }

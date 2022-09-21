@@ -29,7 +29,7 @@ import { PagosModule } from 'src/pagos/pagos.module';
 import { FormasPagoModule } from 'src/formas-pago/formas-pago.module';
 import { PuertosModule } from 'src/puertos/puertos.module';
 import { ReferenciasModule } from 'src/referencias/referencias.module';
-import { UnidadMedidaModule } from 'src/unidad-medida/unidad-medida.module';
+import { EmbalajesModule } from 'src/embalajes/embalajes.module';
 
 @Module({
   imports: [TypeOrmModule.forFeature(
@@ -38,7 +38,7 @@ import { UnidadMedidaModule } from 'src/unidad-medida/unidad-medida.module';
   CompaniasNavierasModule,LogsModule,IncotermModule,ContratoClausulaModule,SuplementoResumenModule,
   SuplementoClausulasModule, SuplementoChangeModule, SuplementoEmbarquesModule, SuplementoDesgloseModule,EmbarquesModule,ContratoDesgloseModule,
   CodigosParaLaVentaModule,PuertoEmbarqueModule, SuplementoPuertoEmbarqueModule, SuplementoPagosModule, PagosModule, FormasPagoModule, PagosApartirDeModule,
-  PuertosModule, ReferenciasModule, UnidadMedidaModule],
+  PuertosModule, ReferenciasModule, EmbalajesModule],
   providers: [ContratosResolver, ContratosService],
   exports: [ContratosService]
 })
