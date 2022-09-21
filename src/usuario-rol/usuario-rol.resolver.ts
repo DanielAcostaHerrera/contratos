@@ -1,8 +1,7 @@
-import { Resolver, Query, Mutation, Args, Int, ResolveField, Parent } from '@nestjs/graphql';
+import { Resolver, Query, Mutation, Args, Int} from '@nestjs/graphql';
 import { UsuarioRolService } from './usuario-rol.service';
 import { CreateUsuarioRolInput } from './dto/create-usuario-rol.input';
 import { UsuarioRol } from 'src/models/entities/UsuarioRol.entity';
-import { Roles } from 'src/models/entities/Roles.entity';
 import { UseGuards } from '@nestjs/common';
 import { AuthGuard } from 'src/auth.guard';
 
@@ -44,10 +43,5 @@ export class UsuarioRolResolver {
   @UseGuards(new AuthGuard())
   removeSeveralUsuarioRol(@Args('id', { type: () => [Int] }) id: number[]) {
     return this.usuarioRolService.removeSeveral(id);
-  }
-
-    @ResolveField(() => Roles, {nullable: true})
-    rol(@Parent() usuarioRol: UsuarioRol): Promise<Roles> {
-    return this.usuarioRolService.getRol(usuarioRol.idRol);
   }
 }

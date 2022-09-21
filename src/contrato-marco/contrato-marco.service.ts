@@ -1,15 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ContratoMarco } from '../models/entities/ContratoMarco.entity';
-import { Proveedores } from '../modelsMercurio/entities/Proveedores.entity';
-import { ProveedoresService } from '../proveedores/proveedores.service';
 import { In, Repository } from 'typeorm';
 import { CreateContratoMarcoInput } from './dto/create-contrato-marco.input';
 
 @Injectable()
 export class ContratoMarcoService {
-  constructor(@InjectRepository(ContratoMarco) public readonly contratoMarcoRepository: Repository<ContratoMarco>,
-  private proveedoresService: ProveedoresService) {}
+  constructor(@InjectRepository(ContratoMarco) public readonly contratoMarcoRepository: Repository<ContratoMarco>) {}
 
   async save(createContratoMarcoInput: CreateContratoMarcoInput) : Promise<ContratoMarco> {
     var today = new Date();
@@ -44,11 +41,11 @@ export class ContratoMarcoService {
   async findAll(): Promise<ContratoMarco[]> {
     return await this.contratoMarcoRepository.find({order: {
       fecha : "DESC"
-    }, relations: ['contratos']});
+    }, relations: ['contratos','proveedor']});
   }
 
   async findOne(id: number) : Promise<ContratoMarco> {
-    return await this.contratoMarcoRepository.findOne({where: {idCMarco: id}, relations: ['contratos']});
+    return await this.contratoMarcoRepository.findOne({where: {idCMarco: id}, relations: ['contratos','proveedor']});
   }
 
   async remove(id: number) : Promise<any> {
@@ -61,9 +58,5 @@ export class ContratoMarcoService {
       idCMarco: In(id)
   });
     return await this.contratoMarcoRepository.remove(contratoMarco);
-  }
-
-  async getProveedor (id: number) : Promise<Proveedores>{
-    return this.proveedoresService.findOne(id);
   }
 }

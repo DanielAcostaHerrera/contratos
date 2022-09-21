@@ -1,17 +1,13 @@
-import { CambiosSuplementos } from 'src/models/entities/CambiosSuplementos.entity';
+
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { SuplementoChange } from 'src/models/entities/SuplementoChange.entity';
-import { SuplementoResumen } from 'src/models/entities/SuplementoResumen.entity';
-import { SuplementoResumenService } from 'src/suplemento-resumen/suplemento-resumen.service';
 import { In, Repository } from 'typeorm';
 import { CreateSuplementoChangeInput } from './dto/create-suplemento-change.input';
-import { CambiosSuplementosService } from 'src/cambios-suplementos/cambios-suplementos.service';
 
 @Injectable()
 export class SuplementoChangeService {
-  constructor(@InjectRepository(SuplementoChange) public readonly suplementoChangeRepository: Repository<SuplementoChange>,
-  private suplementoResumenService: SuplementoResumenService, private cambiosSuplementosService: CambiosSuplementosService) {}
+  constructor(@InjectRepository(SuplementoChange) public readonly suplementoChangeRepository: Repository<SuplementoChange>) {}
 
 
   async save(createSuplementoChangeInput: CreateSuplementoChangeInput) : Promise<SuplementoChange> {
@@ -19,11 +15,11 @@ export class SuplementoChangeService {
   }
 
   async findAll(): Promise<SuplementoChange[]> {
-    return await this.suplementoChangeRepository.find();
+    return await this.suplementoChangeRepository.find({relations:['suplementoResumen','cambiosSuplementos']});
   }
 
   async findOne(id: number) : Promise<SuplementoChange> {
-    return await this.suplementoChangeRepository.findOne({where: {idClausulaChange: id},});
+    return await this.suplementoChangeRepository.findOne({where: {idClausulaChange: id},relations:['suplementoResumen','cambiosSuplementos']});
   }
 
   async remove(id: number) : Promise<any> {
@@ -41,13 +37,5 @@ export class SuplementoChangeService {
   async removeSeveralBySuplementoResumenId(idSuplementoResumen: number) : Promise<any> {
     const suplementoResumen = await this.suplementoChangeRepository.find({where: {idSuplementoResumen}});
     return await this.suplementoChangeRepository.remove(suplementoResumen);
-  }
-
-  async getSuplementoResumen (id: number) : Promise<SuplementoResumen>{
-    return this.suplementoResumenService.findOne(id);
-  }
-
-  async getCambioSuplemento (id: number) : Promise<CambiosSuplementos>{
-    return this.cambiosSuplementosService.findOne(id);
   }
 }

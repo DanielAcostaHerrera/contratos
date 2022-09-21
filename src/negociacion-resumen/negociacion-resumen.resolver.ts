@@ -1,4 +1,4 @@
-import { Resolver, Query, Mutation, Args, Int, ResolveField, Parent, Context } from '@nestjs/graphql';
+import { Resolver, Query, Mutation, Args, Int, Context } from '@nestjs/graphql';
 import { NegociacionResumenService } from './negociacion-resumen.service';
 import { CreateNegociacionResumenInput } from './dto/create-negociacion-resumen.input';
 import { NegociacionResumen } from 'src/models/entities/NegociacionResumen.entity';

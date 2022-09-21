@@ -1,8 +1,7 @@
-import { Resolver, Query, Mutation, Args, Int, ResolveField, Parent, Context } from '@nestjs/graphql';
+import { Resolver, Query, Mutation, Args, Int, Context } from '@nestjs/graphql';
 import { SolicitudOfertasService } from './solicitud-ofertas.service';
 import { CreateSolicitudOfertaInput } from './dto/create-solicitud-oferta.input';
 import { SolicitudOfertas } from 'src/models/entities/SolicitudOfertas.entity';
-import { SolicitudContratacion } from 'src/models/entities/SolicitudContratacion.entity';
 import { AuthGuard, DEFAULT_GRAPHQL_CONTEXT } from 'src/auth.guard';
 import { Usuarios } from 'src/models/entities/Usuarios.entity';
 import { UseGuards } from '@nestjs/common';
@@ -45,10 +44,5 @@ export class SolicitudOfertasResolver {
     @Context(DEFAULT_GRAPHQL_CONTEXT) usuario: Usuarios,
     @Args('id', { type: () => [Int] }) id: number[]) {
     return this.solicitudOfertasService.removeSeveral(usuario,id);
-  }
-
-  @ResolveField(() => SolicitudContratacion, {nullable: true})
-  solicitudContrato(@Parent() solicitudOfertas: SolicitudOfertas): Promise<SolicitudContratacion> {
-    return this.solicitudOfertasService.getSolicitudContratacion(solicitudOfertas.idSolicitudContrato);
   }
 }

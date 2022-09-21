@@ -8,7 +8,7 @@ import { TiposDeClausulasModule } from 'src/tipos-de-clausulas/tipos-de-clausula
 @Module({
   imports:[TypeOrmModule.forFeature([
     BasesGeneralesClausulas
-  ]),TiposDeClausulasModule],
+  ])],
   providers: [BasesGeneralesClausulasResolver, BasesGeneralesClausulasService],
   exports: [BasesGeneralesClausulasService]
 })

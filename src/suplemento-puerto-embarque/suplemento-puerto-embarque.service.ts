@@ -1,30 +1,23 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { EmbarquesService } from 'src/embarques/embarques.service';
-import { Embarques } from 'src/models/entities/Embarques.entity';
-import { Puertos } from 'src/models/entities/Puertos.entity';
 import { SuplementoPuertoEmbarque } from 'src/models/entities/SuplementoPuertoEmbarque.entity';
-import { SuplementoResumen } from 'src/models/entities/SuplementoResumen.entity';
-import { PuertosService } from 'src/puertos/puertos.service';
-import { SuplementoResumenService } from 'src/suplemento-resumen/suplemento-resumen.service';
 import { In, Repository } from 'typeorm';
 import { CreateSuplementoPuertoEmbarqueInput } from './dto/create-suplemento-puerto-embarque.input';
 
 @Injectable()
 export class SuplementoPuertoEmbarqueService {
-  constructor(@InjectRepository(SuplementoPuertoEmbarque) public readonly suplementoPuertoEmbarqueRepository: Repository<SuplementoPuertoEmbarque>,
-  private suplementoResumenService: SuplementoResumenService, private embarquesService: EmbarquesService, private puertosService: PuertosService) {}
+  constructor(@InjectRepository(SuplementoPuertoEmbarque) public readonly suplementoPuertoEmbarqueRepository: Repository<SuplementoPuertoEmbarque>) {}
 
   async save(createSuplementoPuertoEmbarqueInput: CreateSuplementoPuertoEmbarqueInput) : Promise<SuplementoPuertoEmbarque> {
     return await this.suplementoPuertoEmbarqueRepository.save(createSuplementoPuertoEmbarqueInput);
   }
 
   async findAll(): Promise<SuplementoPuertoEmbarque[]> {
-    return await this.suplementoPuertoEmbarqueRepository.find();
+    return await this.suplementoPuertoEmbarqueRepository.find({relations:['suplementoResumen','embarque','puertoOrigen','puertoDestino']});
   }
 
   async findOne(id: number) : Promise<SuplementoPuertoEmbarque> {
-    return await this.suplementoPuertoEmbarqueRepository.findOne({where: {idSuplementoPuertoEmbarque: id},});
+    return await this.suplementoPuertoEmbarqueRepository.findOne({where: {idSuplementoPuertoEmbarque: id},relations:['suplementoResumen','embarque','puertoOrigen','puertoDestino']});
   }
 
   async remove(id: number) : Promise<any> {
@@ -37,18 +30,6 @@ export class SuplementoPuertoEmbarqueService {
       idSuplementoPuertoEmbarque: In(id)
   });
     return await this.suplementoPuertoEmbarqueRepository.remove(suplementoPuertoEmbarque);
-  }
-
-  async getSuplementoResumen (Id: number) : Promise<SuplementoResumen>{
-    return this.suplementoResumenService.findOne(Id);
-  }
-
-  async getEmbarque (Id: number) : Promise<Embarques>{
-    return this.embarquesService.findOne(Id);
-  }
-
-  async getPuerto (Id: number) : Promise<Puertos>{
-    return this.puertosService.findOne(Id);
   }
 
   async removeSeveralByEmbarqueIdSuplementoResumenId(idEmbarque: number, idSuplementoResumen: number) : Promise<any> {

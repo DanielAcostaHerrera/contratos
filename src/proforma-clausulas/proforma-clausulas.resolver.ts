@@ -1,12 +1,9 @@
-import { Resolver, Query, Mutation, Args, Int, ResolveField, Parent } from '@nestjs/graphql';
+import { Resolver, Query, Mutation, Args, Int} from '@nestjs/graphql';
 import { ProformaClausulasService } from './proforma-clausulas.service';
 import { CreateProformaClausulaInput } from './dto/create-proforma-clausula.input';
 import { ProformaClausulas } from 'src/models/entities/ProformaClausulas.entity';
-import { TiposDeClausulas } from 'src/models/entities/TiposDeClausulas.entity';
 import { UseGuards } from '@nestjs/common';
 import { AuthGuard } from 'src/auth.guard';
-import { TipoContrato } from 'src/models/entities/TipoContrato.entity';
-import { Incoterm } from 'src/models/entities/Incoterm.entity';
 
 @Resolver(() => ProformaClausulas)
 export class ProformaClausulasResolver {
@@ -55,20 +52,5 @@ export class ProformaClausulasResolver {
   @UseGuards(new AuthGuard())
   removeSeveralProformaClausula(@Args('id', { type: () => [Int] }) id: number[]) {
     return this.proformaClausulasService.removeSeveral(id);
-  }
-
-  @ResolveField(() => TiposDeClausulas, {nullable: true})
-  tiposDeClausulas(@Parent() proformaClausulas: ProformaClausulas): Promise<TiposDeClausulas> {
-    return this.proformaClausulasService.getTipoClausula(proformaClausulas.idTipoClausula);
-  }
-
-  @ResolveField(() => TipoContrato, {nullable: true})
-  tipoDeContrato(@Parent() proformaClausulas: ProformaClausulas): Promise<TipoContrato> {
-    return this.proformaClausulasService.getTipoContrato(proformaClausulas.idTipoContrato);
-  }
-
-  @ResolveField(() => Incoterm, {nullable: true})
-  incoterm(@Parent() proformaClausulas: ProformaClausulas): Promise<Incoterm> {
-    return this.proformaClausulasService.getIncoterm(proformaClausulas.idIncoterm);
   }
 }

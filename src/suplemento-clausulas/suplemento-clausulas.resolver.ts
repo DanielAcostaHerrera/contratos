@@ -1,8 +1,7 @@
-import { Resolver, Query, Mutation, Args, Int, ResolveField, Parent } from '@nestjs/graphql';
+import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
 import { SuplementoClausulasService } from './suplemento-clausulas.service';
 import { CreateSuplementoClausulaInput } from './dto/create-suplemento-clausula.input';
 import { SuplementoClausulas } from 'src/models/entities/SuplementoClausulas.entity';
-import { SuplementoResumen } from 'src/models/entities/SuplementoResumen.entity';
 import { UseGuards } from '@nestjs/common';
 import { AuthGuard } from 'src/auth.guard';
 
@@ -38,10 +37,5 @@ export class SuplementoClausulasResolver {
   @UseGuards(new AuthGuard())
   removeSeveralSuplementoClausula(@Args('id', { type: () => [Int] }) id: number[]) {
     return this.suplementoClausulasService.removeSeveral(id);
-  }
-
-  @ResolveField(() => SuplementoResumen, {nullable: true})
-  suplementoResumen(@Parent() suplementoClausulas: SuplementoClausulas): Promise<SuplementoResumen> {
-    return this.suplementoClausulasService.getSuplementoResumen(suplementoClausulas.idSuplementoResumen);
   }
 }

@@ -1,10 +1,7 @@
-import { Resolver, Query, Mutation, Args, Int, ResolveField, Parent } from '@nestjs/graphql';
+import { Resolver, Query, Mutation, Args, Int} from '@nestjs/graphql';
 import { FacturaDesgloseService } from './factura-desglose.service';
 import { CreateFacturaDesgloseInput } from './dto/create-factura-desglose.input';
 import { FacturaDesglose } from 'src/models/entities/FacturaDesglose.entity';
-import { CodigosParaLaVenta } from 'src/modelsMercurio/entities/CodigosParaLaVenta.entity';
-import { Referencias } from 'src/modelsMercurio/entities/Referencias.entity';
-import { Paises } from 'src/modelsMercurio/entities/Paises.entity';
 import { UseGuards } from '@nestjs/common';
 import { AuthGuard } from 'src/auth.guard';
 
@@ -46,20 +43,5 @@ export class FacturaDesgloseResolver {
   @UseGuards(new AuthGuard())
   removeSeveralFacturaDesgloseByFacturaId(@Args('id', { type: () => Int }) id: number) {
     return this.facturaDesgloseService.removeSeveralByFacturaId(id);
-  }
-
-  @ResolveField(() => CodigosParaLaVenta, {nullable: true})
-  codigo(@Parent() facturaDesglose: FacturaDesglose): Promise<CodigosParaLaVenta> {
-    return this.facturaDesgloseService.getCodigo(facturaDesglose.idCodigo);
-  }
-
-  @ResolveField(() => Referencias, {nullable: true})
-  referencia(@Parent() facturaDesglose: FacturaDesglose): Promise<Referencias> {
-    return this.facturaDesgloseService.getReferencia(facturaDesglose.idReferencia);
-  }
-
-  @ResolveField(() => Paises, {nullable: true})
-  pais(@Parent() facturaDesglose: FacturaDesglose): Promise<Paises> {
-    return this.facturaDesgloseService.getPais(facturaDesglose.idPaisOrigen);
   }
 }

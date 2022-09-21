@@ -1,10 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { LogsService } from 'src/logs/logs.service';
-import { SolicitudContratacion } from 'src/models/entities/SolicitudContratacion.entity';
 import { SolicitudOfertas } from 'src/models/entities/SolicitudOfertas.entity';
 import { Usuarios } from 'src/models/entities/Usuarios.entity';
-import { MyLogger } from 'src/MyLogger';
 import { SolicitudContratacionService } from 'src/solicitud-contratacion/solicitud-contratacion.service';
 import { In, Repository } from 'typeorm';
 import { CreateSolicitudOfertaInput } from './dto/create-solicitud-oferta.input';
@@ -69,11 +67,11 @@ export class SolicitudOfertasService {
   }
 
   async findAll(): Promise<SolicitudOfertas[]> { 
-    return await this.solicitudOfertaRepository.find({relations:['pliegoConcurrencias','solicitudOfertasProveedores']});
+    return await this.solicitudOfertaRepository.find({relations:['pliegoConcurrencias','solicitudOfertasProveedores','solicitudContrato']});
   }
 
   async findOne(id: number) : Promise<SolicitudOfertas> {
-    return await this.solicitudOfertaRepository.findOne({where: {idOferta: id},relations:['pliegoConcurrencias','solicitudOfertasProveedores']});
+    return await this.solicitudOfertaRepository.findOne({where: {idOferta: id},relations:['pliegoConcurrencias','solicitudOfertasProveedores','solicitudContrato']});
   }
 
   async remove(usuarioToken: Usuarios,id: number) : Promise<any> {
@@ -103,9 +101,5 @@ export class SolicitudOfertasService {
     }
     
     return result;
-  }
-
-  async getSolicitudContratacion (id: number) : Promise<SolicitudContratacion>{
-    return this.solicitudContratacionService.findOne(id);
   }
 }

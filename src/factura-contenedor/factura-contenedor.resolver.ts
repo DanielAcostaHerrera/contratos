@@ -1,4 +1,4 @@
-import { Resolver, Query, Mutation, Args, Int, ResolveField, Parent } from '@nestjs/graphql';
+import { Resolver, Query, Mutation, Args, Int} from '@nestjs/graphql';
 import { FacturaContenedorService } from './factura-contenedor.service';
 import { CreateFacturaContenedorInput } from './dto/create-factura-contenedor.input';
 import { FacturaContenedor } from 'src/models/entities/FacturaContenedor.entity';

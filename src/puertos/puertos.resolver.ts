@@ -1,8 +1,7 @@
-import { Resolver, Query, Mutation, Args, Int, ResolveField, Parent } from '@nestjs/graphql';
+import { Resolver, Query, Mutation, Args, Int} from '@nestjs/graphql';
 import { PuertosService } from './puertos.service';
 import { CreatePuertoInput } from './dto/create-puerto.input';
 import { Puertos } from 'src/models/entities/Puertos.entity';
-import { Paises } from 'src/modelsMercurio/entities/Paises.entity';
 import { UseGuards } from '@nestjs/common';
 import { AuthGuard } from 'src/auth.guard';
 
@@ -38,10 +37,5 @@ export class PuertosResolver {
   @UseGuards(new AuthGuard())
   removeSeveralPuerto(@Args('id', { type: () => [Int] }) id: number[]) {
     return this.puertosService.removeSeveral(id);
-  }
-
-  @ResolveField(() => Paises, {nullable: true})
-  pais(@Parent() puertos: Puertos): Promise<Paises> {
-    return this.puertosService.getPais(puertos.idPais);
   }
 }

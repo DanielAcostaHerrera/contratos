@@ -9,7 +9,7 @@ import { CompaniasNavierasModule } from 'src/companias-navieras/companias-navier
 @Module({
   imports:[TypeOrmModule.forFeature([
     SuplementoEmbarques
-  ]),SuplementoResumenModule,CompaniasNavierasModule],
+  ]),SuplementoResumenModule],
   providers: [SuplementoEmbarquesResolver, SuplementoEmbarquesService],
   exports: [SuplementoEmbarquesService]
 })

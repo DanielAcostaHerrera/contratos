@@ -1,8 +1,6 @@
 import { UseGuards } from '@nestjs/common';
-import { Resolver, Query, Mutation, Args, Int, ResolveField, Parent } from '@nestjs/graphql';
+import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
 import { AuthGuard } from 'src/auth.guard';
-import { Contratos } from 'src/models/entities/Contratos.entity';
-import { Documentacion } from 'src/models/entities/Documentacion.entity';
 import { DocumentacionContrato } from 'src/models/entities/DocumentacionContrato.entity';
 import { DocumentacionContratoService } from './documentacion-contrato.service';
 import { CreateDocumentacionContratoInput } from './dto/create-documentacion-contrato.input';
@@ -39,15 +37,5 @@ export class DocumentacionContratoResolver {
   @UseGuards(new AuthGuard())
   removeSeveralDocumentacionContrato(@Args('id', { type: () => [Int] }) id: number[]) {
     return this.documentacionContratoService.removeSeveral(id);
-  }
-
-  @ResolveField(() => Documentacion, {nullable: true})
-  documentacion(@Parent() documentacionContrato: DocumentacionContrato): Promise<Documentacion> {
-    return this.documentacionContratoService.getDocumentacion(documentacionContrato.idDocumento);
-  }
-
-  @ResolveField(() => Contratos, {nullable: true})
-  contratos(@Parent() documentacionContrato: DocumentacionContrato): Promise<Contratos> {
-    return this.documentacionContratoService.getContrato(documentacionContrato.idContrato);
   }
 }

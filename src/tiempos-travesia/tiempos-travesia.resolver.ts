@@ -1,9 +1,7 @@
-import { Resolver, Query, Mutation, Args, Int, ResolveField, Parent } from '@nestjs/graphql';
+import { Resolver, Query, Mutation, Args, Int} from '@nestjs/graphql';
 import { TiemposTravesiaService } from './tiempos-travesia.service';
 import { CreateTiemposTravesiaInput } from './dto/create-tiempos-travesia.input';
 import { TiemposTravesia } from 'src/models/entities/TiemposTravesia.entity';
-import { EtapasContratacion } from 'src/models/entities/EtapasContratacion.entity';
-import { Paises } from 'src/modelsMercurio/entities/Paises.entity';
 import { UseGuards } from '@nestjs/common';
 import { AuthGuard } from 'src/auth.guard';
 
@@ -39,15 +37,5 @@ export class TiemposTravesiaResolver {
   @UseGuards(new AuthGuard())
   removeSeveralTiemposTravesia(@Args('id', { type: () => [Int] }) id: number[]) {
     return this.tiemposTravesiaService.removeSeveral(id);
-  }
-
-  @ResolveField(() => EtapasContratacion, {nullable: true})
-  etapaContratacion(@Parent() tiemposTravesia: TiemposTravesia): Promise<EtapasContratacion> {
-    return this.tiemposTravesiaService.getEtapasContratacion(tiemposTravesia.idEtapa);
-  }
-
-  @ResolveField(() => Paises, {nullable: true})
-  pais(@Parent() tiemposTravesia: TiemposTravesia): Promise<Paises> {
-    return this.tiemposTravesiaService.getPais(tiemposTravesia.idPais);
   }
 }

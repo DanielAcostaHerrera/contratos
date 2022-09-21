@@ -1,12 +1,9 @@
-import { Resolver, Query, Mutation, Args, Int, ResolveField, Parent } from '@nestjs/graphql';
+import { Resolver, Query, Mutation, Args, Int} from '@nestjs/graphql';
 import { SuplementoPuertoEmbarqueService } from './suplemento-puerto-embarque.service';
 import { CreateSuplementoPuertoEmbarqueInput } from './dto/create-suplemento-puerto-embarque.input';
 import { SuplementoPuertoEmbarque } from 'src/models/entities/SuplementoPuertoEmbarque.entity';
 import { AuthGuard } from 'src/auth.guard';
 import { UseGuards } from '@nestjs/common';
-import { SuplementoResumen } from 'src/models/entities/SuplementoResumen.entity';
-import { Embarques } from 'src/models/entities/Embarques.entity';
-import { Puertos } from 'src/models/entities/Puertos.entity';
 
 @Resolver(() => SuplementoPuertoEmbarque)
 export class SuplementoPuertoEmbarqueResolver {
@@ -40,25 +37,5 @@ export class SuplementoPuertoEmbarqueResolver {
   @UseGuards(new AuthGuard())
   removeSeveralSuplementoPuertoEmbarque(@Args('id', { type: () => [Int] }) id: number[]) {
     return this.suplementoPuertoEmbarqueService.removeSeveral(id);
-  }
-
-  @ResolveField(() => SuplementoResumen, {nullable: true})
-  suplementoResumen(@Parent() suplementoPuertoEmbarque: SuplementoPuertoEmbarque): Promise<SuplementoResumen> {
-    return this.suplementoPuertoEmbarqueService.getSuplementoResumen(suplementoPuertoEmbarque.idSuplementoResumen);
-  }
-
-  @ResolveField(() => Embarques, {nullable: true})
-  embarque(@Parent() suplementoPuertoEmbarque: SuplementoPuertoEmbarque): Promise<Embarques> {
-    return this.suplementoPuertoEmbarqueService.getEmbarque(suplementoPuertoEmbarque.idEmbarque);
-  }
-
-  @ResolveField(() => Puertos, {nullable: true})
-  puertoOrigen(@Parent() suplementoPuertoEmbarque: SuplementoPuertoEmbarque): Promise<Puertos> {
-    return this.suplementoPuertoEmbarqueService.getPuerto(suplementoPuertoEmbarque.idPuertoOrigen);
-  }
-
-  @ResolveField(() => Puertos, {nullable: true})
-  puertoDestino(@Parent() suplementoPuertoEmbarque: SuplementoPuertoEmbarque): Promise<Puertos> {
-    return this.suplementoPuertoEmbarqueService.getPuerto(suplementoPuertoEmbarque.idPuertoDestino);
   }
 }

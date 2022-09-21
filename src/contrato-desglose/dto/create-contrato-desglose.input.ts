@@ -23,7 +23,7 @@ export class CreateContratoDesgloseInput {
   @Field(() => Float)
   cantidadPorCarton: number;
 
-  @Field(() => Int)
+  @Field(() => Int,{nullable: true})
   paquete: number;
 
   @Field(() => Int)

@@ -1,8 +1,7 @@
 import { UseGuards } from '@nestjs/common';
-import { Resolver, Query, Mutation, Args, Int, ResolveField, Parent } from '@nestjs/graphql';
+import { Resolver, Query, Mutation, Args, Int} from '@nestjs/graphql';
 import { AuthGuard } from 'src/auth.guard';
 import { Documentacion } from 'src/models/entities/Documentacion.entity';
-import { TiposDocumento } from 'src/models/entities/TiposDocumento.entity';
 import { DocumentacionService } from './documentacion.service';
 import { CreateDocumentacionInput } from './dto/create-documentacion.input';
 
@@ -38,10 +37,5 @@ export class DocumentacionResolver {
   @UseGuards(new AuthGuard())
   removeSeveralDocumentacion(@Args('id', { type: () => [Int] }) id: number[]) {
     return this.documentacionService.removeSeveral(id);
-  }
-
-  @ResolveField(() => TiposDocumento, {nullable: true})
-  tiposDocumento(@Parent() documentacion: Documentacion): Promise<TiposDocumento> {
-    return this.documentacionService.getTipoDocumento(documentacion.idTipoDoc);
   }
 }

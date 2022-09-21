@@ -1,11 +1,7 @@
-import { Resolver, Query, Mutation, Args, Int, ResolveField, Parent } from '@nestjs/graphql';
+import { Resolver, Query, Mutation, Args, Int} from '@nestjs/graphql';
 import { FacturaResumenService } from './factura-resumen.service';
 import { CreateFacturaResumanInput } from './dto/create-factura-resuman.input';
 import { FacturaResumen } from 'src/models/entities/FacturaResumen.entity';
-import { Contratos } from 'src/models/entities/Contratos.entity';
-import { Embarques } from 'src/models/entities/Embarques.entity';
-import { Ejecutivos } from 'src/models/entities/Ejecutivos.entity';
-import { Puertos } from 'src/models/entities/Puertos.entity';
 import { UseGuards } from '@nestjs/common';
 import { AuthGuard } from 'src/auth.guard';
 
@@ -41,30 +37,5 @@ export class FacturaResumenResolver {
   @UseGuards(new AuthGuard())
   removeSeveralFacturaResuman(@Args('id', { type: () => [Int] }) id: number[]) {
     return this.facturaResumenService.removeSeveral(id);
-  }
-
-  @ResolveField(() => Contratos, {nullable: true})
-  contratos(@Parent() facturaResumen: FacturaResumen): Promise<Contratos> {
-    return this.facturaResumenService.getContrato(facturaResumen.idContrato);
-  }
-
-  @ResolveField(() => Embarques, {nullable: true})
-  embarques(@Parent() facturaResumen: FacturaResumen): Promise<Embarques> {
-    return this.facturaResumenService.getEmbarque(facturaResumen.idEmbarque);
-  }
-
-  @ResolveField(() => Ejecutivos, {nullable: true})
-  ejecutivos(@Parent() facturaResumen: FacturaResumen): Promise<Ejecutivos> {
-    return this.facturaResumenService.getEjecutivo(facturaResumen.idEjecutivo);
-  }
-
-  @ResolveField(() => Ejecutivos, {nullable: true})
-  ejecutivoRealiza(@Parent() facturaResumen: FacturaResumen): Promise<Ejecutivos> {
-    return this.facturaResumenService.getEjecutivoRealiza(facturaResumen.realizadoPor);
-  }
-
-  @ResolveField(() => Puertos, {nullable: true})
-  puertoDestino(@Parent() facturaResumen: FacturaResumen): Promise<Puertos> {
-    return this.facturaResumenService.getPuertoDestino(facturaResumen.idPuertoDestino);
   }
 }

@@ -1,11 +1,7 @@
-import { Resolver, Query, Mutation, Args, Int, ResolveField, Parent } from '@nestjs/graphql';
+import { Resolver, Query, Mutation, Args, Int} from '@nestjs/graphql';
 import { SolicitudOfertasEntradasService } from './solicitud-ofertas-entradas.service';
 import { CreateSolicitudOfertasEntradaInput } from './dto/create-solicitud-ofertas-entrada.input';
 import { SolicitudOfertasEntradas } from 'src/models/entities/SolicitudOfertasEntradas.entity';
-import { SolicitudOfertasProveedor } from 'src/models/entities/SolicitudOfertasProveedor.entity';
-import { UnidadMedida } from 'src/modelsMercurio/entities/UnidadMedida.entity';
-import { CodigosParaLaVenta } from 'src/modelsMercurio/entities/CodigosParaLaVenta.entity';
-import { Referencias } from 'src/modelsMercurio/entities/Referencias.entity';
 import { UseGuards } from '@nestjs/common';
 import { AuthGuard } from 'src/auth.guard';
 
@@ -41,25 +37,5 @@ export class SolicitudOfertasEntradasResolver {
   @UseGuards(new AuthGuard())
   removeSeveralSolicitudOfertasEntrada(@Args('id', { type: () => [Int] }) id: number[]) {
     return this.solicitudOfertasEntradasService.removeSeveral(id);
-  }
-
-  @ResolveField(() => SolicitudOfertasProveedor, {nullable: true})
-  ofertasProveedor(@Parent() solicitudOfertasEntradas: SolicitudOfertasEntradas): Promise<SolicitudOfertasProveedor> {
-    return this.solicitudOfertasEntradasService.getSolicitudOfertasProveedor(solicitudOfertasEntradas.idOfertasProveedor);
-  }
-
-  @ResolveField(() => UnidadMedida, {nullable: true})
-  unidadMedida(@Parent() solicitudOfertasEntradas: SolicitudOfertasEntradas): Promise<UnidadMedida> {
-    return this.solicitudOfertasEntradasService.getUnidadMedida(solicitudOfertasEntradas.idUm);
-  }
-
-  @ResolveField(() => CodigosParaLaVenta, {nullable: true})
-  codigo(@Parent() solicitudOfertasEntradas: SolicitudOfertasEntradas): Promise<CodigosParaLaVenta> {
-    return this.solicitudOfertasEntradasService.getCodigo(solicitudOfertasEntradas.idCodigo);
-  }
-
-  @ResolveField(() => Referencias, {nullable: true})
-  referencia(@Parent() solicitudOfertasEntradas: SolicitudOfertasEntradas): Promise<Referencias> {
-    return this.solicitudOfertasEntradasService.getReferencia(solicitudOfertasEntradas.idReferencia);
   }
 }

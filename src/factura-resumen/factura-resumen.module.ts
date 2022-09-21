@@ -14,7 +14,7 @@ import { FacturaContenedorModule } from 'src/factura-contenedor/factura-contened
 @Module({
   imports:[TypeOrmModule.forFeature([
     FacturaResumen
-  ]),ContratosModule,EmbarquesModule,EjecutivoModule,NegociacionResumenModule,PuertosModule,FacturaDesgloseModule,FacturaContenedorModule],
+  ]),FacturaDesgloseModule,FacturaContenedorModule],
   providers: [FacturaResumenResolver, FacturaResumenService],
   exports: [FacturaResumenService]
 })

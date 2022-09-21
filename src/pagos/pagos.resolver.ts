@@ -1,4 +1,4 @@
-import { Resolver, Query, Mutation, Args, Int, ResolveField, Parent } from '@nestjs/graphql';
+import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
 import { PagosService } from './pagos.service';
 import { CreatePagoInput } from './dto/create-pago.input';
 import { Pagos } from 'src/models/entities/Pagos.entity';

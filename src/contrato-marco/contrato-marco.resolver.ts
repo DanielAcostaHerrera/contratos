@@ -1,8 +1,7 @@
 import { UseGuards } from '@nestjs/common';
-import { Resolver, Query, Mutation, Args, Int, Parent, ResolveField } from '@nestjs/graphql';
+import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
 import { AuthGuard } from 'src/auth.guard';
 import { ContratoMarco } from '../models/entities/ContratoMarco.entity';
-import { Proveedores } from '../modelsMercurio/entities/Proveedores.entity';
 import { ContratoMarcoService } from './contrato-marco.service';
 import { CreateContratoMarcoInput } from './dto/create-contrato-marco.input';
 
@@ -39,11 +38,5 @@ export class ContratoMarcoResolver {
   removeSeveralContratoMarco(
     @Args('id', { type: () => [Int] }) id: number[]) {
     return this.contratoMarcoService.removeSeveral(id);
-  }
-
-  @ResolveField(() => Proveedores, {nullable: true})
-  @UseGuards(new AuthGuard()) 
-  proveedor(@Parent() contratoMarco: ContratoMarco): Promise<Proveedores> {
-    return this.contratoMarcoService.getProveedor(contratoMarco.idProveedor);
   }
 }

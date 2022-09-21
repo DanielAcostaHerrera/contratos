@@ -1,8 +1,7 @@
-import { Resolver, Query, Mutation, Args, Int, ResolveField, Parent } from '@nestjs/graphql';
+import { Resolver, Query, Mutation, Args, Int} from '@nestjs/graphql';
 import { PliegoConcurrenciaService } from './pliego-concurrencia.service';
 import { CreatePliegoConcurrenciaInput } from './dto/create-pliego-concurrencia.input';
 import { PliegoConcurrencia } from 'src/models/entities/PliegoConcurrencia.entity';
-import { SolicitudOfertas } from 'src/models/entities/SolicitudOfertas.entity';
 import { UseGuards } from '@nestjs/common';
 import { AuthGuard } from 'src/auth.guard';
 
@@ -38,10 +37,5 @@ export class PliegoConcurrenciaResolver {
   @UseGuards(new AuthGuard())
   removeSeveralPliegoConcurrencia(@Args('id', { type: () => [Int] }) id: number[]) {
     return this.pliegoConcurrenciaService.removeSeveral(id);
-  }
-
-  @ResolveField(() => SolicitudOfertas, {nullable: true})
-  oferta(@Parent() pliegoConcurrencia: PliegoConcurrencia): Promise<SolicitudOfertas> {
-    return this.pliegoConcurrenciaService.getOferta(pliegoConcurrencia.idOferta);
   }
 }

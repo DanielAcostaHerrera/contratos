@@ -1,16 +1,11 @@
-import { Resolver, Query, Mutation, Args, Int, ResolveField, Parent, Context } from '@nestjs/graphql';
+import { Resolver, Query, Mutation, Args, Int, Context } from '@nestjs/graphql';
 import { BasesGeneralesService } from './bases-generales.service';
 import { BasesGenerales } from 'src/models/entities/BasesGenerales.entity';
 import { CreateBasesGeneralesInput } from './dto/create-bases-generales.input';
-import { TipoContrato } from 'src/models/entities/TipoContrato.entity';
-import { Incoterm } from 'src/models/entities/Incoterm.entity';
-import { Compradores } from 'src/models/entities/Compradores.entity';
-import { Paises } from 'src/modelsMercurio/entities/Paises.entity';
-import { Proveedores } from 'src/modelsMercurio/entities/Proveedores.entity';
 import { BasesGeneralesClausulas } from 'src/models/entities/BasesGeneralesClausulas.entity';
 import { AuthGuard, DEFAULT_GRAPHQL_CONTEXT } from 'src/auth.guard';
 import { Usuarios } from 'src/models/entities/Usuarios.entity';
-import { StreamableFile, UseGuards } from '@nestjs/common';
+import { UseGuards } from '@nestjs/common';
 import { FilterBasesGeneralesInput } from './dto/filter-bases-generales.input';
 import { CountBasesGenerales } from './dto/count-bases-generales.input';
 import { BasesGeneralesPagination } from 'src/pagination/PaginationDto';

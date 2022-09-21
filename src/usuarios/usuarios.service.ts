@@ -1,13 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Hash } from 'crypto';
-import { EjecutivoService } from 'src/ejecutivo/ejecutivo.service';
-import { Ejecutivos } from 'src/models/entities/Ejecutivos.entity';
 import { Usuarios } from 'src/models/entities/Usuarios.entity';
 import { In, Repository } from 'typeorm';
 import { CreateUsuarioInput } from './dto/create-usuario.input';
 import * as bcrypt from 'bcryptjs';
-import { MyLogger } from 'src/MyLogger';
 import { CreateUsuarioRolInput } from 'src/usuario-rol/dto/create-usuario-rol.input';
 import { UsuarioRolService } from 'src/usuario-rol/usuario-rol.service';
 import { LogsService } from 'src/logs/logs.service';
@@ -16,7 +12,7 @@ import { SECRET_KEY } from 'src/auth.guard';
 
 @Injectable()
 export class UsuariosService {
-  constructor(@InjectRepository(Usuarios) public readonly usuariosRepository: Repository<Usuarios>,private ejecutivoService: EjecutivoService,
+  constructor(@InjectRepository(Usuarios) public readonly usuariosRepository: Repository<Usuarios>,
   private usuarioRolService: UsuarioRolService,private logsService: LogsService) {}
 
   async save(usuarioToken: Usuarios, createUsuarioInput: CreateUsuarioInput) : Promise<Usuarios> {
@@ -113,11 +109,11 @@ export class UsuariosService {
   }
 
   async findAll(): Promise<Usuarios[]> {
-    return await this.usuariosRepository.find({ relations: ['usuarioRoles']});
+    return await this.usuariosRepository.find({ relations: ['usuarioRoles','ejecutivo']});
   }
 
   async findOne(id: number) : Promise<Usuarios> {
-    return await this.usuariosRepository.findOne({ where: {idUsuario: id},relations: ['usuarioRoles']});
+    return await this.usuariosRepository.findOne({ where: {idUsuario: id},relations: ['usuarioRoles','ejecutivo']});
   }
 
   async remove(usuarioToken: Usuarios,id: number) : Promise<any> {
@@ -166,10 +162,6 @@ export class UsuariosService {
         resolve(result);  
       }
     });
-  }
-
-  async getEjecutivo (Id: number) : Promise<Ejecutivos>{
-    return this.ejecutivoService.findOne(Id);
   }
 
   private createToken (usuario: Usuarios){

@@ -1,11 +1,7 @@
 import { UseGuards } from '@nestjs/common';
-import { Resolver, Query, Mutation, Args, Int, ResolveField, Parent } from '@nestjs/graphql';
+import { Resolver, Query, Mutation, Args, Int} from '@nestjs/graphql';
 import { AuthGuard } from 'src/auth.guard';
 import { ContratoDesglose } from 'src/models/entities/ContratoDesglose.entity';
-import { Embarques } from 'src/models/entities/Embarques.entity';
-import { CodigosParaLaVenta } from 'src/modelsMercurio/entities/CodigosParaLaVenta.entity';
-import { Referencias } from 'src/modelsMercurio/entities/Referencias.entity';
-import { UnidadMedida } from 'src/modelsMercurio/entities/UnidadMedida.entity';
 import { ContratoDesgloseService } from './contrato-desglose.service';
 import { CreateContratoDesgloseInput } from './dto/create-contrato-desglose.input';
 
@@ -47,20 +43,5 @@ export class ContratoDesgloseResolver {
   @UseGuards(new AuthGuard())
   removeSeveralContratoDesgloseByEmbarqueId(@Args('id', { type: () => Int }) id: number) {
     return this.contratoDesgloseService.removeSeveralByEmbarqueId(id);
-  }
-
-  @ResolveField(() => Referencias, {nullable: true})
-  referencia(@Parent() contratoDesglose: ContratoDesglose): Promise<Referencias> {
-    return this.contratoDesgloseService.getReferencia(contratoDesglose.idReferencia);
-  }
-
-  @ResolveField(() => CodigosParaLaVenta, {nullable: true})
-  codigo(@Parent() contratoDesglose: ContratoDesglose): Promise<CodigosParaLaVenta> {
-    return this.contratoDesgloseService.getCodigo(contratoDesglose.idCodigo);
-  }
-
-  @ResolveField(() => UnidadMedida, {nullable: true})
-  unidadMedida(@Parent() contratoDesglose: ContratoDesglose): Promise<UnidadMedida> {
-    return this.contratoDesgloseService.getUnidadMedida(contratoDesglose.idUnidadMedida);
   }
 }

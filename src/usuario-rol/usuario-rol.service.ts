@@ -1,26 +1,23 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Roles } from 'src/models/entities/Roles.entity';
 import { UsuarioRol } from 'src/models/entities/UsuarioRol.entity';
-import { RolesService } from 'src/roles/roles.service';
 import { In, Repository } from 'typeorm';
 import { CreateUsuarioRolInput } from './dto/create-usuario-rol.input';
 
 @Injectable()
 export class UsuarioRolService {
-  constructor(@InjectRepository(UsuarioRol) public readonly usuarioRolRepository: Repository<UsuarioRol>,
-  private rolesService: RolesService) {}
+  constructor(@InjectRepository(UsuarioRol) public readonly usuarioRolRepository: Repository<UsuarioRol>) {}
 
   async save(createUsuarioRolInput: CreateUsuarioRolInput) : Promise<UsuarioRol> {
     return await this.usuarioRolRepository.save(createUsuarioRolInput);
   }
 
   async findAll(): Promise<UsuarioRol[]> {
-    return await this.usuarioRolRepository.find({relations:['usuario']});
+    return await this.usuarioRolRepository.find({relations:['usuario','rol']});
   }
 
   async findOne(id: number) : Promise<UsuarioRol> {
-    return await this.usuarioRolRepository.findOne({where: {idUsuarioRol: id},relations:['usuario']});
+    return await this.usuarioRolRepository.findOne({where: {idUsuarioRol: id},relations:['usuario','rol']});
   }
 
   async remove(id: number) : Promise<any> {
@@ -40,9 +37,5 @@ export class UsuarioRolService {
       idUsuarioRol: In(id)
   });
     return await this.usuarioRolRepository.remove(usuarioRol);
-  }
-
-  async getRol (Id: number) : Promise<Roles>{
-    return this.rolesService.findOne(Id);
   }
 }

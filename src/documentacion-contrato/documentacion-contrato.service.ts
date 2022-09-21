@@ -1,17 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { ContratosService } from 'src/contratos/contratos.service';
-import { DocumentacionService } from 'src/documentacion/documentacion.service';
-import { Contratos } from 'src/models/entities/Contratos.entity';
-import { Documentacion } from 'src/models/entities/Documentacion.entity';
 import { DocumentacionContrato } from 'src/models/entities/DocumentacionContrato.entity';
 import { In, Repository } from 'typeorm';
 import { CreateDocumentacionContratoInput } from './dto/create-documentacion-contrato.input';
 
 @Injectable()
 export class DocumentacionContratoService {
-  constructor(@InjectRepository(DocumentacionContrato) public readonly documentacionContratoRepository: Repository<DocumentacionContrato>,
-  private documentacionService: DocumentacionService,private contratosService: ContratosService) {}
+  constructor(@InjectRepository(DocumentacionContrato) public readonly documentacionContratoRepository: Repository<DocumentacionContrato>) {}
 
 
   async save(createDocumentacionContratoInput: CreateDocumentacionContratoInput) : Promise<DocumentacionContrato> {
@@ -19,11 +14,11 @@ export class DocumentacionContratoService {
   }
 
   async findAll(): Promise<DocumentacionContrato[]> {
-    return await this.documentacionContratoRepository.find();
+    return await this.documentacionContratoRepository.find({relations:['contratos','documentacion']});
   }
 
   async findOne(id: number) : Promise<DocumentacionContrato> {
-    return await this.documentacionContratoRepository.findOne({where: {idDocumentacionContrato: id},});
+    return await this.documentacionContratoRepository.findOne({where: {idDocumentacionContrato: id},relations:['contratos','documentacion']});
   }
 
   async remove(id: number) : Promise<any> {
@@ -36,13 +31,5 @@ export class DocumentacionContratoService {
       idDocumentacionContrato: In(id)
   });
     return await this.documentacionContratoRepository.remove(documentacionContrato);
-  }
-
-  async getDocumentacion (documentacionId: number) : Promise<Documentacion>{
-    return this.documentacionService.findOne(documentacionId);
-  }
-
-  async getContrato (contratoId: number) : Promise<Contratos>{
-    return this.contratosService.findOne(contratoId);
   }
 }

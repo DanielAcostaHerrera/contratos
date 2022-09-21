@@ -1,8 +1,7 @@
 import { UseGuards } from '@nestjs/common';
-import { Resolver, Query, Mutation, Args, Int, ResolveField, Parent } from '@nestjs/graphql';
+import { Resolver, Query, Mutation, Args, Int, Parent } from '@nestjs/graphql';
 import { AuthGuard } from 'src/auth.guard';
 import { Compradores } from 'src/models/entities/Compradores.entity';
-import { DatosEntidad } from 'src/models/entities/DatosEntidad.entity';
 import { CompradoresService } from './compradores.service';
 import { CreateCompradoresInput } from './dto/create-compradores.input';
 

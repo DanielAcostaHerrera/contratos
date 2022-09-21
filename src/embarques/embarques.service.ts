@@ -1,15 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { CompaniasNavierasService } from 'src/companias-navieras/companias-navieras.service';
 import { Embarques } from 'src/models/entities/Embarques.entity';
-import { CompaniasNavieras } from 'src/modelsNomgen/entities/CompaniasNavieras.entity';
 import { In, Repository } from 'typeorm';
 import { CreateEmbarqueInput } from './dto/create-embarque.input';
 
 @Injectable()
 export class EmbarquesService {
-  constructor(@InjectRepository(Embarques) public readonly embarquesRepository: Repository<Embarques>,
-  private companiasNavierasService: CompaniasNavierasService) {}
+  constructor(@InjectRepository(Embarques) public readonly embarquesRepository: Repository<Embarques>) {}
 
 
   async save(createEmbarqueInput: CreateEmbarqueInput) : Promise<Embarques> {
@@ -54,9 +51,5 @@ export class EmbarquesService {
       idEmbarque: In(id)
   });
     return await this.embarquesRepository.remove(embarques);
-  }
-
-  async getCompaniaNaviera (Id: number) : Promise<CompaniasNavieras>{
-    return this.companiasNavierasService.findOne(Id);
   }
 }

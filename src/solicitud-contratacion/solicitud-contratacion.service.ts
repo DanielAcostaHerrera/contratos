@@ -1,12 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { CompradoresService } from 'src/compradores/compradores.service';
 import { LogsService } from 'src/logs/logs.service';
-import { Compradores } from 'src/models/entities/Compradores.entity';
-import { NegociacionResumen } from 'src/models/entities/NegociacionResumen.entity';
 import { SolicitudContratacion } from 'src/models/entities/SolicitudContratacion.entity';
 import { Usuarios } from 'src/models/entities/Usuarios.entity';
-import { MyLogger } from 'src/MyLogger';
 import { NegociacionResumenService } from 'src/negociacion-resumen/negociacion-resumen.service';
 import { In, Repository } from 'typeorm';
 import { CreateSolicitudContratacionInput } from './dto/create-solicitud-contratacion.input';
@@ -14,7 +10,7 @@ import { CreateSolicitudContratacionInput } from './dto/create-solicitud-contrat
 @Injectable()
 export class SolicitudContratacionService {
   constructor(@InjectRepository(SolicitudContratacion) public readonly solicitudContratacionRepository: Repository<SolicitudContratacion>,
-  private negociacionResumenService: NegociacionResumenService,private compradoresService: CompradoresService,private logsService: LogsService) {}
+  private negociacionResumenService: NegociacionResumenService,private logsService: LogsService) {}
 
 
   async save(usuarioToken: Usuarios,createSolicitudContratacionInput: CreateSolicitudContratacionInput) : Promise<SolicitudContratacion> {
@@ -53,11 +49,11 @@ export class SolicitudContratacionService {
   }
 
   async findAll(): Promise<SolicitudContratacion[]> { 
-    return await this.solicitudContratacionRepository.find({relations:['solicitudOfertas']});
+    return await this.solicitudContratacionRepository.find({relations:['solicitudOfertas','negociacion','comprador']});
   }
 
   async findOne(id: number) : Promise<SolicitudContratacion> {
-    return await this.solicitudContratacionRepository.findOne({where: {idSolicitudContrato: id},relations:['solicitudOfertas']});
+    return await this.solicitudContratacionRepository.findOne({where: {idSolicitudContrato: id},relations:['solicitudOfertas','negociacion','comprador']});
   }
 
   async remove(usuarioToken: Usuarios,id: number) : Promise<any> {
@@ -87,13 +83,5 @@ export class SolicitudContratacionService {
     }
     
     return result;
-  }
-
-  async getNegociacionResumen (id: number) : Promise<NegociacionResumen>{
-    return this.negociacionResumenService.findOne(id);
-  }
-
-  async getCompradores (id: number) : Promise<Compradores>{
-    return this.compradoresService.findOne(id);
   }
 }

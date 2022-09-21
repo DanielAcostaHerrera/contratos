@@ -1,5 +1,5 @@
 import { UseGuards } from '@nestjs/common';
-import { Resolver, Query, Mutation, Args, Int, ResolveField, Parent } from '@nestjs/graphql';
+import { Resolver, Query, Mutation, Args, Int} from '@nestjs/graphql';
 import { AuthGuard } from 'src/auth.guard';
 import { ContratoClausulas } from 'src/models/entities/ContratoClausulas.entity';
 import { ContratoClausulaService } from './contrato-clausulas.service';

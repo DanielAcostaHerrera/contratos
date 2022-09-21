@@ -1,18 +1,10 @@
-import { CompaniasNavieras } from './../modelsNomgen/entities/CompaniasNavieras.entity';
-import { Resolver, Query, Mutation, Args, Int, ResolveField, Parent, Context } from '@nestjs/graphql';
-import { BasesGenerales } from 'src/models/entities/BasesGenerales.entity';
+import { Resolver, Query, Mutation, Args, Int, Context } from '@nestjs/graphql';
 import { Contratos } from 'src/models/entities/Contratos.entity';
-import { Ejecutivos } from 'src/models/entities/Ejecutivos.entity';
-import { FormasEntrega } from 'src/models/entities/FormasEntrega.entity';
-import { Monedas } from 'src/models/entities/Monedas.entity';
-import { NegociacionResumen } from 'src/models/entities/NegociacionResumen.entity';
 import { ContratosService } from './contratos.service';
 import { CreateContratoInput } from './dto/create-contrato.input';
-import { Incoterm } from 'src/models/entities/Incoterm.entity';
 import { AuthGuard, DEFAULT_GRAPHQL_CONTEXT } from 'src/auth.guard';
 import { Usuarios } from 'src/models/entities/Usuarios.entity';
 import { UseGuards } from '@nestjs/common';
-import { ContratoMarco } from 'src/models/entities/ContratoMarco.entity';
 import { SuplementoChange } from 'src/models/entities/SuplementoChange.entity';
 import { SuplementoResumen } from 'src/models/entities/SuplementoResumen.entity';
 

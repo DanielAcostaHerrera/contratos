@@ -1,17 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { CargoService } from 'src/cargo/cargo.service';
-import { GruposDeComprasService } from 'src/grupos-de-compras/grupos-de-compras.service';
-import { Cargos } from 'src/models/entities/Cargos.entity';
 import { Ejecutivos } from 'src/models/entities/Ejecutivos.entity';
-import { GruposDeCompras } from 'src/models/entities/GruposDeCompras.entity';
 import { In, Repository } from 'typeorm';
 import { CreateEjecutivoInput } from './dto/create-ejecutivo.input';
 
 @Injectable()
 export class EjecutivoService {
-  constructor(@InjectRepository(Ejecutivos) public readonly ejecutivosRepository: Repository<Ejecutivos>,
-  private cargoService: CargoService,private gruposDeComprasService: GruposDeComprasService) {}
+  constructor(@InjectRepository(Ejecutivos) public readonly ejecutivosRepository: Repository<Ejecutivos>) {}
 
 
   async save(createEjecutivoInput: CreateEjecutivoInput) : Promise<Ejecutivos> {
@@ -19,11 +14,11 @@ export class EjecutivoService {
   }
 
   async findAll(): Promise<Ejecutivos[]> {
-    return await this.ejecutivosRepository.find({relations:['usuarios']});
+    return await this.ejecutivosRepository.find({relations:['usuarios','cargo','grupo']});
   }
 
   async findOne(id: number) : Promise<Ejecutivos> {
-    return await this.ejecutivosRepository.findOne({where: {idEjecutivo: id},relations:['usuarios']});
+    return await this.ejecutivosRepository.findOne({where: {idEjecutivo: id},relations:['usuarios','cargo','grupo']});
   }
 
   async remove(id: number) : Promise<any> {
@@ -36,13 +31,5 @@ export class EjecutivoService {
       idEjecutivo: In(id)
   });
     return await this.ejecutivosRepository.remove(ejecutivos);
-  }
-
-  async getCargo (cargoId: number) : Promise<Cargos>{
-    return this.cargoService.findOne(cargoId);
-  }
-
-  async getGrupo (grupoId: number) : Promise<GruposDeCompras>{
-    return this.gruposDeComprasService.findOne(grupoId);
   }
 }

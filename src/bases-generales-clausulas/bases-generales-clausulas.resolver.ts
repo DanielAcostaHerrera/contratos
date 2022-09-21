@@ -1,8 +1,7 @@
-import { Resolver, Query, Mutation, Args, Int, ResolveField, Parent } from '@nestjs/graphql';
+import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
 import { BasesGeneralesClausulasService } from './bases-generales-clausulas.service';
 import { CreateBasesGeneralesClausulaInput } from './dto/create-bases-generales-clausula.input';
 import { BasesGeneralesClausulas } from 'src/models/entities/BasesGeneralesClausulas.entity';
-import { TiposDeClausulas } from 'src/models/entities/TiposDeClausulas.entity';
 import { UseGuards } from '@nestjs/common';
 import { AuthGuard } from 'src/auth.guard';
 
@@ -44,10 +43,5 @@ export class BasesGeneralesClausulasResolver {
   @UseGuards(new AuthGuard())
   removeSeveralBasesGeneralesClausulaByBaseGeneralId(@Args('id', { type: () => Int }) id: number) {
     return this.basesGeneralesClausulasService.removeSeveralByBaseGeneralId(id);
-  }
-
-  @ResolveField(() => TiposDeClausulas, {nullable: true})
-  tiposDeClausulas(@Parent() basesGeneralesClausulas: BasesGeneralesClausulas): Promise<TiposDeClausulas> {
-    return this.basesGeneralesClausulasService.getTipoClausula(basesGeneralesClausulas.idTipoClausula);
   }
 }

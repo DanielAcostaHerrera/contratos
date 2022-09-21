@@ -1,15 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { NegociacionProveedores } from 'src/models/entities/NegociacionProveedores.entity';
-import { Proveedores } from 'src/modelsMercurio/entities/Proveedores.entity';
-import { ProveedoresService } from 'src/proveedores/proveedores.service';
 import { In, Repository } from 'typeorm';
 import { CreateNegociacionProveedoresInput } from './dto/create-negociacion-proveedores.input';
 
 @Injectable()
 export class NegociacionProveedoresService {
-  constructor(@InjectRepository(NegociacionProveedores) public readonly negociacionProveedoresRepository: Repository<NegociacionProveedores>,
-  private proveedoresService: ProveedoresService,) {}
+  constructor(@InjectRepository(NegociacionProveedores) public readonly negociacionProveedoresRepository: Repository<NegociacionProveedores>) {}
 
 
   async save(createNegociacionProveedoresInput: CreateNegociacionProveedoresInput) : Promise<NegociacionProveedores> {
@@ -17,11 +14,11 @@ export class NegociacionProveedoresService {
   }
 
   async findAll(): Promise<NegociacionProveedores[]> {
-    return await this.negociacionProveedoresRepository.find({relations: ['negociacionResumen']});
+    return await this.negociacionProveedoresRepository.find({relations: ['negociacionResumen','proveedor']});
   }
 
   async findOne(id: number) : Promise<NegociacionProveedores> {
-    return await this.negociacionProveedoresRepository.findOne({where: {idNegociacionProveedores: id},relations: ['negociacionResumen']});
+    return await this.negociacionProveedoresRepository.findOne({where: {idNegociacionProveedores: id},relations: ['negociacionResumen','proveedor']});
   }
 
   async remove(id: number) : Promise<any> {
@@ -39,9 +36,5 @@ export class NegociacionProveedoresService {
   async removeSeveralByNegociacionId(idNegociacion: number) : Promise<any> {
     const negociacionProveedores = await this.negociacionProveedoresRepository.find({where: {idNegociacion}});
     return await this.negociacionProveedoresRepository.remove(negociacionProveedores);
-  }
-
-  async getProveedor (Id: number) : Promise<Proveedores>{
-    return this.proveedoresService.findOne(Id);
   }
 }

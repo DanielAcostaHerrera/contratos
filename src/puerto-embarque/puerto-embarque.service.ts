@@ -1,28 +1,23 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { EmbarquesService } from 'src/embarques/embarques.service';
-import { Embarques } from 'src/models/entities/Embarques.entity';
 import { PuertoEmbarque } from 'src/models/entities/PuertoEmbarque.entity';
-import { Puertos } from 'src/models/entities/Puertos.entity';
-import { PuertosService } from 'src/puertos/puertos.service';
 import { In, Repository } from 'typeorm';
 import { CreatePuertoEmbarqueInput } from './dto/create-puerto-embarque.input';
 
 @Injectable()
 export class PuertoEmbarqueService {
-  constructor(@InjectRepository(PuertoEmbarque) public readonly puertoEmbarqueRepository: Repository<PuertoEmbarque>,
-  private puertosService: PuertosService, private embarquesService: EmbarquesService) {}
+  constructor(@InjectRepository(PuertoEmbarque) public readonly puertoEmbarqueRepository: Repository<PuertoEmbarque>) {}
 
   async save(createPuertoEmbarqueInput: CreatePuertoEmbarqueInput) : Promise<PuertoEmbarque> {
     return await this.puertoEmbarqueRepository.save(createPuertoEmbarqueInput);
   }
 
   async findAll(): Promise<PuertoEmbarque[]> {
-    return await this.puertoEmbarqueRepository.find();
+    return await this.puertoEmbarqueRepository.find({relations:['puertoOrigen','puertoDestino','embarques']});
   }
 
   async findOne(id: number) : Promise<PuertoEmbarque> {
-    return await this.puertoEmbarqueRepository.findOne({where: {idPuertoEmbarque: id},});
+    return await this.puertoEmbarqueRepository.findOne({where: {idPuertoEmbarque: id},relations:['puertoOrigen','puertoDestino','embarques']});
   }
 
   async remove(id: number) : Promise<any> {
@@ -35,18 +30,6 @@ export class PuertoEmbarqueService {
       idPuertoEmbarque: In(id)
   });
     return await this.puertoEmbarqueRepository.remove(puertoEmbarques);
-  }
-
-  async getEmbarque (id: number) : Promise<Embarques>{
-    return this.embarquesService.findOne(id);
-  }
-
-  async getPuertoDestino (id: number) : Promise<Puertos>{
-    return this.puertosService.findOne(id);
-  }
-
-  async getPuertoOrigen (id: number) : Promise<Puertos>{
-    return this.puertosService.findOne(id);
   }
 
   async removeSeveralByEmbarqueId(idEmbarque: number) : Promise<any> {

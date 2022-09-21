@@ -1,16 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { BasesGeneralesClausulas } from 'src/models/entities/BasesGeneralesClausulas.entity';
-import { TiposDeClausulas } from 'src/models/entities/TiposDeClausulas.entity';
-import { ProformaClausulasService } from 'src/proforma-clausulas/proforma-clausulas.service';
-import { TiposDeClausulasService } from 'src/tipos-de-clausulas/tipos-de-clausulas.service';
 import { In, Repository } from 'typeorm';
 import { CreateBasesGeneralesClausulaInput } from './dto/create-bases-generales-clausula.input';
 
 @Injectable()
 export class BasesGeneralesClausulasService {
-  constructor(@InjectRepository(BasesGeneralesClausulas) public readonly basesGeneralesClausulasRepository: Repository<BasesGeneralesClausulas>,
-  private tiposDeClausulasService: TiposDeClausulasService) {}
+  constructor(@InjectRepository(BasesGeneralesClausulas) public readonly basesGeneralesClausulasRepository: Repository<BasesGeneralesClausulas>) {}
 
 
   async save(createBasesGeneralesClausulaInput: CreateBasesGeneralesClausulaInput) : Promise<BasesGeneralesClausulas> {
@@ -20,17 +16,17 @@ export class BasesGeneralesClausulasService {
   async findAll(): Promise<BasesGeneralesClausulas[]> { 
     return await this.basesGeneralesClausulasRepository.find({order: {
       orden : "ASC"
-    }, relations: ['basesGenerales']});
+    }, relations: ['basesGenerales','tiposDeClausulas']});
   }
 
   async findAllByIdBaseGeneral(idBasesGenerales: number): Promise<BasesGeneralesClausulas[]> { 
     return await this.basesGeneralesClausulasRepository.find({order: {
       orden : "ASC"
-    }, where: {idBasesGenerales}});
+    }, where: {idBasesGenerales},relations:['tiposDeClausulas']});
   }
 
   async findOne(id: number) : Promise<BasesGeneralesClausulas> {
-    return await this.basesGeneralesClausulasRepository.findOne({where: {idBasesGeneralesClausulas: id},relations : ['basesGenerales']});
+    return await this.basesGeneralesClausulasRepository.findOne({where: {idBasesGeneralesClausulas: id},relations : ['basesGenerales','tiposDeClausulas']});
   }
 
   async remove(id: number) : Promise<any> {
@@ -48,9 +44,5 @@ export class BasesGeneralesClausulasService {
   async removeSeveralByBaseGeneralId(idBasesGenerales: number) : Promise<any> {
     const basesGeneralesClausulas = await this.basesGeneralesClausulasRepository.find({where: {idBasesGenerales}});
     return await this.basesGeneralesClausulasRepository.remove(basesGeneralesClausulas);
-  }
-
-  async getTipoClausula (tipoClausulaId: number) : Promise<TiposDeClausulas>{
-    return this.tiposDeClausulasService.findOne(tipoClausulaId);
   }
 }

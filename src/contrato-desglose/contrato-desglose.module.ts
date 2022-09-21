@@ -10,7 +10,7 @@ import { CodigosParaLaVentaModule } from 'src/codigos-para-la-venta/codigos-para
 @Module({
   imports: [TypeOrmModule.forFeature(
     [ContratoDesglose]
-  ),ReferenciasModule,UnidadMedidaModule,CodigosParaLaVentaModule],
+  )],
   providers: [ContratoDesgloseResolver, ContratoDesgloseService],
   exports: [ContratoDesgloseService]
 })

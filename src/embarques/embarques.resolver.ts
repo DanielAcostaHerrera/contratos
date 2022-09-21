@@ -1,11 +1,9 @@
-import { Resolver, Query, Mutation, Args, Int, ResolveField, Parent, Context } from '@nestjs/graphql';
+import { Resolver, Query, Mutation, Args, Int} from '@nestjs/graphql';
 import { EmbarquesService } from './embarques.service';
 import { CreateEmbarqueInput } from './dto/create-embarque.input';
 import { Embarques } from 'src/models/entities/Embarques.entity';
-import { Ejecutivos } from 'src/models/entities/Ejecutivos.entity';
-import { CompaniasNavieras } from 'src/modelsNomgen/entities/CompaniasNavieras.entity';
 import { UseGuards } from '@nestjs/common';
-import { AuthGuard, DEFAULT_GRAPHQL_CONTEXT } from 'src/auth.guard';
+import { AuthGuard } from 'src/auth.guard';
 
 @Resolver(() => Embarques)
 export class EmbarquesResolver {
@@ -48,8 +46,4 @@ export class EmbarquesResolver {
     return this.embarquesService.removeSeveral(id);
   }
 
-  @ResolveField(() => CompaniasNavieras, {nullable: true})
-  companiaNaviera(@Parent() embarques: Embarques): Promise<CompaniasNavieras> {
-    return this.embarquesService.getCompaniaNaviera(embarques.idEmpresaNaviera);
-  }
 }

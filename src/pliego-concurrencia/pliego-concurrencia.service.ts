@@ -1,15 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { PliegoConcurrencia } from 'src/models/entities/PliegoConcurrencia.entity';
-import { SolicitudOfertas } from 'src/models/entities/SolicitudOfertas.entity';
-import { SolicitudOfertasService } from 'src/solicitud-ofertas/solicitud-ofertas.service';
 import { In, Repository } from 'typeorm';
 import { CreatePliegoConcurrenciaInput } from './dto/create-pliego-concurrencia.input';
 
 @Injectable()
 export class PliegoConcurrenciaService {
-  constructor(@InjectRepository(PliegoConcurrencia) public readonly pliegoConcurrenciaRepository: Repository<PliegoConcurrencia>,
-  private solicitudOfertasService: SolicitudOfertasService) {}
+  constructor(@InjectRepository(PliegoConcurrencia) public readonly pliegoConcurrenciaRepository: Repository<PliegoConcurrencia>) {}
 
 
   async save(createPliegoConcurrenciaInput: CreatePliegoConcurrenciaInput) : Promise<PliegoConcurrencia> {
@@ -17,11 +14,11 @@ export class PliegoConcurrenciaService {
   }
 
   async findAll(): Promise<PliegoConcurrencia[]> { 
-    return await this.pliegoConcurrenciaRepository.find({relations:['pliegoConcurrenciaResumen']});
+    return await this.pliegoConcurrenciaRepository.find({relations:['pliegoConcurrenciaResumen','oferta']});
   }
 
   async findOne(id: number) : Promise<PliegoConcurrencia> {
-    return await this.pliegoConcurrenciaRepository.findOne({where: {idPliego: id},relations:['pliegoConcurrenciaResumen']});
+    return await this.pliegoConcurrenciaRepository.findOne({where: {idPliego: id},relations:['pliegoConcurrenciaResumen','oferta']});
   }
 
   async remove(id: number) : Promise<any> {
@@ -34,9 +31,5 @@ export class PliegoConcurrenciaService {
       idPliego: In(id)
   });
     return await this.pliegoConcurrenciaRepository.remove(pliegoConcurrencia);
-  }
-
-  async getOferta (ofertaId: number) : Promise<SolicitudOfertas>{
-    return this.solicitudOfertasService.findOne(ofertaId);
   }
 }

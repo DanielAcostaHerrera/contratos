@@ -1,8 +1,7 @@
-import { Resolver, Query, Mutation, Args, Int, ResolveField, Parent, Context } from '@nestjs/graphql';
+import { Resolver, Query, Mutation, Args, Int, Context } from '@nestjs/graphql';
 import { UsuariosService } from './usuarios.service';
 import { CreateUsuarioInput } from './dto/create-usuario.input';
 import { Usuarios } from 'src/models/entities/Usuarios.entity';
-import { Ejecutivos } from 'src/models/entities/Ejecutivos.entity';
 import { AuthGuard, DEFAULT_GRAPHQL_CONTEXT } from 'src/auth.guard';
 import { UseGuards } from '@nestjs/common';
 
@@ -79,10 +78,5 @@ export class UsuariosResolver {
   refreshToken(
     @Context(DEFAULT_GRAPHQL_CONTEXT) usuario: Usuarios) {
     return this.usuariosService.refreshToken(usuario);
-  }
-
-  @ResolveField(() => Ejecutivos, {nullable: true})
-  ejecutivo(@Parent() usuarios: Usuarios): Promise<Ejecutivos> {
-    return this.usuariosService.getEjecutivo(usuarios.idEjecutivo);
   }
 }

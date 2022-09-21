@@ -6,6 +6,7 @@ import { join } from 'path';
 import { CodigosParaLaVenta } from 'src/modelsMercurio/entities/CodigosParaLaVenta.entity';
 import { ReferenciasService } from 'src/referencias/referencias.service';
 import { Referencias } from 'src/modelsMercurio/entities/Referencias.entity';
+import { ImportExcel } from './importExcel';
 
 
 @Controller('streaming')
@@ -66,14 +67,17 @@ export class StreamingController {
   @UseInterceptors(FileInterceptor('file'))
   async uploadFile(@UploadedFile() file: Express.Multer.File, idProveedor: number): Promise<Referencias[]> {
     const ExcelJS = require('exceljs');
-    let listaCodigos: string[] = []
+    let listaCodigos: ImportExcel[] = []
     const workbook = new ExcelJS.Workbook();
     try {
       let result = await workbook.xlsx.load(file.buffer)
       const sheet = result.getWorksheet("Hoja1")
 
-      for (let i = 1; i < sheet.rowCount; i++) {
-        listaCodigos.push(await sheet.getRow(i).getCell(1).value)
+      for (let i = 2; i < sheet.rowCount; i++) {
+        let importExcel: ImportExcel = new ImportExcel()
+        importExcel.codigo = await sheet.getRow(i).getCell(1).value
+        importExcel.precio = await sheet.getRow(i).getCell(2).value
+        listaCodigos.push(importExcel)
       }
     }
     catch (err) { 
